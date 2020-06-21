@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입 페이지</title>
+</head>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<body>
+    <h1>회원 가입</h1>
+    <hr>
+
+	<form th:action="@{/user/signup}" method="post" modelAttribute="${memverVO}">
+   		<div>
+           <input type="text" name="userid" th:value="${memberVO.userid}" placeholder="아이디를 입력하세요">
+           <span th:text="${valid_userid}"></span>
+        </div>
+
+        <div>
+            <input type="text" name="userEmail" th:value="${memberVO.userEmail}" placeholder="이메일을 입력하세요">
+            <span th:text="${valid_userEmail}"></span>
+        </div>
+
+        <div>
+            <input type="password" name="userPass" placeholder="비밀번호">
+            <span th:text="${valid_password}"></span>
+        </div>
+        <button type="submit" >가입하기</button>
+    </form>
+</body>
+</html>
