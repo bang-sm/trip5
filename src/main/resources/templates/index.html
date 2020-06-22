@@ -3,14 +3,49 @@
 <head>
 <meta charset="UTF-8">
 <title>메인</title>
+	<th:block th:replace="common/commonHead"></th:block>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
 </head>
 <body>
-	<h1>메인 페이지</h1>
-	<hr>
-	<a sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
-	<a sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
-	<a sec:authorize="isAnonymous()" th:href="@{/user/signup}">회원가입</a>
-	<a sec:authorize="hasRole('ROLE_MEMBER')" th:href="@{/user/info}">내정보</a>
-	<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}">어드민</a>
+	<!-- 공통 헤드 nav -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:include="common/header :: header_nav"></nav>
+	<!-- //공통 헤드 nav -->
+	
+	<div class="container">
+		<header class="jumbotron my-4">
+			<h1 class="display-3">BEST 일지</h1>
+			<p>대표이미지 표출 할겁니다</p>
+			<a href="#" class="btn btn-primary btn-lg">보러가기</a>
+		</header>
+		<div class="container_nav">
+			<div class="isotope_fillter">
+				<ul class="gallery_filter list">
+					<li class="active" data-filter="*"><a href="#">전체</a></li>
+					<li data-filter=".ap"><a href="#">좋아요순</a></li>
+					<li data-filter=".unp"><a href="#">북마크순</a></li>
+					<li data-filter=".unv"><a href="#">최신순</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<!-- Page Features -->
+		<div class="row text-center">
+			<div th:each="num: ${#numbers.sequence(1,4)}" class="col-lg-3 col-md-6 mb-4">
+				<div class="card h-100">
+					<img class="card-img-top" src="http://placehold.it/500x325" alt="">
+					<div class="card-body">
+						<h4 class="card-title">여행제목</h4>
+						<p class="card-text">2020-06-22 ~ 2020-06-25</p>
+						<p class="card-text">2박3일</p>
+						<p class="card-text">#해시태그#해시태그#해시태그#해시태그#최대5개</p>
+					</div>
+					<div class="card-footer">
+						<a href="#" class="btn btn-primary">보러가기</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /.container -->
 </body>
 </html>
