@@ -3555,6 +3555,28 @@ isotope_fillter {
     padding: 0px 30px;
     margin: 0px;
 }
+.home_banner_area {
+    position: relative;
+    z-index: 1;
+    min-height: 900px;
+    background:url
+}
+.home_banner_area .banner_inner {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    min-height: 940px;
+}
+.home_banner_area .banner_inner .overlay {
+    background: url(https://pixabay.com/get/52e0d2434c5ab108feda8460da2932771737dce65b5970_1920.jpg) no-repeat scroll center center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 100%;
+    bottom: 0;
+    z-index: -1;
+}
 /* End Footer Area css
 ============================================================================================ */
 /*---------------------------------------------------- */
