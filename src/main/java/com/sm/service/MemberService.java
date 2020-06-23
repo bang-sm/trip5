@@ -81,6 +81,7 @@ public class MemberService implements UserDetailsService{
 		else {
 			HttpSession session=request.getSession(true);
 			session.setAttribute("userInfo", user);
+			System.out.println(user+"/////////////////////////////////////////////////////////////////////////////");
 		}
 		/*
 		 * 아이디가 admin 인 계정에는 관리자권한 아니면 일반 멤버 권한
