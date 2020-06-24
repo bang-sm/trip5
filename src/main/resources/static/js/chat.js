@@ -3,18 +3,23 @@ var ws;
 function wsOpen() {
 	ws = new WebSocket("ws://" + location.host + "/chating");
 	wsEvt();
+	console.log($('#userSessionId').val());
 }
 
 function wsEvt() {
 	ws.onopen = function(data) {
 		//소켓이 열리면 동작
+		console.log('소켓 오픈');
 	}
 
 	ws.onmessage = function(data) {
 		//메시지를 받으면 동작
 		var msg = data.data;
+		
+		console.log(msg);
 		if (msg != null && msg.trim() != '') {
 			var d = JSON.parse(msg);
+			console.log(d.sessionId + " <-- d.sessionId 값");
 			if (d.type == "getId") {
 				var si = d.sessionId != null ? d.sessionId : "";
 				if (si != '') {
@@ -32,7 +37,6 @@ function wsEvt() {
 							"<p class='others'>" + d.userName + " : " + d.msg
 									+ "</p>");
 				}
-
 			} else {
 				console.warn("unknown type!")
 			}
@@ -62,7 +66,7 @@ function send() {
 	var option = {
 		type : "message",
 		sessionId : $("#sessionId").val(),
-		userName : $("#userName").val(),
+		userName : $('#userSessionId').val(),
 		msg : $("#chatting").val()
 	}
 	ws.send(JSON.stringify(option))
