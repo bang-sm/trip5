@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>travel</title>
+<th:block th:replace="common/commonHead"></th:block>
+<link rel="stylesheet" type="text/css" th:href="@{/css/travel.css}">
+<link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
+<link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
+<script src="../js/travel.js"></script>
+</head>
+<body id="detail_main">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+		<a class="navbar-brand js-scroll-trigger">
+			<span class="d-none d-lg-block"> <img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="http://placehold.it/160x168" alt="">
+			</span>
+		</a>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav">
+				<li class="nav-item"><a class="nav-link js-scroll-trigger active" href="#" onclick="fnMove('1')">day1</a></li>
+				<li class="nav-item"><a class="nav-link js-scroll-trigger" href="#" onclick="fnMove('2')">day2</a></li>
+			</ul>
+		</div>
+	</nav>
+	<div class="container-fluid p-0">
+		<!-- DAY1-->
+		<section class="resume-section" id="day1">
+			<div class="resume-section-content">
+				<h2 class="mb-5 text-primary">제목1</h2>
+				<div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+					<div class="flex-grow-1">
+						<h3 class="mb-0">Senior Web Developer</h3>
+						<div class="subheading mb-3">Intelitec Solutions</div>
+						<p>Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution. User generated content in real-time will have multiple touchpoints for offshoring.</p>
+						<img class="img-fluid mx-auto mb-2" alt="" src="http://placehold.it/230x230">
+						<img class="img-fluid mx-auto mb-2" alt="" src="http://placehold.it/230x230">
+						<img class="img-fluid mx-auto mb-2" alt="" src="http://placehold.it/230x230">
+						<img class="img-fluid mx-auto mb-2" alt="" src="http://placehold.it/230x230">
+					</div>
+					<div class="flex-shrink-0">
+						<span class="text-primary">첫번째 장소</span>
+					</div>
+
+				</div>
+				<div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+					<div class="flex-grow-1">
+						<h3 class="mb-0">Web Developer</h3>
+						<div class="subheading mb-3">Intelitec Solutions</div>
+						<p>Capitalize on low hanging fruit to identify a ballpark value added activity to beta test. Override the digital divide with additional clickthroughs from DevOps. Nanotechnology immersion along the information highway will close the loop on focusing solely on the bottom line.</p>
+					</div>
+					<div class="flex-shrink-0">
+						<span class="text-primary">두번째 장소</span>
+					</div>
+				</div>
+				<div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+					<div class="flex-grow-1">
+						<h3 class="mb-0">Junior Web Designer</h3>
+						<div class="subheading mb-3">Shout! Media Productions</div>
+						<p>Podcasting operational change management inside of workflows to establish a framework. Taking seamless key performance indicators offline to maximise the long tail. Keeping your eye on the ball while performing a deep dive on the start-up mentality to derive convergence on cross-platform integration.</p>
+					</div>
+					<div class="flex-shrink-0">
+						<span class="text-primary">세번째 장소</span>
+					</div>
+				</div>
+				<div class="d-flex flex-column flex-md-row justify-content-between mb-5" id="root">
+					<div class="flex-shrink-0">
+						<span class="text-primary">장소</span> <span class="text-primary">--></span> <span class="text-primary">장소</span> <span class="text-primary">--></span> <span class="text-primary">장소</span>
+					</div>
+				</div>
+			</div>
+		</section>
+		<hr class="m-0">
+		<!-- DAY2-->
+		<section class="resume-section" id="day2">
+			<div class="resume-section-content">
+				<h2 class="mb-5 text-primary">제목2</h2>
+				<div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+					<div class="flex-grow-1">
+						<h3 class="mb-0">Senior Web Developer</h3>
+						<div class="subheading mb-3">Intelitec Solutions</div>
+						<p>Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution. User generated content in real-time will have multiple touchpoints for offshoring.</p>
+					</div>
+					<div class="flex-shrink-0">
+						<span class="text-primary">March 2013 - Present</span>
+					</div>
+				</div>
+				<div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+					<div class="flex-grow-1">
+						<h3 class="mb-0">Web Developer</h3>
+						<div class="subheading mb-3">Intelitec Solutions</div>
+						<p>Capitalize on low hanging fruit to identify a ballpark value added activity to beta test. Override the digital divide with additional clickthroughs from DevOps. Nanotechnology immersion along the information highway will close the loop on focusing solely on the bottom line.</p>
+					</div>
+					<div class="flex-shrink-0">
+						<span class="text-primary">December 2011 - March 2013</span>
+					</div>
+				</div>
+				<div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+					<div class="flex-grow-1">
+						<h3 class="mb-0">Junior Web Designer</h3>
+						<div class="subheading mb-3">Shout! Media Productions</div>
+						<p>Podcasting operational change management inside of workflows to establish a framework. Taking seamless key performance indicators offline to maximise the long tail. Keeping your eye on the ball while performing a deep dive on the start-up mentality to derive convergence on cross-platform integration.</p>
+					</div>
+					<div class="flex-shrink-0">
+						<span class="text-primary">July 2010 - December 2011</span>
+					</div>
+				</div>
+				<div class="d-flex flex-column flex-md-row justify-content-between">
+					<div class="flex-grow-1">
+						<h3 class="mb-0">Web Design Intern</h3>
+						<div class="subheading mb-3">Shout! Media Productions</div>
+						<p>Collaboratively administrate empowered markets via plug-and-play networks. Dynamically procrastinate B2C users after installed base benefits. Dramatically visualize customer directed convergence without revolutionary ROI.</p>
+					</div>
+					<div class="flex-shrink-0">
+						<span class="text-primary">September 2008 - June 2010</span>
+					</div>
+				</div>
+			</div>
+		</section>
+		<hr class="m-0">
+	</div>
+</body>
+</html>
