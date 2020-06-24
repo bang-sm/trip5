@@ -22,7 +22,11 @@ function wsEvt() {
 				}
 			} else if (d.type == "message") {
 				if (d.sessionId == $("#sessionId").val()) {
+					if(d.msg.length == 0){
+						alert("내용을 입력하세요!!")
+					} else {
 					$("#chating").append("<p class='me'>나 : " + d.msg + "</p>");
+					}
 				} else {
 					$("#chating").append(
 							"<p class='others'>" + d.userName + " : " + d.msg
