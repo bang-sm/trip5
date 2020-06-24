@@ -21,27 +21,30 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
+				<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jdbc</artifactId>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-
-
-
+		
+		
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
-
-		<!-- Tomcat embedded container -->
-		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-tomcat</artifactId> 
-			<scope>provided</scope> </dependency> -->
+		
+		
+		<!-- Tomcat embedded container-->
+<!-- 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency> -->
 
 		<!-- JSTL for JSP -->
 		<dependency>
@@ -56,15 +59,15 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- Need this to compile JSP, tomcat-embed-jasper version is not working, 
-			no idea why -->
+		<!-- Need this to compile JSP,
+			tomcat-embed-jasper version is not working, no idea why -->
 		<dependency>
 			<groupId>org.eclipse.jdt.core.compiler</groupId>
 			<artifactId>ecj</artifactId>
 			<version>4.6.1</version>
 			<scope>provided</scope>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
@@ -88,9 +91,9 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<scope>provided</scope>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -103,42 +106,44 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
+			
 		<dependency>
-			<groupId>com.googlecode.json-simple</groupId>
-			<artifactId>json-simple</artifactId>
-			<version>1.1.1</version>
+		    <groupId>com.googlecode.json-simple</groupId>
+		    <artifactId>json-simple</artifactId>
+		    <version>1.1.1</version>
 		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
+		
+		<dependency> 
+			<groupId>org.springframework.boot</groupId> 
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
-		</dependency>
-
-		<!-- 스프링 암오화 시큐리티 -->
-		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
-		<!-- <dependency> <groupId>org.springframework.security</groupId> <artifactId>spring-security-core</artifactId> 
-			</dependency> -->
-
+	 	</dependency>
+	 	
+	 			<!-- 스프링 암오화 시큐리티 -->
+      	<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+<!-- 		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-core</artifactId>
+	    </dependency> -->
+				
 		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-web -->
 		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-web</artifactId>
-		</dependency>
-
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-web</artifactId>
+	    </dependency>
+		
 		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
 		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-config</artifactId>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-config</artifactId>
+	    </dependency>
+	    
+	    <dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-taglibs</artifactId>
 		</dependency>
-
 		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-taglibs</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.thymeleaf.extras</groupId>
-			<artifactId>thymeleaf-extras-springsecurity5</artifactId>
+		    <groupId>org.thymeleaf.extras</groupId>
+		    <artifactId>thymeleaf-extras-springsecurity5</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -152,12 +157,6 @@
 			</artifactId>
 			<version>5.2.2.Final</version>
 		</dependency>
-<<<<<<< HEAD
-
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-=======
 		
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -174,7 +173,6 @@
 		  <groupId>com.googlecode.json-simple</groupId>
 		  <artifactId>json-simple</artifactId>
 		  <version>1.1.1</version>
->>>>>>> branch 'coding' of https://github.com/bang-sm/trip5.git
 		</dependency>
 	</dependencies>
 
@@ -187,8 +185,6 @@
 		</plugins>
 	</build>
 
-
-	<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 	<!-- 제이슨 -->
 	<dependency>
 		<groupId>com.fasterxml.jackson.core</groupId>
