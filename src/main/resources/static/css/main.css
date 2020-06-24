@@ -44,6 +44,7 @@ Table of Content:
 @import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700");
 /*---------------------------------------------------- */
 /*----------------------------------------------------*/
+
 .list {
   list-style: none;
   margin: 0px;
@@ -80,6 +81,7 @@ body {
   font-family: "Poppins", sans-serif;
   font-weight: 300;
   color: #777777;
+  padding-top:56px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -3568,7 +3570,7 @@ isotope_fillter {
     min-height: 940px;
 }
 .home_banner_area .banner_inner .overlay {
-    background: url(https://pixabay.com/get/52e0d2434c5ab108feda8460da2932771737dce65b5970_1920.jpg) no-repeat scroll center center;
+    background: url(../image/intro.jpg) no-repeat scroll center center;
     position: absolute;
     left: 0;
     right: 0;

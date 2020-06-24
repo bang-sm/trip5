@@ -152,10 +152,29 @@
 			</artifactId>
 			<version>5.2.2.Final</version>
 		</dependency>
+<<<<<<< HEAD
 
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
+=======
+		
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+        
+        <!-- 웹소켓  -->
+        <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+		
+		<dependency>
+		  <groupId>com.googlecode.json-simple</groupId>
+		  <artifactId>json-simple</artifactId>
+		  <version>1.1.1</version>
+>>>>>>> branch 'coding' of https://github.com/bang-sm/trip5.git
 		</dependency>
 	</dependencies>
 
