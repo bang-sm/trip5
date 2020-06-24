@@ -11,14 +11,21 @@ public class MemberDAO {
 	
 	@Autowired
 	SqlSession sql;
+	
+	String namespace = "mappers.memberMapper";
 
 	public void join(MemberVO memberVO) {
-		sql.insert("mappers.memberMapper.signup",memberVO);
+		sql.insert(namespace + ".signup",memberVO);
 	}
 
-	public MemberVO getUserById(String userid) {
+	public MemberVO getUserById(String memberid) {
 		// TODO Auto-generated method stub
-		return sql.selectOne("mappers.memberMapper.findById",userid);
+		return sql.selectOne(namespace + ".findById",memberid);
+	}
+	
+	// 아이디 중복체크
+	public MemberVO idCheck(String memberid) throws Exception{
+		return sql.selectOne(namespace + ".idCheck",memberid);
 	}
 
 }
