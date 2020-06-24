@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -17,7 +16,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
@@ -59,23 +57,25 @@ public class MemberService implements UserDetailsService{
     public void joinUser(MemberVO memberVO) {
         // 비밀번호 암호화
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		memberVO.setUserPass(passwordEncoder.encode(memberVO.getUserPass()));
+		memberVO.setMemberpass(passwordEncoder.encode(memberVO.getMemberpass()));
 
         memberDAO.join(memberVO);
     }
     
+    // 아이디 중복체크
+    public MemberVO idCheck(String memberid) throws Exception{
+    	return memberDAO.idCheck(memberid);
+    }
+    
     //로그인 할때 타는 서비스
 	@Override
-	public UserDetails loadUserByUsername(String userid) throws UsernameNotFoundException {
-		System.out.println("넘어온 아이디 "+userid);
+	public UserDetails loadUserByUsername(String memberid) throws UsernameNotFoundException {
+		System.out.println("넘어온 아이디 "+ memberid);
 		
 		
-		
-		MemberVO user=memberDAO.getUserById(userid);
-		
+		MemberVO user= memberDAO.getUserById(memberid);
 		List<GrantedAuthority> auth=new ArrayList<>();
 		if(user==null) {
-			System.out.println("유저없다잉");
 			throw new UsernameNotFoundException("User Not Found");
 		}
 		else {
@@ -83,17 +83,17 @@ public class MemberService implements UserDetailsService{
 			session.setAttribute("userInfo", user);
 			System.out.println(user+"/////////////////////////////////////////////////////////////////////////////");
 		}
+		
 		/*
 		 * 아이디가 admin 인 계정에는 관리자권한 아니면 일반 멤버 권한
 		 * */
-		
-		if(("admin").equals(user.getUserid())) {
+		if(("admin").equals(user.getMemberid())) {
 			auth.add(new SimpleGrantedAuthority(Role.ADMIN.getValue()));
 		}else {
 			auth.add(new SimpleGrantedAuthority(Role.MEMBER.getValue()));
 		}
 		
-		return new User(user.getUserid(), user.getUserPass(),auth);
+		return new User(user.getMemberid(), user.getMemberpass(),auth);
 	}
 
 }

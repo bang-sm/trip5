@@ -1,31 +1,42 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>회원가입 페이지</title>
+<meta charset="UTF-8">
+<title>회원가입 페이지</title>
 </head>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="../js/signup.js"></script>
 <body>
-    <h1>회원 가입</h1>
-    <hr>
+	<h1>회원 가입</h1>
+	<hr>
+
 
 	<form th:action="@{/user/signup}" method="post" modelAttribute="${memverVO}">
-   		<div>
-           <input type="text" name="userid" th:value="${memberVO.userid}" placeholder="아이디를 입력하세요">
-           <span th:text="${valid_userid}"></span>
-        </div>
+		<!-- 이름입력  -->
+		<div>
+			<input id="memberid" type="text" name="memberid" th:value="${memberVO.memberid}" placeholder="아이디를 입력하세요"> <span th:text="${valid_memberid}"></span>
+		</div>
+		<button type="button" class="idCheck">아이디 확인</button>
+		<p class="result">
+			<span class="msg"></span>
+		</p>
 
-        <div>
-            <input type="text" name="userEmail" th:value="${memberVO.userEmail}" placeholder="이메일을 입력하세요">
-            <span th:text="${valid_userEmail}"></span>
-        </div>
+		<!-- 이메일 입력  -->
+		<div>
+			<input type="text" name="memberemail" th:value="${memberVO.memberemail}" placeholder="이메일을 입력하세요"> <span th:text="${valid_memberemail}"></span>
+		</div>
 
-        <div>
-            <input type="password" name="userPass" placeholder="비밀번호">
-            <span th:text="${valid_password}"></span>
-        </div>
-        <button type="submit" >가입하기</button>
-    </form>
+
+		<!-- 비밀번호 입력  -->
+		<div>
+			<input type="password" name="memberpass" placeholder="비밀번호"> <span th:text="${valid_memberpass}"></span>
+		</div>
+
+		<!-- 닉네임 입력 -->
+		<div>
+			<input type="text" name="membernick" placeholder="닉네임"> <span th:text="${valid_membernick}"></span>
+		</div>
+		<button type="submit">가입하기</button>
+	</form>
 </body>
 </html>

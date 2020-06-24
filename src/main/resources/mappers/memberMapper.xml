@@ -3,19 +3,27 @@
 <mapper namespace="mappers.memberMapper">
 
 	<insert id="signup" parameterType="com.sm.domain.MemberVO">
-		INSERT INTO tbl_member 
-			(userid,userPass,userEmail)
+		INSERT INTO member
+		(memberid,
+		memberpass, memberemail, membernick, memberregdate)
 		VALUES
-			(#{userid},#{userPass},#{userEmail})
+		(#{memberid},#{memberpass},#{memberemail},#{membernick},now());
 	</insert>
-	
-	<select id="findById" resultType="com.sm.domain.MemberVO" parameterType="String">
+
+	<select id="findById" resultType="com.sm.domain.MemberVO"
+		parameterType="String">
 		SELECT
-		 * 
-		FROM 
-			tbl_member 
-		WHERE 
-			userid=#{userid}
+		*
+		FROM
+		member
+		WHERE
+		memberid=#{memberid}
+	</select>
+
+	<!-- 아이디 확인 -->
+	<select id="idCheck" resultType="com.sm.domain.MemberVO">
+		select memberid from member
+		where memberid = #{memberid}
 	</select>
 
 </mapper>
