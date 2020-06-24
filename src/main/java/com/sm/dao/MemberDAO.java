@@ -16,9 +16,9 @@ public class MemberDAO {
 		sql.insert("mappers.memberMapper.signup",memberVO);
 	}
 
-	public MemberVO getUserById(String userid) {
+	public MemberVO getUserById(String member_id) {
 		// TODO Auto-generated method stub
-		return sql.selectOne("mappers.memberMapper.findById",userid);
+		return sql.selectOne("mappers.memberMapper.findById",member_id);
 	}
 
 }

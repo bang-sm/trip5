@@ -11,19 +11,28 @@
     <hr>
 
 	<form th:action="@{/user/signup}" method="post" modelAttribute="${memverVO}">
+   		<!-- 이름입력  -->
    		<div>
-           <input type="text" name="userid" th:value="${memberVO.userid}" placeholder="아이디를 입력하세요">
-           <span th:text="${valid_userid}"></span>
+           <input type="text" name="member_id" th:value="${memberVO.member_id}" placeholder="아이디를 입력하세요">
+           <span th:text="${valid_member_id}"></span>
+        </div>
+		
+		<!-- 이메일 입력  -->
+        <div>
+            <input type="text" name="member_email" th:value="${memberVO.member_email}" placeholder="이메일을 입력하세요">
+            <span th:text="${valid_member_email}"></span>
+        </div>
+		
+		<!-- 비밀번호 입력  -->
+        <div>
+            <input type="password" name="member_pass" placeholder="비밀번호">
+            <span th:text="${valid_member_pass}"></span>
         </div>
 
+		<!-- 닉네임 입력 -->
         <div>
-            <input type="text" name="userEmail" th:value="${memberVO.userEmail}" placeholder="이메일을 입력하세요">
-            <span th:text="${valid_userEmail}"></span>
-        </div>
-
-        <div>
-            <input type="password" name="userPass" placeholder="비밀번호">
-            <span th:text="${valid_password}"></span>
+            <input type="text" name="member_nick" placeholder="닉네임">
+            <span th:text="${valid_member_nick}"></span>
         </div>
         <button type="submit" >가입하기</button>
     </form>
