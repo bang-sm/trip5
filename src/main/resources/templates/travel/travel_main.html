@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>travel</title>
+<th:block th:replace="common/commonHead"></th:block>
+<link rel="stylesheet" type="text/css" th:href="@{/css/travel.css}">
+</head>
+<body>
+	<!-- 공통 헤드 nav -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:include="common/header :: header_nav"></nav>
+
+	<!-- Page Content -->
+	<div class="container">
+
+		<div class="row">
+
+			<!-- Post Content Column -->
+			<div class="col-lg-8">
+
+				<!-- Title -->
+				<h1 class="mt-4">일지 제목</h1>
+
+				<!-- Author -->
+				<p class="lead">
+					by
+					<a href="#">작성자</a>
+				</p>
+
+				<hr>
+
+				<!-- Date/Time -->
+				<p>2020-06-01, 2020-06-05 (여행기간표출)</p>
+
+				<hr>
+
+				<!-- Preview Image -->
+				<img class="img-fluid rounded" src="http://placehold.it/900x300" alt="">
+
+				<hr>
+					<!-- Post Content -->
+					<p class="lead">내용,경로 등등 컨텐츠들</p>
+					<p class="lead">내용,경로 등등 컨텐츠들</p>
+					<p class="lead">내용,경로 등등 컨텐츠들</p>
+					<p class="lead">내용,경로 등등 컨텐츠들</p>
+					<p class="lead">내용,경로 등등 컨텐츠들</p>
+				<hr>
+
+				<!-- Comments Form -->
+				<div class="card my-4">
+					<h5 class="card-header">코멘트 남기기</h5>
+					<div class="card-body">
+						<form>
+							<div class="form-group">
+								<textarea class="form-control" rows="3"></textarea>
+							</div>
+							<button type="submit" class="btn btn-primary">등록</button>
+						</form>
+					</div>
+				</div>
+
+				<!-- Single Comment -->
+				<div id="singleComment">
+					<div class="media mb-4">
+						<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+						<div class="media-body">
+							<h5 class="mt-0">유저닉네임</h5>
+							댓글내용
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Sidebar Widgets Column -->
+			<div class="col-md-4">
+				<!-- 프로필 -->
+				<div class="card my-4">
+					<h3 class="widget_title">프로필</h3>
+					<aside class="single_sidebar_widget author_widget">
+						<img class="author_img rounded-circle" src="http://placehold.it/120x120" alt="">
+						<h4>유저 닉네임</h4>
+						<div class="follow_box" style="margin-bottom: 10px">
+							<button type="button" class="btn btn-primary">
+								팔로우 <span class="badge badge-light">2</span> <span class="sr-only">unread messages</span>
+							</button>
+							<button type="button" class="btn btn-primary">
+								팔로잉 <span class="badge badge-light">10</span> <span class="sr-only">unread messages</span>
+							</button>
+						</div>
+						<div class="br">
+							<button style="width: 55%" type="button" class="btn btn-primary">구독</button>
+						</div>
+					</aside>
+				</div>
+
+				<!-- 나의 등록된 일지 3~5개 -->
+				<div class="card my-4">
+					<div class="single_sidebar_widget popular_post_widget">
+						<h3 class="widget_title">최근 포스트3개정도</h3>
+						<div class="media post_item">
+							<img src="http://placehold.it/100x60" alt="post">
+							<div class="media-body">
+								<a href="blog-details.html">
+									<h3>포스트제목포스트제목포스트제목</h3>
+								</a>
+								<p>몇분전 몇시간전</p>
+							</div>
+						</div>
+						<div class="media post_item">
+							<img src="http://placehold.it/100x60" alt="post">
+							<div class="media-body">
+								<a href="blog-details.html">
+									<h3>포스트제목포스트제목포스트제목</h3>
+								</a>
+								<p>몇분전 몇시간전</p>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<!-- 해시태그 -->
+				<div class="single-sidebar-widget tag_cloud_widget">
+					<h4 class="widget_title">Tag Clouds</h4>
+					<ul class="list">
+						<li><a href="#">Technology</a></li>
+						<li><a href="#">Fashion</a></li>
+						<li><a href="#">Architecture</a></li>
+						<li><a href="#">Fashion</a></li>
+						<li><a href="#">Food</a></li>
+						<li><a href="#">Technology</a></li>
+						<li><a href="#">Lifestyle</a></li>
+						<li><a href="#">Art</a></li>
+						<li><a href="#">Adventure</a></li>
+						<li><a href="#">Food</a></li>
+						<li><a href="#">Lifestyle</a></li>
+						<li><a href="#">Adventure</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /.row -->
+	</div>
+	<!-- /.container -->
+
+</body>
+</html>
