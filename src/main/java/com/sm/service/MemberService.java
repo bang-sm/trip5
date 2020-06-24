@@ -62,13 +62,18 @@ public class MemberService implements UserDetailsService{
         memberDAO.join(memberVO);
     }
     
+    // 아이디 중복체크
+    public MemberVO idCheck(String memberid) throws Exception{
+    	return memberDAO.idCheck(memberid);
+    }
+    
     //로그인 할때 타는 서비스
 	@Override
-	public UserDetails loadUserByUsername(String member_id) throws UsernameNotFoundException {
-		System.out.println("넘어온 아이디 "+ member_id);
+	public UserDetails loadUserByUsername(String memberid) throws UsernameNotFoundException {
+		System.out.println("넘어온 아이디 "+ memberid);
 		
 		
-		MemberVO user= memberDAO.getUserById(member_id);
+		MemberVO user= memberDAO.getUserById(memberid);
 		List<GrantedAuthority> auth=new ArrayList<>();
 		if(user==null) {
 			throw new UsernameNotFoundException("User Not Found");

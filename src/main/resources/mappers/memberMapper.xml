@@ -10,13 +10,20 @@
 		(#{memberid},#{memberpass},#{memberemail},#{membernick},now());
 	</insert>
 
-	<select id="findById" resultType="com.sm.domain.MemberVO" parameterType="String">
+	<select id="findById" resultType="com.sm.domain.MemberVO"
+		parameterType="String">
 		SELECT
-			*
+		*
 		FROM
-			member
+		member
 		WHERE
-			memberid=#{memberid}
+		memberid=#{memberid}
+	</select>
+
+	<!-- 아이디 확인 -->
+	<select id="idCheck" resultType="com.sm.domain.MemberVO">
+		select memberid from member
+		where memberid = #{memberid}
 	</select>
 
 </mapper>
