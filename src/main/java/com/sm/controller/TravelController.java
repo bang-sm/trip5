@@ -17,4 +17,16 @@ public class TravelController {
 		
 		return "/travel/travel_main";
 	}
+	@GetMapping(value = "/travel_detail")
+	public String travel_detail() {
+		logger.info("travel_detail");
+		
+		return "/travel/travel_detail";
+	}
+	@GetMapping(value = "/regist")
+	public String regist() {
+		logger.info("regist");
+		
+		return "/travel/regist";
+	}
 }
