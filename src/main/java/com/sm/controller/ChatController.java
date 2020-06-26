@@ -1,13 +1,12 @@
 package com.sm.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.sm.controller.MemberController;
 
 import lombok.AllArgsConstructor;
 
@@ -18,7 +17,7 @@ public class ChatController {
 	
 	// 채팅 페이지
 	@GetMapping(value="/chat")
-    public String chatTest() {
+    public String chatTest(HttpSession session, Model model) {
         return "chatting/chat";
     }
 }
