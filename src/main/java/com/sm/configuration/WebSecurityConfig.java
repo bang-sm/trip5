@@ -47,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         	.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
         .and()	
-        	.csrf().ignoringAntMatchers("/ajax/idCheck");
+        	.csrf().ignoringAntMatchers("/travel/**");
 	}
 	
 	@Bean
