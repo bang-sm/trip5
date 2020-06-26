@@ -18,20 +18,30 @@
 }
 
 .chating {
-	background-color: #000;
+	background-color: cyan;
 	width: 500px;
 	height: 500px;
 	overflow: auto;
 }
 
 .chating .me {
-	color: #F6F6F6;
+	padding: 5px;
+	margin: 20px;
+	color: #000;
 	text-align: right;
+	border: 1px solid yellow;
+	border-radius: 5px;
+	background-color: yellow;
 }
 
 .chating .others {
-	color: #FFE400;
+	padding: 5px;
+	margin: 20px;
+	color: #000;
 	text-align: left;
+	border: 1px solid yellow;
+	border-radius: 5px;
+	background-color: yellow;
 }
 
 input {

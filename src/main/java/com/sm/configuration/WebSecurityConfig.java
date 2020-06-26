@@ -45,7 +45,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	    	//403예외
         	.exceptionHandling().accessDeniedPage("/user/denied")
         .and()
-        	.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+        	.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+        .and()	
+        	.csrf().ignoringAntMatchers("/travel/**");
 	}
 	
 	@Bean
