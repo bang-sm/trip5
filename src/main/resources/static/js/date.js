@@ -1,35 +1,37 @@
-$('<div class="ui-datepicker-icon" onclick="DateD(this,1)">date_range</div><div class="ui-datepicker-holder"><div class="ui-datepicker-result"><div class="ui-datepicker-result-year"></div><div class="ui-datepicker-result-date"></div></div><button onclick="DateD(this,0)">OK</button><button onclick="DateD(this,2)">CANCEL</button></div>').insertAfter('.ui-datepicker-input');
-$('.ui-datepicker-input').datepicker({
-	dayNamesMin: ["S", "M", "T", "W", "T", "F", "S"],
-	prevText: "keyboard_arrow_left",
-	nextText: "keyboard_arrow_right",
-	onSelect: function(dateText) {
-		dateF(new Date(dateText))
-	}
-});
-$('.ui-datepicker-input').focus().off();
+$(document).ready(function() {
+			var datepicker = new Datepickk({
+				container: document.querySelector('#datepicker'),
+				inline: true,
+				range: true,
+			});
+			datepicker.setDate = new Date(2020,6,1);
+			datepicker.button = '적용하기';
+			datepicker.onConfirm = function(){
+				if(datepicker.selectedDates[0]==undefined && datepicker.selectedDates[1]==undefined){
+					alert("날짜를 선택하셔야합니다");
+				}
+				else{
+					var startDate=new Date(datepicker.selectedDates[0]);
+					var endDate;
+					var dateDiff;
+					if(datepicker.selectedDates[1]==undefined){
+						dateDiff=1;
+						endDate=startDate;
+					}else{
+						endDate=new Date(datepicker.selectedDates[1]);
+						dateDiff = Math.ceil((endDate.getTime()-startDate.getTime())/(1000*3600*24));
+					}
+					startDate=$.datepicker.formatDate('yy-mm-dd', new Date(startDate));
+					endDate=$.datepicker.formatDate('yy-mm-dd', new Date(endDate));
+					
+					location.href = "/travel/regist?startDate="+startDate+"&endDate="+endDate+"&dateDiff="+dateDiff;
 
-var da = document.getElementById("ui-datepicker-div");
-da.style = "";
-$(da).insertBefore('.ui-datepicker-holder > button:first-of-type');
-
-function dateF(d) {
-	var w = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-	var m = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
-	document.getElementsByClassName('ui-datepicker-result-date')[0].innerHTML = w[d.getDay()] + ', ' + m[d.getMonth()] + ' ' + d.getDate();
-	document.getElementsByClassName('ui-datepicker-result-year')[0].innerHTML = d.getFullYear()
-}
-
-dateF(new Date())
-
-function DateD(t, a) {
-	if (a === 0) {
-		t.parentNode.classList.toggle('ui-datepicker-holder-open');
-		document.getElementsByClassName('ui-datepicker-input')[0].value = (document.getElementsByClassName('ui-datepicker-result-date')[0].innerHTML + ' ' + document.getElementsByClassName('ui-datepicker-result-year')[0].innerHTML)
-	} else if (a === 1) {
-		t.nextSibling.classList.toggle('ui-datepicker-holder-open')
-	} else if (a === 2) {
-		t.parentNode.classList.toggle('ui-datepicker-holder-open');
-		document.getElementsByClassName('ui-datepicker-input')[0].value = ""
-	}
-}
+				}
+			};
+			
+			//등록하지않고 뒤돌아가기
+			$("#btn_cancle").click(function(){
+				history.back();
+			});
+			
+	})

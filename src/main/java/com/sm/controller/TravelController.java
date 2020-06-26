@@ -37,11 +37,11 @@ public class TravelController {
 	}
 
 	@GetMapping(value = "/regist")
-	public String regist_get(Model model,String startDate,String endDate,String dateDiff) {
+	public String regist_get(Model model,String startDate,String endDate,int dateDiff) {
 		logger.info("regist_get");
 		model.addAttribute("startDate",startDate);
 		model.addAttribute("endDate",endDate);
-		model.addAttribute("dateDiff",dateDiff);
+		model.addAttribute("dateDiff",dateDiff+1);
 		return "/travel/regist";
 	}
 }
