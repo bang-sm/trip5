@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mappers.placelistMapper">
+
+	<insert id="placeinsert" parameterType="com.sm.domain.PlacelistVo">
+		INSERT INTO 
+		placeList(
+					place_id,
+					place_name,
+					place_regdate,
+					place_check,
+					place_juso,
+					place_order,
+					place_comment,
+					uuid,place_category,
+					place_main_food,
+					bloglink)
+		VALUES(
+					place_id,
+					#{place_name},
+					now(),
+					'N',
+					#{place_juso},
+					1,
+					'장소설명',
+					1,
+					0,
+					'음식',
+					#{bloglink});
+	</insert>
+
+
+</mapper>

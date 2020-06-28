@@ -28,13 +28,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers("/admin/**").hasRole("ADMIN")
-	        .antMatchers("/user/myinfo").hasRole("MEMBER")
+			.antMatchers("/admin/**").hasRole("ADMIN") // /admin 으로 시작하는 경로는 ADMIN 롤을 가진 사용자만 접근 가능합니다.
+	        .antMatchers("/user/myinfo").hasRole("MEMBER") // /user/myinfo 경로는 MEMBER 롤을 가진 사용자만 접근 가능합니다
 	        .antMatchers("/**").permitAll()
         .and()
 	        .formLogin()
 	        .loginPage("/user/login")  //로그인페이지
 	        .defaultSuccessUrl("/index") // 성공했을때 이동되는 페이지
+	        .usernameParameter("username")
+	        .passwordParameter("password")
 	        .permitAll()
         .and()
 	        .logout()
@@ -47,7 +49,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         	.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
         .and()	
-        	.csrf().ignoringAntMatchers("/ajax/idCheck");
+        	.csrf().ignoringAntMatchers("/travel/**")
+        .and()
+        	.rememberMe()
+        	.rememberMeParameter("remember-me")
+        	.tokenValiditySeconds(604800);
 	}
 	
 	@Bean

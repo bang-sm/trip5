@@ -20,6 +20,8 @@ public class SocketHandler extends TextWebSocketHandler {
 	public void handleTextMessage(WebSocketSession session, TextMessage message) {
 		//메시지 발송
 		String msg = message.getPayload();
+		System.out.println(msg + " ///");
+		
 		JSONObject obj = jsonToObjectParser(msg);
 		for(String key : sessionMap.keySet()) {
 			WebSocketSession wss = sessionMap.get(key);
@@ -41,6 +43,7 @@ public class SocketHandler extends TextWebSocketHandler {
 		obj.put("type", "getId");
 		obj.put("sessionId", session.getId());
 		session.sendMessage(new TextMessage(obj.toJSONString()));
+		System.out.println(obj.toString());
 	}
 	
 	@Override
