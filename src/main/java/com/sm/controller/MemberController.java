@@ -8,17 +8,13 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.sm.domain.MemberVO;
 import com.sm.service.MemberService;
@@ -79,6 +75,13 @@ public class MemberController {
 		// 에러도 없고 유효성도 통과하면 가입시켜!
 		merberService.joinUser(merberVO);
 		return "redirect:/user/login";
+	}
+	
+	// 카카오로그인 페이지
+	@GetMapping("/user/kakaologin")
+	public String kakaologin(@RequestParam("code") String code) {
+		System.out.println("code : " + code);
+		return "index";
 	}
 
 	// 로그인 페이지
