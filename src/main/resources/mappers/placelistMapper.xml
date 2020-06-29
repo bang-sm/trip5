@@ -5,29 +5,58 @@
 	<insert id="placeinsert" parameterType="com.sm.domain.PlacelistVo">
 		INSERT INTO 
 		placeList(
-					place_id,
-					place_name,
-					place_regdate,
-					place_check,
-					place_juso,
-					place_order,
-					place_comment,
-					uuid,place_category,
-					place_main_food,
-					bloglink)
+					placeid,
+					placename,
+					placeregdate,
+					placecheck,
+					placejuso,
+					uuid,
+					placecategory,
+					bookmark,
+					bloglink,
+					iconname)
 		VALUES(
-					place_id,
-					#{place_name},
+					placeid,
+					#{placename},
 					now(),
 					'N',
-					#{place_juso},
+					#{placejuso},
 					1,
-					'장소설명',
-					1,
-					0,
-					'음식',
-					#{bloglink});
+					#{placecategory},
+				    0,
+					#{bloglink},
+					#{iconname}
+					);
 	</insert>
-
+	<select id="placeshow" resultType="com.sm.domain.PlacelistVo">
+		SELECT
+			placeid,
+			placename,
+			placecategory,
+			iconname,
+			placejuso,
+			placeregdate,
+			bookmark,
+			placecheck
+		FROM
+		    placeList;
+	</select>
+	<update id="bookmark" parameterType="map">
+		UPDATE	 
+				placeList 
+		SET 
+				bookmark =#{bookmark} 
+		WHERE 
+				placeid= #{placeid};
+	</update>
+	
+	<update id="checkbox" parameterType="map">
+		UPDATE	 
+				placeList 
+		SET 
+				placecheck =#{placecheck} 
+		WHERE 
+				placeid= #{placeid};
+	</update>
 
 </mapper>

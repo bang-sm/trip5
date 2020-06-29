@@ -23,9 +23,52 @@
 		</header>
 		<article>
 			<div class="wish_list">
-				<div>가고싶은 맛집을 추가하세요.</div>
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">맛집 등록</button>
+				<div class="wish_list_title">
+					<div class="h2">가고싶은 나만의 맛집을 추가해보세요!</div>
+					<button type="button" class="btn btn-primary btn-lg food_regist" data-toggle="modal" data-target="#exampleModal">맛집 등록</button>
+				</div>
 
+				<div class="my_list">
+					<div class="main_table">
+						<div class="main_button_theme">
+							<button type="button" class="btn btn-success btn-filter" data-target='0'>음식</button>
+							<button type="button" class="btn btn-info btn-filter" data-target='1'>카페</button>
+							<button type="button" class="btn btn-light btn-filter" data-target='all'>전체</button>
+						</div>
+						<table class="table table-filter">
+							<tbody>
+								<tr th:each="card  : ${place}" th:data-status='${card.placecategory}'>
+									<td class="">
+									
+										<div class="ckbox">
+												<input th:if="${card.placecheck} =='0'"type="checkbox"  class="checkbox1" th:id="${card.placeid}">
+												<input th:unless="${card.placecheck} =='0'"type="checkbox" class="checkbox1"  th:id="${card.placeid}" checked>
+												<label th:for="${card.placeid}"></label>
+										</div>
+									</td>
+									<td class="">
+										<input type='hidden' name="placeid" th:value="${card.placeid}"/>
+										<img th:if="${card.bookmark}== 0"class="star_img" th:src="@{../image/icon/star_off.png}" />
+										<img th:unless="${card.bookmark}== 0"class="star_img" th:src="@{../image/icon/star_on.png}" />
+									</td>
+									<td class="">
+										<div class="media">
+											<img th:src="@{../image/icon}+${card.iconname}+@{.png}" class="media-photo">
+											<div class="media-body">
+												<span th:text="${card.placeregdate}" class="media-meta pull-right"></span>
+												<button th:if="${card.placecategory}==0"type="button" class="btn btn-outline-success btn_category">음식</button>
+												<button th:unless="${card.placecategory}==0"type="button" class="btn btn-outline-info btn_category">카페</button>
+												<h4 th:text="${card.placename}" class="title"></h4>
+												<span th:text="${card.placejuso}" class="summary"></span>
+												
+											</div>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
 		</article>
 
@@ -70,33 +113,37 @@
 							<div class="tab-pane fade" id="asd">
 								<input type="text" placeholder="맛집 검색" id="naver" size="20">
 								<button type="button" onclick="naversearch()">네이버 검색</button>
-								<div class="navercardslide_for">
-								</div>
-								<div class="navercardslide_nav">
-								</div>
+								<div class="navercardslide_for"></div>
+								<div class="navercardslide_nav"></div>
+								<div class="food_icon"></div>
 							</div>
 						</div>
 					</div>
-
-					<div class="modal-footer">
-						<div class="main_result">
-							<button type="button" class="btn btn-outline-danger btn_check_place">Danger</button>
-							<button type="button" class="btn btn-outline-info btn_check_blog">Info</button>
+					<form th:action="@{/placeregist}" method="GET" modelAttribute="${PlacelistVo}">
+						<div class="modal-footer">
+							<div class="food_category">
+								<button type="button" class="btn btn-outline-success btn-icon" onclick="icon()">음식 아이콘</button>
+							</div>
+							<div class="place_category">
+								<select name="placecategory" class="custom-select">
+									<option selected>카테고리</option>
+									<option value="0">음식</option>
+									<option value="1">카페</option>
+									<option value="2">관광지</option>
+								</select>
+							</div>
+							<div class="place_check">
+								<button type="button" class="btn btn-outline-danger btn_check_place">장소</button>
+								<button type="button" class="btn btn-outline-info btn_check_blog">블로그</button>
+							</div>
+							<input type="hidden" name="placename" value="" /> <input type="hidden" name="placejuso" value="" /> <input type="hidden" name="bloglink" value="" /> <input type="hidden" name="iconname" value="" />
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">Save changes</button>
 						</div>
-						<form th:action="@{/placeregist}" method="post" modelAttribute="${PlacelistVo}">
-							<input type="hidden" name="place_name" value=""/>
-							<input type="hidden" name="place_juso" value=""/>
-							<input type="hidden" name="bloglink" value=""/>	
-							
-						</form>
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-primary">Save changes</button>
-					</div>
-					
- 				</div>
+					</form>
+				</div>
 			</div>
 		</div>
-
 	</section>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e957a3a75c171b18d05297414326bb8d&libraries=services"></script>
 	<script src="../js/wish.js"></script>

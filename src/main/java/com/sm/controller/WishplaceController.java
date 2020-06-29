@@ -1,13 +1,15 @@
 package com.sm.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import com.sm.domain.PlacelistVo;
 import com.sm.service.PlacelistService;
@@ -21,20 +23,25 @@ public class WishplaceController {
 	PlacelistService service;
 	
 	
-	@RequestMapping("/wish/place")
-	public String place()  throws Exception{
+	@GetMapping("/wish/place")
+	public String place(Model model)  throws Exception{
+		List<PlacelistVo> list = service.show();
+		model.addAttribute("place", service.show());
+		logger.info("확인 : " +list);
 		return "wish/place";
 	}
 	
-	@RequestMapping("/wish/slide")
+	@GetMapping("/wish/slide")
 	public String slide() throws Exception{
 		return "wish/slide";
 	}
 	
-	@PostMapping("/placeregist")
+	@GetMapping("/placeregist")
 	public String placeregist(@Valid PlacelistVo placelistVo) throws Exception{
 		service.select(placelistVo);
 		
 		return "redirect:/wish/place";
 	}
+	
+	
 }
