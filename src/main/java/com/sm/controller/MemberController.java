@@ -2,25 +2,26 @@ package com.sm.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.sm.domain.MemberVO;
+import com.sm.service.KakaoAPI;
 import com.sm.service.MemberService;
 
 import lombok.AllArgsConstructor;
@@ -81,6 +82,79 @@ public class MemberController {
 		return "redirect:/user/login";
 	}
 
+	// 카카오로그인 페이지
+	@GetMapping("/user/kakaologin")
+	public String kakaologin(@RequestParam("code") String code, HttpSession session, HttpServletResponse response,
+			HttpServletRequest request) {
+		Cookie[] cookies = request.getCookies(); // 로그인 유지위한 쿠키
+		if (cookies == null) {
+//			request.setAttribute(name, o);
+			System.out.println("들어옴");
+			JsonNode accessToken;
+			System.out.println(session.getAttribute("username") + "하이욤");
+
+			// JsonNode트리형태로 토큰받아온다
+
+			// 여러 json객체 중 access_token을 가져온다
+
+			JsonNode jsonToken = KakaoAPI.getAccessToken(code);
+			accessToken = jsonToken.get("access_token");
+
+			System.out.println("access_token : " + accessToken);
+
+			// access_token을 통해 사용자 정보 요청
+			JsonNode userInfo = KakaoAPI.getKakaoUserInfo(accessToken);
+
+			// Get id
+			String id = userInfo.path("id").asText();
+			String name = null;
+			String email = null;
+
+			// 유저정보 카카오에서 가져오기 Get properties
+			JsonNode properties = userInfo.path("properties");
+			JsonNode kakao_account = userInfo.path("kakao_account");
+
+			name = properties.path("nickname").asText();
+			email = kakao_account.path("email").asText();
+
+			System.out.println("id : " + id);
+			System.out.println("name : " + name);
+			System.out.println("email : " + email);
+
+			if (email != null) {
+				session.setAttribute("username", email);
+				session.setAttribute("accessToken", accessToken);
+				Cookie cookie = new Cookie("username", email);
+				cookie.setMaxAge(24 * 60 * 60);
+				cookie.setPath("/");
+				cookie.setDomain("localhost");
+				response.addCookie(cookie);
+			} // end if
+		} else {
+			String cookie;
+			for (int i = 0; i < cookies.length; i++) {
+				String cookieName = cookies[i].getName();
+				if (cookieName.equals("username")) {
+					cookie = cookies[i].getValue();
+					System.out.println(cookie + "///////////////////////////////////////////");
+					session.setAttribute("username", cookie);
+				} // end if
+			} // end for
+		} // end if
+
+		return "/user/kakaologinOk";
+	} // end 카카오로그인
+
+	@GetMapping("/user/kakaologout")
+	public String kakaologout(HttpSession session) {
+		String accessToken = session.getAttribute("accessToken") + "";
+		System.out.println(accessToken);
+		KakaoAPI.kakaoLogout(accessToken);
+		session.removeAttribute("username");
+		session.removeAttribute("accessToken");
+		return "index";
+	} // end 카카오로그아웃
+
 	// 로그인 페이지
 	@GetMapping("/user/login")
 	public String dispLogin() {
@@ -92,12 +166,6 @@ public class MemberController {
 	@GetMapping("/user/login/result")
 	public String dispLoginResult() {
 		return "/user/loginSuccess";
-	}
-
-	// 로그아웃 결과 페이지
-	@GetMapping("/user/logout/result")
-	public String dispLogout() {
-		return "/user/logout";
 	}
 
 	// 접근 거부 페이지
