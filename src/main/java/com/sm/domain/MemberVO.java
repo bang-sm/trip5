@@ -36,4 +36,5 @@ public class MemberVO {
 	private String accountrock;
 	private String accountstatus;
 	private String sessionlog;
+	private String kakaouid;
 }

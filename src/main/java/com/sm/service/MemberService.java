@@ -40,7 +40,6 @@ public class MemberService implements UserDetailsService{
 	//@Value("${app.navermap.key}")
 	//private String mapKey;
 	
-	
 	 // 회원가입 시, 유효성 체크
     public Map<String, String> validateHandling(Errors errors) {
         Map<String, String> validatorResult = new HashMap<>();
@@ -71,7 +70,6 @@ public class MemberService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String memberid) throws UsernameNotFoundException {
 		System.out.println("넘어온 아이디 "+ memberid);
-		
 		
 		MemberVO user= memberDAO.getUserById(memberid);
 		List<GrantedAuthority> auth=new ArrayList<>();

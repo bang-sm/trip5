@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	        .formLogin()
 	        .loginPage("/user/login")  //로그인페이지
 	        .defaultSuccessUrl("/index") // 성공했을때 이동되는 페이지
-	        .usernameParameter("username")	// 로그인시 파라미터로 "id", "password"를 받습니다
+	        .usernameParameter("memberid")	//로그인시 파라미터로 "id", "password"를 받습니다
 	        .passwordParameter("password")	//
 	        .permitAll()
         .and()
@@ -57,7 +57,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         	.rememberMeParameter("remember-me")
         	.tokenValiditySeconds(604800)
         .and()
-        	.csrf().ignoringAntMatchers("/ajax/idCheck");
+        	.csrf().ignoringAntMatchers("/ajax/idCheck")
+		.and()
+			.csrf().ignoringAntMatchers("/user/login");
 		
 		
 

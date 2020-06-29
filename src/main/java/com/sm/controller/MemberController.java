@@ -88,7 +88,7 @@ public class MemberController {
 			HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies(); // 로그인 유지위한 쿠키
 		if (cookies == null) {
-
+//			request.setAttribute(name, o);
 			System.out.println("들어옴");
 			JsonNode accessToken;
 			System.out.println(session.getAttribute("username") + "하이욤");
@@ -142,7 +142,7 @@ public class MemberController {
 			} // end for
 		} // end if
 
-		return "/index";
+		return "/user/kakaologinOk";
 	} // end 카카오로그인
 
 	@GetMapping("/user/kakaologout")
