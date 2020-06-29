@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sm.controller.HomeController;
@@ -39,18 +37,18 @@ public class WeatherAPI {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		String jsonInString = "";
 		
-//		String urlStr = "http://apis.data.go.kr/1360000/VilageFcstInfoService/getVilageFcst"
-//				+ "?serviceKey=" + URLDecoder.decode(WEATHER_API_KEY,"UTF-8")
-//				+ "&pageNo=" + "1" 
-//				+ "&numOfRows=" + "225"
-//				+ "&dataType=" + "JSON"
-//				+ "&base_date=" + "20200625"
-//				+ "&base_time=" + "0500"
-//				+ "&nx=" + "60"
-//				+ "&ny=" + "127"
-//				;
+		String urlStr = "http://apis.data.go.kr/1360000/VilageFcstInfoService/getVilageFcst"
+				+ "?serviceKey=" + URLDecoder.decode(WEATHER_API_KEY,"UTF-8")
+				+ "&pageNo=" + "1" 
+				+ "&numOfRows=" + "225"
+				+ "&dataType=" + "JSON"
+				+ "&base_date=" + "20200625"
+				+ "&base_time=" + "0500"
+				+ "&nx=" + "60"
+				+ "&ny=" + "127"
+				;
 		
-		String urlStr = WEATHER_API_KEY;
+//		String urlStr = WEATHER_API_KEY;
 		
 		System.out.println(urlStr);
 		
