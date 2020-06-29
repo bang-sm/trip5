@@ -9,16 +9,16 @@ import lombok.Setter;
 @Setter
 public class PlacelistVo {
 	
-	private int place_id;
-	private String place_name;
-	private Date place_regdate;
-	private String place_check;
-	private String place_juso;
-	private int place_order;
-	private String place_comment;
+	private int placeid;
+	private String placename;
+	private Date placeregdate;
+	private int placecheck;
+	private String placejuso;
 	private int uuid;
-	private int place_category;
-	private String place_main_food;
+	private int placecategory;
+	private String placemainfood;
 	private String bloglink;
+	private String iconname;
+	private int bookmark;
 
 }

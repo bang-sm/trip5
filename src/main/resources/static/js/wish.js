@@ -152,8 +152,8 @@ function getListItem(index, places) {
 	el.addEventListener('click',function(){
 		$('.btn_check_place').removeClass('btn-outline-danger');
 		$('.btn_check_place').addClass('btn-danger');
-		$('input[name=place_name]').val(places.place_name);
-		$('input[name=place_juso]').val(places.address_name);
+		$('input[name=placename]').val(places.place_name);
+		$('input[name=placejuso]').val(places.address_name);
 	});
 
 	return el;
@@ -245,17 +245,22 @@ function fnMove() {
 	var offset = $(".wish_list").offset();
 	$('html, body').animate({
 		scrollTop : offset.top
-	}, 400);
+	}, 500);
 }
 
 function food_regist() {
 	$('.map_regist').css("display", "block");
 }
 
+var btn_check=0;
 
-
+var slick_check=0;
 //검색하고 싶은 맛집 검색하면 값 넘겨받아서 새로운 modal창으로 표현
 function naversearch(){
+	$('.food_icon').css("display","none");
+	$('.navercardslide_for').css("display","block");
+	$('.navercardslide_nav').css("display","block");
+	
 	var keyword = $('#naver').val();
 	var result_for="";
 	var result_nav="";
@@ -266,20 +271,24 @@ function naversearch(){
 			"keyword" : keyword
 		},
 		success : function(data){
+			
 			for(i=0;i<10;i++){
 				result_nav+="<div class='search_nav shadow p-3 mb-5 bg-white rounded'>"+data.items[i].title+"</div>";
 				result_for+="<div class='search_for shadow-lg p-3 mb-5 bg-white rounded'><a href='"+data.items[i].link+"' target='_blank'>";
 				result_for+="<h2>"+data.items[i].title+"</h2>";
 				result_for+="<p>"+data.items[i].description +"</p>";
 				result_for+="<div> 볼로그 작성일 :"+data.items[i].postdate+"</div></a>";
+				result_for+="<input type='hidden' name='hidden_link' value='"+data.items[i].link+"'/>"
 				result_for+="<div ><img class='star' src='../image/star_off.png'/></div></div>";
 			}
-			$('.navercardslide_for').append(result_for);
-			$('.navercardslide_nav').append(result_nav);
-			
-			
+			$('.navercardslide_for').html(result_for);
+			$('.navercardslide_nav').html(result_nav);
 
-
+			if(slick_check == 1){
+				$('.navercardslide_for').slick("unslick")
+				$('.navercardslide_nav').slick("unslick")
+				slick_check=0;
+			}
 			    $('.navercardslide_for').slick({
 				  slidesToShow: 1,
 				  slidesToScroll: 1,
@@ -295,21 +304,28 @@ function naversearch(){
 				  centerMode: true,
 				  focusOnSelect: true
 				});
+				slick_check=1;
 				
 				$('.star').click(function(){
 					var star =$(this).attr('src');
-					var hidden = $('.hidden_link').val();
+					var hidden = $('input[name=hidden_link]').val();
 					
 						if(star.match('off')){
+							if(btn_check==0){
 								$(this).attr('src','../image/star_on.png');	
 								$('.btn_check_blog').removeClass('btn-outline-info');
 								$('.btn_check_blog').addClass('btn-info');
 								$('input[name=bloglink]').val(hidden);
+								btn_check=1;
+							}else{
+								alert("블로그 등록은 한개밖에 할수 없습니다. 등록을 해제해주세요!");
+							}
 						}else{
 							$(this).attr('src','../image/star_off.png');	
 							$('.btn_check_blog').removeClass('btn-info');
 							$('.btn_check_blog').addClass('btn-outline-info');
 							$('input[name=bloglink]').val("");
+							btn_check=0;
 						}
 					
 					
@@ -317,9 +333,112 @@ function naversearch(){
 		}//end success
 	})
 }
+var icons= ["barbecue","bread","burrito","cake","chicken","cola",
+	"crab","beef","pork","dimsum","fish",
+	"foodandwine","fruitbag","hamburger","icecream","bingsu",
+	"kfc","milk","noodles","octopus","omlette","pancake","pizza",
+	"prawn","rice","roast","salad","sausages","spaghetti","steak","tapas"]
 
 
+function icon(){
+	$('.navercardslide_for').css("display","none");
+	$('.navercardslide_nav').css("display","none");
+	$('.navercardslide_for').slick("unslick")
+	$('.navercardslide_nav').slick("unslick")
+	$('.food_icon').css("display","block");
 
+	result="";
+	
+	for(i=0;i<icons.length;i++){
+		result+="<div class='icon_main'><img class='icon_img' src='../image/icon/"+icons[i]+".png'/>";
+		result+="<div>"+icons[i]+"</div></div>";
+	}
+	
+	$('.food_icon').html(result);
+	
+	
+	
+}
+
+$(document).on("click",'.icon_main',function(){
+	var iconname=$(this).text();
+	var icon_check =confirm(iconname +" 아이콘으로 저장하시겠습니까?");
+	if(icon_check){
+		alert(iconname+" 아이콘이 저장되었습니다.");
+		$('input[name=iconname]').val("/"+iconname);
+		$('.btn-icon').removeClass('btn-outline-success');
+		$('.btn-icon').addClass('btn-success');
+	}
+	
+	
+})
+
+$('.star_img').click(function(){
+	var check = $(this).attr("src");
+	var id=$(this).parent('td').children('input').val();
+	
+	if(check.match("off")){
+		$(this).attr("src","../image/icon/star_on.png");
+		$.ajax({
+			url: "/bookmark", 
+			type : "GET",
+			data : {
+				"bookmark" : 1,
+				"placeid": id
+			},
+			success : function(){
+			}
+		});
+	}else{
+		$(this).attr("src","../image/icon/star_off.png");
+		$.ajax({
+			url: "/bookmark", 
+			type : "GET",
+			data : {
+				"bookmark" : 0,
+				"placeid": id
+			},
+			success : function(){
+			}
+		});
+	}
+})
+ $('.btn-filter').on('click', function () {
+      var $target = $(this).data('target');
+      if ($target != 'all') {
+        $('.table tr').css('display', 'none');
+        $('.table tr[data-status="' + $target + '"]').fadeIn('slow');
+      } else {
+        $('.table tr').css('display', 'none').fadeIn('slow');
+      }
+    });
+
+$('.checkbox1').on('click',function(){
+	var checkboxid= $(this).attr("id");
+	if($(this).is(":checked")){
+		$.ajax({
+			url: "/checkbox", 
+			type : "GET",
+			data : {
+				"placecheck" : 1,
+				"placeid": checkboxid
+			},
+			success : function(){
+			}
+		});
+	}else{
+		$.ajax({
+			url: "/checkbox", 
+			type : "GET",
+			data : {
+				"placecheck" : 0,
+				"placeid": checkboxid
+			},
+			success : function(){
+			}
+		});
+	}
+})
 
 
 

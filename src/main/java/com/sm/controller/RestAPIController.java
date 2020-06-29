@@ -2,6 +2,7 @@ package com.sm.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -11,11 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.sm.service.PlacelistService;
 
 @RestController
 public class RestAPIController {
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	
+	@Autowired
+	PlacelistService service;
 	
 	@GetMapping("/naver")
 	public ResponseEntity<String> callAPI(String keyword) throws JsonProcessingException {
@@ -31,6 +36,15 @@ public class RestAPIController {
 		System.out.println(new_url);
 		return restTemplate.exchange(new_url, HttpMethod.GET, new HttpEntity(header), String.class);
 		
+	}
+	@GetMapping("/bookmark")
+	public void bookmark(int bookmark,int placeid) throws Exception{
+		service.bookmark(bookmark,placeid);
+	}
+	
+	@GetMapping("/checkbox")
+	public void checkbox(int placecheck, int placeid) throws Exception{
+		service.checkbox(placecheck,placeid);
 	}
 
 }

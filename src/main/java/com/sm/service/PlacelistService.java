@@ -1,6 +1,6 @@
 package com.sm.service;
 
-import javax.swing.tree.ExpandVetoException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +17,20 @@ public class PlacelistService{
 	@Autowired
 	PlacelistDAO dao;
 	
-	public void select(PlacelistVo placelistVo) throws ExpandVetoException{
+	public List<PlacelistVo> show() throws Exception{
+		return dao.show();
+	}
+	
+	public void select(PlacelistVo placelistVo) throws Exception{
 		dao.select(placelistVo);
+	}
+	
+	public void bookmark(int bookmark,int placeid) throws Exception{
+		dao.bookmark(bookmark,placeid);
+	}
+	
+	public void checkbox(int placecheck,int placeid) throws Exception{
+		dao.checkbox(placecheck,placeid);
 	}
 	
 	
