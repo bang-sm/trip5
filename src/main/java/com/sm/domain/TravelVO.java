@@ -9,26 +9,31 @@ import lombok.Setter;
 @Setter
 public class TravelVO {
 	
-	private int ts_id;
+	private int tsid;
 	private int uuid;
-	private String ts_title;
-	private int ts_like;
-	private Date ts_regdate;
+	private String tstitle;
+	private int tslike;
+	private Date tsregdate;
 	private String hashtag;
+	private String tsstartdate;
+	private String tsenddate;
+	private int tsfare;
 	
 	///////////////////////
 	
-	private int tsi_id;
-	private int tsi_dDay;
-	private String tsi_address;
-	private String tsi_name;
-	private String tsi_tel;
-	private int tsi_category;
-	private int order;
-	private int tsi_fare;
+	private String tsirootname;
+	private int tsirootorder;
+	
+	///////////////////////
+	
+	private int tsiid;
+	private int tsidDay;
+	private String tsiname;
+	private int tsicategory;
+	private String tsicomment;
 	
 	////////////////////////
 	
-	private int ts_reply_id;
-	private String ts_reply_comment;
+	private int tsreplyid;
+	private String tsreplycomment;
 }
