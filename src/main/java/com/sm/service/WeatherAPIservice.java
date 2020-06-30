@@ -17,6 +17,9 @@ public class WeatherAPIservice {
 	private String WEATHER_API_KEY="HkKlYlenzlKaNIWkkjRw3wdyNnwbX%2FC0RZEsmnspycI9DCpnPheT0QjG38u7pji5RsSzqN8CV8g1PmNcOOnh6Q%3D%3D";
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	@Autowired
+	private ObjectMapper objectMapper;
 
 	public String weatherData() throws Exception{
 		
