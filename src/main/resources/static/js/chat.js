@@ -1,5 +1,9 @@
 var ws;
 
+$(document).ready(function(){
+	wsOpen();
+});
+
 function wsOpen() {
 	ws = new WebSocket("ws://" + location.host + "/chating");
 	wsEvt();
@@ -48,18 +52,6 @@ function wsEvt() {
 			send();
 		}
 	});
-}
-
-function chatName() {
-	var userName = $("#userName").val();
-	if (userName == null || userName.trim() == "") {
-		alert("사용자 이름을 입력해주세요.");
-		$("#userName").focus();
-	} else {
-		wsOpen();
-		$("#yourName").hide();
-		$("#yourMsg").show();
-	}
 }
 
 function send() {
