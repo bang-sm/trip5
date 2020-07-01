@@ -36,4 +36,16 @@ public class PlacelistDAO {
 		cmap.put("placeid", placeid);
 		sql.update("mappers.placelistMapper.checkbox",cmap);
 	}
+	
+	public List<PlacelistVo> goplace(int placecheck){
+		return sql.selectList("mappers.placelistMapper.goplace",placecheck);
+	}
+	
+	public List<PlacelistVo> buttoncategory(int placecategory,int placecheck){
+		HashMap<String, Integer> bmap = new HashMap<>();
+		bmap.put("placecategory", placecategory);
+		bmap.put("placecheck", placecheck);
+		
+		return sql.selectList("mappers.placelistMapper.buttoncategory",bmap);
+	}
 }
