@@ -49,6 +49,6 @@ input {
 	height: 25px;
 }
 
-#yourMsg {
+.inputTable{
 	display: none;
 }

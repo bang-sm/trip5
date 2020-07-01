@@ -51,6 +51,7 @@ public class SocketHandler extends TextWebSocketHandler {
 		//소켓 종료
 		sessionMap.remove(session.getId());
 		super.afterConnectionClosed(session, status);
+		System.out.println("소켓 종료!");
 	}
 	
 	private static JSONObject jsonToObjectParser(String jsonStr) {
