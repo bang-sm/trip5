@@ -11,13 +11,17 @@
 	<div id="chat_container" class="chat_container">
 		<h1>채팅</h1>
 		<input type="hidden" id="sessionId" value="">
-		<!-- <input type="hidden" id="userSessionId" th:value="${session.userInfo.memberid}"> -->
+		<input th:if="${session.userInfo != null}" type="hidden" id="userSessionId" th:value="${session.userInfo.memberid}">
 		<div id="chating" class="chating">
 		</div>
 		<div th:if="${session.userInfo != null}" id="yourMsg">
+			<div id="chatin">
+				<input type="button" id="chatinBtn" onclick="chatConn()" value="채팅방 입장"/>
+			</div>
+			
 			<table class="inputTable">
 				<tr>
-					<th>유저아이디</th>
+					<th th:text="${session.userInfo.memberid}">유저아이디</th>
 					<th><input type="text" id="chatting" placeholder="보내실 메시지를 입력하세요."></th>
 					<th><button onclick="send()" id="sendBtn">보내기</button></th>
 				</tr>
