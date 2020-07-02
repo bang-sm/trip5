@@ -1,5 +1,7 @@
 package com.sm.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,19 +14,20 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.sm.domain.PlacelistVo;
 import com.sm.service.PlacelistService;
 
 @RestController
 public class RestAPIController {
 
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(RestAPIController.class);
 	
 	@Autowired
 	PlacelistService service;
 	
 	@GetMapping("/naver")
 	public ResponseEntity<String> callAPI(String keyword) throws JsonProcessingException {
-		String clientId = "SCrW8Vqyf_Whz991VMq5";
+		String clientId ="SCrW8Vqyf_Whz991VMq5";
 		String clientSecret = "Xyeh7whQVZ";
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders header = new HttpHeaders();
@@ -45,6 +48,16 @@ public class RestAPIController {
 	@GetMapping("/checkbox")
 	public void checkbox(int placecheck, int placeid) throws Exception{
 		service.checkbox(placecheck,placeid);
+	}
+	
+	@GetMapping("/goplace")
+	public List<PlacelistVo> goplace(int placecheck) throws Exception{
+		return service.goplace(placecheck);
+	}
+	
+	@GetMapping("/buttoncategory")
+	public List<PlacelistVo> buttoncategory(int placecategory,int placecheck) throws Exception{
+		return service.buttoncategory(placecategory,placecheck);
 	}
 
 }

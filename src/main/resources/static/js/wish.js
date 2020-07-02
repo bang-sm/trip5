@@ -1,245 +1,246 @@
 
-var markers = [];
-
-var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-mapOption = {
-	center : new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-	level : 4
-// 지도의 확대 레벨
-};
-
-var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
 
-function relayout() {
+$("#exampleModal").on('shown.bs.modal', function(){
+	var markers = [];
 
-	// 지도를 표시하는 div 크기를 변경한 이후 지도가 정상적으로 표출되지 않을 수도 있습니다
-	// 크기를 변경한 이후에는 반드시 map.relayout 함수를 호출해야 합니다
-	// window의 resize 이벤트에 의한 크기변경은 map.relayout 함수가 자동으로 호출됩니다
-	map.relayout();
-}
+	var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+	mapOption = {
+		center : new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+		level : 4
+	// 지도의 확대 레벨
+	};
 
-// 장소 검색 객체를 생성합니다
-var ps = new kakao.maps.services.Places();
+	var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
-// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
-var infowindow = new kakao.maps.InfoWindow({
-	zIndex : 1
-});
+	setTimeout(function(){
+		map.relayout(); }
+	, 3000)
 
-// 키워드로 장소를 검색합니다
-searchPlaces();
 
-// 키워드 검색을 요청하는 함수입니다
-function searchPlaces() {
+	// 장소 검색 객체를 생성합니다
+	var ps = new kakao.maps.services.Places();
 
-	var keyword = document.getElementById('keyword').value;
-
-	if (!keyword.replace(/^\s+|\s+$/g, '')) {
-		alert('키워드를 입력해주세요!');
-		return false;
-	}
-
-	// 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-	ps.keywordSearch(keyword, placesSearchCB);
-}
-
-// 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
-function placesSearchCB(data, status, pagination) {
-	if (status === kakao.maps.services.Status.OK) {
-
-		// 정상적으로 검색이 완료됐으면
-		// 검색 목록과 마커를 표출합니다
-		displayPlaces(data);
-
-		// 페이지 번호를 표출합니다
-		displayPagination(pagination);
-
-	} else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-
-		alert('검색 결과가 존재하지 않습니다.');
-		return;
-
-	} else if (status === kakao.maps.services.Status.ERROR) {
-
-		alert('검색 결과 중 오류가 발생했습니다.');
-		return;
-
-	}
-}
-
-// 검색 결과 목록과 마커를 표출하는 함수입니다
-function displayPlaces(places) {
-
-	var listEl = document.getElementById('placesList'), menuEl = document
-			.getElementById('menu_wrap'), fragment = document
-			.createDocumentFragment(), bounds = new kakao.maps.LatLngBounds(), listStr = '';
-
-	// 검색 결과 목록에 추가된 항목들을 제거합니다
-	removeAllChildNods(listEl);
-
-	// 지도에 표시되고 있는 마커를 제거합니다
-	removeMarker();
-
-	for (var i = 0; i < places.length; i++) {
-
-		// 마커를 생성하고 지도에 표시합니다
-		var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x), marker = addMarker(
-				placePosition, i), itemEl = getListItem(i, places[i]); // 검색 결과
-																		// 항목
-																		// Element를
-																		// 생성합니다
-
-		// 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-		// LatLngBounds 객체에 좌표를 추가합니다
-		bounds.extend(placePosition);
-
-		// 마커와 검색결과 항목에 mouseover 했을때
-		// 해당 장소에 인포윈도우에 장소명을 표시합니다
-		// mouseout 했을 때는 인포윈도우를 닫습니다
-		(function(marker, title) {
-			kakao.maps.event.addListener(marker, 'mouseover', function() {
-				displayInfowindow(marker, title);
-			});
-
-			kakao.maps.event.addListener(marker, 'mouseout', function() {
-				infowindow.close();
-			});
-
-			itemEl.onmouseover = function() {
-				displayInfowindow(marker, title);
-			};
-
-			itemEl.onmouseout = function() {
-				infowindow.close();
-			};
-		})(marker, places[i].place_name);
-
-		fragment.appendChild(itemEl);
-	}
-
-	// 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
-	listEl.appendChild(fragment);
-	menuEl.scrollTop = 0;
-
-	// 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-	map.setBounds(bounds);
-}
-
-// 검색결과 항목을 Element로 반환하는 함수입니다
-function getListItem(index, places) {
-
-	var el = document.createElement('li'), itemStr = '<span class="markerbg marker_'
-			+ (index + 1)
-			+ '"></span>'
-			+ '<div class="info">'
-			+ '   <h5>'
-			+ places.place_name + '</h5>';
-
-	if (places.road_address_name) {
-		itemStr += '    <span>' + places.road_address_name + '</span>'
-				+ '   <span class="jibun gray">' + places.address_name
-				+ '</span>';
-	} else {
-		itemStr += '    <span>' + places.address_name + '</span>';
-	}
-
-	itemStr += '  <span class="tel">' + places.phone + '</span>' + '</div>';
-
-	el.innerHTML = itemStr;
-	el.className = 'item';
-	// 음식점 클릭시 해당 가게 이름 현재 맛집으로 설정
-	el.addEventListener('click',function(){
-		$('.btn_check_place').removeClass('btn-outline-danger');
-		$('.btn_check_place').addClass('btn-danger');
-		$('input[name=placename]').val(places.place_name);
-		$('input[name=placejuso]').val(places.address_name);
+	// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+	var infowindow = new kakao.maps.InfoWindow({
+		zIndex : 1
 	});
+	searchPlaces();
+	// 키워드로 장소를 검색합니다
+	$('.map_btn').click(function(){
+		searchPlaces();
+		});
+	// 키워드 검색을 요청하는 함수입니다
+	function searchPlaces() {
 
-	return el;
-}
+		var keyword = document.getElementById('keyword').value;
 
-// 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
-function addMarker(position, idx, title) {
-	var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커
-																										// 이미지
-																										// url,
-																										// 스프라이트
-																										// 이미지를
-																										// 씁니다
-	imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
-	imgOptions = {
-		spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
-		spriteOrigin : new kakao.maps.Point(0, (idx * 46) + 10), // 스프라이트 이미지
-																	// 중 사용할 영역의
-																	// 좌상단 좌표
-		offset : new kakao.maps.Point(13, 37)
-	// 마커 좌표에 일치시킬 이미지 내에서의 좌표
-	}, markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions), marker = new kakao.maps.Marker(
-			{
-				position : position, // 마커의 위치
-				image : markerImage
-			});
-
-	marker.setMap(map); // 지도 위에 마커를 표출합니다
-	markers.push(marker); // 배열에 생성된 마커를 추가합니다
-
-	return marker;
-}
-
-// 지도 위에 표시되고 있는 마커를 모두 제거합니다
-function removeMarker() {
-	for (var i = 0; i < markers.length; i++) {
-		markers[i].setMap(null);
-	}
-	markers = [];
-}
-
-// 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
-function displayPagination(pagination) {
-	var paginationEl = document.getElementById('pagination'), fragment = document
-			.createDocumentFragment(), i;
-
-	// 기존에 추가된 페이지번호를 삭제합니다
-	while (paginationEl.hasChildNodes()) {
-		paginationEl.removeChild(paginationEl.lastChild);
-	}
-
-	for (i = 1; i <= pagination.last; i++) {
-		var el = document.createElement('a');
-		el.href = "#";
-		el.innerHTML = i;
-
-		if (i === pagination.current) {
-			el.className = 'on';
-		} else {
-			el.onclick = (function(i) {
-				return function() {
-					pagination.gotoPage(i);
-				}
-			})(i);
+		if (!keyword.replace(/^\s+|\s+$/g, '')) {
+			alert('키워드를 입력해주세요!');
+			return false;
 		}
 
-		fragment.appendChild(el);
+		// 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+		ps.keywordSearch(keyword, placesSearchCB);
 	}
-	paginationEl.appendChild(fragment);
-}
 
-// 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
-// 인포윈도우에 장소명을 표시합니다
-function displayInfowindow(marker, title) {
-	var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+	// 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
+	function placesSearchCB(data, status, pagination) {
+		if (status === kakao.maps.services.Status.OK) {
 
-	infowindow.setContent(content);
-	infowindow.open(map, marker);
-}
+			// 정상적으로 검색이 완료됐으면
+			// 검색 목록과 마커를 표출합니다
+			displayPlaces(data);
 
-// 검색결과 목록의 자식 Element를 제거하는 함수입니다
-function removeAllChildNods(el) {
-	while (el.hasChildNodes()) {
-		el.removeChild(el.lastChild);
+			// 페이지 번호를 표출합니다
+			displayPagination(pagination);
+
+		} else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+
+			alert('검색 결과가 존재하지 않습니다.');
+			return;
+
+		} else if (status === kakao.maps.services.Status.ERROR) {
+
+			alert('검색 결과 중 오류가 발생했습니다.');
+			return;
+
+		}
 	}
-}
+
+	// 검색 결과 목록과 마커를 표출하는 함수입니다
+	function displayPlaces(places) {
+
+		var listEl = document.getElementById('placesList'), menuEl = document
+				.getElementById('menu_wrap'), fragment = document
+				.createDocumentFragment(), bounds = new kakao.maps.LatLngBounds(), listStr = '';
+
+		// 검색 결과 목록에 추가된 항목들을 제거합니다
+		removeAllChildNods(listEl);
+
+		// 지도에 표시되고 있는 마커를 제거합니다
+		removeMarker();
+
+		for (var i = 0; i < places.length; i++) {
+
+			// 마커를 생성하고 지도에 표시합니다
+			var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x), marker = addMarker(
+					placePosition, i), itemEl = getListItem(i, places[i]); // 검색 결과
+																			// 항목
+																			// Element를
+																			// 생성합니다
+
+			// 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+			// LatLngBounds 객체에 좌표를 추가합니다
+			bounds.extend(placePosition);
+
+			// 마커와 검색결과 항목에 mouseover 했을때
+			// 해당 장소에 인포윈도우에 장소명을 표시합니다
+			// mouseout 했을 때는 인포윈도우를 닫습니다
+			(function(marker, title) {
+				kakao.maps.event.addListener(marker, 'mouseover', function() {
+					displayInfowindow(marker, title);
+				});
+
+				kakao.maps.event.addListener(marker, 'mouseout', function() {
+					infowindow.close();
+				});
+
+				itemEl.onmouseover = function() {
+					displayInfowindow(marker, title);
+				};
+
+				itemEl.onmouseout = function() {
+					infowindow.close();
+				};
+			})(marker, places[i].place_name);
+
+			fragment.appendChild(itemEl);
+		}
+
+		// 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
+		listEl.appendChild(fragment);
+		menuEl.scrollTop = 0;
+
+		// 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+		map.setBounds(bounds);
+	}
+
+	// 검색결과 항목을 Element로 반환하는 함수입니다
+	function getListItem(index, places) {
+
+		var el = document.createElement('li'), itemStr = '<span class="markerbg marker_'
+				+ (index + 1)
+				+ '"></span>'
+				+ '<div class="info">'
+				+ '   <h5>'
+				+ places.place_name + '</h5>';
+
+		if (places.road_address_name) {
+			itemStr += '    <span>' + places.road_address_name + '</span>'
+					+ '   <span class="jibun gray">' + places.address_name
+					+ '</span>';
+		} else {
+			itemStr += '    <span>' + places.address_name + '</span>';
+		}
+
+		itemStr += '  <span class="tel">' + places.phone + '</span>' + '</div>';
+
+		el.innerHTML = itemStr;
+		el.className = 'item';
+		// 음식점 클릭시 해당 가게 이름 현재 맛집으로 설정
+		el.addEventListener('click',function(){
+			$('.btn_check_place').removeClass('btn-outline-danger');
+			$('.btn_check_place').addClass('btn-danger');
+			$('input[name=placename]').val(places.place_name);
+			$('input[name=placejuso]').val(places.address_name);
+		});
+
+		return el;
+	}
+
+	// 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+	function addMarker(position, idx, title) {
+		var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커
+																											// 이미지
+																											// url,
+																											// 스프라이트
+																											// 이미지를
+																											// 씁니다
+		imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
+		imgOptions = {
+			spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+			spriteOrigin : new kakao.maps.Point(0, (idx * 46) + 10), // 스프라이트 이미지
+																		// 중 사용할 영역의
+																		// 좌상단 좌표
+			offset : new kakao.maps.Point(13, 37)
+		// 마커 좌표에 일치시킬 이미지 내에서의 좌표
+		}, markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions), marker = new kakao.maps.Marker(
+				{
+					position : position, // 마커의 위치
+					image : markerImage
+				});
+
+		marker.setMap(map); // 지도 위에 마커를 표출합니다
+		markers.push(marker); // 배열에 생성된 마커를 추가합니다
+
+		return marker;
+	}
+
+	// 지도 위에 표시되고 있는 마커를 모두 제거합니다
+	function removeMarker() {
+		for (var i = 0; i < markers.length; i++) {
+			markers[i].setMap(null);
+		}
+		markers = [];
+	}
+
+	// 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
+	function displayPagination(pagination) {
+		var paginationEl = document.getElementById('pagination'), fragment = document
+				.createDocumentFragment(), i;
+
+		// 기존에 추가된 페이지번호를 삭제합니다
+		while (paginationEl.hasChildNodes()) {
+			paginationEl.removeChild(paginationEl.lastChild);
+		}
+
+		for (i = 1; i <= pagination.last; i++) {
+			var el = document.createElement('a');
+			el.href = "#";
+			el.innerHTML = i;
+
+			if (i === pagination.current) {
+				el.className = 'on';
+			} else {
+				el.onclick = (function(i) {
+					return function() {
+						pagination.gotoPage(i);
+					}
+				})(i);
+			}
+
+			fragment.appendChild(el);
+		}
+		paginationEl.appendChild(fragment);
+	}
+
+	// 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
+	// 인포윈도우에 장소명을 표시합니다
+	function displayInfowindow(marker, title) {
+		var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+
+		infowindow.setContent(content);
+		infowindow.open(map, marker);
+	}
+
+	// 검색결과 목록의 자식 Element를 제거하는 함수입니다
+	function removeAllChildNods(el) {
+		while (el.hasChildNodes()) {
+			el.removeChild(el.lastChild);
+		}
+	}
+  });
 
 function fnMove() {
 	var offset = $(".wish_list").offset();
@@ -337,27 +338,35 @@ var icons= ["barbecue","bread","burrito","cake","chicken","cola",
 	"crab","beef","pork","dimsum","fish",
 	"foodandwine","fruitbag","hamburger","icecream","bingsu",
 	"kfc","milk","noodles","octopus","omlette","pancake","pizza",
-	"prawn","rice","roast","salad","sausages","spaghetti","steak","tapas"]
+	"prawn","rice","roast","salad","sausages","spaghetti","steak","tapas"
+	,"cafe","mountain","restaurant","sea","tourlist","tourlist2"]
 
 
-function icon(){
-	$('.navercardslide_for').css("display","none");
-	$('.navercardslide_nav').css("display","none");
-	$('.navercardslide_for').slick("unslick")
-	$('.navercardslide_nav').slick("unslick")
-	$('.food_icon').css("display","block");
+function icon() {
+	var check = $('select[name=placecategory]').val();
+	if (check >= 0 || check <= 2) {
+		$('.navercardslide_for').css("display", "none");
+		$('.navercardslide_nav').css("display", "none");
 
-	result="";
-	
-	for(i=0;i<icons.length;i++){
-		result+="<div class='icon_main'><img class='icon_img' src='../image/icon/"+icons[i]+".png'/>";
-		result+="<div>"+icons[i]+"</div></div>";
+		$('.food_icon').css("display", "block");
+		if (slick_check == 1) {
+			$('.navercardslide_for').slick("unslick")
+			$('.navercardslide_nav').slick("unslick")
+		}
+
+		result = "";
+
+		for (i = 0; i < icons.length; i++) {
+			result += "<div class='icon_main'><img class='icon_img' src='../image/icon/"
+					+ icons[i] + ".png'/>";
+			result += "<div>" + icons[i] + "</div></div>";
+		}
+
+		$('.food_icon').html(result);
+	} else {
+		alert("테마를 선택해주세요~");
 	}
-	
-	$('.food_icon').html(result);
-	
-	
-	
+
 }
 
 $(document).on("click",'.icon_main',function(){
@@ -403,18 +412,327 @@ $('.star_img').click(function(){
 		});
 	}
 })
- $('.btn-filter').on('click', function () {
-      var $target = $(this).data('target');
-      if ($target != 'all') {
-        $('.table tr').css('display', 'none');
-        $('.table tr[data-status="' + $target + '"]').fadeIn('slow');
-      } else {
-        $('.table tr').css('display', 'none').fadeIn('slow');
-      }
-    });
 
-$('.checkbox1').on('click',function(){
+ $('.btn-filter').on('click', function() {
+	var $target = $(this).data('target');
+	$('.table').html("");
+	result="";
+	if ($target == 0) {//음식
+		$.ajax({
+			url: "/buttoncategory", 
+			type : "GET",
+			data : {
+				"placecategory" : $target,
+				"placecheck": 0
+			},
+			success : function(data){
+				var count = data.length;
+				console.log(data);
+				result+="<tbody class='tbody'>";
+				for(i=0;i<count;i++){
+					result+="<tr  class='tabletr'>";
+					result+="<td class=''>";
+						result+="<div class='ckbox '>";
+						if(data[i].placecheck ==0){
+							result+="<input type='checkbox'  class='checkbox1' id='"+data[i].placeid+"'>";
+						}else{
+							result+="<input type='checkbox'  class='checkbox1' id='"+data[i].placeid+"' checked>";
+						}
+						result+="<label th:for='"+data[i].placeid+"'></label>";
+						result+="</div>";
+						result+="</td>";
+						result+="<td class=''>";
+						result+="<input type='hidden' name='placeid' value='"+data[i].placeid+"'/>";
+						if(data[i].bookmark == 0){
+							result+="<img class='star_img' src='../image/icon/star_off.png'/>";
+						}else{
+							result+="<img class='star_img' src='../image/icon/star_on.png'/>";
+						}
+						result+="</td>";
+						result+="<td class=''>";
+						result+="<div class='media'>";
+						result+="<img src='../image/icon"+data[i].iconname+".png' class='media-photo'>";
+						result+="<div class='media-body'>";
+						result+="<span class='media-meta pull-right'>"+data[i].placeregdate+"</span>";
+						if(data[i].placecategory ==0){
+							result+="<button type='button' class='btn btn-outline-success btn_category'>음식</button>";
+						}else if (data[i].placecategory ==1){
+							result+="<button type='button' class='btn btn-outline-info btn_category'>카페</button>";
+						}else{
+							result+="<button type='button' class='btn btn-outline-danger btn_category'>관광지</button>";
+						}
+						result+="<h4 class='title'>"+data[i].placename+"</h4>";
+						result+="<span  class='summary'>"+data[i].placejuso+"</span>";
+						result+="</div>";
+						result+="</div>";
+						result+="</td>";
+						result+="</tr>";
+				}					
+				result+="</tbody>";
+				$('.table').html(result).trigger("create");
+			}
+		});
+	} else if ($target == 1) {//카페
+		$.ajax({
+			url: "/buttoncategory", 
+			type : "GET",
+			data : {
+				"placecategory" : $target,
+				"placecheck": 0
+			},
+			success : function(data){
+				var count = data.length;
+				console.log(data);
+				result+="<tbody class='tbody'>";
+				for(i=0;i<count;i++){
+				result+="<tr  class='tabletr'>";
+				result+="<td class=''>";
+					result+="<div class='ckbox '>";
+					if(data[i].placecheck ==0){
+						result+="<input type='checkbox'  class='checkbox1' id='"+data[i].placeid+"'>";
+					}else{
+						result+="<input type='checkbox'  class='checkbox1' id='"+data[i].placeid+"' checked>";
+					}
+					result+="<label th:for='"+data[i].placeid+"'></label>";
+					result+="</div>";
+					result+="</td>";
+					result+="<td class=''>";
+					result+="<input type='hidden' name='placeid' value='"+data[i].placeid+"'/>";
+					if(data[i].bookmark == 0){
+						result+="<img class='star_img' src='../image/icon/star_off.png'/>";
+					}else{
+						result+="<img class='star_img' src='../image/icon/star_on.png'/>";
+					}
+					result+="</td>";
+					result+="<td class=''>";
+					result+="<div class='media'>";
+					result+="<img src='../image/icon"+data[i].iconname+".png' class='media-photo'>";
+					result+="<div class='media-body'>";
+					result+="<span class='media-meta pull-right'>"+data[i].placeregdate+"</span>";
+					if(data[i].placecategory ==0){
+						result+="<button type='button' class='btn btn-outline-success btn_category'>음식</button>";
+					}else if (data[i].placecategory ==1){
+						result+="<button type='button' class='btn btn-outline-info btn_category'>카페</button>";
+					}else{
+						result+="<button type='button' class='btn btn-outline-danger btn_category'>관광지</button>";
+					}
+					result+="<h4 class='title'>"+data[i].placename+"</h4>";
+					result+="<span  class='summary'>"+data[i].placejuso+"</span>";
+					result+="</div>";
+					result+="</div>";
+					result+="</td>";
+					result+="</tr>";
+				}					
+				result+="</tbody>";
+				$('.table').html(result).trigger("create");
+			}
+		});
+	} else if ($target == 2) {//관광지
+		$.ajax({
+			url: "/buttoncategory", 
+			type : "GET",
+			data : {
+				"placecategory" : $target,
+				"placecheck": 0
+			},
+			success : function(data){
+				var count = data.length;
+				console.log(data);
+				result+="<tbody class='tbody'>";
+				for(i=0;i<count;i++){
+					result+="<tr  class='tabletr'>";
+					result+="<td class=''>";
+						result+="<div class='ckbox '>";
+						if(data[i].placecheck ==0){
+							result+="<input type='checkbox'  class='checkbox1' id='"+data[i].placeid+"'>";
+						}else{
+							result+="<input type='checkbox'  class='checkbox1' id='"+data[i].placeid+"' checked>";
+						}
+						result+="<label th:for='"+data[i].placeid+"'></label>";
+						result+="</div>";
+						result+="</td>";
+						result+="<td class=''>";
+						result+="<input type='hidden' name='placeid' value='"+data[i].placeid+"'/>";
+						if(data[i].bookmark == 0){
+							result+="<img class='star_img' src='../image/icon/star_off.png'/>";
+						}else{
+							result+="<img class='star_img' src='../image/icon/star_on.png'/>";
+						}
+						result+="</td>";
+						result+="<td class=''>";
+						result+="<div class='media'>";
+						result+="<img src='../image/icon"+data[i].iconname+".png' class='media-photo'>";
+						result+="<div class='media-body'>";
+						result+="<span class='media-meta pull-right'>"+data[i].placeregdate+"</span>";
+						if(data[i].placecategory ==0){
+							result+="<button type='button' class='btn btn-outline-success btn_category'>음식</button>";
+						}else if (data[i].placecategory ==1){
+							result+="<button type='button' class='btn btn-outline-info btn_category'>카페</button>";
+						}else{
+							result+="<button type='button' class='btn btn-outline-danger btn_category'>관광지</button>";
+						}
+						result+="<h4 class='title'>"+data[i].placename+"</h4>";
+						result+="<span  class='summary'>"+data[i].placejuso+"</span>";
+						result+="</div>";
+						result+="</div>";
+						result+="</td>";
+						result+="</tr>";
+				}					
+				result+="</tbody>";
+				$('.table').html(result).trigger("create");
+			}
+		});
+	} else if ($target == 3) {//갔던곳
+		$.ajax({
+			url: "/goplace", 
+			type : "GET",
+			data : {
+				"placecheck": 1
+			},
+			success : function(data){
+				var count = data.length;
+				console.log(data);
+				result+="<tbody class='tbody'>";
+				for(i=0;i<count;i++){
+					result+="<tr  class='tabletr'>";
+					result+="<td class=''>";
+						result+="<div class='ckbox '>";
+						if(data[i].placecheck ==0){
+							result+="<input type='checkbox'  class='checkbox1' id='"+data[i].placeid+"'>";
+						}else{
+							result+="<input type='checkbox'  class='checkbox1' id='"+data[i].placeid+"' checked>";
+						}
+						result+="<label th:for='"+data[i].placeid+"'></label>";
+						result+="</div>";
+						result+="</td>";
+						result+="<td class=''>";
+						result+="<input type='hidden' name='placeid' value='"+data[i].placeid+"'/>";
+						if(data[i].bookmark == 0){
+							result+="<img class='star_img' src='../image/icon/star_off.png'/>";
+						}else{
+							result+="<img class='star_img' src='../image/icon/star_on.png'/>";
+						}
+						result+="</td>";
+						result+="<td class=''>";
+						result+="<div class='media'>";
+						result+="<img src='../image/icon"+data[i].iconname+".png' class='media-photo'>";
+						result+="<div class='media-body'>";
+						result+="<span class='media-meta pull-right'>"+data[i].placeregdate+"</span>";
+						if(data[i].placecategory ==0){
+							result+="<button type='button' class='btn btn-outline-success btn_category'>음식</button>";
+						}else if (data[i].placecategory ==1){
+							result+="<button type='button' class='btn btn-outline-info btn_category'>카페</button>";
+						}else{
+							result+="<button type='button' class='btn btn-outline-danger btn_category'>관광지</button>";
+						}
+						result+="<h4 class='title'>"+data[i].placename+"</h4>";
+						result+="<span  class='summary'>"+data[i].placejuso+"</span>";
+						result+="</div>";
+						result+="</div>";
+						result+="</td>";
+						result+="</tr>";
+				}					
+				result+="</tbody>";
+				$('.table').html(result).trigger("create");
+			}
+		});
+	} else {
+		$.ajax({
+			url: "/goplace", 
+			type : "GET",
+			data : {
+				"placecheck": 0
+			},
+			success : function(data){
+				var count = data.length;
+				console.log(data);
+				result+="<tbody class='tbody'>";
+				for(i=0;i<count;i++){
+				result+="<tr  class='tabletr'>";
+				result+="<td class=''>";
+					result+="<div class='ckbox '>";
+					if(data[i].placecheck ==0){
+						result+="<input type='checkbox'  class='checkbox1' th:id='"+data[i].placeid+"'>";
+					}else{
+						result+="<input type='checkbox'  class='checkbox1' th:id='"+data[i].placeid+"' checked>";
+					}
+					result+="<label th:for='"+data[i].placeid+"'></label>";
+					result+="</div>";
+					result+="</td>";
+					result+="<td class=''>";
+					result+="<input type='hidden' name='placeid' th:value='"+data[i].placeid+"'/>";
+					if(data[i].bookmark == 0){
+						result+="<img class='star_img' src='../image/icon/star_off.png'/>";
+					}else{
+						result+="<img class='star_img' src='../image/icon/star_on.png'/>";
+					}
+					result+="</td>";
+					result+="<td class=''>";
+					result+="<div class='media'>";
+					result+="<img src='../image/icon"+data[i].iconname+".png' class='media-photo'>";
+					result+="<div class='media-body'>";
+					result+="<span class='media-meta pull-right'>"+data[i].placeregdate+"</span>";
+					if(data[i].placecategory ==0){
+						result+="<button type='button' class='btn btn-outline-success btn_category'>음식</button>";
+					}else if (data[i].placecategory ==1){
+						result+="<button type='button' class='btn btn-outline-info btn_category'>카페</button>";
+					}else{
+						result+="<button type='button' class='btn btn-outline-danger btn_category'>관광지</button>";
+					}
+					result+="<h4 class='title'>"+data[i].placename+"</h4>";
+					result+="<span  class='summary'>"+data[i].placejuso+"</span>";
+					result+="</div>";
+					result+="</div>";
+					result+="</td>";
+					result+="</tr>";
+				}					
+				result+="</tbody>";
+				$('.table').html(result).trigger("create");
+			}
+		});
+	}
+	
+	var btn = $(this);
+	btn.attr("disabled", true);
+	setTimeout(function() {
+		btn.removeAttr("disabled");
+	}, 1000);
+	
+	
+});
+
+
+/*$('.btn-filter').on('click', function() {
+	var $target = $(this).data('target');
+	var $check = $(this).data('check');
+	$('.table tr').css('display', 'none');
+	if ($target == 0 && $check == 0) {
+		$('.table tr[data-status="' + $target + '"]').fadeIn('slow');
+		$('.table tr[data-check="' + 1 + '"]').css('display', 'none');
+	} else if ($target == 1 && $check == 0) {
+		$('.table tr[data-status="' + $target + '"]').fadeIn('slow');
+		$('.table tr[data-check="' + 1 + '"]').css('display', 'none');
+	} else if ($target == 2 && $check == 0) {
+		$('.table tr[data-status="' + $target + '"]').fadeIn('slow');
+		$('.table tr[data-check="' + 1 + '"]').css('display', 'none');
+	} else if ($target == 3 && $check == 1) {
+		$('.table tr[data-check="' + 1 + '"]').fadeIn('slow');
+	} else {
+		$('.table tr[data-check="' + 0 + '"]').css('display', 'none').fadeIn('slow');
+	}
+	var btn = $(this);
+	btn.attr("disabled", true);
+	setTimeout(function() {
+		btn.removeAttr("disabled");
+	}, 1000);
+});*/
+
+
+
+//$('.checkbox1').on('click',function(){
+$(document).on('click','.checkbox1',function(){
 	var checkboxid= $(this).attr("id");
+	var changeplace =$(this).parents("tr");
 	if($(this).is(":checked")){
 		$.ajax({
 			url: "/checkbox", 
@@ -438,8 +756,16 @@ $('.checkbox1').on('click',function(){
 			}
 		});
 	}
+	
+	var check = $(this).parents("tr");
+	check.animate({
+		opacity:"0.1",
+	},1000,
+	function(){
+		check.remove();
+	});
+	
+	
 })
 
 
-
-setTimeout(relayout,2000);

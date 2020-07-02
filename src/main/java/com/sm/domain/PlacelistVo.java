@@ -16,7 +16,6 @@ public class PlacelistVo {
 	private String placejuso;
 	private int uuid;
 	private int placecategory;
-	private String placemainfood;
 	private String bloglink;
 	private String iconname;
 	private int bookmark;

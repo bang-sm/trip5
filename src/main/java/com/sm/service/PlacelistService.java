@@ -33,6 +33,14 @@ public class PlacelistService{
 		dao.checkbox(placecheck,placeid);
 	}
 	
+	public List<PlacelistVo> goplace(int placecheck) throws Exception{
+		return dao.goplace(placecheck);
+	}
+	
+	public List<PlacelistVo> buttoncategory(int placecategory,int placecheck) throws Exception{
+		return dao.buttoncategory(placecategory,placecheck);
+	}
+	
 	
 	
 }

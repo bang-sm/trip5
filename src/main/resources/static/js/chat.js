@@ -4,19 +4,21 @@ function wsOpen() {
 	ws = new WebSocket("ws://" + location.host + "/chating");
 	wsEvt();
 	console.log($('#userSessionId').val());
+	
 }
 
 function wsEvt() {
 	ws.onopen = function(data) {
 		//소켓이 열리면 동작
 		console.log('소켓 오픈');
+		inChatt();
 	}
 
 	ws.onmessage = function(data) {
 		//메시지를 받으면 동작
 		var msg = data.data;
 		
-		console.log(msg);
+		console.log("msg = " + msg);
 		if (msg != null && msg.trim() != '') {
 			var d = JSON.parse(msg);
 			console.log(d.sessionId + " <-- d.sessionId 값");
@@ -24,18 +26,18 @@ function wsEvt() {
 				var si = d.sessionId != null ? d.sessionId : "";
 				if (si != '') {
 					$("#sessionId").val(si);
+					$("#chating").append("<p class='inChat'>" + $('#userSessionId').val() + "님이 입장하셨습니다</p>");
 				}
 			} else if (d.type == "message") {
 				if (d.sessionId == $("#sessionId").val()) {
 					if(d.msg.length == 0){
 						alert("내용을 입력하세요!!")
 					} else {
-					$("#chating").append("<p class='me'>나 : " + d.msg + "</p>");
+						$("#chating").append("<p class='me'>나 : " + d.msg + "</p>");
 					}
 				} else {
-					$("#chating").append(
-							"<p class='others'>" + d.userName + " : " + d.msg
-									+ "</p>");
+						$("#chating").append(
+							"<p class='others'>" + d.userName + " : " + d.msg + "</p>");
 				}
 			} else {
 				console.warn("unknown type!")
@@ -43,6 +45,7 @@ function wsEvt() {
 		}
 	}
 
+	
 	document.addEventListener("keypress", function(e) {
 		if (e.keyCode == 13) { //enter press
 			send();
@@ -50,16 +53,10 @@ function wsEvt() {
 	});
 }
 
-function chatName() {
-	var userName = $("#userName").val();
-	if (userName == null || userName.trim() == "") {
-		alert("사용자 이름을 입력해주세요.");
-		$("#userName").focus();
-	} else {
-		wsOpen();
-		$("#yourName").hide();
-		$("#yourMsg").show();
-	}
+function chatConn() {
+	wsOpen();
+	$('#chatinBtn').hide();
+	$('.inputTable').show();
 }
 
 function send() {
@@ -72,3 +69,27 @@ function send() {
 	ws.send(JSON.stringify(option))
 	$('#chatting').val("");
 }
+
+function inChatt(){
+	var option = {
+			type : "getId",
+			sessionId : $("#sessionId").val(),
+			userName : $('#userSessionId').val(),
+			msg : $('#userSessionId').val() + "님이 입장하셨습니다."
+		}
+		ws.send(JSON.stringify(option))
+}
+
+function outChatt(){
+	var option = {
+			type : "outId",
+			sessionId : $("#sessionId").val(),
+			userName : $('#userSessionId').val(),
+			msg : $('#userSessionId').val() + "님이 퇴장하셨습니다."
+		}
+		ws.send(JSON.stringify(option))
+}
+
+
+
+

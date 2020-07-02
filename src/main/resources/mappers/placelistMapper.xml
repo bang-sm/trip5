@@ -19,7 +19,7 @@
 					placeid,
 					#{placename},
 					now(),
-					'N',
+					0,
 					#{placejuso},
 					1,
 					#{placecategory},
@@ -39,7 +39,9 @@
 			bookmark,
 			placecheck
 		FROM
-		    placeList;
+		    placeList
+		ORDER BY
+		    bookmark DESC;
 	</select>
 	<update id="bookmark" parameterType="map">
 		UPDATE	 
@@ -58,5 +60,24 @@
 		WHERE 
 				placeid= #{placeid};
 	</update>
+	
+	<select id="goplace" parameterType="int" resultType="com.sm.domain.PlacelistVo">
+		SELECT
+				*
+		FROM
+				placeList
+		WHERE
+				placecheck=#{placecheck};
+	</select>
+	
+	<select id="buttoncategory" parameterType="map" resultType="com.sm.domain.PlacelistVo">
+		SELECT
+				*
+		FROM
+				placeList
+		WHERE  
+				placecategory = #{placecategory} and placecheck =#{placecheck};
+	
+	</select>
 
 </mapper>

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.sm.domain.PlacelistVo;
 import com.sm.service.PlacelistService;
@@ -36,7 +37,7 @@ public class WishplaceController {
 		return "wish/slide";
 	}
 	
-	@GetMapping("/placeregist")
+	@PostMapping("/placeregist")
 	public String placeregist(@Valid PlacelistVo placelistVo) throws Exception{
 		service.select(placelistVo);
 		
