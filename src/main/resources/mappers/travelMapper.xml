@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mappers.travelMapper">
+
+	<!-- 스토리등록 -->
+	<insert id="storyRegist" parameterType="com.sm.domain.TravelVO">
+		INSERT INTO travel_story(
+			tsid,
+			uuid,
+			tstitle,
+			tslike,
+			tsregdate,
+			tshashtagone,
+			tsstartdate,
+			tsenddate,
+			tsfare)
+		VALUES(
+			tsid,
+			9,
+			#{tstitle},
+			#{tslike},
+			tsregdate,
+			#{tshashtagone},
+			#{tsstartdate},
+			#{tsenddate},
+			tsfare
+			);
+		<!-- <selectKey keyProperty="tsiid" resultType="int" order="AFTER">
+			select LAST_INSERT_ID()  mysql 에서 사용하는것으로 방금 입력한 테이블의 auto_increment로 증가된 컬럼을 갖고온다.
+		</selectKey> -->
+		
+		INSERT INTO tsi_root(
+			tsiid,
+			tsirootname,
+			tsirootorder
+			)
+		VALUES(
+			#{tsiid},
+			#{tsirootname},
+			#{tsirootorder}
+		);
+	</insert>
+	<insert id="story_detail_Regist">
+	<!-- <selectKey keyProperty="tsid" resultType="int" order="AFTER">
+			select LAST_INSERT_ID()  mysql 에서 사용하는것으로 방금 입력한 테이블의 auto_increment로 증가된 컬럼을 갖고온다.
+		</selectKey> -->
+		
+		INSERT INTO travel_story_info(
+			tsiid,
+			tsid,
+			tsidDay,
+			tsititle,
+			tsicomment
+			)
+		VALUES
+			(
+			tsiid,
+			#{tsid},
+			#{tsidDay},
+			#{tsititle},
+			#{tsicomment}
+			);
+	</insert>
+
+</mapper>
