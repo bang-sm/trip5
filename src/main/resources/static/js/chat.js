@@ -35,9 +35,17 @@ function wsEvt() {
 					} else {
 						$("#chating").append("<p class='me'>나 : " + d.msg + "</p>");
 					}
-				} else {
+				} else if(d.msg.length != 0){
 						$("#chating").append(
-							"<p class='others'>" + d.userName + " : " + d.msg + "</p>");
+							"<div class='dropdown others'>" +
+							  "<a class='stretched-link' href='#' role='button' id='dropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>"
+							  + d.userName +
+							  "</a>" +
+							  "<div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>"
+							    +"<a class='dropdown-item' href='#'>차단하기</a>"+
+							    "<a class='dropdown-item' href='#'>쪽지보내기</a>" +
+							  "</div>" 
+							  + " : " + d.msg + "</div>");
 				}
 			} else {
 				console.warn("unknown type!")
