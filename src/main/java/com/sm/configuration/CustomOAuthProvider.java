@@ -8,14 +8,12 @@ public enum CustomOAuthProvider {
 
     KAKAO {
         @Override
-        public ClientRegistration.Builder getBuilder() {
+        public ClientRegistration.Builder getBuilder(String registrationId) {
             return getBuilder("kakao", ClientAuthenticationMethod.POST)
                     .scope("profile", "talk_message") // 요청할 권한
                     .authorizationUri("https://kauth.kakao.com/oauth/authorize") // authorization code 얻는 API
                     .tokenUri("https://kauth.kakao.com/oauth/token") // access Token 얻는 API
                     .userInfoUri("https://kapi.kakao.com/v2/user/me") // 유저 정보 조회 API
-                    .clientId("[client id 입력]")
-                    .clientSecret("[secret key 입력]")
                     .userNameAttributeName("id") // userInfo API Response에서 얻어올 ID 프로퍼티
                     .clientName("Kakao"); // spring 내에서 인식할 OAuth2 Provider Name
         }
@@ -33,5 +31,5 @@ public enum CustomOAuthProvider {
         return builder;
     }
 
-    public abstract ClientRegistration.Builder getBuilder();
+    public abstract ClientRegistration.Builder getBuilder(String registrationId);
 }
