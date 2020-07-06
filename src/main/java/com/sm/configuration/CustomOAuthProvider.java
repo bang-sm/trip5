@@ -4,20 +4,24 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 
+/**
+ * Created by momentjin@gmail.com on 2019-12-10
+ * Github : http://github.com/momentjin
+ */
 public enum CustomOAuthProvider {
 
     KAKAO {
         @Override
         public ClientRegistration.Builder getBuilder() {
             return getBuilder("kakao", ClientAuthenticationMethod.POST)
-                    .scope("profile", "talk_message") // 요청할 권한
-                    .authorizationUri("https://kauth.kakao.com/oauth/authorize") // authorization code 얻는 API
-                    .tokenUri("https://kauth.kakao.com/oauth/token") // access Token 얻는 API
-                    .userInfoUri("https://kapi.kakao.com/v2/user/me") // 유저 정보 조회 API
-                    .clientId("[client id 입력]")
-                    .clientSecret("[secret key 입력]")
-                    .userNameAttributeName("id") // userInfo API Response에서 얻어올 ID 프로퍼티
-                    .clientName("Kakao"); // spring 내에서 인식할 OAuth2 Provider Name
+                    .scope("profile", "talk_message")
+                    .authorizationUri("https://kauth.kakao.com/oauth/authorize")
+                    .tokenUri("https://kauth.kakao.com/oauth/token")
+                    .userInfoUri("https://kapi.kakao.com/v2/user/me")
+                    .clientId("2d3554ca6fbdc8ff7fdc4b74f4b28dd8")
+                    .clientSecret("lI1VIyD61p6Ej0ZadJ7dt9iKuIoExRnZ")
+                    .userNameAttributeName("id")
+                    .clientName("Kakao");
         }
     };
 
@@ -30,6 +34,7 @@ public enum CustomOAuthProvider {
         builder.clientAuthenticationMethod(method);
         builder.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE);
         builder.redirectUriTemplate(CustomOAuthProvider.DEFAULT_LOGIN_REDIRECT_URL);
+
         return builder;
     }
 

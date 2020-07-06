@@ -15,7 +15,7 @@ public class OAuth2AuthorizationRequestRedirectFilter extends OncePerRequestFilt
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
 		
 	}
 }
