@@ -12,7 +12,7 @@
 <body>
 	<!-- 공통 헤드 nav -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:include="common/header :: header_nav"></nav>
-	<form action="/travel/regist" method="post">
+	<form action="/travel/regist" method="post" id="regist_data_form">
 		<div class="container" style="margin-top: 70px">
 			<div class="jumbotron">
 				<div class="input-daterange input-group mb-3" id="datepicker">
@@ -44,7 +44,7 @@
 			</div>
 		</div> -->
 			<footer class="footer fixed-action-btn">
-				<input type="submit" value="등록하기">
+				<input type="submit" id="submit_btn" value="등록하기">
 			 </footer>
 		</div>
 	</form>
@@ -59,7 +59,27 @@
 		$('#datepicker').datepicker({
 			format : 'yyyy-mm-dd'
 		});
-		
+/* 		$("#submit_btn").click(function(){
+			regist_save();
+		}); */
 	})
+	
+/* 	function regist_save(){
+		var data=$("#regist_data_form").serialize();
+		$.ajax({
+		    url: "/travel/regist",
+		    method: 'POST',
+		    data : { 
+		    	data
+	    	},
+		    success : function (data) {
+		        // 서번단에서 HTML을 반환해서 기존 페이지를 깜빡임없이 새로 고친다.
+		        //document.querySelector("#appendHtml").innerHTML = res;
+		    },
+		    error: function (xhr) {
+		        alert("fail");
+		    }
+		});
+	} */
 </script>
 </html>

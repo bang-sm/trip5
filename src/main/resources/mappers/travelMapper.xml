@@ -25,41 +25,30 @@
 			#{tsenddate},
 			tsfare
 			);
-		<!-- <selectKey keyProperty="tsiid" resultType="int" order="AFTER">
-			select LAST_INSERT_ID()  mysql 에서 사용하는것으로 방금 입력한 테이블의 auto_increment로 증가된 컬럼을 갖고온다.
-		</selectKey> -->
-		
-		INSERT INTO tsi_root(
-			tsiid,
-			tsirootname,
-			tsirootorder
-			)
-		VALUES(
-			#{tsiid},
-			#{tsirootname},
-			#{tsirootorder}
-		);
 	</insert>
 	<insert id="story_detail_Regist">
-	<!-- <selectKey keyProperty="tsid" resultType="int" order="AFTER">
-			select LAST_INSERT_ID()  mysql 에서 사용하는것으로 방금 입력한 테이블의 auto_increment로 증가된 컬럼을 갖고온다.
-		</selectKey> -->
-		
-		INSERT INTO travel_story_info(
-			tsiid,
-			tsid,
-			tsidDay,
-			tsititle,
-			tsicomment
-			)
-		VALUES
+	
+	 	<selectKey resultType="int" keyProperty="tsid" order="BEFORE">
+        	SELECT MAX(tsid) FROM travel_story        
+    	</selectKey>
+			INSERT INTO travel_story_info
 			(
-			tsiid,
-			#{tsid},
-			#{tsidDay},
-			#{tsititle},
-			#{tsicomment}
-			);
+				tsiid,
+				tsid,
+				tsidDay,
+				tsititle,
+				tsicomment
+			)
+			VALUES
+			<foreach collection="infoList" item="type" separator=",">
+			(
+				tsiid,
+				#{tsid},
+				#{type.tsidDay},
+				#{type.tsititle},
+				#{type.tsicomment}
+			)
+			</foreach>
 	</insert>
 
 </mapper>

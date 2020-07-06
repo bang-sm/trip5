@@ -39,9 +39,9 @@ $(document).ready(function(){
 		var day_btn="";
 		day_content+='<div class="col-lg-12 tab-content" id="day-'+count+'">';
 		day_content+='<div class="md-form input-group mb-3">';
-		day_content+='<input type="text" class="form-control" placeholder="머릿말을 입력하세요" name="tsititle">';
+		day_content+='<input type="text" class="form-control" placeholder="머릿말을 입력하세요" name="list['+count+'].tsititle">';
 		day_content+='</div>';
-		day_content+='<textarea class="summernote" name="tsicomment"></textarea>';
+		day_content+='<textarea class="summernote" name="list['+count+'].tsicomment"></textarea>';
 		
 		day_content+='<div id="root_box" class="timeline timeline-animated">';
 		day_content+='<div class="timeline-item">';
@@ -53,7 +53,7 @@ $(document).ready(function(){
 		
 		day_btn+='<li class="nav-item add_day'+count+'" data-tab="day-'+count+'" >';
 		day_btn+='<a class="nav-link active" href="#">'+count+'day</a>';
-		day_btn+='<input type="hidden" value="'+count+'" name="tsidDay">';
+		day_btn+='<input type="hidden" value="'+count+'" name="list['+count+'].tsidDay">';
 		day_btn+='</li>';
 		
 		
