@@ -59,5 +59,12 @@ public class RestAPIController {
 	public List<PlacelistVo> buttoncategory(int placecategory,int placecheck) throws Exception{
 		return service.buttoncategory(placecategory,placecheck);
 	}
+	
+	@GetMapping("/delete")
+	public void delete(int placeid) throws Exception{
+		service.delete(placeid);
+	}
+	
+	
 
 }

@@ -1,7 +1,8 @@
 
 
-
+//첫번째 모델창 글 등록
 $("#exampleModal").on('shown.bs.modal', function(){
+	$('.map_regist').css("display", "block");
 	var markers = [];
 
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div
@@ -242,6 +243,7 @@ $("#exampleModal").on('shown.bs.modal', function(){
 	}
   });
 
+
 function fnMove() {
 	var offset = $(".wish_list").offset();
 	$('html, body').animate({
@@ -334,12 +336,13 @@ function naversearch(){
 		}//end success
 	})
 }
-var icons= ["barbecue","bread","burrito","cake","chicken","cola",
-	"crab","beef","pork","dimsum","fish",
-	"foodandwine","fruitbag","hamburger","icecream","bingsu",
-	"kfc","milk","noodles","octopus","omlette","pancake","pizza",
-	"prawn","rice","roast","salad","sausages","spaghetti","steak","tapas"
-	,"cafe","mountain","restaurant","sea","tourlist","tourlist2"]
+var food_icons= ["barbecue","burrito","chicken","cola","crab","beef","pork","dimsum","fish",
+	"foodandwine","fruitbag","hamburger","icecream","kfc","noodles","octopus","omlette","pancake","pizza",
+	"prawn","rice","roast","salad","sausages","spaghetti","steak","tapas",
+	"restaurant"]
+var cafe_icons=["bingsu","bread","cafe","cafe_coffee","cake","coffe","croissant","milk",];
+var place_icons=["basilica","bigben","bridge","church","gondola","mountain","sea","temple","top-of-a-hill",
+				"tour-bus","tourlist","tourlist2","train","travel"];
 
 
 function icon() {
@@ -355,12 +358,26 @@ function icon() {
 		}
 
 		result = "";
-
-		for (i = 0; i < icons.length; i++) {
-			result += "<div class='icon_main'><img class='icon_img' src='../image/icon/"
-					+ icons[i] + ".png'/>";
-			result += "<div>" + icons[i] + "</div></div>";
+		if(check ==0){
+			for (i = 0; i < food_icons.length; i++) {
+				result += "<div class='icon_main'><img class='icon_img' src='../image/icon/"
+						+ food_icons[i] + ".png'/>";
+				result += "<div>" + food_icons[i] + "</div></div>";
+			}
+		}else if(check==1){
+			for (i = 0; i < cafe_icons.length; i++) {
+				result += "<div class='icon_main'><img class='icon_img' src='../image/icon/"
+						+ cafe_icons[i] + ".png'/>";
+				result += "<div>" + cafe_icons[i] + "</div></div>";
+			}
+		}else{
+			for (i = 0; i < place_icons.length; i++) {
+				result += "<div class='icon_main'><img class='icon_img' src='../image/icon/"
+						+ place_icons[i] + ".png'/>";
+				result += "<div>" + place_icons[i] + "</div></div>";
+			}
 		}
+		
 
 		$('.food_icon').html(result);
 	} else {
@@ -382,6 +399,7 @@ $(document).on("click",'.icon_main',function(){
 	
 })
 
+//즐겨찾기(별 체크)
 $('.star_img').click(function(){
 	var check = $(this).attr("src");
 	var id=$(this).parent('td').children('input').val();
@@ -413,6 +431,8 @@ $('.star_img').click(function(){
 	}
 })
 
+
+//테마에 따른 테이블 재생성
  $('.btn-filter').on('click', function() {
 	var $target = $(this).data('target');
 	$('.table').html("");
@@ -441,8 +461,8 @@ $('.star_img').click(function(){
 						result+="<label th:for='"+data[i].placeid+"'></label>";
 						result+="</div>";
 						result+="</td>";
-						result+="<td class=''>";
-						result+="<input type='hidden' name='placeid' value='"+data[i].placeid+"'/>";
+						result+="<td class='td_two'>";
+						result+="<input type='hidden' class='placeid'name='placeid' value='"+data[i].placeid+"'/>";
 						if(data[i].bookmark == 0){
 							result+="<img class='star_img' src='../image/icon/star_off.png'/>";
 						}else{
@@ -464,6 +484,10 @@ $('.star_img').click(function(){
 						result+="<h4 class='title'>"+data[i].placename+"</h4>";
 						result+="<span  class='summary'>"+data[i].placejuso+"</span>";
 						result+="</div>";
+						result+="<button class='media_look'>블로그 보기</button>";
+						result+="<button class='media_update' data-toggle='modal' data-target='#exampleModal1'>글 수정</button>";
+						result+="<button class='media_delete'>글 삭제</button>";
+						result+="<img src='../image/icon/cancel.png' class='media_cancel'>";
 						result+="</div>";
 						result+="</td>";
 						result+="</tr>";
@@ -496,8 +520,8 @@ $('.star_img').click(function(){
 					result+="<label th:for='"+data[i].placeid+"'></label>";
 					result+="</div>";
 					result+="</td>";
-					result+="<td class=''>";
-					result+="<input type='hidden' name='placeid' value='"+data[i].placeid+"'/>";
+					result+="<td class='td_two'>";
+					result+="<input type='hidden' class='placeid' name='placeid' value='"+data[i].placeid+"'/>";
 					if(data[i].bookmark == 0){
 						result+="<img class='star_img' src='../image/icon/star_off.png'/>";
 					}else{
@@ -519,6 +543,10 @@ $('.star_img').click(function(){
 					result+="<h4 class='title'>"+data[i].placename+"</h4>";
 					result+="<span  class='summary'>"+data[i].placejuso+"</span>";
 					result+="</div>";
+					result+="<button class='media_look'>블로그 보기</button>";
+					result+="<button class='media_update' data-toggle='modal' data-target='#exampleModal1'>글 수정</button>";
+					result+="<button class='media_delete'>글 삭제</button>";
+					result+="<img src='../image/icon/cancel.png' class='media_cancel'>";
 					result+="</div>";
 					result+="</td>";
 					result+="</tr>";
@@ -551,8 +579,8 @@ $('.star_img').click(function(){
 						result+="<label th:for='"+data[i].placeid+"'></label>";
 						result+="</div>";
 						result+="</td>";
-						result+="<td class=''>";
-						result+="<input type='hidden' name='placeid' value='"+data[i].placeid+"'/>";
+						result+="<td class='td_two'>";
+						result+="<input type='hidden' class='placeid' name='placeid' value='"+data[i].placeid+"'/>";
 						if(data[i].bookmark == 0){
 							result+="<img class='star_img' src='../image/icon/star_off.png'/>";
 						}else{
@@ -564,16 +592,21 @@ $('.star_img').click(function(){
 						result+="<img src='../image/icon"+data[i].iconname+".png' class='media-photo'>";
 						result+="<div class='media-body'>";
 						result+="<span class='media-meta pull-right'>"+data[i].placeregdate+"</span>";
+						
 						if(data[i].placecategory ==0){
 							result+="<button type='button' class='btn btn-outline-success btn_category'>음식</button>";
 						}else if (data[i].placecategory ==1){
 							result+="<button type='button' class='btn btn-outline-info btn_category'>카페</button>";
 						}else{
-							result+="<button type='button' class='btn btn-outline-danger btn_category'>관광지</button>";
+							result+="<button type='button' class='btn btn-outline-warning btn_category'>관광지</button>";
 						}
 						result+="<h4 class='title'>"+data[i].placename+"</h4>";
 						result+="<span  class='summary'>"+data[i].placejuso+"</span>";
 						result+="</div>";
+						result+="<button class='media_look'>블로그 보기</button>";
+						result+="<button class='media_update' data-toggle='modal' data-target='#exampleModal1'>글 수정</button>";
+						result+="<button class='media_delete'>글 삭제</button>";
+						result+="<img src='../image/icon/cancel.png' class='media_cancel'>";
 						result+="</div>";
 						result+="</td>";
 						result+="</tr>";
@@ -605,8 +638,8 @@ $('.star_img').click(function(){
 						result+="<label th:for='"+data[i].placeid+"'></label>";
 						result+="</div>";
 						result+="</td>";
-						result+="<td class=''>";
-						result+="<input type='hidden' name='placeid' value='"+data[i].placeid+"'/>";
+						result+="<td class='td_two'>";
+						result+="<input type='hidden' class='placeid' name='placeid' value='"+data[i].placeid+"'/>";
 						if(data[i].bookmark == 0){
 							result+="<img class='star_img' src='../image/icon/star_off.png'/>";
 						}else{
@@ -618,16 +651,21 @@ $('.star_img').click(function(){
 						result+="<img src='../image/icon"+data[i].iconname+".png' class='media-photo'>";
 						result+="<div class='media-body'>";
 						result+="<span class='media-meta pull-right'>"+data[i].placeregdate+"</span>";
+						
 						if(data[i].placecategory ==0){
 							result+="<button type='button' class='btn btn-outline-success btn_category'>음식</button>";
 						}else if (data[i].placecategory ==1){
 							result+="<button type='button' class='btn btn-outline-info btn_category'>카페</button>";
 						}else{
-							result+="<button type='button' class='btn btn-outline-danger btn_category'>관광지</button>";
+							result+="<button type='button' class='btn btn-outline-warning btn_category'>관광지</button>";
 						}
 						result+="<h4 class='title'>"+data[i].placename+"</h4>";
 						result+="<span  class='summary'>"+data[i].placejuso+"</span>";
 						result+="</div>";
+						result+="<button class='media_look'>블로그 보기</button>";
+						result+="<button class='media_update' data-toggle='modal' data-target='#exampleModal1'>글 수정</button>";
+						result+="<button class='media_delete'>글 삭제</button>";
+						result+="<img src='../image/icon/cancel.png' class='media_cancel'>";
 						result+="</div>";
 						result+="</td>";
 						result+="</tr>";
@@ -659,8 +697,8 @@ $('.star_img').click(function(){
 					result+="<label th:for='"+data[i].placeid+"'></label>";
 					result+="</div>";
 					result+="</td>";
-					result+="<td class=''>";
-					result+="<input type='hidden' name='placeid' th:value='"+data[i].placeid+"'/>";
+					result+="<td class='td_two'>";
+					result+="<input type='hidden' class='placeid' name='placeid' th:value='"+data[i].placeid+"'/>";
 					if(data[i].bookmark == 0){
 						result+="<img class='star_img' src='../image/icon/star_off.png'/>";
 					}else{
@@ -672,16 +710,21 @@ $('.star_img').click(function(){
 					result+="<img src='../image/icon"+data[i].iconname+".png' class='media-photo'>";
 					result+="<div class='media-body'>";
 					result+="<span class='media-meta pull-right'>"+data[i].placeregdate+"</span>";
+				
 					if(data[i].placecategory ==0){
 						result+="<button type='button' class='btn btn-outline-success btn_category'>음식</button>";
 					}else if (data[i].placecategory ==1){
 						result+="<button type='button' class='btn btn-outline-info btn_category'>카페</button>";
 					}else{
-						result+="<button type='button' class='btn btn-outline-danger btn_category'>관광지</button>";
+						result+="<button type='button' class='btn btn-outline-warning btn_category'>관광지</button>";
 					}
 					result+="<h4 class='title'>"+data[i].placename+"</h4>";
 					result+="<span  class='summary'>"+data[i].placejuso+"</span>";
 					result+="</div>";
+					result+="<button class='media_look'>블로그 보기</button>";
+					result+="<button class='media_update' data-toggle='modal' data-target='#exampleModal1'>글 수정</button>";
+					result+="<button class='media_delete'>글 삭제</button>";
+					result+="<img src='../image/icon/cancel.png' class='media_cancel'>";
 					result+="</div>";
 					result+="</td>";
 					result+="</tr>";
@@ -702,30 +745,6 @@ $('.star_img').click(function(){
 });
 
 
-/*$('.btn-filter').on('click', function() {
-	var $target = $(this).data('target');
-	var $check = $(this).data('check');
-	$('.table tr').css('display', 'none');
-	if ($target == 0 && $check == 0) {
-		$('.table tr[data-status="' + $target + '"]').fadeIn('slow');
-		$('.table tr[data-check="' + 1 + '"]').css('display', 'none');
-	} else if ($target == 1 && $check == 0) {
-		$('.table tr[data-status="' + $target + '"]').fadeIn('slow');
-		$('.table tr[data-check="' + 1 + '"]').css('display', 'none');
-	} else if ($target == 2 && $check == 0) {
-		$('.table tr[data-status="' + $target + '"]').fadeIn('slow');
-		$('.table tr[data-check="' + 1 + '"]').css('display', 'none');
-	} else if ($target == 3 && $check == 1) {
-		$('.table tr[data-check="' + 1 + '"]').fadeIn('slow');
-	} else {
-		$('.table tr[data-check="' + 0 + '"]').css('display', 'none').fadeIn('slow');
-	}
-	var btn = $(this);
-	btn.attr("disabled", true);
-	setTimeout(function() {
-		btn.removeAttr("disabled");
-	}, 1000);
-});*/
 
 
 
@@ -768,4 +787,99 @@ $(document).on('click','.checkbox1',function(){
 	
 })
 
+//테마 선택에 따른 아이콘 이름 
 
+$('.custom-select').change(function(){
+	var name = $(this).val();
+	
+	if(name ==0){
+		console.log("음식");
+		$('.btn-icon-name').html("음식 아이콘");
+	}else if(name ==1){
+		console.log("카페");
+		$('.btn-icon-name').html("카페 아이콘");
+	}else{
+		console.log("관광지");
+		$('.btn-icon-name').html("관광지 아이콘");
+	}
+})
+
+
+//등록 검증
+function wish_regist(){
+	var map = $('input[name=placename]').val();
+	var link= $('input[name=bloglink]').val();
+	var icon = $('input[name=iconname]').val();
+//1. 지도 
+//2. 블로그
+//3. 아이콘 
+	if(map ==""){
+		alert("장소를 선택해주세요");
+		return false;
+	}else if(link ==""){
+		alert("블로그를 선택해주세요");
+		return false;
+	}else if(icon ==""){
+		alert("아이콘을 선택해주세요");
+		return false;
+	}
+	$('#regist_form').submit();
+
+}
+//클릭시 블로그 보기 , 글 수정 , 글 삭제 버튼으로 전환
+$(document).on('click','.media-body',function(){
+	var parent = $(this).parents(".media");
+	$(this).animate({
+		opacity:"0",
+	},1000,
+	function(){
+		parent.children('.media_look').css('display','block');
+		parent.children('.media_update').css('display','block');
+		parent.children('.media_delete').css('display','block');
+		parent.children('.media_cancel').css('display','block');
+	})
+	
+})
+
+//글 수정
+$(document).on('click','.media_update',function(){
+	$('.modal-title').text('나만의 맛집 & 장소 수정하기');
+	var home=$(this).parents('.media').children('.media-body');
+	var title =home.children('.title').text();
+	var juso = home.children('.summary').text();
+	$('#keyword').val(juso+''+title);
+
+
+})
+
+//글 삭제
+$(document).on('click','.media_delete',function(){
+	var theme = $(this).parents('.tabletr').children('.td_two');
+	var del = theme.children('.placeid').val();
+	var check =confirm("삭제 하시겠습니까?");
+   
+   if(check){
+	   $.ajax({
+			url: "/delete", 
+			type : "GET",
+			data : {
+				"placeid": del
+			},
+			success : function(){
+				location.reload();
+			}
+		});
+   }
+})
+//취소 버튼
+
+$(document).on('click','.media_cancel',function(){
+	var parent = $(this).parents(".media");
+	parent.children('.media_look').css('display','none');
+	parent.children('.media_update').css('display','none');
+	parent.children('.media_delete').css('display','none');
+	parent.children('.media_cancel').css('display','none');
+	$('.media-body').animate({
+		opacity:"1",
+	},1000)
+})
