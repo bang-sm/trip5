@@ -43,7 +43,7 @@ $(document).ready(function(){
 		day_content+='</div>';
 		day_content+='<textarea class="summernote" name="list['+count+'].tsicomment"></textarea>';
 		
-		day_content+='<div id="root_box" class="timeline timeline-animated">';
+		day_content+='<div class="root_box" class="timeline timeline-animated">';
 		day_content+='<div class="timeline-item">';
 		day_content+='<button type="button" class="btn btn-success waves-effect add_root">경로추가</button>';
 		day_content+='</div>';
@@ -83,7 +83,7 @@ $(document).ready(function(){
 		//일단 부모 비우기
 		console.log(root_name);
 		$(div).append(root_name);
-		$("#root_box").append(next_root);
+		$(div).parent().append(next_root);
 		
 		root_order++;
 	});

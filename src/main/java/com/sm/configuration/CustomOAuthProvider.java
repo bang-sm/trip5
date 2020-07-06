@@ -12,7 +12,7 @@ public enum CustomOAuthProvider {
 
     KAKAO {
         @Override
-        public ClientRegistration.Builder getBuilder() {
+        public ClientRegistration.Builder getBuilder(String registrationId) {
             return getBuilder("kakao", ClientAuthenticationMethod.POST)
                     .scope("profile", "talk_message")
                     .authorizationUri("https://kauth.kakao.com/oauth/authorize")
@@ -38,5 +38,5 @@ public enum CustomOAuthProvider {
         return builder;
     }
 
-    public abstract ClientRegistration.Builder getBuilder();
+    public abstract ClientRegistration.Builder getBuilder(String registrationId);
 }

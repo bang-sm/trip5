@@ -66,12 +66,6 @@ public class TravelController {
 	@PostMapping(value = "/regist")
 	public String regist_get(TravelVO travelVO,@ModelAttribute TravelInfoVO travelinfoVO,HttpSession session) throws Exception{
 		logger.info("regist_get");
-		/*
-		 * System.out.println(travelVO.toString()); for (int i = 0; i <
-		 * travelinfoVO.getList().size(); i++) {
-		 * System.out.println(travelinfoVO.getList().get(i)); System.out.println(
-		 * "==============================================================="); }
-		 */
 		travelService.storyRegist(travelVO,travelinfoVO);
 		
 		return "redirect:/index";
