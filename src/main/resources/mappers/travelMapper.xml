@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mappers.travelMapper">
+
+	<!-- 스토리등록 -->
+	<insert id="storyRegist" parameterType="com.sm.domain.TravelVO">
+		INSERT INTO travel_story(
+			tsid,
+			uuid,
+			tstitle,
+			tslike,
+			tsregdate,
+			tshashtagone,
+			tsstartdate,
+			tsenddate,
+			tsfare)
+		VALUES(
+			tsid,
+			9,
+			#{tstitle},
+			#{tslike},
+			tsregdate,
+			#{tshashtagone},
+			#{tsstartdate},
+			#{tsenddate},
+			tsfare
+			);
+	</insert>
+	<insert id="story_detail_Regist">
+	
+	 	<selectKey resultType="int" keyProperty="tsid" order="BEFORE">
+        	SELECT MAX(tsid) FROM travel_story        
+    	</selectKey>
+			INSERT INTO travel_story_info
+			(
+				tsiid,
+				tsid,
+				tsidDay,
+				tsititle,
+				tsicomment
+			)
+			VALUES
+			<foreach collection="infoList" item="type" separator=",">
+			(
+				tsiid,
+				#{tsid},
+				#{type.tsidDay},
+				#{type.tsititle},
+				#{type.tsicomment}
+			)
+			</foreach>
+	</insert>
+
+</mapper>
