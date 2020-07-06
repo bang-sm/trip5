@@ -37,7 +37,8 @@
 			placejuso,
 			placeregdate,
 			bookmark,
-			placecheck
+			placecheck,
+			bloglink
 		FROM
 		    placeList
 		ORDER BY
@@ -79,5 +80,13 @@
 				placecategory = #{placecategory} and placecheck =#{placecheck};
 	
 	</select>
+	
+	<delete id="delete" parameterType="int">
+		DELETE 
+		FROM 
+				placeList  
+		WHERE 
+			placeid= #{placeid};
+	</delete>
 
 </mapper>

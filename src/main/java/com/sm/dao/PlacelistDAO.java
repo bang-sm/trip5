@@ -48,4 +48,8 @@ public class PlacelistDAO {
 		
 		return sql.selectList("mappers.placelistMapper.buttoncategory",bmap);
 	}
+	
+	public void delete(int placeid) {
+		sql.delete("mappers.placelistMapper.delete",placeid);
+	}
 }
