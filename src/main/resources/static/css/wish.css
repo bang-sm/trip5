@@ -283,3 +283,70 @@ a:hover { color: black; text-decoration: none;}
 .check_tr{
 	display:none;
 }
+/* 자세히 보기 글수정 글삭제 버튼 css */
+.media_look{
+	display: none;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s;
+    background-color: #6E6E6E;
+    border-color: #6E6E6E;
+    color: #fff;
+    margin: 0 30px 0 30px;
+}
+.media_update{
+	display: none;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s;
+    background-color: #A9BCF5;
+    border-color: #A9BCF5;
+    color: #fff;
+    margin: 0 30px 0 30px;
+}
+.media_delete{
+	display: none;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s;
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #fff;
+    margin: 0 30px 0 30px;
+}
+.media_cancel{
+	display:none;
+}
+.blog:link{
+	color:white;
+	text-decoration: none;
+}
+.blog:hover{
+	color:white;
+	text-decoration: none;
+}
+.blog:visited{
+	color:white;
+	text-decoration: none;
+}

@@ -41,6 +41,10 @@ public class PlacelistService{
 		return dao.buttoncategory(placecategory,placecheck);
 	}
 	
+	public void delete(int placeid) throws Exception{
+		dao.delete(placeid);
+	}
+	
 	
 	
 }
