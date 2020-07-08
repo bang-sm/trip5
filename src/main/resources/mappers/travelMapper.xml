@@ -28,6 +28,7 @@
 	</insert>
 	<insert id="story_detail_Regist">
 	
+		<!-- 방금 insert된  부모의 키값을 알아오기 위한 쿼리문 -->
 	 	<selectKey resultType="int" keyProperty="tsid" order="BEFORE">
         	SELECT MAX(tsid) FROM travel_story        
     	</selectKey>
