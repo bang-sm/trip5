@@ -1,6 +1,13 @@
 package com.sm.configuration;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -10,16 +17,18 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.sm.service.KakaoAPI;
 import com.sm.service.MemberService;
 
-import lombok.AllArgsConstructor;
-
+@EnableConfigurationProperties(OAuth2ClientProperties.class)
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -27,42 +36,84 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http    	
-		.authorizeRequests()
-			.antMatchers("/admin/**").hasRole("ADMIN") // /admin 으로 시작하는 경로는 ADMIN 롤을 가진 사용자만 접근 가능합니다.
-	        .antMatchers("/user/myinfo").hasRole("MEMBER") // /user/myinfo 경로는 MEMBER 롤을 가진 사용자만 접근 가능합니다
-	        .antMatchers("/**").permitAll()
-	        .anyRequest().permitAll()
+        http.authorizeRequests()
+        	.antMatchers("/", "/oauth2/**", 
+				"/user/**", 
+				"/css/**", 
+				"/image/**", 
+				"/js/**", 
+				"/console/**", 
+				"/favicon.ico/**")
+			.permitAll()
+			.anyRequest()
+			.authenticated()
         .and()
-	        .formLogin()
-	        .loginPage("/user/login")  //로그인페이지
-	        .defaultSuccessUrl("/index") // 성공했을때 이동되는 페이지
-	        .usernameParameter("memberid")	//로그인시 파라미터로 "id", "password"를 받습니다
-	        .passwordParameter("password")	//
-	        .permitAll()
+        	.formLogin()
+        	.loginPage("/user/login")  //로그인페이지
+        	.defaultSuccessUrl("/index") // 성공했을때 이동되는 페이지
+        	.usernameParameter("memberid")	//로그인시 파라미터로 "id", "password"를 받습니다
+        	.passwordParameter("password")	//
+        	.permitAll()
         .and()
 	        .logout()
 	        .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-	        .logoutSuccessUrl("/index")
-	        .invalidateHttpSession(true)  //세션초기화
+//	        .addLogoutHandler(new KakaoAPI())
+	        .logoutSuccessUrl("/index")		// 성공했을때 이동되는 페이지
+	        .invalidateHttpSession(true) 	//세션초기화
 	    .and()
 	    	//403예외
-        	.exceptionHandling().accessDeniedPage("/user/denied")
-        .and()
-        	.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-        .and()	
-        	.csrf().ignoringAntMatchers("/travel/**")
-        .and()
-        	.rememberMe()
-        	.rememberMeParameter("remember-me")
-        	.tokenValiditySeconds(604800)
-        .and()
-        	.csrf().ignoringAntMatchers("/ajax/idCheck")
+	    	.exceptionHandling().accessDeniedPage("/user/denied")
+	    .and()
+	    	.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+	    .and()	
+	    	.csrf().ignoringAntMatchers("/travel/**")
+	    .and()
+	    	.rememberMe()
+	    	.rememberMeParameter("remember-me")
+	    	.tokenValiditySeconds(604800)
+	    .and()
+	    	.csrf().ignoringAntMatchers("/ajax/idCheck")
 		.and()
-			.csrf().ignoringAntMatchers("/user/login");
-		
-		
+			.csrf().ignoringAntMatchers("/user/login")
+		.and()
+			.oauth2Login()
+//			.successHandler()
+			.loginPage("/user/login");
 
+		//		.antMatchers("/kakao")
+		// .hasAuthority(KAKAO.getRoleType())
+
+	}
+	
+	
+
+	
+	
+	
+	//	//custom.oauth2.kakao.client-id=2d3554ca6fbdc8ff7fdc4b74f4b28dd8
+//	//custom.oauth2.kakao.client-secret=lI1VIyD61p6Ej0ZadJ7dt9iKuIoExRnZ
+	@Bean
+	@ConditionalOnMissingBean(ClientRegistrationRepository.class)
+	public ClientRegistrationRepository clientRegistrationRepository(OAuth2ClientProperties oAuth2ClientProperties) {
+		
+		String kakaoClientId="2d3554ca6fbdc8ff7fdc4b74f4b28dd8";
+		String kakaoClientSecret="lI1VIyD61p6Ej0ZadJ7dt9iKuIoExRnZ";
+		
+		List<ClientRegistration> registrations = oAuth2ClientProperties.getRegistration().keySet().stream()
+				.map(client -> getRegistration(oAuth2ClientProperties, client)).filter(Objects::nonNull)
+				.collect(Collectors.toList());
+		registrations.add(CustomOAuthProvider.KAKAO.getBuilder("kakao")
+				.clientId(kakaoClientId)
+				.clientSecret(kakaoClientSecret)
+				.jwkSetUri("temp")
+				.build());
+		
+		return new InMemoryClientRegistrationRepository(registrations);
+	}
+
+	private ClientRegistration getRegistration(OAuth2ClientProperties clientProperties, String client) {
+		
+		return null;
 	}
 	
 	@Bean
@@ -86,4 +137,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(memberService).passwordEncoder(passwordEncoder());
     }
 
+
 }
+

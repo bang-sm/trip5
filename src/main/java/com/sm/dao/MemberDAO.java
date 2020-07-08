@@ -18,14 +18,23 @@ public class MemberDAO {
 		sql.insert(namespace + ".signup",memberVO);
 	}
 
-	public MemberVO getUserById(String memberid) {
-		// TODO Auto-generated method stub
-		return sql.selectOne(namespace + ".findById",memberid);
+	public MemberVO getUserById(String memberemail) {
+		return sql.selectOne(namespace + ".findById",memberemail);
 	}
 	
 	// 아이디 중복체크
-	public MemberVO idCheck(String memberid) throws Exception{
-		return sql.selectOne(namespace + ".idCheck",memberid);
+	public MemberVO idCheck(String memberemail) throws Exception{
+		return sql.selectOne(namespace + ".idCheck",memberemail);
 	}
+	
+	// 카카오연동 아이디 유무
+	public MemberVO kakaoCheck(String memberemail) {
+		return sql.selectOne(namespace + ".kakaoCheck", memberemail);
+	}
+	
+	
+	
+	
+	
 
 }

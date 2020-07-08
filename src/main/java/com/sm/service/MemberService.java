@@ -62,16 +62,16 @@ public class MemberService implements UserDetailsService{
     }
     
     // 아이디 중복체크
-    public MemberVO idCheck(String memberid) throws Exception{
-    	return memberDAO.idCheck(memberid);
+    public MemberVO idCheck(String memberemail) throws Exception{
+    	return memberDAO.idCheck(memberemail);
     }
     
     //로그인 할때 타는 서비스
 	@Override
-	public UserDetails loadUserByUsername(String memberid) throws UsernameNotFoundException {
-		System.out.println("넘어온 아이디 "+ memberid);
+	public UserDetails loadUserByUsername(String memberemail) throws UsernameNotFoundException {
+		System.out.println("넘어온 아이디 "+ memberemail);
 		
-		MemberVO user= memberDAO.getUserById(memberid);
+		MemberVO user= memberDAO.getUserById(memberemail);
 		List<GrantedAuthority> auth=new ArrayList<>();
 		if(user==null) {
 			throw new UsernameNotFoundException("User Not Found");
@@ -85,13 +85,13 @@ public class MemberService implements UserDetailsService{
 		/*
 		 * 아이디가 admin 인 계정에는 관리자권한 아니면 일반 멤버 권한
 		 * */
-		if(("admin").equals(user.getMemberid())) {
+		if(("admin").equals(user.getMemberemail())) {
 			auth.add(new SimpleGrantedAuthority(Role.ADMIN.getValue()));
 		}else {
 			auth.add(new SimpleGrantedAuthority(Role.MEMBER.getValue()));
 		}
 		
-		return new User(user.getMemberid(), user.getMemberpass(),auth);
+		return new User(user.getMemberemail(), user.getMemberpass(),auth);
 	}
-
+	
 }
