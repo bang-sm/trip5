@@ -436,6 +436,8 @@ $('.star_img').click(function(){
  $('.btn-filter').on('click', function() {
 	var $target = $(this).data('target');
 	$('.table').html("");
+	var uuid = $('input[name=uuid]').val();
+	console.log(uuid);
 	result="";
 	if ($target == 0) {//음식
 		$.ajax({
@@ -443,7 +445,8 @@ $('.star_img').click(function(){
 			type : "GET",
 			data : {
 				"placecategory" : $target,
-				"placecheck": 0
+				"placecheck": 0,
+				"uuid": uuid
 			},
 			success : function(data){
 				var count = data.length;
@@ -502,7 +505,8 @@ $('.star_img').click(function(){
 			type : "GET",
 			data : {
 				"placecategory" : $target,
-				"placecheck": 0
+				"placecheck": 0,
+				"uuid": uuid
 			},
 			success : function(data){
 				var count = data.length;
@@ -561,7 +565,8 @@ $('.star_img').click(function(){
 			type : "GET",
 			data : {
 				"placecategory" : $target,
-				"placecheck": 0
+				"placecheck": 0,
+				"uuid": uuid
 			},
 			success : function(data){
 				var count = data.length;
@@ -620,7 +625,8 @@ $('.star_img').click(function(){
 			url: "/goplace", 
 			type : "GET",
 			data : {
-				"placecheck": 1
+				"placecheck": 1,
+				"uuid": uuid
 			},
 			success : function(data){
 				var count = data.length;
@@ -679,7 +685,8 @@ $('.star_img').click(function(){
 			url: "/goplace", 
 			type : "GET",
 			data : {
-				"placecheck": 0
+				"placecheck": 0,
+				"uuid": uuid
 			},
 			success : function(data){
 				var count = data.length;

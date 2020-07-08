@@ -17,8 +17,8 @@ public class PlacelistService{
 	@Autowired
 	PlacelistDAO dao;
 	
-	public List<PlacelistVo> show() throws Exception{
-		return dao.show();
+	public List<PlacelistVo> show(int uuid) throws Exception{
+		return dao.show(uuid);
 	}
 	
 	public void select(PlacelistVo placelistVo) throws Exception{
@@ -33,12 +33,12 @@ public class PlacelistService{
 		dao.checkbox(placecheck,placeid);
 	}
 	
-	public List<PlacelistVo> goplace(int placecheck) throws Exception{
-		return dao.goplace(placecheck);
+	public List<PlacelistVo> goplace(int placecheck,int uuid) throws Exception{
+		return dao.goplace(placecheck,uuid);
 	}
 	
-	public List<PlacelistVo> buttoncategory(int placecategory,int placecheck) throws Exception{
-		return dao.buttoncategory(placecategory,placecheck);
+	public List<PlacelistVo> buttoncategory(int placecategory,int placecheck,int uuid) throws Exception{
+		return dao.buttoncategory(placecategory,placecheck,uuid);
 	}
 	
 	public void delete(int placeid) throws Exception{

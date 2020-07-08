@@ -28,7 +28,7 @@
 					#{iconname}
 					);
 	</insert>
-	<select id="placeshow" resultType="com.sm.domain.PlacelistVo">
+	<select id="placeshow" parameterType="int" resultType="com.sm.domain.PlacelistVo">
 		SELECT
 			placeid,
 			placename,
@@ -41,6 +41,8 @@
 			bloglink
 		FROM
 		    placeList
+		WHERE
+			uuid =#{uuid}
 		ORDER BY
 		    bookmark DESC;
 	</select>
@@ -62,13 +64,13 @@
 				placeid= #{placeid};
 	</update>
 	
-	<select id="goplace" parameterType="int" resultType="com.sm.domain.PlacelistVo">
+	<select id="goplace" parameterType="map" resultType="com.sm.domain.PlacelistVo">
 		SELECT
 				*
 		FROM
 				placeList
 		WHERE
-				placecheck=#{placecheck};
+				placecheck=#{placecheck} and uuid =#{uuid};
 	</select>
 	
 	<select id="buttoncategory" parameterType="map" resultType="com.sm.domain.PlacelistVo">
@@ -77,7 +79,7 @@
 		FROM
 				placeList
 		WHERE  
-				placecategory = #{placecategory} and placecheck =#{placecheck};
+				placecategory = #{placecategory} and placecheck =#{placecheck} and uuid=#{uuid};
 	
 	</select>
 	
