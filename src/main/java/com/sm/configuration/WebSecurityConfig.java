@@ -43,7 +43,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				"/image/**", 
 				"/js/**", 
 				"/console/**", 
-				"/favicon.ico/**")
+				"/favicon.ico/**",
+				"/chat")
 			.permitAll()
 			.anyRequest()
 			.authenticated()
@@ -75,6 +76,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	    	.csrf().ignoringAntMatchers("/ajax/idCheck")
 		.and()
 			.csrf().ignoringAntMatchers("/user/login")
+		.and()
+			.csrf().ignoringAntMatchers("/chat/**")	
+		.and()
+			.csrf().ignoringAntMatchers("/black/**")	
 		.and()
 			.oauth2Login()
 //			.successHandler()
