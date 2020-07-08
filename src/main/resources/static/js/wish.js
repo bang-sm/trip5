@@ -841,16 +841,6 @@ $(document).on('click','.media-body',function(){
 	
 })
 
-//글 수정
-$(document).on('click','.media_update',function(){
-	$('.modal-title').text('나만의 맛집 & 장소 수정하기');
-	var home=$(this).parents('.media').children('.media-body');
-	var title =home.children('.title').text();
-	var juso = home.children('.summary').text();
-	$('#keyword').val(juso+''+title);
-
-
-})
 
 //글 삭제
 $(document).on('click','.media_delete',function(){

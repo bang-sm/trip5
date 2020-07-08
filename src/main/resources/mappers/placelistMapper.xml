@@ -21,7 +21,7 @@
 					now(),
 					0,
 					#{placejuso},
-					1,
+					#{uuid},
 					#{placecategory},
 				    0,
 					#{bloglink},
