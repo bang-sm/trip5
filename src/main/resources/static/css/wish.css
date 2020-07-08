@@ -360,6 +360,12 @@ a:hover { color: black; text-decoration: none;}
 .wish_list_title_name{
 	font-size:30px;
 }
+#dropdownMenuButton{
+	width:160px;
+}
+.btn_m_register{
+	display:none;
+}
 
 @media(max-width:1200px){
 	.wish_list_title_name{
@@ -384,21 +390,10 @@ a:hover { color: black; text-decoration: none;}
 }
 
 @media(max-width:768px){
-	.wish_list_title_name{
-	font-size:20px;
-	}
 	.food_regist{
 	display:none;
 	}
-	.main_button_theme{
-	 display:none;
-	}
-	.dropdown{
-	margin:20px 0 20px 0;
-	display:block
-	}
-	.btn-m{
-	width:100%;
-	text-align: center;
+	.btn_m_register{
+	display:block;
 	}
 }
