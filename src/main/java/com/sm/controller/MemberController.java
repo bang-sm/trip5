@@ -82,13 +82,12 @@ public class MemberController {
 		return "redirect:/user/login";
 	}
 
-//	// 카카오로그인 페이지
+//	 카카오로그인 페이지
 //	@GetMapping("/user/kakaologin")
 //	public String kakaologin(@RequestParam("code") String code, HttpSession session, HttpServletResponse response,
 //			HttpServletRequest request) {
 //		Cookie[] cookies = request.getCookies(); // 로그인 유지위한 쿠키
 //		if (cookies == null) {
-////			request.setAttribute(name, o);
 //			System.out.println("들어옴");
 //			JsonNode accessToken;
 //			System.out.println(session.getAttribute("username") + "하이욤");
