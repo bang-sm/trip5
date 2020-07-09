@@ -19,16 +19,17 @@
 	
 	<select id="selectBlackList" parameterType="int" resultType="com.sm.domain.MemberVO">
 		select 
-			black_uuid 
+			black_uuid as blackuuid
 		from 
 			blackList 
 		where 
-			uuid = #{blackuid}
+			uuid = #{uuid}
 	</select>
-
-
-
-
-
-
+	
+	<delete id="deleteBlackList" parameterType="int">
+		delete from 
+			blackList 
+		where 
+			black_uuid = #{otheruid} ;
+	</delete>
 </mapper>

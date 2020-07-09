@@ -1,6 +1,7 @@
 var ws;
 var nick;
-
+var blackListv;
+var blackUser = true;
 $(document).ready(function(){
 	loadPage();
 });
@@ -10,15 +11,17 @@ $(document).on('click',".othersMsg" ,function(){
 });
 
 function loadPage(){
-	
-	$.ajax(function(){
-		url : "load",
+	data = "uuid="+$("#userSessionuuid").val();
+	console.log(data);
+	$.ajax({
+		url : "/my/load",
 		type : "POST",
 		cache : false,
-		data : "uuid=" + $('#userSessionId').val(),
-		success : function(data, status){
+		data : data,
+		success : function(data1, status){
 			if(status == "success"){
-				console.log("굿자아아아아아아아앙ㅂ");
+				console.log("data1 = " + data1);
+				blackListv = data1;
 			}
 		}
 	});
@@ -27,20 +30,18 @@ function loadPage(){
 function wsOpen() {
 	ws = new WebSocket("ws://" + location.host + "/chating");
 	wsEvt();
-	console.log($('#userSessionId').val());
 }
 
 function wsEvt() {
 	ws.onopen = function(data) {
 		//소켓이 열리면 동작
 		console.log('소켓 오픈');
-		inChatt();
 	}
 
 	ws.onmessage = function(data) {
 		//메시지를 받으면 동작
 		var msg = data.data;
-		
+		blackUser = true;
 		console.log("msg = " + msg);
 		if (msg != null && msg.trim() != '') {
 			var d = JSON.parse(msg);
@@ -49,7 +50,7 @@ function wsEvt() {
 				var si = d.sessionId != null ? d.sessionId : "";
 				if (si != '') {
 					$("#sessionId").val(si);
-					$("#chating").append("<p class='inChat'>" + $('#userSessionId').val() + "님이 입장하셨습니다</p>");
+					$("#chating").append("<p class='me'>" + $('#userSessionId').val() + "님이 입장하셨습니다</p>");
 				}
 			} else if (d.type == "message") {
 				if (d.sessionId == $("#sessionId").val()) {
@@ -59,16 +60,24 @@ function wsEvt() {
 						$("#chating").append("<p class='me'>나 : " + d.msg + "</p>");
 					}
 				} else if((d.msg.length != 0)){
+					for(i = 0; i< blackListv.length; i++){
+						if(blackListv[i].blackuuid == d.userUuid){
+							blackUser = false;
+							break;
+						}
+					}
+						if(blackUser){
 						$("#chating").append(
 							"<div class='dropdown others'>" +
 							  "<a class='stretched-link othersMsg' href='#' role='button' id='dropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' data-email='" + d.userName + "'>"
 							  + d.userName +
 							  "</a>" +
 							  "<div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>"
-							    +"<button class='dropdown-item' onclick='blackList()'>차단하기</button>"+
+							    +"<button class='dropdown-item' onclick='blackList()' data-email='" + d.userName + "'>차단하기</button>"+
 							    "<button class='dropdown-item' href='#'>쪽지보내기</button>" +
 							  "</div>" 
 							  + " : " + d.msg + "</div>");
+						}
 				}
 			} else {
 				console.warn("unknown type!")
@@ -94,13 +103,14 @@ function send() {
 		type : "message",
 		sessionId : $("#sessionId").val(),
 		userName : $('#userSessionId').val(),
+		userUuid : $('#userSessionuuid').val(),
 		msg : $("#chatting").val()
 	}
 	ws.send(JSON.stringify(option))
 	$('#chatting').val("");
 }
 
-function inChatt(){
+/*function inChatt(){
 	var option = {
 			type : "getId",
 			sessionId : $("#sessionId").val(),
@@ -108,32 +118,27 @@ function inChatt(){
 			msg : $('#userSessionId').val() + "님이 입장하셨습니다."
 		}
 		ws.send(JSON.stringify(option))
-}
+}*/
 
-function outChatt(){
-	var option = {
-			type : "outId",
-			sessionId : $("#sessionId").val(),
-			userName : $('#userSessionId').val(),
-			msg : $('#userSessionId').val() + "님이 퇴장하셨습니다."
-		}
-		ws.send(JSON.stringify(option))
-}
 
 function blackList(){
 	if(confirm("차단하시겠습니까?")){
 		// 내 uuid 와 상대방 nickname request
-		/*location.href='/black?uuid='+$("#userSessionuuid").val() + "&membernick="+nick;*/
 		data = "uuid="+$("#userSessionuuid").val() + "&membernick="+nick
 		console.log(data);
 		$.ajax({
-			url : "black",
+			url : "/my/black",
 			type : "POST",
 			cache : false,
 			data : data,
 			success : function(data, status){
 				if(status == "success"){
-					alert("차단되었습니다.")
+					alert("차단되었습니다.");
+					$("button[data-email="+nick+"]").text("차단해제");
+					$("button[data-email="+nick+"]").removeAttr("onclick");
+					$("button[data-email="+nick+"]").attr("onclick", "disBlackList()");
+					
+					loadPage();
 				}
 			}
 		});
@@ -141,3 +146,41 @@ function blackList(){
 		return ;
 	}
 }
+
+function disBlackList(){
+	if(confirm("차단을 푸시겠습니까?")){
+		// 내 uuid 와 상대방 nickname request
+		data = "&membernick="+nick
+		console.log(data);
+		$.ajax({
+			url : "/my/disblack",
+			type : "POST",
+			cache : false,
+			data : data,
+			success : function(data, status){
+				if(status == "success"){
+					alert("차단해제 되었습니다.");
+					$("button[data-email="+nick+"]").text("차단하기");
+					$("button[data-email="+nick+"]").removeAttr("onclick");
+					$("button[data-email="+nick+"]").attr("onclick", "blackList()");
+					
+					loadPage();
+				}
+			}
+		});
+	} else {
+		return ;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+

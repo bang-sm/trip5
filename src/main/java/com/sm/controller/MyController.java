@@ -1,16 +1,18 @@
 package com.sm.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.sm.domain.MemberVO;
 import com.sm.service.MyService;
 
 @RestController
+@RequestMapping(value="/my")
 public class MyController {
 	
 	@Autowired
@@ -22,11 +24,22 @@ public class MyController {
 		
 		myService.insertBlackList(memberVO.getUuid(), uuid);
 	}
-	
+
 	@PostMapping("/load")
-	public void loadAjax(int uuid) {
+	public List<MemberVO> loadAjax(String uuid) {
+		System.out.println(uuid);
+		List<MemberVO> list = myService.selectBlackList(Integer.parseInt(uuid));
 		
-		myService.selectBlackList(uuid);
+		return list;
 	}
+	
+	@PostMapping("/disblack")
+	public void disblackAjax(MemberVO memberVO) {
+		int uuid = myService.selectUuid(memberVO).getUuid();
+		
+		myService.deleteBlackList(uuid);
+		
+	}
+	
 	
 }

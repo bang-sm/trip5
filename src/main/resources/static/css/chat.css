@@ -52,3 +52,11 @@ input {
 .inputTable{
 	display: none;
 }
+
+.btn:focus {
+  outline: none;
+}
+
+.modExample .btn {
+  margin: 4px 8px 4px 0;
+}
