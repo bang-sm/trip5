@@ -476,3 +476,95 @@ body {
 	margin-top: 5px;
 	font-size: 10px;
 }
+
+.progress {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: #b7b7b7;
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  font-size: 0.8em;
+}
+/* line 11, ../sass/components/_progress.scss */
+.progress.vertical > li {
+  display: block;
+  min-height: 44px;
+  margin-left: 30px;
+  text-align: left;
+}
+/* line 17, ../sass/components/_progress.scss */
+.progress.vertical > li:first-child:after {
+  display: block;
+}
+/* line 22, ../sass/components/_progress.scss */
+.progress.vertical > li:last-child:after {
+  display: none;
+}
+/* line 27, ../sass/components/_progress.scss */
+.progress.vertical > li.active:after {
+  background: #b7b7b7;
+}
+/* line 31, ../sass/components/_progress.scss */
+.progress.vertical > li:after {
+  width: 2px;
+  height: 100%;
+  display: block;
+  left: -20px;
+  top: 0;
+  margin-left: 0;
+}
+/* line 39, ../sass/components/_progress.scss */
+.progress.vertical > li:before {
+  float: left;
+  display: inline-block;
+  margin-left: -30px;
+  position: absolute;
+}
+
+.progress > li {
+  display: table-cell;
+  text-align: center;
+  position: relative;
+}
+/* line 127, ../sass/components/_progress.scss */
+.progress > li.active:before {
+  background: #008000;
+}
+/* line 130, ../sass/components/_progress.scss */
+.progress > li.active:after {
+  background: #008000;
+}
+/* line 134, ../sass/components/_progress.scss */
+.progress > li:before {
+  position: relative;
+  content: attr(data-step);
+  width: 22px;
+  height: 22px;
+  display: block;
+  margin: 0 auto 2px;
+  line-height: 19px;
+  background: #b7b7b7;
+  border-radius: 100%;
+  text-align: center;
+  color: #ffffff;
+  z-index: 1;
+}
+/* line 148, ../sass/components/_progress.scss */
+.progress > li:after {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  display: block;
+  top: 11px;
+  left: -50%;
+  content: '';
+  background: #b7b7b7;
+  margin-left: 2px;
+  z-index: -1;
+}
+/* line 161, ../sass/components/_progress.scss */
+.progress > li:first-child:after {
+  display: none;
+}

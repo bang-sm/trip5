@@ -7,6 +7,24 @@
 */
 
 $(document).ready(function() {
+	
+	$('.summernote').summernote({
+		 placeholder: '추억을 작성하세요',
+		 height:400,
+		 maxHeight:400,
+		 minHeight: 400, 
+		 focus: true,
+		 lang: "ko-KR",	
+		  toolbar: [
+			    // [groupName, [list of button]]
+			    ['style', [ 'italic', 'underline', 'clear']],
+			    ['font', ['strikethrough', 'superscript', 'subscript']],
+			    ['fontsize', ['fontsize']],
+			    ['color', ['color']],
+			    ['para', ['ul', 'ol', 'paragraph']],
+			  ]
+	});
+	
     var current_fs, next_fs, previous_fs;
     var left, opacity, scale;
     var animating;

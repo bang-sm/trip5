@@ -12,8 +12,8 @@
 			tsregdate,
 			tshashtagone,
 			tsstartdate,
-			tsenddate,
-			tsfare)
+			tsenddate
+			)
 		VALUES(
 			tsid,
 			9,
@@ -51,5 +51,37 @@
 			)
 			</foreach>
 	</insert>
+	
+	<insert id="travel_firstSave" useGeneratedKeys="true" keyProperty="tsid"  parameterType="com.sm.domain.TravelVO">
+		INSERT INTO travel_story VALUES(
+			tsid,
+			#{uuid},
+			#{tstitle},
+			tslike,
+			now(),
+			'해쉬태그',
+			#{tsstartdate},
+			#{tsenddate},
+			tempsave
+		)
+	</insert>
+	
+	<select id="getTravelStory" parameterType="hashmap" resultType="com.sm.domain.TravelVO">
+		SELECT 	
+			tsid,
+			uuid,
+			tstitle,
+			tslike,
+			tsregdate,
+			tshashtagone,
+			tsstartdate,
+			tsenddate,
+			DATEDIFF(tsenddate ,tsstartdate )+1 AS datediff,
+			tempsave 
+		FROM
+			travel_story 
+		WHERE
+			tsid=#{tsid} AND uuid=#{uuid};
+	</select>
 
 </mapper>

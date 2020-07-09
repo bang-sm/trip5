@@ -82,7 +82,7 @@ p.quote{
 	<div id="datepicker">
 	
 	<div class="form-group float-label-control">
-		<input type="text" class="form-control" placeholder="제목">
+		<input id="tstitle" type="text" class="form-control" placeholder="제목">
 	</div>
 	
 	</div>
@@ -105,6 +105,9 @@ p.quote{
 				if(datepicker.selectedDates[0]==undefined && datepicker.selectedDates[1]==undefined){
 					alert("날짜를 선택하셔야합니다");
 				}
+				if($("#tstitle").val()==""){
+					alert("제목을 입력하셔야합니다");
+				}
 				else{
 					var startDate=new Date(datepicker.selectedDates[0]);
 					var endDate;
@@ -119,10 +122,19 @@ p.quote{
 					startDate=$.datepicker.formatDate('yy-mm-dd', new Date(startDate));
 					endDate=$.datepicker.formatDate('yy-mm-dd', new Date(endDate));
 					
-					
-					
-					//location.href = "/travel/regist;
-
+					$.ajax({
+						url: "/travel/travel_firstSave", 
+						type : "POST",
+						data : {
+							"tstitle" : $("#tstitle").val(),
+							"tsstartdate": startDate,
+							"tsenddate":endDate
+						},
+						success : function(data){
+							alert("일지 등록페이지로 이동합니다 ");
+							location.href = "/travel/regist?tsid="+data.tsid;
+						}
+					});
 				}
 			};
 			
