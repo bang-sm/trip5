@@ -37,13 +37,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-        	.antMatchers("/", "/oauth2/**", 
+        	.antMatchers("/",
+        		"/oauth2/**", 
 				"/user/**", 
 				"/css/**", 
 				"/image/**", 
 				"/js/**", 
 				"/console/**", 
-				"/favicon.ico/**")
+				"/favicon.ico/**",
+				"/chat"
+        			)
 			.permitAll()
 			.anyRequest()
 			.authenticated()
@@ -65,24 +68,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	    	.exceptionHandling().accessDeniedPage("/user/denied")
 	    .and()
 	    	.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-	    .and()	
-	    	.csrf().ignoringAntMatchers("/travel/**")
 	    .and()
 	    	.rememberMe()
 	    	.rememberMeParameter("remember-me")
 	    	.tokenValiditySeconds(604800)
 	    .and()
-	    	.csrf().ignoringAntMatchers("/ajax/idCheck")
+	    	.csrf().ignoringAntMatchers("/user/ajax/idCheck")
 		.and()
 			.csrf().ignoringAntMatchers("/user/login")
+		.and()	
+			.csrf().ignoringAntMatchers("/travel/**")
 		.and()
 			.oauth2Login()
 //			.successHandler()
 			.loginPage("/user/login");
-
 		//		.antMatchers("/kakao")
 		// .hasAuthority(KAKAO.getRoleType())
-
 	}
 	
 	

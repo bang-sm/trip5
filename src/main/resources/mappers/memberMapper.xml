@@ -23,13 +23,13 @@
 
 	<!-- 아이디 확인 -->
 	<select id="idCheck" resultType="com.sm.domain.MemberVO">
-		select memberemail from member
+		select memberemail, kakaoOk from member
 		where memberemail = #{memberemail}
 	</select>
 	
-	<!-- 카카오 아이디 확인 -->
+	<!-- kakao회원가인 체크 -->
 	<select id="kakaoCheck" resultType="com.sm.domain.MemberVO">
-		select kakaoOk from member
+		select memberpass from member
 		where memberemail = #{memberemail}
 	</select>
 
