@@ -4,10 +4,12 @@
 
 html,body{
 /*background-image: url('http://getwallpapers.com/wallpaper/full/a/5/d/544750.jpg');*/
-background-size: cover;
+background-size : 100% 100%;
 background-repeat: no-repeat;
+background-image : url('../image/login.jpg');
 height: 100%;
 font-family: 'Numans', sans-serif;
+
 }
 
 .container{
@@ -68,21 +70,15 @@ margin-left: 15px;
 margin-right: 5px;
 }
 
-.login_btn{
-color: black;
-background-color: #FFC312;
-width: 100px;
-}
-
-.login_btn:hover{
-color: black;
-background-color: white;
-}
-
 .links{
 color: white;
 }
 
 .links a{
 margin-left: 4px;
+color: wheat;
+}
+
+img{
+	width: 100%;
 }

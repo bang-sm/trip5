@@ -8,8 +8,8 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter
@@ -17,22 +17,23 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class MemberVO {
-	
+
 //	@NotBlank(message = "아이디는 필수 입력 값입니다.")
 //	private String memberid;
-	
-	@Pattern(regexp="(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,20}",message = "비밀번호는 영문 대,소문자와 숫자, 특수기호가 적어도 1개 이상씩 포함된 8자 ~ 20자의 비밀번호여야 합니다.")
-	@NotBlank(message = "비밀번호는 필수 입력 값입니다.")
-	private String memberpass;
- 	
-	
-	@NotBlank(message = "이메일은 필수 입력 값입니다.")
-    @Email(message = "이메일 형식에 맞지 않습니다.")
+
+	@NotBlank(message = "필수 정보입니다.")
+	@Email(message = "이메일 형식에 맞지 않습니다.")
 	private String memberemail;
-	
+
+	@NotBlank(message = "필수 정보입니다.")
+	@Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,20}", message = "8~20자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
+	private String memberpass;
+
+	@NotBlank(message = "필수 정보입니다.")
+	private String membernick;
+
 	private int uuid;
 	private Date memberregdate;
-	private String membernick;
 	private String accountrock;
 	private String accountstatus;
 	private String sessionlog;
