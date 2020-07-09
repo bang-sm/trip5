@@ -15,8 +15,8 @@ public class PlacelistDAO {
 	@Autowired
 	SqlSession sql;
 	
-	public List<PlacelistVo> show() {
-		return sql.selectList("mappers.placelistMapper.placeshow");
+	public List<PlacelistVo> show(int uuid) {
+		return sql.selectList("mappers.placelistMapper.placeshow",uuid);
 	}
 	
 	public void select(PlacelistVo placelistVo) {
@@ -37,14 +37,20 @@ public class PlacelistDAO {
 		sql.update("mappers.placelistMapper.checkbox",cmap);
 	}
 	
-	public List<PlacelistVo> goplace(int placecheck){
-		return sql.selectList("mappers.placelistMapper.goplace",placecheck);
+	public List<PlacelistVo> goplace(int placecheck,int uuid){
+		HashMap<String, Integer> gmap = new HashMap<>();
+		gmap.put("placecheck", placecheck);
+		gmap.put("uuid", uuid);
+		
+		return sql.selectList("mappers.placelistMapper.goplace",gmap);
 	}
 	
-	public List<PlacelistVo> buttoncategory(int placecategory,int placecheck){
+	public List<PlacelistVo> buttoncategory(int placecategory,int placecheck,int uuid){
 		HashMap<String, Integer> bmap = new HashMap<>();
 		bmap.put("placecategory", placecategory);
 		bmap.put("placecheck", placecheck);
+		bmap.put("uuid", uuid);
+		
 		
 		return sql.selectList("mappers.placelistMapper.buttoncategory",bmap);
 	}

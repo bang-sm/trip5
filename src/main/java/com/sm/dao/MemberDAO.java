@@ -14,9 +14,11 @@ public class MemberDAO {
 	
 	String namespace = "mappers.memberMapper";
 
+	// 회원가입
 	public void join(MemberVO memberVO) {
 		sql.insert(namespace + ".signup",memberVO);
 	}
+
 
 	public MemberVO getUserById(String memberemail) {
 		return sql.selectOne(namespace + ".findById",memberemail);
@@ -26,14 +28,11 @@ public class MemberDAO {
 	public MemberVO idCheck(String memberemail) throws Exception{
 		return sql.selectOne(namespace + ".idCheck",memberemail);
 	}
-	
-	// 카카오연동 아이디 유무
-	public MemberVO kakaoCheck(String memberemail) {
-		return sql.selectOne(namespace + ".kakaoCheck", memberemail);
+
+	// kakao 회원가입 중복체크
+	public MemberVO kakaoCheck(String memberemail) throws Exception{
+		return sql.selectOne(namespace + ".kakaoCheck",memberemail);
 	}
-	
-	
-	
 	
 	
 

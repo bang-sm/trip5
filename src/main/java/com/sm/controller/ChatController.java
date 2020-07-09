@@ -18,6 +18,8 @@ public class ChatController {
 	// 채팅 페이지
 	@GetMapping(value="/chat")
     public String chatTest(HttpSession session, Model model) {
+		
+		model.addAttribute("uuid", session.getAttribute("userInfo"));
         return "chatting/chat";
     }
 }

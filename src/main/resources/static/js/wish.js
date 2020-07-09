@@ -8,12 +8,24 @@ $("#exampleModal").on('shown.bs.modal', function(){
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div
 	mapOption = {
 		center : new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-		level : 4
+		level : 3
 	// 지도의 확대 레벨
 	};
 
 	var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+	console.log("map.getLevel1 : "+map.getLevel());
 
+	
+	// 지도 확대, 축소 컨트롤에서 축소 버튼을 누르면 호출되어 지도를 확대하는 함수입니다
+	$(document).on('click','.zoomin',function(){
+		map.setLevel(map.getLevel() - 1);
+	})
+
+	$(document).on('click','.zoomout',function(){
+		map.setLevel(map.getLevel() + 1);
+	})
+
+	
 	setTimeout(function(){
 		map.relayout(); }
 	, 3000)
@@ -130,7 +142,9 @@ $("#exampleModal").on('shown.bs.modal', function(){
 	// 검색결과 항목을 Element로 반환하는 함수입니다
 	function getListItem(index, places) {
 
-		var el = document.createElement('li'), itemStr = '<span class="markerbg marker_'
+		var el = document.createElement('li'), 
+		
+		itemStr = '<span class="markerbg marker_'
 				+ (index + 1)
 				+ '"></span>'
 				+ '<div class="info">'
@@ -254,6 +268,7 @@ function fnMove() {
 function food_regist() {
 	$('.map_regist').css("display", "block");
 }
+
 
 var btn_check=0;
 
@@ -394,6 +409,8 @@ $(document).on("click",'.icon_main',function(){
 		$('input[name=iconname]').val("/"+iconname);
 		$('.btn-icon').removeClass('btn-outline-success');
 		$('.btn-icon').addClass('btn-success');
+		$('.food_icon').css("display","none");
+		$('.my_check').css("display","block");
 	}
 	
 	
@@ -436,6 +453,8 @@ $('.star_img').click(function(){
  $('.btn-filter').on('click', function() {
 	var $target = $(this).data('target');
 	$('.table').html("");
+	var uuid = $('input[name=uuid]').val();
+	console.log(uuid);
 	result="";
 	if ($target == 0) {//음식
 		$.ajax({
@@ -443,7 +462,8 @@ $('.star_img').click(function(){
 			type : "GET",
 			data : {
 				"placecategory" : $target,
-				"placecheck": 0
+				"placecheck": 0,
+				"uuid": uuid
 			},
 			success : function(data){
 				var count = data.length;
@@ -502,7 +522,8 @@ $('.star_img').click(function(){
 			type : "GET",
 			data : {
 				"placecategory" : $target,
-				"placecheck": 0
+				"placecheck": 0,
+				"uuid": uuid
 			},
 			success : function(data){
 				var count = data.length;
@@ -561,7 +582,8 @@ $('.star_img').click(function(){
 			type : "GET",
 			data : {
 				"placecategory" : $target,
-				"placecheck": 0
+				"placecheck": 0,
+				"uuid": uuid
 			},
 			success : function(data){
 				var count = data.length;
@@ -620,7 +642,8 @@ $('.star_img').click(function(){
 			url: "/goplace", 
 			type : "GET",
 			data : {
-				"placecheck": 1
+				"placecheck": 1,
+				"uuid": uuid
 			},
 			success : function(data){
 				var count = data.length;
@@ -679,7 +702,8 @@ $('.star_img').click(function(){
 			url: "/goplace", 
 			type : "GET",
 			data : {
-				"placecheck": 0
+				"placecheck": 0,
+				"uuid": uuid
 			},
 			success : function(data){
 				var count = data.length;
@@ -828,15 +852,12 @@ function wish_regist(){
 }
 //클릭시 블로그 보기 , 글 수정 , 글 삭제 버튼으로 전환
 $(document).on('click','.media-body',function(){
-	var parent = $(this).parents(".media");
-	$(this).animate({
+	var parent = $(this).parents(".hidden_btn");
+	$('.hidden_box').animate({
 		opacity:"0",
 	},1000,
 	function(){
-		parent.children('.media_look').css('display','block');
-		parent.children('.media_update').css('display','block');
-		parent.children('.media_delete').css('display','block');
-		parent.children('.media_cancel').css('display','block');
+		$('.hidden_btn').css("display","block");
 	})
 	
 })
@@ -864,12 +885,36 @@ $(document).on('click','.media_delete',function(){
 //취소 버튼
 
 $(document).on('click','.media_cancel',function(){
-	var parent = $(this).parents(".media");
-	parent.children('.media_look').css('display','none');
-	parent.children('.media_update').css('display','none');
-	parent.children('.media_delete').css('display','none');
-	parent.children('.media_cancel').css('display','none');
-	$('.media-body').animate({
+	$('.hidden_btn').css("display","none");
+	$('.hidden_box').animate({
 		opacity:"1",
 	},1000)
 })
+
+
+//2번쨰 모달창 갈때 장소 블로그 선택 여부
+
+function statuscheck(){
+	var blog = $('input[name=bloglink]').val();
+	console.log("blog : "+blog);
+	var place = $('input[name=placename]').val();
+	console.log("place : "+place);
+	result="";
+	if(place== ""){
+		result+='<img src="../image/icon/cancel30.png" data-toggle="tooltip" data-placement="top" title="저장된 장소가 없습니다."/>';
+		$('.btn_check_place_status').html(result);
+	}else{
+		result+='<img src="../image/icon/check30.png" data-toggle="tooltip" data-placement="top" title="'+place+'"/>';
+		$('.btn_check_place_status').html(result);
+	}
+	result="";
+	if(blog ==""){
+		result+='<img src="../image/icon/cancel30.png" data-toggle="tooltip" data-placement="top" title="저장된 블로그가 없습니다."/>';
+		$('.btn_check_blog_status').html(result);
+	}else{
+		result+='<img src="../image/icon/check30.png" data-toggle="tooltip" data-placement="top" title="'+blog+'"/>';
+		$('.btn_check_blog_status').html(result);
+	}
+}
+
+

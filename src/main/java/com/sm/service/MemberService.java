@@ -69,7 +69,7 @@ public class MemberService implements UserDetailsService{
     //로그인 할때 타는 서비스
 	@Override
 	public UserDetails loadUserByUsername(String memberemail) throws UsernameNotFoundException {
-		System.out.println("넘어온 아이디 "+ memberemail);
+		//System.out.println("넘어온 아이디 "+ memberemail);
 		
 		MemberVO user= memberDAO.getUserById(memberemail);
 		List<GrantedAuthority> auth=new ArrayList<>();
@@ -84,7 +84,7 @@ public class MemberService implements UserDetailsService{
 		
 		/*
 		 * 아이디가 admin 인 계정에는 관리자권한 아니면 일반 멤버 권한
-		 * */
+		 */
 		if(("admin").equals(user.getMemberemail())) {
 			auth.add(new SimpleGrantedAuthority(Role.ADMIN.getValue()));
 		}else {
@@ -92,6 +92,6 @@ public class MemberService implements UserDetailsService{
 		}
 		
 		return new User(user.getMemberemail(), user.getMemberpass(),auth);
-	}
+	} // end UserDetails
 	
 }
