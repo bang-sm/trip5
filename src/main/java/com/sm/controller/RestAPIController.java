@@ -51,13 +51,13 @@ public class RestAPIController {
 	}
 	
 	@GetMapping("/goplace")
-	public List<PlacelistVo> goplace(int placecheck) throws Exception{
-		return service.goplace(placecheck);
+	public List<PlacelistVo> goplace(int placecheck,int uuid) throws Exception{
+		return service.goplace(placecheck,uuid);
 	}
 	
 	@GetMapping("/buttoncategory")
-	public List<PlacelistVo> buttoncategory(int placecategory,int placecheck) throws Exception{
-		return service.buttoncategory(placecategory,placecheck);
+	public List<PlacelistVo> buttoncategory(int placecategory,int placecheck,int uuid) throws Exception{
+		return service.buttoncategory(placecategory,placecheck,uuid);
 	}
 	
 	@GetMapping("/delete")

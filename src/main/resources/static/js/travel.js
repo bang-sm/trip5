@@ -1,90 +1,213 @@
-function fnMove(seq) {
-	var offset = $("#day" + seq).offset();
-	$('html, body').animate({
-		scrollTop : offset.top
-	}, 400);
+/* Fundraising Grader
+*
+* Generic Copyright, yadda yadd yadda
+*
+* Plug-ins: jQuery Validate, jQuery 
+* Easing
+*/
+
+$(document).ready(function() {
+    var current_fs, next_fs, previous_fs;
+    var left, opacity, scale;
+    var animating;
+    $(".steps").validate({
+        errorClass: 'invalid',
+        errorElement: 'span',
+        errorPlacement: function(error, element) {
+            error.insertAfter(element.next('span').children());
+        },
+        highlight: function(element) {
+            $(element).next('span').show();
+        },
+        unhighlight: function(element) {
+            $(element).next('span').hide();
+        }
+    });
+    $(".next").click(function() {
+        $(".steps").validate({
+            errorClass: 'invalid',
+            errorElement: 'span',
+            errorPlacement: function(error, element) {
+                error.insertAfter(element.next('span').children());
+            },
+            highlight: function(element) {
+                $(element).next('span').show();
+            },
+            unhighlight: function(element) {
+                $(element).next('span').hide();
+            }
+        });
+        if ((!$('.steps').valid())) {
+            return true;
+        }
+        if (animating) return false;
+        animating = true;
+        current_fs = $(this).parent();
+        next_fs = $(this).parent().next();
+        $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+        next_fs.show();
+        current_fs.animate({
+            opacity: 0
+        }, {
+            step: function(now, mx) {
+                scale = 1 - (1 - now) * 0.2;
+                left = (now * 50) + "%";
+                opacity = 1 - now;
+                current_fs.css({
+                    'transform': 'scale(' + scale + ')'
+                });
+                next_fs.css({
+                    'left': left,
+                    'opacity': opacity
+                });
+            },
+            duration: 800,
+            complete: function() {
+                current_fs.hide();
+                animating = false;
+            },
+            easing: 'easeInOutExpo'
+        });
+    });
+    $(".submit").click(function() {
+        $(".steps").validate({
+            errorClass: 'invalid',
+            errorElement: 'span',
+            errorPlacement: function(error, element) {
+                error.insertAfter(element.next('span').children());
+            },
+            highlight: function(element) {
+                $(element).next('span').show();
+            },
+            unhighlight: function(element) {
+                $(element).next('span').hide();
+            }
+        });
+        if ((!$('.steps').valid())) {
+            return false;
+        }
+        if (animating) return false;
+        animating = true;
+        current_fs = $(this).parent();
+        next_fs = $(this).parent().next();
+        $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+        next_fs.show();
+        current_fs.animate({
+            opacity: 0
+        }, {
+            step: function(now, mx) {
+                scale = 1 - (1 - now) * 0.2;
+                left = (now * 50) + "%";
+                opacity = 1 - now;
+                current_fs.css({
+                    'transform': 'scale(' + scale + ')'
+                });
+                next_fs.css({
+                    'left': left,
+                    'opacity': opacity
+                });
+            },
+            duration: 800,
+            complete: function() {
+                current_fs.hide();
+                animating = false;
+            },
+            easing: 'easeInOutExpo'
+        });
+    });
+    $(".previous").click(function() {
+        if (animating) return false;
+        animating = true;
+        current_fs = $(this).parent();
+        previous_fs = $(this).parent().prev();
+        $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+        previous_fs.show();
+        current_fs.animate({
+            opacity: 0
+        }, {
+            step: function(now, mx) {
+                scale = 0.8 + (1 - now) * 0.2;
+                left = ((1 - now) * 50) + "%";
+                opacity = 1 - now;
+                current_fs.css({
+                    'left': left
+                });
+                previous_fs.css({
+                    'transform': 'scale(' + scale + ')',
+                    'opacity': opacity
+                });
+            },
+            duration: 800,
+            complete: function() {
+                current_fs.hide();
+                animating = false;
+            },
+            easing: 'easeInOutExpo'
+        });
+    });
+});
+jQuery(document).ready(function() {
+    jQuery("#edit-submitted-acquisition-amount-1,#edit-submitted-acquisition-amount-2,#edit-submitted-cultivation-amount-1,#edit-submitted-cultivation-amount-2,#edit-submitted-cultivation-amount-3,#edit-submitted-cultivation-amount-4,#edit-submitted-retention-amount-1,#edit-submitted-retention-amount-2,#edit-submitted-constituent-base-total-constituents").keyup(function() {
+        calcTotal();
+    });
+});
+var modules = {
+    $window: $(window),
+    $html: $('html'),
+    $body: $('body'),
+    $container: $('.container'),
+    init: function() {
+        $(function() {
+            modules.modals.init();
+        });
+    },
+    modals: {
+        trigger: $('.explanation'),
+        modal: $('.modal'),
+        scrollTopPosition: null,
+        init: function() {
+            var self = this;
+            if (self.trigger.length > 0 && self.modal.length > 0) {
+                modules.$body.append('<div class="modal-overlay"></div>');
+                self.triggers();
+            }
+        },
+        triggers: function() {
+            var self = this;
+            self.trigger.on('click', function(e) {
+                e.preventDefault();
+                var $trigger = $(this);
+                self.openModal($trigger, $trigger.data('modalId'));
+            });
+            $('.modal-overlay').on('click', function(e) {
+                e.preventDefault();
+                self.closeModal();
+            });
+            modules.$body.on('keydown', function(e) {
+                if (e.keyCode === 27) {
+                    self.closeModal();
+                }
+            });
+            $('.modal-close').on('click', function(e) {
+                e.preventDefault();
+                self.closeModal();
+            });
+        },
+        openModal: function(_trigger, _modalId) {
+            var self = this,
+                scrollTopPosition = modules.$window.scrollTop(),
+                $targetModal = $('#' + _modalId);
+            self.scrollTopPosition = scrollTopPosition;
+            modules.$html.addClass('modal-show').attr('data-modal-effect', $targetModal.data('modal-effect'));
+            $targetModal.addClass('modal-show');
+            modules.$container.scrollTop(scrollTopPosition);
+        },
+        closeModal: function() {
+            var self = this;
+            $('.modal-show').removeClass('modal-show');
+            modules.$html.removeClass('modal-show').removeAttr('data-modal-effect');
+            modules.$window.scrollTop(self.scrollTopPosition);
+        }
+    }
 }
-$(document).ready(function(){
-	$(document).on('click','ul.tabs li',function(){
-		var tab_id = $(this).attr('data-tab');
-
-		$('ul.tabs li').removeClass('current');
-		$('.tab-content').removeClass('current');
-
-		$(this).addClass('current');
-		$("#"+tab_id).addClass('current');
-		
-		$('.summernote').summernote({
-			 placeholder: '추억을 작성하세요',
-			 height:400,
-			 maxHeight:400,
-			 minHeight: 400, 
-			 focus: true,
-			 lang: "ko-KR",	
-			  toolbar: [
-				    // [groupName, [list of button]]
-				    ['style', [ 'italic', 'underline', 'clear']],
-				    ['font', ['strikethrough', 'superscript', 'subscript']],
-				    ['fontsize', ['fontsize']],
-				    ['color', ['color']],
-				    ['para', ['ul', 'ol', 'paragraph']],
-				  ]
-		});
-		
-	});
-	var count=0;
-	$(".add_day").click(function(){
-		
-		var day_content="";
-		var day_btn="";
-		day_content+='<div class="col-lg-12 tab-content" id="day-'+count+'">';
-		day_content+='<div class="md-form input-group mb-3">';
-		day_content+='<input type="text" class="form-control" placeholder="머릿말을 입력하세요" name="list['+count+'].tsititle">';
-		day_content+='</div>';
-		day_content+='<textarea class="summernote" name="list['+count+'].tsicomment"></textarea>';
-		
-		day_content+='<div class="root_box" class="timeline timeline-animated">';
-		day_content+='<div class="timeline-item">';
-		day_content+='<button type="button" class="btn btn-success waves-effect add_root">경로추가</button>';
-		day_content+='</div>';
-		day_content+='</div>';
-		
-		day_content+='</div>';
-		
-		day_btn+='<li class="nav-item add_day'+count+'" data-tab="day-'+count+'" >';
-		day_btn+='<a class="nav-link active" href="#">'+count+'day</a>';
-		day_btn+='<input type="hidden" value="'+count+'" name="list['+count+'].tsidDay">';
-		day_btn+='</li>';
-		
-		
-		$("#add_day_ul").append(day_btn);
-		$('.add_day+'+count+'').trigger("click");
-		$("#ts_story").append(day_content);
-		
-		count++;
-		
-	});
-	
-	//경로 추가햇을떄
-	var root_order=0;
-	$(document).on('click','.add_root',function(){
-		
-		var div=$(this).parent();
-		$(this).parent().empty();
-		var root_name="";
-		var next_root="";
-		root_name+='<span class="timeline-date" name="tsirootorder">'+root_order+'번째 장소</span>';
-		root_name+='<h3 class="timeline-title" name="tsirootname">역삼역</h3>';
-		root_name+='<input type="hidden" name="tsirootorder" value="'+root_order+'">';
-		root_name+='<input type="hidden" name="tsirootname" value="역삼역">';
-		next_root+='<div class="timeline-item">';
-		next_root+='<button type="button" class="btn btn-success waves-effect add_root">경로추가</button>';
-		next_root+='</div>';
-		//일단 부모 비우기
-		console.log(root_name);
-		$(div).append(root_name);
-		$(div).parent().append(next_root);
-		
-		root_order++;
-	});
-})
+modules.init();

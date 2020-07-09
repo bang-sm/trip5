@@ -1,10 +1,33 @@
 var ws;
+var nick;
+
+$(document).ready(function(){
+	loadPage();
+});
+
+$(document).on('click',".othersMsg" ,function(){
+	nick = $(this).attr('data-email');
+});
+
+function loadPage(){
+	
+	$.ajax(function(){
+		url : "load",
+		type : "POST",
+		cache : false,
+		data : "uuid=" + $('#userSessionId').val(),
+		success : function(data, status){
+			if(status == "success"){
+				console.log("굿자아아아아아아아앙ㅂ");
+			}
+		}
+	});
+}
 
 function wsOpen() {
 	ws = new WebSocket("ws://" + location.host + "/chating");
 	wsEvt();
 	console.log($('#userSessionId').val());
-	
 }
 
 function wsEvt() {
@@ -35,15 +58,15 @@ function wsEvt() {
 					} else {
 						$("#chating").append("<p class='me'>나 : " + d.msg + "</p>");
 					}
-				} else if(d.msg.length != 0){
+				} else if((d.msg.length != 0)){
 						$("#chating").append(
 							"<div class='dropdown others'>" +
-							  "<a class='stretched-link' href='#' role='button' id='dropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>"
+							  "<a class='stretched-link othersMsg' href='#' role='button' id='dropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' data-email='" + d.userName + "'>"
 							  + d.userName +
 							  "</a>" +
 							  "<div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>"
-							    +"<a class='dropdown-item' href='#'>차단하기</a>"+
-							    "<a class='dropdown-item' href='#'>쪽지보내기</a>" +
+							    +"<button class='dropdown-item' onclick='blackList()'>차단하기</button>"+
+							    "<button class='dropdown-item' href='#'>쪽지보내기</button>" +
 							  "</div>" 
 							  + " : " + d.msg + "</div>");
 				}
@@ -53,7 +76,6 @@ function wsEvt() {
 		}
 	}
 
-	
 	document.addEventListener("keypress", function(e) {
 		if (e.keyCode == 13) { //enter press
 			send();
@@ -98,6 +120,24 @@ function outChatt(){
 		ws.send(JSON.stringify(option))
 }
 
-
-
-
+function blackList(){
+	if(confirm("차단하시겠습니까?")){
+		// 내 uuid 와 상대방 nickname request
+		/*location.href='/black?uuid='+$("#userSessionuuid").val() + "&membernick="+nick;*/
+		data = "uuid="+$("#userSessionuuid").val() + "&membernick="+nick
+		console.log(data);
+		$.ajax({
+			url : "black",
+			type : "POST",
+			cache : false,
+			data : data,
+			success : function(data, status){
+				if(status == "success"){
+					alert("차단되었습니다.")
+				}
+			}
+		});
+	} else {
+		return ;
+	}
+}

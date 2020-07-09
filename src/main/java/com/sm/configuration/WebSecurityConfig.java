@@ -23,7 +23,6 @@ import org.springframework.security.oauth2.client.registration.InMemoryClientReg
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.sm.service.KakaoAPI;
 import com.sm.service.MemberService;
 
 @EnableConfigurationProperties(OAuth2ClientProperties.class)
@@ -45,8 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				"/js/**", 
 				"/console/**", 
 				"/favicon.ico/**",
-				"/chat"
-        			)
+				"/chat")
 			.permitAll()
 			.anyRequest()
 			.authenticated()
@@ -78,6 +76,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.csrf().ignoringAntMatchers("/user/login")
 		.and()	
 			.csrf().ignoringAntMatchers("/travel/**")
+		.and()
+			.csrf().ignoringAntMatchers("/chat/**")	
+		.and()
+			.csrf().ignoringAntMatchers("/black/**")	
 		.and()
 			.oauth2Login()
 //			.successHandler()

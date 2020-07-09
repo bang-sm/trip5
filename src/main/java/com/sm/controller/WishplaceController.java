@@ -2,6 +2,7 @@ package com.sm.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.sm.domain.MemberVO;
 import com.sm.domain.PlacelistVo;
 import com.sm.service.PlacelistService;
 
@@ -25,9 +27,13 @@ public class WishplaceController {
 	
 	
 	@GetMapping("/wish/place")
-	public String place(Model model)  throws Exception{
-		List<PlacelistVo> list = service.show();
-		model.addAttribute("place", service.show());
+	public String place(Model model,HttpSession session)  throws Exception{
+		//사용자 uuid 값 가지고 오기
+		MemberVO vo=(MemberVO) session.getAttribute("userInfo");  
+		logger.info("session : "+ vo);
+		int uuid = vo.getUuid();
+		List<PlacelistVo> list = service.show(uuid);
+		model.addAttribute("place", service.show(uuid));
 		logger.info("확인 : " +list);
 		return "wish/place";
 	}
