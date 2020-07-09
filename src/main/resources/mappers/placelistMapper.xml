@@ -5,28 +5,28 @@
 	<insert id="placeinsert" parameterType="com.sm.domain.PlacelistVo">
 		INSERT INTO 
 		placeList(
-					placeid,
-					placename,
-					placeregdate,
-					placecheck,
-					placejuso,
-					uuid,
-					placecategory,
-					bookmark,
-					bloglink,
-					iconname)
+				placeid,
+				placename,
+				placeregdate,
+				placecheck,
+				placejuso,
+				uuid,
+				placecategory,
+				bookmark,
+				bloglink,
+				iconname)
 		VALUES(
-					placeid,
-					#{placename},
-					now(),
-					0,
-					#{placejuso},
-					#{uuid},
-					#{placecategory},
-				    0,
-					#{bloglink},
-					#{iconname}
-					);
+				placeid,
+				#{placename},
+				now(),
+				0,
+				#{placejuso},
+				#{uuid},
+				#{placecategory},
+				0,
+				#{bloglink},
+				#{iconname}
+				);
 	</insert>
 	<select id="placeshow" parameterType="int" resultType="com.sm.domain.PlacelistVo">
 		SELECT
@@ -48,47 +48,47 @@
 	</select>
 	<update id="bookmark" parameterType="map">
 		UPDATE	 
-				placeList 
+			placeList 
 		SET 
-				bookmark =#{bookmark} 
+			bookmark =#{bookmark} 
 		WHERE 
-				placeid= #{placeid};
+			placeid= #{placeid};
 	</update>
 	
 	<update id="checkbox" parameterType="map">
 		UPDATE	 
-				placeList 
+			placeList 
 		SET 
-				placecheck =#{placecheck} 
+			placecheck =#{placecheck} 
 		WHERE 
-				placeid= #{placeid};
+			placeid= #{placeid};
 	</update>
 	
 	<select id="goplace" parameterType="map" resultType="com.sm.domain.PlacelistVo">
 		SELECT
-				*
+			*
 		FROM
-				placeList
+			placeList
 		WHERE
-				placecheck=#{placecheck} and uuid =#{uuid};
+			placecheck=#{placecheck} and uuid =#{uuid};
 	</select>
 	
 	<select id="buttoncategory" parameterType="map" resultType="com.sm.domain.PlacelistVo">
 		SELECT
-				*
+			*
 		FROM
-				placeList
+			placeList
 		WHERE  
-				placecategory = #{placecategory} and placecheck =#{placecheck} and uuid=#{uuid};
+			placecategory = #{placecategory} and placecheck =#{placecheck} and uuid=#{uuid};
 	
 	</select>
 	
 	<delete id="delete" parameterType="int">
 		DELETE 
 		FROM 
-				placeList  
+			placeList  
 		WHERE 
-			placeid= #{placeid};
+			placeid = #{placeid};
 	</delete>
 
 </mapper>

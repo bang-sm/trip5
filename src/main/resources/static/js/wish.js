@@ -257,6 +257,61 @@ $("#exampleModal").on('shown.bs.modal', function(){
 	}
   });
 
+//2번쨰 모달창 갈때 장소 블로그 선택 여부
+
+function statuscheck(){
+	var blog = $('input[name=bloglink]').val();
+	console.log("blog : "+blog);
+	var place = $('input[name=placename]').val();
+	console.log("place : "+place);
+	result="";
+	if(place== ""){
+		result+='<img src="../image/icon/cancel30.png" data-toggle="tooltip" data-placement="top" title="저장된 장소가 없습니다."/>';
+		$('.btn_check_place_status').html(result);
+	}else{
+		result+='<img src="../image/icon/check30.png" data-toggle="tooltip" data-placement="top" title="'+place+'"/>';
+		$('.btn_check_place_status').html(result);
+	}
+	result="";
+	if(blog ==""){
+		result+='<img src="../image/icon/cancel30.png" data-toggle="tooltip" data-placement="top" title="저장된 블로그가 없습니다."/>';
+		$('.btn_check_blog_status').html(result);
+	}else{
+		result+='<img src="../image/icon/check30.png" data-toggle="tooltip" data-placement="top" title="'+blog+'"/>';
+		$('.btn_check_blog_status').html(result);
+	}
+}
+
+// 지도에서 검색창 숨기고 펼치기
+var hide_count =0;
+$(document).on('click','.hide_btn',function(){
+	if(hide_count==0){
+		$('.place_map_all_list').width('0');
+		$('.place_map_all_list').css("display","none");
+		$('.kakaomap_title').css("display","none");
+		$('.map_wrap').width('0');
+		
+		$('.hide_div').css('left','20px');
+		$('.place_map_all_map').css('left','0');
+		$('.place_map_all_map').css('width','1150px');
+		hide_count=1;
+	}else{
+		$('.place_map_all_list').width('30%');
+		$('.place_map_all_list').css("display","block");
+		$('.kakaomap_title').css("display","block");
+		$('.map_wrap').width('380px');
+		
+		$('.hide_div').css('left','400px');
+		$('.place_map_all_map').css('left','380px');
+		$('.place_map_all_map').css('width','810px');
+		hide_count=0;
+	}
+	
+})
+
+//지도 끝
+
+
 
 function fnMove() {
 	var offset = $(".wish_list").offset();
@@ -852,12 +907,20 @@ function wish_regist(){
 }
 //클릭시 블로그 보기 , 글 수정 , 글 삭제 버튼으로 전환
 $(document).on('click','.media-body',function(){
-	var parent = $(this).parents(".hidden_btn");
-	$('.hidden_box').animate({
+	var friend = $(this).parents('.media');
+	var look= friend.children('.media_look');
+	var update=friend.children('.media_update');
+	var del=friend.children('.media_delete');
+	var can=friend.children('.media_cancel');
+	console.log(look);
+	$(this).animate({
 		opacity:"0",
 	},1000,
 	function(){
-		$('.hidden_btn').css("display","block");
+		friend.children('.media_look').css('display','block');
+		friend.children('.media_update').css('display','block');
+		friend.children('.media_delete').css('display','block');
+		friend.children('.media_cancel').css('display','block');
 	})
 	
 })
@@ -885,36 +948,16 @@ $(document).on('click','.media_delete',function(){
 //취소 버튼
 
 $(document).on('click','.media_cancel',function(){
-	$('.hidden_btn').css("display","none");
-	$('.hidden_box').animate({
+	var pop = $(this).parents('.media');
+	pop.children('.media_look').css("display","none");
+	pop.children('.media_update').css("display","none");
+	pop.children('.media_delete').css("display","none");
+	pop.children('.media_cancel').css("display","none");
+	$(this).parents('.media').children('.media-body').animate({
 		opacity:"1",
 	},1000)
 })
 
 
-//2번쨰 모달창 갈때 장소 블로그 선택 여부
-
-function statuscheck(){
-	var blog = $('input[name=bloglink]').val();
-	console.log("blog : "+blog);
-	var place = $('input[name=placename]').val();
-	console.log("place : "+place);
-	result="";
-	if(place== ""){
-		result+='<img src="../image/icon/cancel30.png" data-toggle="tooltip" data-placement="top" title="저장된 장소가 없습니다."/>';
-		$('.btn_check_place_status').html(result);
-	}else{
-		result+='<img src="../image/icon/check30.png" data-toggle="tooltip" data-placement="top" title="'+place+'"/>';
-		$('.btn_check_place_status').html(result);
-	}
-	result="";
-	if(blog ==""){
-		result+='<img src="../image/icon/cancel30.png" data-toggle="tooltip" data-placement="top" title="저장된 블로그가 없습니다."/>';
-		$('.btn_check_blog_status').html(result);
-	}else{
-		result+='<img src="../image/icon/check30.png" data-toggle="tooltip" data-placement="top" title="'+blog+'"/>';
-		$('.btn_check_blog_status').html(result);
-	}
-}
 
 
