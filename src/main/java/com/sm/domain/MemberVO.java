@@ -37,4 +37,7 @@ public class MemberVO {
 	private String accountstatus;
 	private String sessionlog;
 	private String kakaoOk;
+	private int black_uuid;
+	
+	
 }
