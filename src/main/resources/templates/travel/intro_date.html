@@ -60,6 +60,18 @@ p.quote{
 	text-decoration: none;
 	margin-top: 2rem;
 }
+.float-label-control input, .float-label-control textarea {
+    display: block;
+    width: 100%;
+    padding: 0.1em 0em 1px 0em;
+    border: none;
+    border-radius: 0px;
+    border-bottom: 1px solid #aaa;
+    outline: none;
+    margin-bottom: 15px;
+    background: none;
+	font-size:20px;
+}
 </style>
 </head>
 
@@ -67,7 +79,13 @@ p.quote{
 
 <body>
 	<p class="quote">여행 시작날짜와 마지막날짜를 선택하여주세요</p>
-	<div id="datepicker"></div>
+	<div id="datepicker">
+	
+	<div class="form-group float-label-control">
+		<input type="text" class="form-control" placeholder="제목">
+	</div>
+	
+	</div>
 	<button id="btn_cancle">취소</button>
 </body>
 
@@ -101,7 +119,9 @@ p.quote{
 					startDate=$.datepicker.formatDate('yy-mm-dd', new Date(startDate));
 					endDate=$.datepicker.formatDate('yy-mm-dd', new Date(endDate));
 					
-					location.href = "/travel/regist?startDate="+startDate+"&endDate="+endDate+"&dateDiff="+dateDiff;
+					
+					
+					//location.href = "/travel/regist;
 
 				}
 			};
