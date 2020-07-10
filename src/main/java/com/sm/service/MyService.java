@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.sm.dao.MyDAO;
 import com.sm.domain.MemberVO;
+import com.sm.domain.MessageVO;
 
 @Service
 public class MyService {
@@ -29,5 +30,9 @@ public class MyService {
 	
 	public int deleteBlackList(int otheruid) {
 		return dao.deleteBlackList(otheruid);
+	}
+	
+	public int sendToMsg(MessageVO messageVO) {
+		return dao.sendToMsg(messageVO);
 	}
 }

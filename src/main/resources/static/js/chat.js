@@ -2,12 +2,14 @@ var ws;
 var nick;
 var blackListv;
 var blackUser = true;
+var otherUUid;
 $(document).ready(function(){
 	loadPage();
 });
 
 $(document).on('click',".othersMsg" ,function(){
 	nick = $(this).attr('data-email');
+	otherUUid = $(this).attr('data-uuid');
 });
 
 function loadPage(){
@@ -36,22 +38,27 @@ function wsEvt() {
 	ws.onopen = function(data) {
 		//소켓이 열리면 동작
 		console.log('소켓 오픈');
+		inChatt();
 	}
 
 	ws.onmessage = function(data) {
 		//메시지를 받으면 동작
-		var msg = data.data;
+		var msg = data.data; 
 		blackUser = true;
-		console.log("msg = " + msg);
+		console.log("msg<< = " + msg);
 		if (msg != null && msg.trim() != '') {
 			var d = JSON.parse(msg);
-			console.log(d.sessionId + " <-- d.sessionId 값");
+			console.log(d.sessionId + " <--- d.sessionId 값");
+			console.log(d.userName + " <--- d.userName 값");
 			if (d.type == "getId") {
+				console.log('getid')
 				var si = d.sessionId != null ? d.sessionId : "";
 				if (si != '') {
-					$("#sessionId").val(si);
-					$("#chating").append("<p class='me'>" + $('#userSessionId').val() + "님이 입장하셨습니다</p>");
-				}
+					if($("#sessionId").val() == ""){
+						$("#sessionId").val(si);
+						console.log("sessionId////// = " + $("#sessionId").val());
+					}
+				} 
 			} else if (d.type == "message") {
 				if (d.sessionId == $("#sessionId").val()) {
 					if(d.msg.length == 0){
@@ -69,17 +76,19 @@ function wsEvt() {
 						if(blackUser){
 						$("#chating").append(
 							"<div class='dropdown others'>" +
-							  "<a class='stretched-link othersMsg' href='#' role='button' id='dropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' data-email='" + d.userName + "'>"
+							  "<a class='stretched-link othersMsg' href='#' role='button' id='dropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' data-uuid='"+d.userUuid+"' data-email='" + d.userName + "'>"
 							  + d.userName +
 							  "</a>" +
 							  "<div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>"
 							    +"<button class='dropdown-item' onclick='blackList()' data-email='" + d.userName + "'>차단하기</button>"+
-							    "<button class='dropdown-item' href='#'>쪽지보내기</button>" +
+							    "<button class='dropdown-item' data-toggle='modal' data-target='#exampleModal' onclick='sendMsg()' data-uuid='"+d.userUuid+"'>쪽지보내기</button>" +
 							  "</div>" 
 							  + " : " + d.msg + "</div>");
 						}
 				}
-			} else {
+			} else if(d.type="inchat"){
+				$("#chating").append("<p class='me'>" + d.userName + "님이 입장하셨습니다</p>");
+			}	else {
 				console.warn("unknown type!")
 			}
 		}
@@ -90,6 +99,16 @@ function wsEvt() {
 			send();
 		}
 	});
+}
+
+function inChatt(){
+	var option = {
+			type : "inchat",
+			sessionId : $("#sessionId").val(),
+			userName : $('#userSessionId').val(),
+			msg : $('#userSessionId').val() + "님이 입장하셨습니다."
+	}
+	ws.send(JSON.stringify(option)) 
 }
 
 function chatConn() {
@@ -109,16 +128,6 @@ function send() {
 	ws.send(JSON.stringify(option))
 	$('#chatting').val("");
 }
-
-/*function inChatt(){
-	var option = {
-			type : "getId",
-			sessionId : $("#sessionId").val(),
-			userName : $('#userSessionId').val(),
-			msg : $('#userSessionId').val() + "님이 입장하셨습니다."
-		}
-		ws.send(JSON.stringify(option))
-}*/
 
 
 function blackList(){
@@ -173,8 +182,29 @@ function disBlackList(){
 	}
 }
 
+function sendMsg(){
+	$(".recep").val(nick);
+}
 
-
+function sendToMsg(){
+	
+	$.ajax({
+		url : "/my/sendMsg",
+		type : "POST",
+		cache : false,
+		data : {
+			"msgcontent" : $("#message-text").val(),
+			"fromid" : otherUUid,
+			"sendid" : $("#userSessionuuid").val()
+		},
+		success : function(data,status){
+			if(status == "success"){
+				alert("쪽지가 보내졌습니다!.");
+				$(".modal").hide();
+			}
+		}
+	})
+}
 
 
 

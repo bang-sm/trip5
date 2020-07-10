@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sm.domain.MemberVO;
+import com.sm.domain.MessageVO;
 import com.sm.service.MyService;
 
 @RestController
@@ -27,7 +28,6 @@ public class MyController {
 
 	@PostMapping("/load")
 	public List<MemberVO> loadAjax(String uuid) {
-		System.out.println(uuid);
 		List<MemberVO> list = myService.selectBlackList(Integer.parseInt(uuid));
 		
 		return list;
@@ -38,6 +38,13 @@ public class MyController {
 		int uuid = myService.selectUuid(memberVO).getUuid();
 		
 		myService.deleteBlackList(uuid);
+	}
+	
+	@PostMapping("/sendMsg")
+	public void sendMsg(MessageVO messageVO) {
+		System.out.println(messageVO);
+		
+		myService.sendToMsg(messageVO);
 		
 	}
 	

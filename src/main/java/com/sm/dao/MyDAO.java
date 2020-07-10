@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.sm.domain.MemberVO;
+import com.sm.domain.MessageVO;
 @Repository
 public class MyDAO {
 
@@ -35,4 +36,10 @@ public class MyDAO {
 	public int deleteBlackList(int otheruid) {
 		return sqlsession.delete("mappers.myMapper.deleteBlackList",otheruid);
 	}
+	
+	public int sendToMsg(MessageVO messageVO) {
+		return sqlsession.insert("mappers.myMapper.sendToMsg", messageVO);
+	}
+	
+	
 }

@@ -68,7 +68,7 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 		}
 		
 		// 로그인 세션 저장
-		session.setAttribute("userInfo", memberVo.getMemberemail());
+		session.setAttribute("userInfo", memberVo);
 		
 	} // end Oauth2 시큐리티 다른 Client 로그인 탈때 중간에 나오는 거치는 곳
 	
