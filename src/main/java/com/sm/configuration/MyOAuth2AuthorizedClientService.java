@@ -23,6 +23,7 @@ import com.sm.domain.MemberVO;
 
 @Service
 public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientService {
+	
 	@Autowired
 	HttpSession session;
 	
@@ -36,10 +37,11 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 		System.out.println(providerType + "//////////////////////////////////////////////////////////");
 		System.out.println(accessToken + "//////////////////////////////////////////////////////////");
 		
-		
 		OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
 		System.out.println(oauth2User + "///////////////////////////////////////////////////////////");
 		System.out.println(oauth2User.getName());
+		System.out.println(oAuth2AuthorizedClient.getPrincipalName() +"   /// getPrincipalName");
+		
 		
 		// 유저 이메일(아이디)
 		String memberemail = ((LinkedHashMap<?, ?>)oauth2User.getAttribute("kakao_account")).get("email") + "";
@@ -47,34 +49,42 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 		
 		// 유저 닉네임
 		String membernick = ((LinkedHashMap<?, ?>)oauth2User.getAttribute("properties")).get("nickname") + "";
-		System.out.println(membernick);
+		System.out.println(membernick   +" membernick 유저닉네임");
 		
 		// MemberDAO
 		MemberVO memberVo = new MemberVO();
 		memberVo.setMemberemail(memberemail);
 		memberVo.setMembernick(membernick);
 		memberVo.setMemberpass("kakaologin");
-		
+		memberVo.setKakaoOk("Y");
 		// 카카오톡 토큰
 		System.out.println(accessToken.getTokenValue());
 		
-		// 카카오로그인이 안되있을 때 밀어넣기
 		try {
+			// 카카오로그인이 안되있을 때 밀어넣기
 			if(memberDAO.idCheck(memberemail) == null){
-				memberDAO.join(memberVo);
-			}
+				memberDAO.kakaoJoin(memberVo);
+			}else {
+				// 카카오로그인 Y 넣기	
+				memberDAO.kakaoOk(memberemail);
+			} // end if
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		} // end try catch
 		
 		// 로그인 세션 저장
-		session.setAttribute("userInfo", memberVo.getMemberemail());
+		session.setAttribute("userInfo", memberVo);
+		
+//		List<GrantedAuthority> auth = new ArrayList<>();
+//		new User(memberVo.getMemberemail(), memberVo.getMemberpass(), auth);
+		
 		
 	} // end Oauth2 시큐리티 다른 Client 로그인 탈때 중간에 나오는 거치는 곳
 	
 	@Override
 	public <T extends OAuth2AuthorizedClient> T loadAuthorizedClient(String clientRegistrationId,
 			String principalName) {
+		System.out.println(principalName +" ///////// loadAuthorizedClient //////////");
 		return null;
 	}
 	
@@ -84,3 +94,15 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+

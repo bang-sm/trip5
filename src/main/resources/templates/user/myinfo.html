@@ -1,19 +1,108 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>내정보</title>
+<meta charset="UTF-8">
+<title>내정보</title>
+<th:block th:replace="common/commonHead"></th:block>
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
 </head>
 <body>
-일단 안녕하신가요
-<!-- 
+	<!-- 공통 헤드 nav -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:include="common/header :: header_nav"></nav>
+	<!-- //공통 헤드 nav -->
+
+	<!-- 내정보 헤더 -->
+	<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+		<span th:text="${member.membernick}"></span>
+	</div>
+	<!-- //내정보 헤더-->
+	<div class="container">
+
+		<!-- 1번 -->
+		<div class="card-deck mb-3 text-center">
+			<div class="card mb-4 shadow-sm">
+				<div class="card-header">
+					<h4 class="my-0 font-weight-normal">
+						<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">여행계획</font></font>
+					</h4>
+				</div>
+				<div class="card-body">
+					<h1 class="card-title pricing-card-title">
+						<font style="vertical-align: inherit;"><small class="text-muted"><font style="vertical-align: inherit;">월</font></small><font style="vertical-align: inherit;"> $ 0</font></font><small class="text-muted"><font style="vertical-align: inherit;"></font></small>
+					</h1>
+					<ul class="list-unstyled mt-3 mb-4">
+						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">10 명의 사용자 포함</font></font></li>
+						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2GB의 저장 용량</font></font></li>
+						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">이메일 지원</font></font></li>
+						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">도움말 센터 이용</font></font></li>
+					</ul>
+					<button type="button" class="btn btn-lg btn-block btn-outline-primary">
+						<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">수정</font></font>
+					</button>
+				</div>
+			</div>
+			<!-- //1번 -->
+
+			<!-- 2번 -->
+			<div class="card mb-4 shadow-sm">
+				<div class="card-header">
+					<h4 class="my-0 font-weight-normal">
+						<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">즐겨찾기</font></font>
+					</h4>
+				</div>
+				<div class="card-body">
+					<h1 class="card-title pricing-card-title">
+						<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$ (29) </font></font><small class="text-muted"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">/ 월</font></font></small>
+					</h1>
+					<ul class="list-unstyled mt-3 mb-4">
+						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">30 명의 사용자 포함</font></font></li>
+						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">15GB의 저장 용량</font></font></li>
+						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">전화 및 이메일 지원</font></font></li>
+						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">도움말 센터 이용</font></font></li>
+					</ul>
+					<button type="button" class="btn btn-lg btn-block btn-outline-primary">
+						<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">수정</font></font>
+					</button>
+				</div>
+			</div>
+			<!-- //2번 -->
+
+			<!-- 3번 -->
+			<div class="card mb-4 shadow-sm">
+				<div class="card-header">
+					<h4 class="my-0 font-weight-normal">
+						<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">블랙리스트</font></font>
+					</h4>
+				</div>
+				<div class="card-body">
+					<h1 class="card-title pricing-card-title">
+						<font style="vertical-align: inherit;"><small class="text-muted"><font style="vertical-align: inherit;">월</font></small><font style="vertical-align: inherit;"> $ 15</font></font><small class="text-muted"><font style="vertical-align: inherit;"></font></small>
+					</h1>
+					<ul class="list-unstyled mt-3 mb-4">
+						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">20 명의 사용자 포함</font></font></li>
+						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">스토리지 10GB</font></font></li>
+						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">우선 이메일 지원</font></font></li>
+						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">도움말 센터 이용</font></font></li>
+					</ul>
+					<button type="button" class="btn btn-lg btn-block btn-outline-primary">
+						<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">수정</font></font>
+					</button>
+				</div>
+			</div>
+			<!-- //3번 -->
+			
+			
+			
+			<span th:text="${session.userInfo.membernick}"></span> 
+
+
+			<!-- 
     <h1>
-    	<span sec:authentication="principal.Username"></span>님 환영합니다~
+    	<span sec:authentication="name"></span>님 환영합니다~
     	
 	</h1>
 	<span sec:authentication="principal.Authorities"></span>권한
-	<span th:text="${member.memberid}"></span>
 	<span th:text="${member.memberemail}"></span>
- -->
- <a href="/">뒤로가기</a>	
+	<span th:text="${member.membernick}"></span>
+	 -->
 </html>
