@@ -45,28 +45,27 @@
 								<tr  class="tabletr"th:each="card  : ${place}" th:data-status='${card.placecategory}' th:data-check='${card.placecheck}' th:if="${card.placecheck==0}">
 									<td class="">
 										<div class="ckbox ">
-												<input th:if="${card.placecheck} =='0'"type="checkbox"  class="checkbox1 hidden_box" th:id="${card.placeid}">
-												<input th:unless="${card.placecheck} =='0'"type="checkbox" class="checkbox1 hidden_box"  th:id="${card.placeid}" checked>
+												<input th:if="${card.placecheck} =='0'"type="checkbox"  class="checkbox1 " th:id="${card.placeid}">
+												<input th:unless="${card.placecheck} =='0'"type="checkbox" class="checkbox1 "  th:id="${card.placeid}" checked>
 												<label th:for="${card.placeid}"></label>
 										</div>
 									</td>
 									<td class="td_two">
 										<input type='hidden' class="placeid" name="placeid" th:value="${card.placeid}"/>
-										<img th:if="${card.bookmark}== 0"class="star_img hidden_box" th:src="@{../image/icon/star_off.png}" />
-										<img th:unless="${card.bookmark}== 0"class="star_img hidden_box" th:src="@{../image/icon/star_on.png}" />
+										<img th:if="${card.bookmark}== 0"class="star_img " th:src="@{../image/icon/star_off.png}" />
+										<img th:unless="${card.bookmark}== 0"class="star_img " th:src="@{../image/icon/star_on.png}" />
 									</td>
 									<td class="">
 										<div class="media">
-											<img th:src="@{../image/icon}+${card.iconname}+@{.png}" class="media-photo hidden_box">
+											<img th:src="@{../image/icon}+${card.iconname}+@{.png}" class="media-photo ">
 											<div class="media-body">
-												<span th:text="${card.placeregdate}" class="media-meta pull-right hidden_box"></span>
-												<button th:if="${card.placecategory}==0"type="button" class="btn btn-outline-success btn_category hidden_box">음식</button>
-												<button th:if="${card.placecategory}==1"type="button" class="btn btn-outline-info btn_category hidden_box">카페</button>
-												<button th:if="${card.placecategory}==2"type="button" class="btn btn-outline-warning btn_category hidden_box">관광지</button>
-												<h4 th:text="${card.placename}" class="title hidden_box"></h4>
-												<span th:text="${card.placejuso}" class="summary hidden_box"></span>
+												<span th:text="${card.placeregdate}" class="media-meta pull-right "></span>
+												<button th:if="${card.placecategory}==0"type="button" class="btn btn-outline-success btn_category ">음식</button>
+												<button th:if="${card.placecategory}==1"type="button" class="btn btn-outline-info btn_category ">카페</button>
+												<button th:if="${card.placecategory}==2"type="button" class="btn btn-outline-warning btn_category ">관광지</button>
+												<h4 th:text="${card.placename}" class="title "></h4>
+												<span th:text="${card.placejuso}" class="summary "></span>
 											</div>
-											<div class="hidden_btn">
 												<button class="media_look">
 													<a class="blog" th:href='${card.bloglink}' target='_blank'>블로그 보기</a>
 												</button>
@@ -74,7 +73,6 @@
 												<button class="media_delete">글 삭제</button>
 											   	<img th:src="@{../image/icon/cancel.png}" class="media_cancel">
 											</div>
-										</div>
 									</td>
 								</tr>
 								<tr class="check_tr tabletr" th:each="card  : ${place}" th:data-status='${card.placecategory}' th:data-check='${card.placecheck}'th:unless="${card.placecheck==0}">
@@ -134,6 +132,11 @@
 						<div class="tab-content">
 							<div class="tab-pane fade show active place_map_all" id="qwe">
 								<div class="col-m-12 place_map_all_map">
+								<div class="searchkakao_app">
+												<span class="searchkakao_app_name">kakaomap</span>
+												<input type="text" value="이태원 맛집" id="keyword" size="20">
+												<img th:src="@{../image/icon/search.png}" class="map_btn"/>
+										</div>
 									<div id="map"></div>
 										<div class="custom_zoomcontrol radius_border">
 											<span class="zoomin"> 
@@ -189,7 +192,7 @@
 							<th:block th:if="${session.userInfo}!= null">
 								<input type="hidden" name ="uuid" th:value="${session.userInfo.uuid}"/>
 							</th:block>
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">나가기</button>
 							<button type="button" class="btn-primary btn-lg" data-toggle="modal" data-target="#CheckModal" onclick="statuscheck()">완료</button>
 							
 						</div>

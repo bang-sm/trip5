@@ -74,10 +74,13 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 		
 		// 로그인 세션 저장
 		session.setAttribute("userInfo", memberVo);
+<<<<<<< HEAD
 		
 //		List<GrantedAuthority> auth = new ArrayList<>();
 //		new User(memberVo.getMemberemail(), memberVo.getMemberpass(), auth);
 		
+=======
+>>>>>>> branch 'coding' of https://github.com/bang-sm/trip5.git
 		
 	} // end Oauth2 시큐리티 다른 Client 로그인 탈때 중간에 나오는 거치는 곳
 	
