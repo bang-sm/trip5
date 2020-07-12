@@ -8,6 +8,25 @@
 
 $(document).ready(function() {
 	
+	   
+	$(".add_place").click(function(){
+		var input_data="";
+		input_data+='<div class="step active">';
+		input_data+='<h2 data-step-id="1"><input type="text"></h2>';
+		input_data+='<p>';
+		input_data+='<select id="tsirootvehicle">';
+		input_data+='<option>자전거</option>';
+		input_data+='<option>자동차</option>';
+		input_data+='<option>기차</option>';
+		input_data+='<option>도보</option>';
+		input_data+='<option>도착지</option>';
+		input_data+='</select>';
+		input_data+='</p>';
+		input_data+='<button class="delete">삭제</button>';
+		input_data+='</div>';
+		
+		$(this).next().append(input_data);
+	})
 	$('.summernote').summernote({
 		 placeholder: '추억을 작성하세요',
 		 height:400,
@@ -228,4 +247,5 @@ var modules = {
         }
     }
 }
+
 modules.init();
