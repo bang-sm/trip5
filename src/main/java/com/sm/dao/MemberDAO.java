@@ -18,22 +18,26 @@ public class MemberDAO {
 	public void join(MemberVO memberVO) {
 		sql.insert(namespace + ".signup",memberVO);
 	}
+	
+	// 회원가입
+	public void kakaoJoin(MemberVO memberVO) {
+		sql.insert(namespace + ".kakaoSignup",memberVO);
+	}
 
+	// kakaoOk 변경
+	public void kakaoOk(String memberemail) {
+		sql.insert(namespace + ".kakaoOk",memberemail);
+	}
 
+	
+	// 아이디 가져오기
 	public MemberVO getUserById(String memberemail) {
 		return sql.selectOne(namespace + ".findById",memberemail);
 	}
 	
-	// 아이디 중복체크
+	// 아이디 중복체크, 카카오Ok 가져오기
 	public MemberVO idCheck(String memberemail) throws Exception{
 		return sql.selectOne(namespace + ".idCheck",memberemail);
 	}
-
-	// kakao 회원가입 중복체크
-	public MemberVO kakaoCheck(String memberemail) throws Exception{
-		return sql.selectOne(namespace + ".kakaoCheck",memberemail);
-	}
-	
-	
 
 }

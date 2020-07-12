@@ -11,6 +11,7 @@
 		membernick = #{membernick}
 	</select>
 	
+	
 	<insert id="insertBlackList" parameterType="int">
 		insert into 
 			blackList 
@@ -19,16 +20,32 @@
 	
 	<select id="selectBlackList" parameterType="int" resultType="com.sm.domain.MemberVO">
 		select 
-			black_uuid 
+			black_uuid as blackuuid
 		from 
 			blackList 
 		where 
-			uuid = #{blackuid}
+			uuid = #{uuid} 
 	</select>
-
-
-
-
-
-
+	
+	<delete id="deleteBlackList" parameterType="int">
+		delete from 
+			blackList 
+		where 
+			black_uuid = #{otheruid}
+	</delete>
+	
+	<insert id="sendToMsg" parameterType="com.sm.domain.MessageVO">
+		insert into 
+			messageList (msg_regdate , msg_content , from_id , send_id) 
+		values
+			(now(), #{msgcontent}, #{fromid}, #{sendid})
+	</insert>
+	
+	
+		
+	
+	
+	
+	
+	
 </mapper>

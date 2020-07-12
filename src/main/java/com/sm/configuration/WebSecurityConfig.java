@@ -44,7 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				"/js/**", 
 				"/console/**", 
 				"/favicon.ico/**",
-				"/chat")
+				"/chatting/**")
 			.permitAll()
 			.anyRequest()
 			.authenticated()
@@ -53,12 +53,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         	.loginPage("/user/login")  //로그인페이지
         	.defaultSuccessUrl("/index") // 성공했을때 이동되는 페이지
         	.usernameParameter("memberid")	//로그인시 파라미터로 "id", "password"를 받습니다
-        	.passwordParameter("password")	//
+        	.passwordParameter("password")
+        	.failureUrl("/user/login?error")
         	.permitAll()
         .and()
 	        .logout()
 	        .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-//	        .addLogoutHandler(new KakaoAPI())
 	        .logoutSuccessUrl("/index")		// 성공했을때 이동되는 페이지
 	        .invalidateHttpSession(true) 	//세션초기화
 	    .and()
@@ -77,24 +77,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()	
 			.csrf().ignoringAntMatchers("/travel/**")
 		.and()
-			.csrf().ignoringAntMatchers("/chat/**")	
+			.csrf().ignoringAntMatchers("/my/**")	
 		.and()
-			.csrf().ignoringAntMatchers("/black/**")	
-		.and()
-			.oauth2Login()
-//			.successHandler()
-			.loginPage("/user/login");
-		//		.antMatchers("/kakao")
-		// .hasAuthority(KAKAO.getRoleType())
+			.oauth2Login()	// Oauth2 로그인
+			;
+       
+        http.sessionManagement()
+        	.invalidSessionUrl("/user/login")
+        	//유효하지 않은 세션으로 접근했을때 어디로 보낼것인지 URL을 설정하는 기능.
+        	//로그아웃 했을경우 세션을 만료시킨다.
+        	.maximumSessions(1) // 최대 세션 1로 유지
+        	.maxSessionsPreventsLogin(false) // 중복로그인시 이전 로그인했던 세션 만료.
+        	;
+        									  
 	}
 	
 	
-
-	
-	
-	
-	//	//custom.oauth2.kakao.client-id=2d3554ca6fbdc8ff7fdc4b74f4b28dd8
-//	//custom.oauth2.kakao.client-secret=lI1VIyD61p6Ej0ZadJ7dt9iKuIoExRnZ
 	@Bean
 	@ConditionalOnMissingBean(ClientRegistrationRepository.class)
 	public ClientRegistrationRepository clientRegistrationRepository(OAuth2ClientProperties oAuth2ClientProperties) {
@@ -139,7 +137,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(memberService).passwordEncoder(passwordEncoder());
     }
-
+    
 
 }
+
+
 

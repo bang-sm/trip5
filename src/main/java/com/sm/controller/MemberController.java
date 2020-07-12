@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sm.dao.MemberDAO;
 import com.sm.domain.MemberVO;
 //import com.sm.service.KakaoAPI;
 import com.sm.service.MemberService;
@@ -26,6 +27,9 @@ import lombok.AllArgsConstructor;
 public class MemberController {
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
+	@Autowired
+	MemberDAO memberDAO;
+	
 	@Autowired
 	MemberService merberService;
 
@@ -111,14 +115,9 @@ public class MemberController {
 	// 로그인 페이지
 	@GetMapping("/user/login")
 	public String dispLogin() {
+		System.out.println("들어옴");
 
 		return "/user/login";
-	}
-
-	// 로그인 결과 페이지
-	@GetMapping("/user/login/result")
-	public String dispLoginResult() {
-		return "/user/loginSuccess";
 	}
 
 	// 접근 거부 페이지
