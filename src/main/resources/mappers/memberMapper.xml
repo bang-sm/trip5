@@ -8,11 +8,13 @@
 			(memberpass,
 			 memberemail,
 			 membernick,
+			 memberPhoneNum,
 			 memberregdate)
 		VALUES
 			(#{memberpass},
 			#{memberemail},
 			#{membernick},
+			#{memberPhoneNum},
 			now());
 	
 	</insert>
@@ -28,7 +30,7 @@
 			(#{memberpass},
 			#{memberemail},
 			#{membernick},
-		now(),
+			now(),
 			#{kakaoOk});
 	</insert>
 	

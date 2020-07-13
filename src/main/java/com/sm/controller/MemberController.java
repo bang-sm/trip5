@@ -29,7 +29,7 @@ public class MemberController {
 
 	@Autowired
 	MemberDAO memberDAO;
-	
+
 	@Autowired
 	MemberService merberService;
 
@@ -77,38 +77,39 @@ public class MemberController {
 	@PostMapping("/user/signup")
 	public String execSignup(@Valid MemberVO memberVO, Errors errors, Model model, String idCheckNum) {
 		logger.info("회원가입 처리 부분");
-//		System.out.println(errors.hasErrors());
+		System.out.println(errors.hasErrors());
 		System.out.println(idCheckNum);
 
 		// 에러메세지 저장 부분
-		if (Integer.parseInt(idCheckNum) != 0) {	// 중복체크 에러메시지
+		if (Integer.parseInt(idCheckNum) != 0) { // 중복체크 에러메시지
 			model.addAttribute("valid_memberemail", "중복체크해주세요");
-			
-			if (Integer.parseInt(idCheckNum) == 3) { // 카카오로그인된 아이디
-				if(memberVO.getMemberemail() != null && memberVO.getKakaoOk().equals("Y")) {
-					model.addAttribute("valid_memberemail", "카카오로그인된 아이디 입니다.");
-					System.out.println("getMemberemail 들어옴");
-				}
-			} else if (errors.hasErrors()) {	// 벨리드 어노테이션 에러메시지 있을 때
-				logger.info("@Valid 유효성 에러");
-				System.out.println("hasErrosr 들어옴");
+			return "/user/signup";
 
-				// 회원가입 실패시 입력데이터를 유지하려고 데이터 담아두기
-				model.addAttribute("memberVO", memberVO);
+		}else if (Integer.parseInt(idCheckNum) == 3) { // 카카오로그인된 아이디
+			if (memberVO.getMemberemail() != null && memberVO.getKakaoOk().equals("Y")) {
+				model.addAttribute("valid_memberemail", "카카오로그인된 아이디 입니다.");
+				System.out.println("getMemberemail 들어옴");
+			}
+			return "/user/signup";
+		} else if (errors.hasErrors()) { // 벨리드 어노테이션 에러메시지 있을 때
+			logger.info("@Valid 유효성 에러");
+			System.out.println("hasErrosr 들어옴");
 
-				// 유효성 통과 못한 필드랑 메세지 핸들링을 위해서
-				Map<String, String> validatorResult = merberService.validateHandling(errors);
-				for (String key : validatorResult.keySet()) {
-					model.addAttribute(key, validatorResult.get(key));
-				} // end for
-			} // end if
+			// 회원가입 실패시 입력데이터를 유지하려고 데이터 담아두기
+			model.addAttribute("memberVO", memberVO);
+
+			// 유효성 통과 못한 필드랑 메세지 핸들링을 위해서
+			Map<String, String> validatorResult = merberService.validateHandling(errors);
+			for (String key : validatorResult.keySet()) {
+				model.addAttribute(key, validatorResult.get(key));
+			} // end for
 
 			return "/user/signup";
 		} // end if
 
-		// 에러도 없고 유효성도 통과하면 가입시켜!
-		merberService.joinUser(memberVO);
-		return "redirect:/user/login";
+
+	// 에러도 없고 유효성도 통과하면 가입시켜!
+	merberService.joinUser(memberVO);return"redirect:/user/login";
 
 	}
 

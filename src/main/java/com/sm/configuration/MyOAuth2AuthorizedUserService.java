@@ -46,7 +46,7 @@ public class MyOAuth2AuthorizedUserService implements OAuth2UserService<OidcUser
         Set<GrantedAuthority> authorities = new LinkedHashSet<>();
         authorities.add(new OidcUserAuthority(userRequest.getIdToken(), userInfo));
         
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        authorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
 
         return authorities;
     }

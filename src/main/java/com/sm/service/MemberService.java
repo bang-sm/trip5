@@ -86,7 +86,7 @@ public class MemberService implements UserDetailsService{
 		if(("admin").equals(user.getMemberemail())) {
 			auth.add(new SimpleGrantedAuthority(Role.ADMIN.getValue()));
 		}else {
-			auth.add(new SimpleGrantedAuthority(Role.MEMBER.getValue()));
+			auth.add(new SimpleGrantedAuthority(Role.USER.getValue()));
 		}
 		
 		return new User(user.getMemberemail(), user.getMemberpass(),auth);

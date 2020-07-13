@@ -1,0 +1,64 @@
+/* Made with love by Mutiullah Samim*/
+@import url('https://fonts.googleapis.com/css?family=Numans');
+
+/* 초기설정 */
+html, body {
+	/*background-image: url('http://getwallpapers.com/wallpaper/full/a/5/d/544750.jpg');*/
+	height: 100%;
+	font-family: 'Numans', sans-serif;
+}
+
+span{
+	display: block;
+	color: red;
+}
+
+div{
+	padding-bottom: 10px;
+}
+
+input{
+	border-radius: 7px;
+}
+
+.head{
+	font-weight: bold;
+	color: black;
+}
+
+.logo{
+	color: black;
+}
+
+.logo:hover {
+	color: black;
+	text-decoration: none;	
+}
+
+input:focus:not(.idCheck) { 
+    box-shadow: 0 1px 1px rgba(229, 103, 23, 0.075) inset, 0 0 8px rgba(229, 103, 23, 0.6);
+    outline: 0 none;
+}
+
+/* //초기설정 */
+
+/*----------------------------------------------------------------*/
+/* 로그인 body */
+/*----------------------------------------------------------------*/
+.signupForm{
+	padding-top: 7%;
+}
+
+.kakaoLogin .kakaoImg{
+	width: 100%;
+}
+
+.idCheckMsg{
+	margin: 3px 0px;
+	font-size: small;
+}
+
+.msg, .check{
+	font-size: small;
+}
+
