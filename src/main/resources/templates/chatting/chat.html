@@ -6,14 +6,17 @@
 <script src="https://code.jquery.com/jquery-3.4.1.js" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" th:href="@{/css/chat.css}">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 <script src="../js/chat.js"></script>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:include="common/header :: header_nav"></nav>
 <div id="chat_container" class="chat_container">
-		<h1>채팅</h1>
+<h1>채팅</h1>
 		<input type="hidden" id="sessionId" value="">
 		<input th:if="${session.userInfo != null}" type="hidden" id="userSessionId" th:value="${session.userInfo.membernick}">
 		<input th:if="${session.userInfo != null}" type="hidden" id="userSessionuuid" th:value="${session.userInfo.uuid}">
+		
 		<div id="chating" class="chating">
 		</div>
 		<div th:if="${session.userInfo != null}" id="yourMsg">
@@ -28,9 +31,9 @@
 					<th><button onclick="send()" id="sendBtn">보내기</button></th>
 				</tr>
 			</table>
-		</div>
+		</div> 
 </div>
-    
+
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -45,6 +48,10 @@
           <div class="form-group">
             <label for="recipient-name" class="col-form-label">수신자</label>
             <input type="text" class="form-control recep" id="recipient-name" readonly>
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">제목</label>
+            <input type="text" class="form-control" id="message-subject">
           </div>
           <div class="form-group">
             <label for="message-text" class="col-form-label">내용</label>

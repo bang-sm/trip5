@@ -195,12 +195,14 @@ function sendToMsg(){
 		data : {
 			"msgcontent" : $("#message-text").val(),
 			"fromid" : otherUUid,
-			"sendid" : $("#userSessionuuid").val()
+			"sendid" : $("#userSessionuuid").val(),
+			"msgsubject" : $("#message-subject").val()
 		},
 		success : function(data,status){
 			if(status == "success"){
 				alert("쪽지가 보내졌습니다!.");
 				$(".modal").hide();
+				$("body > div.modal-backdrop.fade.show").remove();
 			}
 		}
 	})
