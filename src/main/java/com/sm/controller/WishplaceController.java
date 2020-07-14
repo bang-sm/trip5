@@ -67,7 +67,7 @@ public class WishplaceController {
 	@GetMapping("/example")
 	public String example() throws Exception{
 		
-		return "wish/placedash";
+		return "common/commonSidebar";
 	}
 	
 	

@@ -8,8 +8,7 @@
 </head>
 <body class="sidebar-mini layout-fixed" style="height: auto;">
 	<nav class="main-header navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:include="common/header :: header_nav"></nav>
-
-	<div class="wrapper">
+	<div class="wrapper" th:fragment="header_aside"> 
 		<aside class="main-sidebar sidebar-dark-primary elevation-4">
 			<!-- Brand Logo -->
 			<a th:href="@{/index}" class="brand-link">
@@ -42,7 +41,7 @@
 								</p>
 							</a>
 							<ul class="nav nav-treeview">
-								<li class="nav-item"><a href="./index.html" class="nav-link">
+								<li class="nav-item"><a th:href="@{wish/place}" class="nav-link">
 										<i class="far fa-circle nav-icon"></i>
 										<p>Dashboard v1</p>
 									</a></li>
@@ -102,15 +101,14 @@
 			</div>
 			<!-- /.sidebar -->
 		</aside>
-		<div class="content-wrapper"></div>
-		<div id="sidebar-overlay"></div>
+		
 	</div>
-	
+	<!-- 이거 가져가서 자기 페이지 밑에 쓰세요 -->
 	<script src="../js/placedash.js"></script>
 	<script src="js/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/dist/js/adminlte.js"></script>
-  <script src="js/dist/js/demo.js"></script>
-  <script src="js/dist/js/pages/dashboard3.js"></script>
+ 	 <script src="js/dist/js/adminlte.js"></script>
+  	<script src="js/dist/js/demo.js"></script>
+  	<script src="js/dist/js/pages/dashboard3.js"></script>
   
 </body>
 </html>
