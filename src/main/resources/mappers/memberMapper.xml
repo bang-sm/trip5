@@ -5,32 +5,69 @@
 	<!-- 회원가입 -->
 	<insert id="signup" parameterType="com.sm.domain.MemberVO">
 		INSERT INTO member
-		(memberpass, memberemail, membernick, memberregdate)
+			(memberpass,
+			 memberemail,
+			 membernick,
+			 memberPhoneNum,
+			 memberregdate)
 		VALUES
-		(#{memberpass},#{memberemail},#{membernick},now());
+			(#{memberpass},
+			#{memberemail},
+			#{membernick},
+			#{memberPhoneNum},
+			now());
+	
 	</insert>
+	<!-- 회원가입 카카오 -->
+	<insert id="kakaoSignup" parameterType="com.sm.domain.MemberVO">
+		INSERT INTO member
+			(memberpass,
+		 	memberemail,
+		 	membernick,
+		 	memberregdate,
+		 	kakaoOk)
+		VALUES
+			(#{memberpass},
+			#{memberemail},
+			#{membernick},
+			now(),
+			#{kakaoOk});
+	</insert>
+	
+	<!-- 카카오로그인시 kakaoOk 변경-->
+	<insert id="kakaoOk" parameterType="com.sm.domain.MemberVO">
+		UPDATE 
+			member 
+		set 
+			kakaoOk ='Y' 
+		WHERE 
+			memberemail = #{memberemail};
+	</insert>
+	
+	
+	
 
 	<!-- 아이디  찾기 -->
 	<select id="findById" resultType="com.sm.domain.MemberVO"
 		parameterType="String">
 		SELECT
-		*
+			*
 		FROM
-		member
+			member
 		WHERE
-		memberemail=#{memberemail}
+			memberemail=#{memberemail}
 	</select>
 
 	<!-- 아이디 확인 -->
 	<select id="idCheck" resultType="com.sm.domain.MemberVO">
-		select memberemail, kakaoOk from member
-		where memberemail = #{memberemail}
+		select 
+			memberemail, 
+			kakaoOk 
+		from 
+			member
+		where 
+			memberemail = #{memberemail}
 	</select>
 	
-	<!-- kakao회원가인 체크 -->
-	<select id="kakaoCheck" resultType="com.sm.domain.MemberVO">
-		select memberpass from member
-		where memberemail = #{memberemail}
-	</select>
 
 </mapper>

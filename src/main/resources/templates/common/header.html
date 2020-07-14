@@ -16,35 +16,16 @@
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
-		<!-- <div th:if="${session.username != null}" class="collapse navbar-collapse" id="navbarResponsive">
-			<ul class="navbar-nav ml-auto">
-				<li class="nav-item"><a class="nav-link" th:href="@{/chat}">채팅</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">날씨</a></li>
-				<li class="nav-item"><span class="nav-link" th:text="${session.username}"/></li>
-				 바뀌는 부분 
-				<li class="nav-item"><a class="nav-link" th:href="@{https://kauth.kakao.com/oauth/logout?client_id=2d3554ca6fbdc8ff7fdc4b74f4b28dd8&logout_redirect_uri=http://localhost:8080/user/kakaologout}">로그아웃</a></li>
-				<li class="nav-item">
-					<a class="nav-link" th:href="@{/travel/intro_date}">일지등록+</a>
-			 	</li>
-				<li class="nav-item">
-					<a class="nav-link" th:href="@{/user/info}">마이페이지</a>
-			 	</li>
-			</ul>
-		</div> -->
 		<div class="collapse navbar-collapse" id="navbarResponsive">
 			<ul class="navbar-nav ml-auto">
-				<li class="nav-item"><a class="nav-link" th:href="@{/chat}">채팅</a></li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/chatting/chat}">채팅</a></li>
 				<li class="nav-item"><a class="nav-link" href="#">날씨</a></li>
-				<li class="nav-item active"><span class="nav-link" sec:authentication="name"></span></li>
+				<li class="nav-item active"><span class="nav-link" sec:authorize="isAuthenticated()" sec:authentication="name"></span></li>
 				<li class="nav-item"><a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a> <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a></li>
 				<li class="nav-item"><a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/signup}">회원가입</a></li>
-				<li class="nav-item">
-					<a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/travel/intro_date}">일지등록+</a>
-			 	</li>
-				<li class="nav-item">
-					<a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/info}">마이페이지</a>
-				 	<a class="nav-link" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}">어드민</a>
-			 	</li>
+				<li class="nav-item"><a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/travel/intro_date}">일지등록+</a></li>
+				<li class="nav-item"><a class=" nav-link" sec:authorize="hasRole('ROLE_USER')" th:href="@{/user/info}">마이페이지</a></li>
+				<li class="nav-item"><a class="nav-link" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}">관리자페이지</a></li>
 			</ul>
 		</div>
 	</div>

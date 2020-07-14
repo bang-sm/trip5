@@ -37,10 +37,7 @@ public class MemberService implements UserDetailsService{
 	@Autowired
 	HttpServletRequest request;
 	
-	//@Value("${app.navermap.key}")
-	//private String mapKey;
-	
-	 // 회원가입 시, 유효성 체크
+	// 회원가입 시, 유효성 체크
     public Map<String, String> validateHandling(Errors errors) {
         Map<String, String> validatorResult = new HashMap<>();
 
@@ -74,6 +71,7 @@ public class MemberService implements UserDetailsService{
 		MemberVO user= memberDAO.getUserById(memberemail);
 		List<GrantedAuthority> auth=new ArrayList<>();
 		if(user==null) {
+			System.out.println("들어왔니??");
 			throw new UsernameNotFoundException("User Not Found");
 		}
 		else {
@@ -88,7 +86,7 @@ public class MemberService implements UserDetailsService{
 		if(("admin").equals(user.getMemberemail())) {
 			auth.add(new SimpleGrantedAuthority(Role.ADMIN.getValue()));
 		}else {
-			auth.add(new SimpleGrantedAuthority(Role.MEMBER.getValue()));
+			auth.add(new SimpleGrantedAuthority(Role.USER.getValue()));
 		}
 		
 		return new User(user.getMemberemail(), user.getMemberpass(),auth);

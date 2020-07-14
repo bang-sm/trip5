@@ -34,4 +34,18 @@ public class TravelDAO {
 		sqlSession.insert("mappers.travelMapper.story_detail_Regist",map);
 	}
 
+	// 초기 일지 저장 
+	public void travel_firstSave(TravelVO travelVO) {
+		sqlSession.insert("mappers.travelMapper.travel_firstSave",travelVO);
+	}
+	
+	//아이디 키값과 일지 키값을 이용해 일지 초기정보를 받아온다.
+	public TravelVO getTravelStory(String tsid, int uuid) {
+		HashMap<String , String> map=new HashMap<>();
+		map.put("tsid", tsid);
+		map.put("uuid", Integer.toString(uuid));
+		
+		return sqlSession.selectOne("mappers.travelMapper.getTravelStory",map);
+	}
+
 }

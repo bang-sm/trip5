@@ -32,13 +32,18 @@ public class MemberVO {
 	@NotBlank(message = "필수 정보입니다.")
 	private String membernick;
 
+	@NotBlank(message = "필수 정보입니다.")
+	@Pattern(regexp = "^(01[1|6|7|8|9|0])-(\\d{3,4})-(\\d{4})$", message = "휴대전화 형식이 아닙니다.")
+	private String memberPhoneNum;
+	
+	
 	private int uuid;
 	private Date memberregdate;
 	private String accountrock;
 	private String accountstatus;
 	private String sessionlog;
 	private String kakaoOk;
-	private int black_uuid;
+	private int blackuuid;
 	
 	
 }

@@ -4,46 +4,62 @@
 <meta charset="UTF-8">
 <title>회원가입 페이지</title>
 </head>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<th:block th:replace="common/commonHead"></th:block>
+<link rel="stylesheet" type="text/css" th:href="@{/css/signup.css}">
 <script src="../js/signup.js"></script>
 <body>
-	<h1>회원 가입</h1>
-	<hr>
+	<div class="d-flex justify-content-center main">
+		<form th:action="@{/user/signup}" class="signupForm" method="post" modelAttribute="${memverVO}">
+			<div class="text-center h1">
+				<a class="logo" style="" href="/index">TRIP5</a>
+			</div>
+			<div>
+				<span class="text-center text-muted h8 msg">카카오톡으로 간편하게 로그인</span>
+				<!-- 카카오톡 로그인 버튼 -->
+				<a class="kakaoLogin" href="http://localhost:8080/oauth2/authorization/kakao">
+					<img class="kakaoImg" src="/image/kakao_login_medium_wide.png">
+				</a>
+			</div>
+			<hr>
+			<!-- 이메일(아이디) 입력  -->
+			<span class="head">아이디</span>
+			<div>
+				<input type="text" id="memberemail" class="col-8" name="memberemail" th:value="${memberVO.memberemail}" placeholder="이메일을 입력하세요"> 
+				<input type="button" class="idCheck" style="width: 31.5%" value="중복 확인" />
 
+				<!-- 백앤드 유효성 검사 -->
+				<span class="idCheckMsg" th:text="${valid_memberemail}"></span> <input class="idCheckNum" type="hidden" name="idCheckNum" value="1" />
+				<!-- 프론트앤드 유효성 검사 -->
+				<span class="result"> <span class="msg"></span>
+				</span>
+			</div>
 
-	<form th:action="@{/user/signup}" method="post" modelAttribute="${memverVO}">
-		<!-- 이메일(아이디) 입력  -->
-		<div>
-			<input type="text" id="memberemail" name="memberemail"
-			 th:value="${memberVO.memberemail}" placeholder="이메일을 입력하세요">
-			<!-- 프론트앤드 유효성 검사 -->
-			<p class="result">
-				<span class="msg"></span>
-			</p>
-		</div>		
-		<button type="button" class="idCheck">아이디 확인</button>
-		<span th:text="${valid_memberemail}"></span>
-		
-		<input class="idCheckNum" type="hidden" name="idCheckNum" value="1"/>
-		
-		<!-- 비밀번호 입력  -->
-		<div>
-			<input type="password" name="memberpass"
-			 placeholder="비밀번호" th:value="${memberVO.memberpass}"> 
-		</div>
-		<!-- 백앤드 유효성 검사 -->
-		<span class="check" th:text="${valid_memberpass}"></span>
+			<!-- 비밀번호 입력  -->
+			<span class="head">비밀번호</span>
+			<div>
+				<input type="password" class="col-12" name="memberpass" placeholder="비밀번호" th:value="${memberVO.memberpass}">
+				<!-- 백앤드 유효성 검사 -->
+				<span class="check" th:text="${valid_memberpass}"></span>
+			</div>
 
-		<!-- 닉네임 입력 -->
-		<div>
-			<input type="text" name="membernick" 
-			placeholder="닉네임" th:value="${memberVO.membernick}">
-		</div>
-		<!-- 백앤드 유효성 검사 -->
-		 <span class="check" th:text="${valid_membernick}"></span>
-		
-		<br>
-		<button type="submit">가입하기</button>
-	</form>
+			<!-- 닉네임 입력 -->
+			<span class="head">닉네임</span>
+			<div>
+				<input type="text" class="col-12" name="membernick" placeholder="닉네임" th:value="${memberVO.membernick}">
+				<!-- 백앤드 유효성 검사 -->
+				<span class="check" th:text="${valid_membernick}"></span>
+			</div>
+
+			<!-- 전화번호 -->
+			<span class="head">휴대전화</span>
+			<div>
+				<input type="text" class="col-12" name="memberPhoneNum" placeholder="전화번호 입력" th:value="${memberVO.memberPhoneNum}">
+				<!-- 백앤드 유효성 검사 -->
+				<span class="check" th:text="${valid_memberPhoneNum}"></span>
+			</div>
+
+			<button type="submit" class="btn btn-lg btn-warning btn-block">가입하기</button>
+		</form>
+	</div>
 </body>
 </html>

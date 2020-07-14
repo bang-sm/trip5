@@ -1,12 +1,49 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta charset="UTF-8">
-		<title>The page is a write page</title>
-	</head>
-	
-	<body>
-		<h2>어드민페이지</h2>
-	</body>
-	
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8">
+<title>관리자페이지</title>
+<th:block th:replace="common/commonHead"></th:block>
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/admin.css}">
+<!-- Google 아이콘 -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+
+<!-- 공통 헤드 nav -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:include="common/header :: header_nav"></nav>
+<!-- //공통 헤드 nav -->
+<body>
+	<div id="main_content" class="row main_content_manager">
+
+		<h1 class="col-md-12 text-center">관리자 페이지입니다</h1>
+
+		<div class="container">
+			<div id="main_content_managerMenu" class="row col-md-12 text-center">
+				<div class="col-md-4 col-sm-6 col-6">
+					<button id="manager_btn_1" onclick="location.href=''">
+						<i class="fas fa-users"></i>
+					</button>
+					<h2>회원관리</h2>
+				</div>
+				<div class="col-md-4 col-sm-6 col-6">
+					<button id="manager_btn_2" onclick="location.href=''">
+						<i class="fas fa-comments"></i>
+					</button>
+					<h2>
+						채팅<br> 블랙리스트
+					</h2>
+				</div>
+				<div class="col-md-4 col-sm-12 col-12">
+					<button id="manager_btn_3" onclick="location.href= ''">
+						<i class="fas fa-list-alt"></i>
+					</button>
+					<h2>
+						게시글<br> 관리
+					</h2>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
 </html>
