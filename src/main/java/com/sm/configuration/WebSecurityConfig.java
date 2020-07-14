@@ -81,6 +81,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()
 			.csrf().ignoringAntMatchers("/black/**")	
 		.and()
+			.csrf().ignoringAntMatchers("/wish/**")	
+		.and()
 			.oauth2Login()
 //			.successHandler()
 			.loginPage("/user/login");

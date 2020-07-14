@@ -82,7 +82,7 @@ zoomimg {width:15px;height:15px;padding:12px 0;border:none;}
     background: url(//t1.daumcdn.net/localimg/localimages/07/2018/pc/title/kakaomap_logo.png) no-repeat 0 0;
     text-indent: -9999px;
 }
-#keyword{
+#keyword2{
 	float: left;
     width: 300px;
     height: 19px;
@@ -116,7 +116,7 @@ zoomimg {width:15px;height:15px;padding:12px 0;border:none;}
     -moz-box-shadow: 0 2px 1px 0 rgba(0,0,0,.15);
     box-shadow: 0 2px 1px 0 rgba(0,0,0,.15);
 }
-.map_btn{
+.map_btn2{
 	float:left;
 	padding:10px;
 }
