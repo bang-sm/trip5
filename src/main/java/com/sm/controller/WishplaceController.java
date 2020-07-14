@@ -64,5 +64,11 @@ public class WishplaceController {
 		return "redirect:/wish/place";
 	}
 	
+	@GetMapping("/example")
+	public String example() throws Exception{
+		
+		return "wish/placedash";
+	}
+	
 	
 }
