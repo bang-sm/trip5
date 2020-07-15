@@ -3,14 +3,22 @@ var nick;
 var blackListv;
 var blackUser = true;
 var otherUUid;
+
+var Now = new Date();
+var NowTime = Now.getHours();
+NowTime += ':' + Now.getMinutes();
+
+
 $(document).ready(function(){
 	loadPage();
+	
 });
 
 $(document).on('click',".othersMsg" ,function(){
 	nick = $(this).attr('data-email');
 	otherUUid = $(this).attr('data-uuid');
 });
+
 
 function loadPage(){
 	data = "uuid="+$("#userSessionuuid").val();
@@ -64,7 +72,20 @@ function wsEvt() {
 					if(d.msg.length == 0){
 						alert("내용을 입력하세요!!")
 					} else {
-						$("#chating").append("<p class='me'>나 : " + d.msg + "</p>");
+						$(".chat-body").append(" <div class='message my-message'>" +
+                            "<img alt='' class='img-circle medium-image' src='https://bootdey.com/img/Content/avatar/avatar1.png'>"+
+                            "<div class='message-body'>" +
+                                "<div class='message-body-inner'>"+
+                                    "<div class='message-info'>"+
+                                        "<h4>" +d.userName +"</h4>"+
+                                        "<h5> <i class='far fa-clock'></i>" +NowTime+ "</h5>"+
+                                    "</div>"+
+                                    "<hr>"+
+                                    "<div class='message-text'>"+d.msg+"</div>"+
+                                "</div>"+
+                            "</div>"+
+                            "<br>"+
+                        "</div>");
 					}
 				} else if((d.msg.length != 0)){
 					for(i = 0; i< blackListv.length; i++){
@@ -74,20 +95,33 @@ function wsEvt() {
 						}
 					}
 						if(blackUser){
-						$("#chating").append(
-							"<div class='dropdown others'>" +
-							  "<a class='stretched-link othersMsg' href='#' role='button' id='dropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' data-uuid='"+d.userUuid+"' data-email='" + d.userName + "'>"
-							  + d.userName +
-							  "</a>" +
-							  "<div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>"
-							    +"<button class='dropdown-item' onclick='blackList()' data-email='" + d.userName + "'>차단하기</button>"+
-							    "<button class='dropdown-item' data-toggle='modal' data-target='#exampleModal' onclick='sendMsg()' data-uuid='"+d.userUuid+"'>쪽지보내기</button>" +
-							  "</div>" 
-							  + " : " + d.msg + "</div>");
-						}
+							$(".chat-body").append(
+									"<div class='message info'>"+
+                            "<img alt='' class='img-circle medium-image' src='https://bootdey.com/img/Content/avatar/avatar1.png'>"+
+                            "<div class='message-body'>"+
+                                "<div class='message-info'>"+
+                                    "<h4>" + "<div class='dropdown others'>" +
+      							  "<a class='stretched-link othersMsg' href='#' style='color:white' role='button' id='dropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' data-uuid='"+d.userUuid+"' data-email='" + d.userName + "'>"
+    							  + d.userName +
+    							  "</a>" +
+    							  "<div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>"
+    							    +"<button class='dropdown-item' onclick='blackList()' data-email='" + d.userName + "'>차단하기</button>"+
+    							    "<button class='dropdown-item' data-toggle='modal' data-target='#exampleModal' onclick='sendMsg()' data-uuid='"+d.userUuid+"'>쪽지보내기</button>" +
+    							  "</div>" 
+    							  + "</div>" + "</h4>"+
+                                    "<h5> <i class='far fa-clock'></i>" +NowTime+ "</h5>"+
+                                "</div>"+
+                                "<hr>"+
+                                "<div class='message-text'>"+
+                                    d.msg+
+                                "</div>"+
+                            "</div>"+
+                            "<br>"+
+                        "</div>");
+					}
 				}
 			} else if(d.type="inchat"){
-				$("#chating").append("<p class='me'>" + d.userName + "님이 입장하셨습니다</p>");
+				$(".chat-body").append("<p class='me'>" + d.userName + "님이 입장하셨습니다</p>");
 			}	else {
 				console.warn("unknown type!")
 			}
@@ -108,7 +142,7 @@ function inChatt(){
 			userName : $('#userSessionId').val(),
 			msg : $('#userSessionId').val() + "님이 입장하셨습니다."
 	}
-	ws.send(JSON.stringify(option)) 
+	ws.send(JSON.stringify(option));
 }
 
 function chatConn() {
@@ -123,10 +157,10 @@ function send() {
 		sessionId : $("#sessionId").val(),
 		userName : $('#userSessionId').val(),
 		userUuid : $('#userSessionuuid').val(),
-		msg : $("#chatting").val()
+		msg : $(".send-message-text").val(),
 	}
 	ws.send(JSON.stringify(option))
-	$('#chatting').val("");
+	$('.send-message-text').val("");
 }
 
 
@@ -207,7 +241,6 @@ function sendToMsg(){
 		}
 	})
 }
-
 
 
 

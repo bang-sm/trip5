@@ -1,29 +1,25 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"> 
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>채팅 페이지</title>
 <script src="https://code.jquery.com/jquery-3.4.1.js" type="text/javascript"></script>
-<link rel="stylesheet" type="text/css" th:href="@{/css/chat.css}">
+<link rel="stylesheet" type="text/css" href="../css/chat.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 <script src="../js/chat.js"></script>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:include="common/header :: header_nav"></nav>
-<div id="chat_container" class="chat_container">
-<h1>채팅</h1>
-		<input type="hidden" id="sessionId" value="">
-		<input th:if="${session.userInfo != null}" type="hidden" id="userSessionId" th:value="${session.userInfo.membernick}">
-		<input th:if="${session.userInfo != null}" type="hidden" id="userSessionuuid" th:value="${session.userInfo.uuid}">
-		
-		<div id="chating" class="chating">
-		</div>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:include="common/header :: header_nav"></nav>
+
+	<div id="chat_container" class="chat_container">
+
+
 		<div th:if="${session.userInfo != null}" id="yourMsg">
 			<div id="chatin">
-				<input type="button" id="chatinBtn" onclick="chatConn()" value="채팅방 입장"/>
+				<input type="button" id="chatinBtn" onclick="chatConn()" value="채팅방 입장" />
 			</div>
-			
+
 			<table class="inputTable">
 				<tr>
 					<th th:text="${session.userInfo.membernick}">유저아이디</th>
@@ -31,43 +27,103 @@
 					<th><button onclick="send()" id="sendBtn">보내기</button></th>
 				</tr>
 			</table>
-		</div> 
-</div>
+		</div>
+	</div>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">쪽지 보내기</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="form-group">
-            <label for="recipient-name" class="col-form-label">수신자</label>
-            <input type="text" class="form-control recep" id="recipient-name" readonly>
-          </div>
-          <div class="form-group">
-            <label for="recipient-name" class="col-form-label">제목</label>
-            <input type="text" class="form-control" id="message-subject">
-          </div>
-          <div class="form-group">
-            <label for="message-text" class="col-form-label">내용</label>
-            <textarea class="form-control" id="message-text" style="resize: none;"></textarea>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-        <button type="button" class="btn btn-primary" onclick="sendToMsg()">보내기</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+	<input type="hidden" id="sessionId" value="">
+	<input th:if="${session.userInfo != null}" type="hidden" id="userSessionId" th:value="${session.userInfo.membernick}">
+	<input th:if="${session.userInfo != null}" type="hidden" id="userSessionuuid" th:value="${session.userInfo.uuid}">
+	<div class="chat_container">
+		<div class="panel messages-panel">
+			<div class="contacts-list">
+				<div class="inbox-categories">
+					<div data-toggle="tab" data-target="#inbox" class="active">Participant</div>
+				</div>
+				<div class="tab-content">
+					<div id="inbox" class="contacts-outter-wrapper tab-pane active">
+						<div class="contacts-outter">
+							<ul class="list-unstyled contacts">
+								<li data-toggle="tab" data-target="#inbox-message-1"><img alt="" class="img-circle medium-image" src="https://bootdey.com/img/Content/avatar/avatar1.png">
+
+									<div class="vcentered info-combo">
+										<h3 class="no-margin-bottom name">John Doe</h3>
+										<h5>Hah, too late, I already bought it and my team is impleting the new design right now.</h5>
+									</div>
+									<div class="contacts-add">
+										<span class="message-time"> 2:32 <sup>AM</sup></span>
+									</div></li>
+								<li data-toggle="tab" data-target="#inbox-message-2"><img alt="" class="img-circle medium-image" src="https://bootdey.com/img/Content/avatar/avatar1.png">
+
+									<div class="vcentered info-combo">
+										<h3 class="no-margin-bottom name">John Doe</h3>
+										<h5>Of course, just call me before that, in case I forget.</h5>
+									</div>
+									<div class="contacts-add">
+										<span class="message-time"> 3:56 <sup>AM</sup></span>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="tab-content">
+				<div class="tab-pane message-body active" id="inbox-message-1">
+					<div class="message-top">
+						<p class="btn btn btn-success new-message">
+							<i class="fa fa-envelope"></i> Chatting
+						</p>
+					</div>
+
+					<div class="message-chat">
+						<div class="chat-body"></div>
+
+						<div class="chat-footer inputTable">
+							<textarea class="send-message-text" style="resize: none"></textarea>
+							<button type="button" class="send-message-button btn-info">
+								<i class="far fa-paper-plane"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">쪽지 보내기</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group">
+							<label for="recipient-name" class="col-form-label">수신자</label> <input type="text" class="form-control recep" id="recipient-name" readonly>
+						</div>
+						<div class="form-group">
+							<label for="recipient-name" class="col-form-label">제목</label> <input type="text" class="form-control" id="message-subject">
+						</div>
+						<div class="form-group">
+							<label for="message-text" class="col-form-label">내용</label>
+							<textarea class="form-control" id="message-text" style="resize: none;"></textarea>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary" onclick="sendToMsg()">보내기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 </body>
 </html>
