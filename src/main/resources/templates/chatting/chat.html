@@ -12,24 +12,6 @@
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:include="common/header :: header_nav"></nav>
 
-	<div id="chat_container" class="chat_container">
-
-
-		<div th:if="${session.userInfo != null}" id="yourMsg">
-			<div id="chatin">
-				<input type="button" id="chatinBtn" onclick="chatConn()" value="채팅방 입장" />
-			</div>
-
-			<table class="inputTable">
-				<tr>
-					<th th:text="${session.userInfo.membernick}">유저아이디</th>
-					<th><input type="text" id="chatting" placeholder="보내실 메시지를 입력하세요."></th>
-					<th><button onclick="send()" id="sendBtn">보내기</button></th>
-				</tr>
-			</table>
-		</div>
-	</div>
-
 	<input type="hidden" id="sessionId" value="">
 	<input th:if="${session.userInfo != null}" type="hidden" id="userSessionId" th:value="${session.userInfo.membernick}">
 	<input th:if="${session.userInfo != null}" type="hidden" id="userSessionuuid" th:value="${session.userInfo.uuid}">
@@ -43,25 +25,6 @@
 					<div id="inbox" class="contacts-outter-wrapper tab-pane active">
 						<div class="contacts-outter">
 							<ul class="list-unstyled contacts">
-								<li data-toggle="tab" data-target="#inbox-message-1"><img alt="" class="img-circle medium-image" src="https://bootdey.com/img/Content/avatar/avatar1.png">
-
-									<div class="vcentered info-combo">
-										<h3 class="no-margin-bottom name">John Doe</h3>
-										<h5>Hah, too late, I already bought it and my team is impleting the new design right now.</h5>
-									</div>
-									<div class="contacts-add">
-										<span class="message-time"> 2:32 <sup>AM</sup></span>
-									</div></li>
-								<li data-toggle="tab" data-target="#inbox-message-2"><img alt="" class="img-circle medium-image" src="https://bootdey.com/img/Content/avatar/avatar1.png">
-
-									<div class="vcentered info-combo">
-										<h3 class="no-margin-bottom name">John Doe</h3>
-										<h5>Of course, just call me before that, in case I forget.</h5>
-									</div>
-									<div class="contacts-add">
-										<span class="message-time"> 3:56 <sup>AM</sup></span>
-									</div>
-								</li>
 							</ul>
 						</div>
 					</div>
@@ -82,7 +45,7 @@
 
 						<div class="chat-footer inputTable">
 							<textarea class="send-message-text" style="resize: none"></textarea>
-							<button type="button" class="send-message-button btn-info">
+							<button type="button" class="send-message-button btn-info" onclick="send()">
 								<i class="far fa-paper-plane"></i>
 							</button>
 						</div>
@@ -116,8 +79,7 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-					<button type="button" class="btn btn-primary" onclick="sendToMsg()">보내기</button>
+					<button type="button" class="btn btn-primary" onclick="sendToMsg()">전송</button>
 				</div>
 			</div>
 		</div>

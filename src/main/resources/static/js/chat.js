@@ -5,13 +5,12 @@ var blackUser = true;
 var otherUUid;
 
 var Now = new Date();
-var NowTime = Now.getHours();
-NowTime += ':' + Now.getMinutes();
-
+var NowHours = Now.getHours();
+var NowMinutes = (Now.getMinutes() < 10) ? "0" + (Now.getMinutes()) : Now.getMinutes();
 
 $(document).ready(function(){
 	loadPage();
-	
+	chatConn();
 });
 
 $(document).on('click',".othersMsg" ,function(){
@@ -48,7 +47,7 @@ function wsEvt() {
 		console.log('소켓 오픈');
 		inChatt();
 	}
-
+	
 	ws.onmessage = function(data) {
 		//메시지를 받으면 동작
 		var msg = data.data; 
@@ -77,8 +76,8 @@ function wsEvt() {
                             "<div class='message-body'>" +
                                 "<div class='message-body-inner'>"+
                                     "<div class='message-info'>"+
-                                        "<h4>" +d.userName +"</h4>"+
-                                        "<h5> <i class='far fa-clock'></i>" +NowTime+ "</h5>"+
+                                        "<h4>나</h4>"+
+                                        "<h5> <i class='far fa-clock'></i>"+NowHours + " : " +NowMinutes+ "</h5>"+
                                     "</div>"+
                                     "<hr>"+
                                     "<div class='message-text'>"+d.msg+"</div>"+
@@ -106,10 +105,10 @@ function wsEvt() {
     							  "</a>" +
     							  "<div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>"
     							    +"<button class='dropdown-item' onclick='blackList()' data-email='" + d.userName + "'>차단하기</button>"+
-    							    "<button class='dropdown-item' data-toggle='modal' data-target='#exampleModal' onclick='sendMsg()' data-uuid='"+d.userUuid+"'>쪽지보내기</button>" +
+    							    "<button class='dropdown-item' data-backdrop='static' data-toggle='modal' data-target='#exampleModal' onclick='sendMsg()' data-uuid='"+d.userUuid+"'>쪽지보내기</button>" +
     							  "</div>" 
     							  + "</div>" + "</h4>"+
-                                    "<h5> <i class='far fa-clock'></i>" +NowTime+ "</h5>"+
+                                    "<h5> <i class='far fa-clock'></i>"+NowHours + " : " +NowMinutes+ "</h5>"+
                                 "</div>"+
                                 "<hr>"+
                                 "<div class='message-text'>"+
@@ -121,8 +120,17 @@ function wsEvt() {
 					}
 				}
 			} else if(d.type="inchat"){
-				$(".chat-body").append("<p class='me'>" + d.userName + "님이 입장하셨습니다</p>");
-			}	else {
+				$(".contacts").append("<li data-toggle='tab' data-target='#inbox-message-2' data-sessionId='"+ $("#sessionId").val() +"'>"+
+				"<img alt='' class='img-circle medium-image' src='../image/user.jpg' style='vertical-align: baseline'>"+
+					"<div class='vcentered info-combo'>"+
+						"<h3 class='no-margin-bottom name'>"+d.userName+"</h3>"+
+						"<h5>Of course, just call me before that, in case I forget.</h5>"+
+					"</div>" +
+					"<div class='contacts-add'>"+
+						"<span class='message-time'>" +NowHours + "시 " +NowMinutes+ "분</span>"+
+					"</div>"+
+				"</li>")
+			} else {
 				console.warn("unknown type!")
 			}
 		}
@@ -133,6 +141,11 @@ function wsEvt() {
 			send();
 		}
 	});
+	
+	ws.onclose = function(data){
+		$("li[data-sessionId="+$("#sessionId").val()+"]").remove();
+		console.log("123123123123123");
+	}
 }
 
 function inChatt(){
@@ -234,14 +247,13 @@ function sendToMsg(){
 		},
 		success : function(data,status){
 			if(status == "success"){
-				alert("쪽지가 보내졌습니다!.");
+				alert("쪽지를 보냈습니다!");
 				$(".modal").hide();
 				$("body > div.modal-backdrop.fade.show").remove();
 			}
 		}
 	})
 }
-
 
 
 

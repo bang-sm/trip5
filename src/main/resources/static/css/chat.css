@@ -9,22 +9,6 @@
 	padding: 25px
 }
 
-.chat_container h1 {
-	text-align: left;
-	padding: 5px 5px 5px 15px;
-	color: black;
-	border-left: 3px solid black;
-	margin-bottom: 20px;
-}
-
-.chating {
-	background-color: cyan;
-	width: 1200px;
-	height: 500px;
-	overflow: auto;
-	margin:0 auto;
-}
-
 input {
 	width: 330px;
 	height: 25px;
@@ -34,6 +18,16 @@ input {
 	display: none;
 }
 
+.chatin{
+	width: 30%;
+	margin: 10px auto;
+	padding: 5px;
+	display: block;
+	text-align:center;
+	border: 1px solid #3DB7CC;
+	border-radius: 10px;
+	color: #3DB7CC;
+}
 
 body{
     margin-top:20px;
