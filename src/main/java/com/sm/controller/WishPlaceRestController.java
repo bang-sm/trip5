@@ -10,6 +10,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,14 +21,15 @@ import com.sm.domain.PlacelistVo;
 import com.sm.service.PlacelistService;
 
 @RestController
-public class RestAPIController {
+@RequestMapping("/wish/rest")
+public class WishPlaceRestController {
 
-	private static final Logger logger = LoggerFactory.getLogger(RestAPIController.class);
+	private static final Logger logger = LoggerFactory.getLogger(WishPlaceRestController.class);
 	
 	@Autowired
 	PlacelistService service;
 	
-	@GetMapping("/naver")
+	@PostMapping(value="/naver")
 	public ResponseEntity<String> callAPI(String keyword) throws JsonProcessingException {
 		String clientId ="SCrW8Vqyf_Whz991VMq5";
 		String clientSecret = "Xyeh7whQVZ";
@@ -40,29 +44,31 @@ public class RestAPIController {
 		return restTemplate.exchange(new_url, HttpMethod.GET, new HttpEntity(header), String.class);
 		
 	}
-	@GetMapping("/bookmark")
+	@PostMapping(value="/bookmark")
 	public void bookmark(int bookmark,int placeid) throws Exception{
 		service.bookmark(bookmark,placeid);
 	}
 	
-	@GetMapping("/checkbox")
+	@PostMapping(value="/checkbox")
 	public void checkbox(int placecheck, int placeid) throws Exception{
 		service.checkbox(placecheck,placeid);
 	}
 	
-	@GetMapping("/goplace")
+	@PostMapping(value="/goplace")
 	public List<PlacelistVo> goplace(int placecheck,int uuid) throws Exception{
 		return service.goplace(placecheck,uuid);
 	}
 	
-	@GetMapping("/buttoncategory")
+	@PostMapping(value="/buttoncategory")
 	public List<PlacelistVo> buttoncategory(int placecategory,int placecheck,int uuid) throws Exception{
 		return service.buttoncategory(placecategory,placecheck,uuid);
 	}
 	
-	@GetMapping("/delete")
+	@PostMapping(value="/delete")
 	public void delete(int placeid) throws Exception{
-		service.delete(placeid);
+		System.out.println("딜리트 맵핑");
+		System.out.println(placeid);
+		//service.delete(placeid);
 	}
 	
 	

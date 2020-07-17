@@ -36,9 +36,9 @@
 	
 	<insert id="sendToMsg" parameterType="com.sm.domain.MessageVO">
 		insert into 
-			messageList (msg_regdate , msg_content , from_id , send_id) 
+			messageList (msg_regdate , msg_content , from_id , send_id, msg_subject) 
 		values
-			(now(), #{msgcontent}, #{fromid}, #{sendid})
+			(now(), #{msgcontent}, #{fromid}, #{sendid}, #{msgsubject})
 	</insert>
 	
 	

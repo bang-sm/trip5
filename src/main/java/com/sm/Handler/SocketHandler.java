@@ -3,7 +3,8 @@ package com.sm.Handler;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import javax.websocket.OnClose;
+import javax.websocket.server.ServerEndpoint;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -14,8 +15,6 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-
-import lombok.AllArgsConstructor;
 
 @Component
 public class SocketHandler extends TextWebSocketHandler {
@@ -71,6 +70,7 @@ public class SocketHandler extends TextWebSocketHandler {
 		sessionMap.remove(session.getId());
 		super.afterConnectionClosed(session, status);
 		System.out.println("소켓 종료!");
+		System.out.println(status + "///////////////////////////////");
 	}
 	
 	private static JSONObject jsonToObjectParser(String jsonStr) {
