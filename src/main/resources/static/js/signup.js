@@ -7,10 +7,6 @@ $(document).ready(function() {
 				"memberemail" : $("#memberemail").val()
 			},
 			success : function(data) {
-				/* console.log(data); 
-				console.log($("#memberemail").val());
-				console.log(data);
-				*/
 				$(".idCheckMsg").text("");
 				switch(data){
 				case 1:

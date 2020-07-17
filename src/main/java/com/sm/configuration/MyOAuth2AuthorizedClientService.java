@@ -34,18 +34,18 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 	public void saveAuthorizedClient(OAuth2AuthorizedClient oAuth2AuthorizedClient, Authentication authentication) {
 		String providerType = oAuth2AuthorizedClient.getClientRegistration().getRegistrationId();
 		OAuth2AccessToken accessToken = oAuth2AuthorizedClient.getAccessToken();
-		System.out.println(providerType + "//////////////////////////////////////////////////////////");
-		System.out.println(accessToken + "//////////////////////////////////////////////////////////");
+//		System.out.println(providerType + "////////////////////////providerType//////////////////////////////////");
+//		System.out.println(accessToken + "/////////////////////////accessToken/////////////////////////////////");
 		
 		OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
-		System.out.println(oauth2User + "///////////////////////////////////////////////////////////");
+//		System.out.println(oauth2User + "//////////////////////////oauth2User/////////////////////////////////");
 		System.out.println(oauth2User.getName());
 		System.out.println(oAuth2AuthorizedClient.getPrincipalName() +"   /// getPrincipalName");
 		
 		
 		// 유저 이메일(아이디)
 		String memberemail = ((LinkedHashMap<?, ?>)oauth2User.getAttribute("kakao_account")).get("email") + "";
-		System.out.println(memberemail + "///////////////////");
+//		System.out.println(memberemail + "//////////////////////////memberemail/////////////////////////////////");
 		
 		// 유저 닉네임
 		String membernick = ((LinkedHashMap<?, ?>)oauth2User.getAttribute("properties")).get("nickname") + "";
@@ -74,14 +74,14 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 		
 		// 로그인 세션 저장
 		session.setAttribute("userInfo", memberVo);
-		
+		session.setMaxInactiveInterval(60*60);
 		
 	} // end Oauth2 시큐리티 다른 Client 로그인 탈때 중간에 나오는 거치는 곳
 	
 	@Override
 	public <T extends OAuth2AuthorizedClient> T loadAuthorizedClient(String clientRegistrationId,
 			String principalName) {
-		System.out.println(principalName +" ///////// loadAuthorizedClient //////////");
+//		System.out.println(principalName +" ///////// loadAuthorizedClient //////////");
 		return null;
 	}
 	

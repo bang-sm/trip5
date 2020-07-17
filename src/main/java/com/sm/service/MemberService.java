@@ -77,7 +77,8 @@ public class MemberService implements UserDetailsService{
 		else {
 			HttpSession session=request.getSession(true);
 			session.setAttribute("userInfo", user);
-			System.out.println(user+"/////////////////////////////////////////////////////////////////////////////");
+			session.setMaxInactiveInterval(60*60);
+//			System.out.println(user+"/////////////////////////////////////////////////////////////////////////////");
 		}
 		
 		/*
