@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,12 +16,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.sm.service.MemberService;
@@ -54,7 +58,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         	.defaultSuccessUrl("/index") // 성공했을때 이동되는 페이지
         	.usernameParameter("memberid")	//로그인시 파라미터로 "id", "password"를 받습니다
         	.passwordParameter("password")
-        	.failureUrl("/user/login?error")
         	.permitAll()
         .and()
 	        .logout()
@@ -79,25 +82,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()
 			.csrf().ignoringAntMatchers("/my/**")	
 		.and()
-
-			.csrf().ignoringAntMatchers("/black/**")	
-		.and()
-			.csrf().ignoringAntMatchers("/wish/**")	
-		.and()
-			.oauth2Login()
-//			.successHandler()
-			.loginPage("/user/login");
-		//		.antMatchers("/kakao")
-		// .hasAuthority(KAKAO.getRoleType())
-//			.oauth2Login()	// Oauth2 로그인
-//			;
+			.oauth2Login()	// Oauth2 로그인
+			;
+       
         http.sessionManagement()
-        	.invalidSessionUrl("/user/login")
+        	.invalidSessionUrl("/user/sessionExpire")
         	//유효하지 않은 세션으로 접근했을때 어디로 보낼것인지 URL을 설정하는 기능.
         	//로그아웃 했을경우 세션을 만료시킨다.
         	.maximumSessions(1) // 최대 세션 1로 유지
-        	.maxSessionsPreventsLogin(false) // 중복로그인시 이전 로그인했던 세션 만료.
-        	;
+        	.maxSessionsPreventsLogin(true) // 중복로그인시 이전 로그인했던 세션 만료.
+        	.expiredUrl("/user/sessionExpire")	// 중복 로그인시 타는 url
+         	;
+        									  
 	}
 	
 	
@@ -146,6 +142,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(memberService).passwordEncoder(passwordEncoder());
     }
     
+    
+    
+    /*
+     * 자기 자신이 로그인하고 재로그인시 로그인 안되는 문제 해결
+     * 
+     */
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        return new SessionRegistryImpl();
+    }// Register HttpSessionEventPublisher
+
+    @Bean
+    public static ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
+        return new ServletListenerRegistrationBean<HttpSessionEventPublisher>(new HttpSessionEventPublisher());
+    }
 
 }
 

@@ -9,9 +9,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -20,8 +17,6 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -30,34 +25,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 //implements LogoutHandler
 @Service
 public class KakaoAPI  {
-//	@Override
-//	public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-//		String reqURL = "https://kapi.kakao.com/v1/user/logout";
-//		try {
-//			URL url = new URL(reqURL);
-//			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//			conn.setRequestMethod("POST");
-//			conn.setRequestProperty("Authorization", "Bearer " + accessToken);
-//
-//			int responseCode = conn.getResponseCode();
-//			System.out.println("responseCode : " + responseCode);
-//
-//			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-//
-//			String result = "";
-//			String line = "";
-//
-//			while ((line = br.readLine()) != null) {
-//				result += line;
-//			}
-//			System.out.println(result);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//	}
-
   
 	 public static JsonNode getAccessToken(String code) {
 		 

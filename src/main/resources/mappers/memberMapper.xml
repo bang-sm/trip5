@@ -18,6 +18,7 @@
 			now());
 	
 	</insert>
+	
 	<!-- 회원가입 카카오 -->
 	<insert id="kakaoSignup" parameterType="com.sm.domain.MemberVO">
 		INSERT INTO member
@@ -43,9 +44,6 @@
 		WHERE 
 			memberemail = #{memberemail};
 	</insert>
-	
-	
-	
 
 	<!-- 아이디  찾기 -->
 	<select id="findById" resultType="com.sm.domain.MemberVO"
@@ -68,6 +66,12 @@
 		where 
 			memberemail = #{memberemail}
 	</select>
-	
 
+	<!-- 회원 수 -->
+	<select id="userCnt" resultType="int">
+		select
+			count(*)
+		from
+			member
+	</select>	
 </mapper>

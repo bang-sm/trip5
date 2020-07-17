@@ -3,14 +3,21 @@ var nick;
 var blackListv;
 var blackUser = true;
 var otherUUid;
+
+var Now = new Date();
+var NowHours = Now.getHours();
+var NowMinutes = (Now.getMinutes() < 10) ? "0" + (Now.getMinutes()) : Now.getMinutes();
+
 $(document).ready(function(){
 	loadPage();
+	chatConn();
 });
 
 $(document).on('click',".othersMsg" ,function(){
 	nick = $(this).attr('data-email');
 	otherUUid = $(this).attr('data-uuid');
 });
+
 
 function loadPage(){
 	data = "uuid="+$("#userSessionuuid").val();
@@ -40,7 +47,7 @@ function wsEvt() {
 		console.log('소켓 오픈');
 		inChatt();
 	}
-
+	
 	ws.onmessage = function(data) {
 		//메시지를 받으면 동작
 		var msg = data.data; 
@@ -64,7 +71,20 @@ function wsEvt() {
 					if(d.msg.length == 0){
 						alert("내용을 입력하세요!!")
 					} else {
-						$("#chating").append("<p class='me'>나 : " + d.msg + "</p>");
+						$(".chat-body").append(" <div class='message my-message'>" +
+                            "<img alt='' class='img-circle medium-image' src='https://bootdey.com/img/Content/avatar/avatar1.png'>"+
+                            "<div class='message-body'>" +
+                                "<div class='message-body-inner'>"+
+                                    "<div class='message-info'>"+
+                                        "<h4>나</h4>"+
+                                        "<h5> <i class='far fa-clock'></i>"+NowHours + " : " +NowMinutes+ "</h5>"+
+                                    "</div>"+
+                                    "<hr>"+
+                                    "<div class='message-text'>"+d.msg+"</div>"+
+                                "</div>"+
+                            "</div>"+
+                            "<br>"+
+                        "</div>");
 					}
 				} else if((d.msg.length != 0)){
 					for(i = 0; i< blackListv.length; i++){
@@ -74,21 +94,43 @@ function wsEvt() {
 						}
 					}
 						if(blackUser){
-						$("#chating").append(
-							"<div class='dropdown others'>" +
-							  "<a class='stretched-link othersMsg' href='#' role='button' id='dropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' data-uuid='"+d.userUuid+"' data-email='" + d.userName + "'>"
-							  + d.userName +
-							  "</a>" +
-							  "<div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>"
-							    +"<button class='dropdown-item' onclick='blackList()' data-email='" + d.userName + "'>차단하기</button>"+
-							    "<button class='dropdown-item' data-toggle='modal' data-target='#exampleModal' onclick='sendMsg()' data-uuid='"+d.userUuid+"'>쪽지보내기</button>" +
-							  "</div>" 
-							  + " : " + d.msg + "</div>");
-						}
+							$(".chat-body").append(
+									"<div class='message info'>"+
+                            "<img alt='' class='img-circle medium-image' src='https://bootdey.com/img/Content/avatar/avatar1.png'>"+
+                            "<div class='message-body'>"+
+                                "<div class='message-info'>"+
+                                    "<h4>" + "<div class='dropdown others'>" +
+      							  "<a class='stretched-link othersMsg' href='#' style='color:white' role='button' id='dropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' data-uuid='"+d.userUuid+"' data-email='" + d.userName + "'>"
+    							  + d.userName +
+    							  "</a>" +
+    							  "<div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>"
+    							    +"<button class='dropdown-item' onclick='blackList()' data-email='" + d.userName + "'>차단하기</button>"+
+    							    "<button class='dropdown-item' data-backdrop='static' data-toggle='modal' data-target='#exampleModal' onclick='sendMsg()' data-uuid='"+d.userUuid+"'>쪽지보내기</button>" +
+    							  "</div>" 
+    							  + "</div>" + "</h4>"+
+                                    "<h5> <i class='far fa-clock'></i>"+NowHours + " : " +NowMinutes+ "</h5>"+
+                                "</div>"+
+                                "<hr>"+
+                                "<div class='message-text'>"+
+                                    d.msg+
+                                "</div>"+
+                            "</div>"+
+                            "<br>"+
+                        "</div>");
+					}
 				}
 			} else if(d.type="inchat"){
-				$("#chating").append("<p class='me'>" + d.userName + "님이 입장하셨습니다</p>");
-			}	else {
+				$(".contacts").append("<li data-toggle='tab' data-target='#inbox-message-2' data-sessionId='"+ $("#sessionId").val() +"'>"+
+				"<img alt='' class='img-circle medium-image' src='../image/user.jpg' style='vertical-align: baseline'>"+
+					"<div class='vcentered info-combo'>"+
+						"<h3 class='no-margin-bottom name'>"+d.userName+"</h3>"+
+						"<h5>Of course, just call me before that, in case I forget.</h5>"+
+					"</div>" +
+					"<div class='contacts-add'>"+
+						"<span class='message-time'>" +NowHours + "시 " +NowMinutes+ "분</span>"+
+					"</div>"+
+				"</li>")
+			} else {
 				console.warn("unknown type!")
 			}
 		}
@@ -99,6 +141,11 @@ function wsEvt() {
 			send();
 		}
 	});
+	
+	ws.onclose = function(data){
+		$("li[data-sessionId="+$("#sessionId").val()+"]").remove();
+		console.log("123123123123123");
+	}
 }
 
 function inChatt(){
@@ -108,7 +155,7 @@ function inChatt(){
 			userName : $('#userSessionId').val(),
 			msg : $('#userSessionId').val() + "님이 입장하셨습니다."
 	}
-	ws.send(JSON.stringify(option)) 
+	ws.send(JSON.stringify(option));
 }
 
 function chatConn() {
@@ -123,10 +170,10 @@ function send() {
 		sessionId : $("#sessionId").val(),
 		userName : $('#userSessionId').val(),
 		userUuid : $('#userSessionuuid').val(),
-		msg : $("#chatting").val()
+		msg : $(".send-message-text").val(),
 	}
 	ws.send(JSON.stringify(option))
-	$('#chatting').val("");
+	$('.send-message-text').val("");
 }
 
 
@@ -195,18 +242,18 @@ function sendToMsg(){
 		data : {
 			"msgcontent" : $("#message-text").val(),
 			"fromid" : otherUUid,
-			"sendid" : $("#userSessionuuid").val()
+			"sendid" : $("#userSessionuuid").val(),
+			"msgsubject" : $("#message-subject").val()
 		},
 		success : function(data,status){
 			if(status == "success"){
-				alert("쪽지가 보내졌습니다!.");
+				alert("쪽지를 보냈습니다!");
 				$(".modal").hide();
+				$("body > div.modal-backdrop.fade.show").remove();
 			}
 		}
 	})
 }
-
-
 
 
 
