@@ -50,14 +50,6 @@
 				<span class="check" th:text="${valid_membernick}"></span>
 			</div>
 
-			<!-- 전화번호 -->
-			<span class="head">휴대전화</span>
-			<div>
-				<input type="text" class="col-12" name="memberPhoneNum" placeholder="전화번호 입력" th:value="${memberVO.memberPhoneNum}">
-				<!-- 백앤드 유효성 검사 -->
-				<span class="check" th:text="${valid_memberPhoneNum}"></span>
-			</div>
-
 			<button type="submit" class="btn btn-lg btn-warning btn-block">가입하기</button>
 		</form>
 	</div>
