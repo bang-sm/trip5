@@ -21,9 +21,9 @@
 				<li class="nav-item"><a class="nav-link" th:href=@{/index}><i class="far fa-envelope-open"></i></a></li>
 				<li class="nav-item"><a class="nav-link" th:href="@{/chatting/chat}">채팅</a></li>
 				<li class="nav-item"><a class="nav-link" href="#">날씨</a></li>
-				<li class="nav-item active"><span class="nav-link" sec:authorize="isAuthenticated()" th:text="${session.userInfo.memberemail}"></span></li>
+				<!-- <li class="nav-item active"><span class="nav-link" sec:authorize="isAuthenticated()" th:text="${session.userInfo.memberemail}"></span></li> -->
 				<li class="nav-item"><a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a> <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a></li>
-				<li class="nav-item"><a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/signup}">회원가입</a></li>
+				<li class="nav-item"><a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/signup}">회원가입</a></li> 
 				<li class="nav-item"><a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/travel/intro_date}">일지등록+</a></li>
 				<li class="nav-item"><a class=" nav-link" sec:authorize="hasRole('ROLE_USER')" th:href="@{/user/info}">마이페이지</a></li>
 				<li class="nav-item"><a class="nav-link" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}">관리자페이지</a></li>

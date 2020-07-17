@@ -36,7 +36,9 @@
 											</div>
 										</td>
 										<td class="td_two tablesize">
-											<input type='hidden' class="placeid" name="placeid" th:value="${card.placeid}" /> <img th:if="${card.bookmark}== 0" class="star_img " th:src="@{../image/icon/star_off.png}" /> <img th:unless="${card.bookmark}== 0" class="star_img " th:src="@{../image/icon/star_on.png}" />
+											<input type='hidden' class="placeid" name="placeid" th:value="${card.placeid}" /> 
+											<img th:if="${card.bookmark}== 0" class="star_img " th:src="@{../image/icon/star_off.png}" /> 
+											<img th:unless="${card.bookmark}== 0" class="star_img " th:src="@{../image/icon/star_on.png}" />
 										</td>
 										<td class="tablesize">
 											<div class="media">

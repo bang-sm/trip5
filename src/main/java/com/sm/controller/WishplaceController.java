@@ -86,6 +86,7 @@ public class WishplaceController {
 		}
 		List<PlacelistVo> list = service.show(uuid);
 		model.addAttribute("place", service.show(uuid));
+		model.addAttribute("donutcount",service.foodchart(uuid));
 		logger.info("확인 : " +list);
 		return "wish/placechart";
 	}

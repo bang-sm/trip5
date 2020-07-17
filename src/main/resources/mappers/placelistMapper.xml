@@ -90,5 +90,11 @@
 		WHERE 
 			placeid = #{placeid};
 	</delete>
+	
+	<select id="foodchart" parameterType="int">
+		
+	
+	
+	</select>
 
 </mapper>

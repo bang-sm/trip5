@@ -80,7 +80,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()	
 			.csrf().ignoringAntMatchers("/travel/**")
 		.and()
-			.csrf().ignoringAntMatchers("/my/**")	
+			.csrf().ignoringAntMatchers("/my/**")
+		.and()
+			.csrf().ignoringAntMatchers("/wish/**")
 		.and()
 			.oauth2Login()	// Oauth2 로그인
 			;
