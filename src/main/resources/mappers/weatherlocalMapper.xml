@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mappers.weatherlocalMapper">
+
+<select id="weatherLocalName" resultType="com.sm.domain.WeatherLocalVO">
+
+	SELECT
+			localuid,
+			localname,
+			localnx, 
+			localny,
+			localparent,
+			localdepth  
+	FROM
+			weatherLocal
+	WHERE
+			localdepth = #{localdepth} AND localparent = #{localparent}
+	;
+
+</select>
+
+<!--  <select id="lowLocalWeather" resultType="com.sm.domain.WeatherLocalVO">
+
+SELECT
+		localuid, 
+		localname,
+		localnx, 
+		localny
+FROM
+		weatherLocal
+WHERE
+		localparent = #{localuid};	
+
+</select> -->
+
+
+</mapper>

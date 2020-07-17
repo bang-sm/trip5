@@ -8,13 +8,11 @@
 			(memberpass,
 			 memberemail,
 			 membernick,
-			 memberPhoneNum,
 			 memberregdate)
 		VALUES
 			(#{memberpass},
 			#{memberemail},
-			#{membernick},
-			#{memberPhoneNum},
+			#{membernick}
 			now());
 	
 	</insert>
