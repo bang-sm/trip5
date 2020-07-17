@@ -44,7 +44,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				"/js/**", 
 				"/console/**", 
 				"/favicon.ico/**",
-				"/chatting/**")
+m				"/chatting/**",
+				"/weather/**")
 			.permitAll()
 			.anyRequest()
 			.authenticated()
@@ -78,6 +79,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.csrf().ignoringAntMatchers("/travel/**")
 		.and()
 			.csrf().ignoringAntMatchers("/my/**")	
+		.and()
+			.csrf().ignoringAntMatchers("/weather/**")	
 		.and()
 
 			.csrf().ignoringAntMatchers("/black/**")	
