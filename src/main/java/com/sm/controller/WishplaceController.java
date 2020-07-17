@@ -27,8 +27,9 @@ public class WishplaceController {
 	PlacelistService service;
 	
 	
+	
 	@GetMapping("/wish/place")
-	public String place(Model model,HttpSession session)  throws Exception{
+	public String placed(Model model,HttpSession session)  throws Exception{
 		//사용자 uuid 값 가지고 오기
 		MemberVO vo=vo=(MemberVO) session.getAttribute("userInfo");  
 		
@@ -68,6 +69,25 @@ public class WishplaceController {
 	public String example() throws Exception{
 		
 		return "common/commonSidebar";
+	}
+	
+	@GetMapping("/wish/placechart")
+	public String chart(Model model,HttpSession session)  throws Exception{
+		//사용자 uuid 값 가지고 오기
+		MemberVO vo=vo=(MemberVO) session.getAttribute("userInfo");  
+		
+		logger.info("session : "+ vo);
+		int uuid;
+		try {
+			uuid=vo.getUuid();
+		}catch(NullPointerException e) {
+			logger.info("session 없음");
+			return "redirect:/index";
+		}
+		List<PlacelistVo> list = service.show(uuid);
+		model.addAttribute("place", service.show(uuid));
+		logger.info("확인 : " +list);
+		return "wish/placechart";
 	}
 	
 	
