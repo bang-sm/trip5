@@ -43,6 +43,12 @@ public class WeatherService {
 //		return weatherLocalDAO.lowLocalWeather(localuid);
 //	}
 	
+	public List<WeatherLocalVO> selectAllweather(){
+		
+		
+		return weatherLocalDAO.selectAllWeather();
+	}
+	
 	
 
 }

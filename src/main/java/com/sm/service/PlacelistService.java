@@ -44,6 +44,9 @@ public class PlacelistService{
 	public void delete(int placeid) throws Exception{
 		dao.delete(placeid);
 	}
+	public int  foodchart(int uuid) throws Exception{
+		return dao.foodchart(uuid);
+	}
 	
 	
 	

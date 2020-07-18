@@ -64,9 +64,24 @@
                             <div class="cate" id="localCate">
                                 <label for="first_local">지역을 고르세요</label>
                                 
+                                <!--
+                                <th:block th:if depth 0 >'
+                                	<theachL
+                                	
+                                	<sel>
+                                	<op>asdsad
+                                	asd
+                                	asd
+                                	asd
+                                	asd<?>
+                                </th:block>
+                                
+                                
+                                <th:b
+                                 -->
                                 <input list="first_local_select" id="first_local" name="first_local" placeholder="지역을 선택하세요"/>
                                 <datalist id="first_local_select">
-                                    <!--  <option th:each="list :${list}" th:value1="${list.localname}" th:value2="${list.localnx}" th:value3="${list.localny}" th:class="${list.localuid}"> -->
+                                    <option th:each="list :${list}" th:value1="${list.localname}" th:value2="${list.localnx}" th:value3="${list.localny}" th:class="${list.localuid}">
                                 </datalist>
                                 
                                 <input list="second_local_select" id="second_local" name="second_local" placeholder="지역을 선택하세요"/>

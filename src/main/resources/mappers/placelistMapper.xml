@@ -90,5 +90,16 @@
 		WHERE 
 			placeid = #{placeid};
 	</delete>
+	
+	<select id="foodchart" parameterType="int">
+		SELECT 
+		   	  count(*)
+		FROM 
+			  placeList
+		WHERE 
+			  placecategory = 0 and uuid =#{uuid};
+	
+	
+	</select>
 
 </mapper>

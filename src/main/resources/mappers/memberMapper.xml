@@ -12,7 +12,7 @@
 		VALUES
 			(#{memberpass},
 			#{memberemail},
-			#{membernick}
+			#{membernick},
 			now());
 	
 	</insert>

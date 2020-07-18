@@ -28,14 +28,14 @@ public class WeatherController {
 	WeatherService weatherService;
 	
 	@GetMapping("/weather")
-	public String callWeatherAPI() throws Exception {
-//	public String callWeatherAPI(Model model) throws Exception {
+//	public String callWeatherAPI() throws Exception {
+	public String callWeatherAPI(Model model) throws Exception {
 //		
 //		int localnx = Integer.parseInt(nx);
 //		int localny = Integer.parseInt(ny);
 //		
-		System.out.println(weatherAPIservice.weatherData(60, 126));
-//		model.addAttribute("list",weatherService.weatherLocalName());
+//		System.out.println(weatherAPIservice.weatherData(60, 126));
+		model.addAttribute("list",weatherService.selectAllweather());
 		System.out.println("컨트롤러 GET 들어오나?");
 		return "/weather/weather";
 	}

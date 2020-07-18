@@ -1,6 +1,6 @@
 var MAX_DEPTH = 1;   // depth 0 ~ 1
 
-// $("#first_local").on("click").emtpy();
+ $("#first_local").on("click").emtpy();
 
 $(document).ready(function(){
 	alert("로딩 완료");
@@ -16,7 +16,7 @@ function getCategory(localdepth, localparent){
 			url: "weather/weather",
 			dataType: 'JSON',
 			data: {
-				"localdepth" : localdepth,
+				"localdepth" : $("앞에 아이디값에 값").val(),
 				"localparent" : localparent
 			},
 			cache : false,

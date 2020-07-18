@@ -21,11 +21,11 @@ public class WeatherLocalDAO {
 	}
 
 
-//	public List<WeatherLocalVO> lowLocalWeather(int localuid) {
-//		
-//		
-//		return sqlSession.selectList("mappers.weatherlocalMapper.lowLocalWeather");
-//	}
+	public List<WeatherLocalVO> selectAllWeather() {
+		
+		
+		return sqlSession.selectList("mappers.weatherlocalMapper.lowLocalWeather");
+	}
 
 	/*
 	 * // 두번째 칸 public List<WeatherLocalVO> localCateSec(int parent) { return

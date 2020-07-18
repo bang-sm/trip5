@@ -19,19 +19,20 @@
 
 </select>
 
-<!--  <select id="lowLocalWeather" resultType="com.sm.domain.WeatherLocalVO">
+<select id="selectAllWeather" resultType="com.sm.domain.WeatherLocalVO">
 
-SELECT
-		localuid, 
-		localname,
-		localnx, 
-		localny
-FROM
-		weatherLocal
-WHERE
-		localparent = #{localuid};	
+	SELECT
+			localuid,
+			localname,
+			localnx, 
+			localny,
+			localparent,
+			localdepth  
+	FROM
+			weatherLocal
+	;
 
-</select> -->
+</select>
 
 
 </mapper>
