@@ -58,4 +58,8 @@ public class PlacelistDAO {
 	public void delete(int placeid) {
 		sql.delete("mappers.placelistMapper.delete",placeid);
 	}
+	
+	public int foodchart(int uuid) {
+		return sql.selectOne("mappers.placelistMapper.foodchart",uuid);
+	}
 }

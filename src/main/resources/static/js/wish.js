@@ -922,6 +922,7 @@ function wish_regist(){
 }
 //클릭시 블로그 보기 , 글 수정 , 글 삭제 버튼으로 전환
 $(document).on('click','.media-body',function(){
+	
 	var friend = $(this).parents('.media');
 	var look= friend.children('.media_look');
 	var update=friend.children('.media_update');
@@ -932,6 +933,8 @@ $(document).on('click','.media-body',function(){
 		opacity:"0",
 	},1000,
 	function(){
+		$(this).children('.title').css('fontSize','0');
+		$(this).children('.summary').css('fontSize','0');
 		friend.children('.media_look').css('display','block');
 		friend.children('.media_update').css('display','block');
 		friend.children('.media_delete').css('display','block');
@@ -964,6 +967,8 @@ $(document).on('click','.media_delete',function(){
 
 $(document).on('click','.media_cancel',function(){
 	var pop = $(this).parents('.media');
+	$(this).parents('.media').children('.media-body').children('.title').css('fontSize','16px');
+	pop.children('.summary').css('fontSize','12px');
 	pop.children('.media_look').css("display","none");
 	pop.children('.media_update').css("display","none");
 	pop.children('.media_delete').css("display","none");
