@@ -82,6 +82,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()
 			.csrf().ignoringAntMatchers("/my/**")	
 		.and()
+			.csrf().ignoringAntMatchers("/user/authEmail.do")	
+		.and()
 			.oauth2Login()	// Oauth2 로그인
 			;
        

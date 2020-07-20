@@ -214,7 +214,8 @@
 		</dependency>
 
 
-		<!-- 이메일 이증 위한 의존성 -->
+		<!-- 메일 전송 -->
+		<!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>

@@ -13,7 +13,7 @@
 			<div class="text-center h1">
 				<a class="logo" style="" href="/index">TRIP5</a>
 			</div>
-			<div>
+			<div class="emailInput">
 				<span class="text-center text-muted h8 msg">카카오톡으로 간편하게 로그인</span>
 				<!-- 카카오톡 로그인 버튼 -->
 				<a class="kakaoLogin" href="http://localhost:8080/oauth2/authorization/kakao">
@@ -23,9 +23,8 @@
 			<hr>
 			<!-- 이메일(아이디) 입력  -->
 			<span class="head">아이디</span>
-			<div>
-				<input type="text" id="memberemail" class="col-8" name="memberemail" th:value="${memberVO.memberemail}" placeholder="이메일을 입력하세요"> 
-				<input type="button" class="idCheck" style="width: 31.5%" value="중복 확인" />
+			<div class="emailInput">
+				<input type="text" id="memberemail" class="col-8" name="memberemail" th:value="${memberVO.memberemail}" readonly="readonly" placeholder="이메일"> <input type="button" class="idCheck" style="width: 31.5%" value="중복 확인" />
 
 				<!-- 백앤드 유효성 검사 -->
 				<span class="idCheckMsg" th:text="${valid_memberemail}"></span> <input class="idCheckNum" type="hidden" name="idCheckNum" value="1" />
@@ -33,6 +32,9 @@
 				<span class="result"> <span class="msg"></span>
 				</span>
 			</div>
+
+			<!-- 모델창 -->
+			<a class="dropdown-item authButton" href="#" data-toggle="modal" data-target="#moaModal">이메일 인증 </a>
 
 			<!-- 비밀번호 입력  -->
 			<span class="head">비밀번호</span>
@@ -53,5 +55,32 @@
 			<button type="submit" class="btn btn-lg btn-warning btn-block">가입하기</button>
 		</form>
 	</div>
+
+	<!-- 이메일 인증창-->
+	<div class="modal fade" style="padding-top:12%" id="moaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">이메일 인증</h5>
+					<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">x</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<!-- 인증번호 발송 form -->
+					<input type="email" id="email" class="col-8" placeholder="이메일주소를 입력하세요.">
+					<button type="button" class="authSubmit">인증번호 발송</button>
+					<br> <br>
+					<!-- 인증번호 확인 form -->
+					<!--  받아온 인증코드를 컨트롤러로 넘겨서 일치하는지 확인 -->
+					<input type="text" class="authText col-8" placeholder="인증번호를 입력하세요">
+					<button type="submit" class="authNum">인증번호 입력</button>
+					<span class="authmsg"></span>
+					<div class="modal-footer">
+						<button class="btn btn-primary success" type="button" data-dismiss="modal">완료</button>
+					</div>
+				</div>
+			</div>
+		</div>
 </body>
 </html>

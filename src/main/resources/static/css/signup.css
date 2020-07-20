@@ -44,7 +44,7 @@ input {
 	text-decoration: none;
 }
 
-input:focus:not (.idCheck ) {
+input:focus:not (.idCheck) {
 	box-shadow: 0 1px 1px rgba(229, 103, 23, 0.075) inset, 0 0 8px
 		rgba(229, 103, 23, 0.6);
 	outline: 0 none;
@@ -57,7 +57,7 @@ input:focus:not (.idCheck ) {
 /* 로그인 body */
 /*----------------------------------------------------------------*/
 .signupForm {
-	padding-top: 7%;
+	padding-top: 8%;
 }
 
 .kakaoLogin .kakaoImg {
@@ -72,3 +72,54 @@ input:focus:not (.idCheck ) {
 .msg, .check {
 	font-size: small;
 }
+
+/*----------------------------------------------------------------*/
+/* 이메일 인증 body */
+/*----------------------------------------------------------------*/
+.authSubmit, .authNum, .authButton{
+	border-radius: 5px;
+}
+
+.authSubmit:hover, .authNum:hover, .idCheck:hover, {
+	background-color: #e7e7e7;
+	cursor: pointer;
+}
+
+.authButton:hover{
+	background-color: white;	
+	color: #0000ff;
+	text-decoration: underline;
+}
+
+.authButton:visited{
+	background-color: white;
+	color: #1a1aff;
+}
+
+.authButton:link{
+	background-color: white;
+	color: #1a1aff;
+}
+
+.authButton{
+	width: 90px;
+	margin: 0px;
+	padding: 0px 0px 10px 0px;
+	text-align: left;
+	background-color: white;
+	color: #1a1aff;
+	font-size: small;
+	font-weight: bold;
+}
+
+.emailInput{
+	padding-bottom: 0px;
+}
+
+
+
+
+
+
+
+

@@ -44,4 +44,5 @@ public class MemberDAO {
 		return sql.selectOne(namespace + ".idCheck",memberemail);
 	}
 
+	
 }
