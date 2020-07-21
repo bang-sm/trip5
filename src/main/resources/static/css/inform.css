@@ -1,0 +1,71 @@
+.header {
+	padding-bottom: 40px;
+}
+
+.myInfo {
+	width: 100%;
+}
+
+td {
+	border: 1px solid #dfdfdf;
+	padding: 3%;
+	font-size: small;
+	font-weight: bold;
+}
+/*----------------------------------------------------------------------  */
+/* ÇÁ·ÎÇÊ  */
+/*----------------------------------------------------------------------  */
+.profileLeft, .nickname {
+	border-left: 1px solid #f4f6f9;
+}
+
+.profileRight, .nickInput {
+	border-right: 1px solid #f4f6f9;
+}
+
+.profileRight div:not(.photo){
+	display: inline-block;
+	padding: 5px 10px;
+	margin-top: 15px;
+	margin-left: 5px;
+	border: 1px solid black;
+}
+
+.profileRight div:not(.photo):hover{
+	cursor: pointer;
+}
+
+.change:hover, .cancel:hover{
+	cursor:pointer;
+}
+
+.photo {
+	width: 100px;
+	height: 100px;
+	border: 1px solid black;
+	border-radius: 50%;
+	background-image: url("../image/profile.jpg");
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	border: 1px solid #f4f6f9;
+}
+
+.nickname {
+	height: 100px;
+}
+
+.change, .cancel {
+	display: inline-block;
+	padding: 5px 25px;
+	margin-top: 25px;
+	border: 1px solid #dfdfdf;
+	font-size: small;
+}
+
+.profileLeft, .nickname{
+	background-color: #f0f0f0;
+}
+
+.width_pl{
+	width: 25%;
+}
