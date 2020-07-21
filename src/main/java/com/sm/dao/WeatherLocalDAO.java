@@ -14,24 +14,20 @@ public class WeatherLocalDAO {
 	@Autowired
 	SqlSession sqlSession;
 
-
 	// 첫번째 칸
-	public List<WeatherLocalVO> weatherLocalName(WeatherLocalVO vo) {
-		return sqlSession.selectList("mappers.weatherlocalMapper.weatherLocalName");
+	public List<WeatherLocalVO> weatherLocalName(int localparent) {
+		return sqlSession.selectList("mappers.weatherlocalMapper.weatherLocalName", localparent);
 	}
 
 
-	public List<WeatherLocalVO> selectAllWeather() {
+	public List<WeatherLocalVO> selectParentWeather() {
 		
-		
-		return sqlSession.selectList("mappers.weatherlocalMapper.lowLocalWeather");
+		return sqlSession.selectList("mappers.weatherlocalMapper.selectParentWeather");
 	}
 
 	/*
 	 * // 두번째 칸 public List<WeatherLocalVO> localCateSec(int parent) { return
 	 * sqlSession.selectList(namespace); }
 	 */
-
-	
 	
 }

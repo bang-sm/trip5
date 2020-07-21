@@ -14,12 +14,12 @@
 	FROM
 			weatherLocal
 	WHERE
-			localdepth = #{localdepth} AND localparent = #{localparent}
+			localdepth = 1 AND localparent = #{localparent}
 	;
 
 </select>
 
-<select id="selectAllWeather" resultType="com.sm.domain.WeatherLocalVO">
+<select id="selectParentWeather" resultType="com.sm.domain.WeatherLocalVO">
 
 	SELECT
 			localuid,
@@ -30,6 +30,8 @@
 			localdepth  
 	FROM
 			weatherLocal
+	WHERE
+			localdepth = 0
 	;
 
 </select>

@@ -47,8 +47,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				"/image/**", 
 				"/js/**", 
 				"/console/**", 
-				"/favicon.ico/**",
-				"/chatting/**")
+				"/favicon.ico/**"
+				)
 			.permitAll()
 			.anyRequest()
 			.authenticated()
@@ -75,12 +75,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	    	.tokenValiditySeconds(604800)
 	    .and()
 	    	.csrf().ignoringAntMatchers("/user/ajax/idCheck")
+    	.and()
+	    	.csrf().ignoringAntMatchers("/weather/**")
 		.and()
 			.csrf().ignoringAntMatchers("/user/login")
 		.and()	
 			.csrf().ignoringAntMatchers("/travel/**")
 		.and()
-			.csrf().ignoringAntMatchers("/my/**")	
+			.csrf().ignoringAntMatchers("/my/**")
+		.and()
+			.csrf().ignoringAntMatchers("/wish/**")
 		.and()
 			.oauth2Login()	// Oauth2 로그인
 			;

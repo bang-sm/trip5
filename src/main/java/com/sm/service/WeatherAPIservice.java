@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,21 +63,21 @@ public class WeatherAPIservice {
 		}
 		
 		switch (timeResult) {
-		case 0: baseTime = "0200";
+		case 0: baseTime = "2300";
 			break;
-		case 1: baseTime = "0500";
+		case 1: baseTime = "0200";
 			break;
-		case 2: baseTime = "0800";
+		case 2: baseTime = "0500";
 			break;
-		case 3: baseTime = "1100";
+		case 3: baseTime = "0800";
 			break;
-		case 4: baseTime = "1400";
+		case 4: baseTime = "1100";
 			break;
-		case 5: baseTime = "1700";
+		case 5: baseTime = "1400";
 			break;
-		case 6: baseTime = "2000";
+		case 6: baseTime = "1700";
 			break;
-		case 7: baseTime = "2300";
+		case 7: baseTime = "2000";
 			break;
 		}
 		return baseTime;
@@ -85,7 +86,6 @@ public class WeatherAPIservice {
 	
 	
 	public String baseDate(String [] date) {
-		
 		
 		String baseDate = date[0];
 		
@@ -99,7 +99,6 @@ public class WeatherAPIservice {
 	      baseDate = yesterday;
 		}
 		
-		
 		return baseDate;
 	
 	} // end baseDate() 
@@ -109,10 +108,6 @@ public class WeatherAPIservice {
 		
 		ResponseEntity<String> response = null;
 		List<WeatherInfoVO> list=new ArrayList<WeatherInfoVO>();
-		
-		// Test 용 (서울)
-//		localnx = 60;
-//		localny = 127;
 	
 		String inputUrl="http://apis.data.go.kr/1360000/VilageFcstInfoService/getVilageFcst";
 		inputUrl+="?serviceKey="+URLDecoder.decode(WEATHER_API_KEY,"UTF-8");
@@ -128,7 +123,7 @@ public class WeatherAPIservice {
 		inputUrl+="&ny=";
 		inputUrl+=localny+"";
 		
-		System.out.println(inputUrl.toString());
+//		System.out.println(inputUrl.toString());
 		
 	    try {
 	    	response = restTemplate.getForEntity(inputUrl, String.class);
@@ -160,7 +155,7 @@ public class WeatherAPIservice {
 	        	category = String.valueOf(item.get("category"));
 	        	fcstValue = Double.parseDouble(String.valueOf(item.get("fcstValue")));
 	        	
-	        	System.out.println(fcstDate + "dgfsdgsdf");
+//	        	System.out.println(fcstDate + "dgfsdgsdf");
 	        	WeatherInfoVO infoVO = new WeatherInfoVO();
 	        	
 	        	infoVO.setFcstDate(fcstDate);
@@ -168,12 +163,12 @@ public class WeatherAPIservice {
 	        	infoVO.setCategory(category);
 	        	infoVO.setFcstValue(fcstValue);
 	        	
-	        	System.out.println(infoVO.getFcstDate()  +" ///////getFcstDate");
+//	        	System.out.println(infoVO.getFcstDate()  +" ///////getFcstDate");
 
-	        	System.out.println(infoVO.toString());
+//	        	System.out.println(infoVO.toString());
 	        	list.add(infoVO);
-	        	System.out.println(list);
-				System.out.println(" list.add(listCnt, infoVO) 후");
+//	        	System.out.println(list);
+//				System.out.println(" list.add(listCnt, infoVO) 후");
 				
 				// 초기화
 				fcstDate = null;
@@ -181,7 +176,7 @@ public class WeatherAPIservice {
 				category = null;
 				fcstValue = 0.0;
 	        	
-				System.out.println(infoVO.getFcstDate());
+//				System.out.println(infoVO.getFcstDate());
 	        	
 	        } // end for
 
@@ -191,17 +186,75 @@ public class WeatherAPIservice {
 		}
 	    
 	    System.out.println(response);
-	    System.out.println(list.get(0));
 	    
 	    return list;
 	}
 	
-	public Double setDateModel(String Category ) {
-		Double result = 0.0;
+	public Map<String, String> sortNowData(List<WeatherInfoVO> list) {
+
+		Map<String, String> nowData = new HashMap<String, String>();
 		
+		String nowDate = list.get(0).getFcstDate();
+		String nowTime = list.get(0).getFcstTime();
 		
+		String nowDay = nowDate.substring(2);
+		String nowMonth = nowDate.substring(4, 6);
 		
-		return result;
+		nowData.put("nowDay", nowDay);
+		nowData.put("nowMonth", nowMonth);
+		
+		for (int i = 0; i < list.size(); i++) {
+			
+			if(list.get(i).getFcstTime() == nowTime && list.get(i).getFcstDate() == nowDate) {
+				
+				String category = list.get(i).getCategory();
+				
+				switch (category) {
+				
+				case "POP": 
+					nowData.put("POP", "list.get(i).getFcstValue()");
+					break;
+					
+				case "REH": 
+					nowData.put("HUM", "list.get(i).getFcstValue()");
+					break;
+					
+				case "SKY": 
+					nowData.put("SKY", "list.get(i).getFcstValue()");
+					break;
+					
+				case "PTY": 
+					nowData.put("SKY", "11"); // 비오면 SKY 11 로 표시
+					break;
+					
+				case "T3H": 
+					nowData.put("TEMP", "list.get(i).getFcstValue()");
+					break;
+					
+				case "TMN": 
+					nowData.put("MIN", "list.get(i).getFcstValue()");
+					break;
+					
+				case "TMX": 
+					nowData.put("MAX", "list.get(i).getFcstValue()");
+					break;
+					
+				case "VEC": 
+					nowData.put("VEC", "list.get(i).getFcstValue()");
+					break;
+					
+				case "WSD": 
+					nowData.put("WSD", "list.get(i).getFcstValue()");
+					break;
+
+				default:
+					break;
+				}
+				
+			}
+			
+		}
+		return nowData;
 	}
 
 }

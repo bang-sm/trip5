@@ -15,7 +15,7 @@ public class WeatherService {
 	@Autowired
 	WeatherLocalDAO weatherLocalDAO;
 
-	public List<WeatherLocalVO> weatherLocalName(WeatherLocalVO vo) {
+	public List<WeatherLocalVO> weatherLocalName(int localparent) {
 		
 //		localdepth = 0;
 //		localparent = 0;
@@ -33,7 +33,7 @@ public class WeatherService {
 //		}
 
 		List<WeatherLocalVO> list = new ArrayList<WeatherLocalVO>();
-		list = weatherLocalDAO.weatherLocalName(vo);	
+		list = weatherLocalDAO.weatherLocalName(localparent);	
 		
 		 return list;
 	}
@@ -43,10 +43,8 @@ public class WeatherService {
 //		return weatherLocalDAO.lowLocalWeather(localuid);
 //	}
 	
-	public List<WeatherLocalVO> selectAllweather(){
-		
-		
-		return weatherLocalDAO.selectAllWeather();
+	public List<WeatherLocalVO> selectParentweather(){
+		return weatherLocalDAO.selectParentWeather();
 	}
 	
 	
