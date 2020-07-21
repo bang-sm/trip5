@@ -9,7 +9,11 @@ var defaultlocaluid = 0;
 // var defaultlocalny = 0;
 
 $(document).ready(function(){
+
+	var now = new Date();
 	alert("로딩 완료");
+	alert(now.getMonth());
+	
 
 	// 로딩시 default 값으로 페이지 로딩
 	defaultlocaluid = 1; // default: 서울 
@@ -119,7 +123,6 @@ function buildSelect(data){
 		
 		// alert(result);
 		elm.html(result);
-	
 	
 } // end buildSelect()
 
