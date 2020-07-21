@@ -47,7 +47,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				"/image/**", 
 				"/js/**", 
 				"/console/**", 
-				"/favicon.ico/**")
+				"/favicon.ico/**"
+				)
 			.permitAll()
 			.anyRequest()
 			.authenticated()
@@ -74,6 +75,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	    	.tokenValiditySeconds(604800)
 	    .and()
 	    	.csrf().ignoringAntMatchers("/user/ajax/idCheck")
+    	.and()
+	    	.csrf().ignoringAntMatchers("/weather/**")
 		.and()
 			.csrf().ignoringAntMatchers("/user/login")
 		.and()	
