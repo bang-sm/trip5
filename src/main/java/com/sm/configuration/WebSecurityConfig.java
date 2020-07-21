@@ -47,8 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				"/image/**", 
 				"/js/**", 
 				"/console/**", 
-				"/favicon.ico/**",
-				"/chatting/**")
+				"/favicon.ico/**")
 			.permitAll()
 			.anyRequest()
 			.authenticated()
@@ -83,6 +82,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.csrf().ignoringAntMatchers("/my/**")
 		.and()
 			.csrf().ignoringAntMatchers("/wish/**")
+		.and()
+			.csrf().ignoringAntMatchers("/user/authEmail.do")	
 		.and()
 			.oauth2Login()	// Oauth2 로그인
 			;

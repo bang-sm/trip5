@@ -1,13 +1,19 @@
 package com.sm.controller;
 
 import java.util.Map;
+import java.util.Random;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -50,17 +56,13 @@ public class MemberController {
 
 		// 아이디가 담겨있으면 1,3
 		if (idCheck != null) {
-			if (idCheck.getKakaoOk().trim().equals('Y' + "")) {
-				result = 3; // 카카오로그인 아이디
-			} else if (!(idCheck.getMemberemail().equals("null"))) {
+			if (!(idCheck.getMemberemail().equals("null"))) {
 				result = 1; // 기본아이디
 			} else {
 				result = 0;// end if
 			}
 		} else if (memberemail.trim().equals("")) {
 			result = 2;
-		} else if (!(memberemail.matches(regex))) {
-			result = 4;
 		} // end if
 
 		return result;
@@ -125,7 +127,7 @@ public class MemberController {
 	@GetMapping("/user/sessionExpire")
 	public String sessionExpireLogout() {
 		System.out.println("sessionExpireLogout 들어옴");
-		
+
 		return "/user/sessionExpire";
 	}
 
@@ -164,6 +166,39 @@ public class MemberController {
 	public String[] userCnt() {
 
 		return null;
+	}
+
+	// 인증번호 -------------------------------------------------------------------
+	@Autowired
+	private JavaMailSender mailSender;
+
+	@ResponseBody
+	@PostMapping("/user/authEmail.do")
+	public String sendEmailAction(String email)
+			throws Exception {
+
+		System.out.println(email+"ㅋ");
+		
+		String EMAIL = email;
+        Random r = new Random();
+        int dice = r.nextInt(4589362) + 49311; //이메일로 받는 인증코드 부분 (난수)
+        
+		try {
+			MimeMessage msg = mailSender.createMimeMessage();
+			MimeMessageHelper messageHelper = new MimeMessageHelper(msg, true, "UTF-8");
+
+			messageHelper.setSubject( "안녕하세요 회원님 TRIP5 홈페이지를 찾아주셔서 감사합니다"); // 메일제목은 생략이 가능하다
+			messageHelper.setText("인증번호는 " + dice + " 입니다.");
+			messageHelper.setTo(EMAIL);
+			msg.setRecipients(MimeMessage.RecipientType.TO, InternetAddress.parse(EMAIL));
+			mailSender.send(msg);
+
+		} catch (MessagingException e) {
+			System.out.println("MessagingException");
+			e.printStackTrace();
+		}
+		
+		return dice +"";
 	}
 
 } // end controller

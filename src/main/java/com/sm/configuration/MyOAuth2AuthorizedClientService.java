@@ -53,8 +53,10 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 		
 		// MemberDAO
 		MemberVO memberVo = new MemberVO();
-		memberVo.setMemberemail(memberemail);
-		memberVo.setMembernick(membernick);
+//		memberVo.setMemberemail(memberemail);
+		memberVo.setMemberemail("kakaologin");
+//		memberVo.setMembernick(membernick);
+		memberVo.setMembernick(oAuth2AuthorizedClient.getPrincipalName());
 		memberVo.setMemberpass("kakaologin");
 		memberVo.setKakaoOk("Y");
 		// 카카오톡 토큰
@@ -62,12 +64,13 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 		
 		try {
 			// 카카오로그인이 안되있을 때 밀어넣기
-			if(memberDAO.idCheck(memberemail) == null){
+//			if(memberDAO.idCheck(memberemail) == null){
+//				memberDAO.kakaoJoin(memberVo);
+//			}else {
+//				// 카카오로그인 Y 넣기	
+//				memberDAO.kakaoOk(memberemail);
+//			} // end if
 				memberDAO.kakaoJoin(memberVo);
-			}else {
-				// 카카오로그인 Y 넣기	
-				memberDAO.kakaoOk(memberemail);
-			} // end if
 		} catch (Exception e) {
 			e.printStackTrace();
 		} // end try catch

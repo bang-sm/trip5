@@ -1,4 +1,6 @@
-var ws;
+var stompClient = null;
+
+
 var nick;
 var blackListv;
 var blackUser = true;
@@ -10,6 +12,163 @@ var NowMinutes = (Now.getMinutes() < 10) ? "0" + (Now.getMinutes()) : Now.getMin
 
 $(document).ready(function(){
 	loadPage();
+	connect();
+});
+
+document.addEventListener("keypress", function(e) {
+	if (e.keyCode == 13) { //enter press
+		send();
+	}
+});
+
+function connect(event) {
+	console.log('connect//////');
+
+    var socket = new SockJS('/ws');
+    stompClient = Stomp.over(socket);
+
+    stompClient.connect({}, onConnected, onError);
+//    event.preventDefault();
+}
+
+
+function onConnected() {
+	
+	console.log('onConnected//////');
+    // Subscribe to the Public Topic
+    stompClient.subscribe('/topic/public', onMessageReceived);
+
+    // Tell your username to the server
+    stompClient.send("/app/chat.addUser",
+        {},
+        JSON.stringify({sender: $("#userSessionId").val() , type: 'JOIN'})
+    )
+}
+
+function onError(error) {
+	console.log('onError//////');
+    connectingElement.textContent = 'Could not connect to WebSocket server. Please refresh this page to try again!';
+    connectingElement.style.color = 'red';
+}
+
+
+function send(event) {
+	console.log('sendMessage//////');
+    var messageContent = $(".send-message-text").val();
+    console.log(messageContent + " mc/////")
+    if(messageContent && stompClient) {
+        var chatMessage = {
+            sender: $("#userSessionId").val(),
+            content: messageContent,
+            uuid: $("#userSessionuuid").val(),
+            type: 'CHAT'
+        };
+       
+        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+        $("#message").val('');
+    }
+//    event.preventDefault();
+}
+
+
+function onMessageReceived(payload) {
+	console.log('onMessageReceived//////')
+    var message = JSON.parse(payload.body);
+	console.log(message);
+    
+    if(message.type === 'JOIN') { 
+//        message.content = message.sender + ' joined!';
+    	
+        $(".contacts").append("<li data-toggle='tab' data-target='#inbox-message-2' data-sessionId='"+ $("#userSessionuuid").val() +"' data-name='"+ message.sender +"'>"+
+				"<img alt='' class='img-circle medium-image' src='../image/user.jpg' style='vertical-align: baseline'>"+
+					"<div class='vcentered info-combo'>"+
+						"<h3 class='no-margin-bottom name'>"+message.sender+"</h3>"+
+						"<h5>.....</h5>"+
+					"</div>" +
+					"<div class='contacts-add'>"+
+						"<span class='message-time'>" +NowHours + "시 " +NowMinutes+ "분</span>"+
+					"</div>"+
+				"</li>")
+    } else if (message.type === 'LEAVE') {
+//        message.content = message.sender + ' left!';
+    	
+        $("li[data-name='"+message.sender+"']").remove();
+    } else {
+    	if(message.sender == $("#userSessionId").val()){
+    	$(".chat-body").append(" <div class='message my-message'>" +
+                "<img alt='' class='img-circle medium-image' src='../image/user.jpg'>"+
+                "<div class='message-body'>" +
+                    "<div class='message-body-inner'>"+
+                        "<div class='message-info'>"+
+                            "<h4>나</h4>"+
+                            "<h5> <i class='far fa-clock'></i>"+NowHours + " : " +NowMinutes+ "</h5>"+
+                        "</div>"+
+                        "<hr>"+
+                        "<div class='message-text'>"+message.content+"</div>"+
+                    "</div>"+
+                "</div>"+
+                "<br>"+
+            "</div>");
+    	$(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
+    	} else {
+    		$(".chat-body").append(
+					"<div class='message info'>"+
+            "<img alt='' class='img-circle medium-image' src='../image/user.jpg'>"+
+            "<div class='message-body'>"+
+                "<div class='message-info'>"+
+                    "<h4>" + "<div class='dropdown others'>" +
+					  "<a class='stretched-link othersMsg' href='#' style='color:white' role='button' id='dropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' data-uuid='"+message.uuid+"' data-email='" + message.sender + "'>"
+				  + message.sender +
+				  "</a>" +
+				  "<div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>"
+				    +"<button class='dropdown-item' onclick='blackList()' data-email='" + message.sender + "'>차단하기</button>"+
+				    "<button class='dropdown-item' data-backdrop='static' data-toggle='modal' data-target='#exampleModal' onclick='sendMsg()' data-uuid='"+message.uuid+"'>쪽지보내기</button>" +
+				  "</div>" 
+				  + "</div>" + "</h4>"+
+                    "<h5> <i class='far fa-clock'></i>"+NowHours + " : " +NowMinutes+ "</h5>"+
+                "</div>"+
+                "<hr>"+
+                "<div class='message-text'>"+
+                    message.content+
+                "</div>"+
+            "</div>"+
+            "<br>"+
+        "</div>");
+    	$(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
+    	}
+    	$(".send-message-text").val('');
+    }
+}
+
+//usernameForm.addEventListener('submit', connect, true)
+//messageForm.addEventListener('submit', sendMessage, true)
+
+$(document).on('click',".othersMsg" ,function(){
+	nick = $(this).attr('data-email');
+	otherUUid = $(this).attr('data-uuid');
+});
+
+function loadPage(){
+	data = "uuid="+$("#userSessionuuid").val();
+	console.log(data);
+	$.ajax({
+		url : "/my/load",
+		type : "POST",
+		cache : false,
+		data : data,
+		success : function(data1, status){
+			if(status == "success"){
+				console.log("data1 = " + data1);
+				blackListv = data1;
+			}
+		}
+	});
+}
+
+
+/*
+$(document).ready(function(){
+	loadPage();
 	chatConn();
 });
 
@@ -17,7 +176,6 @@ $(document).on('click',".othersMsg" ,function(){
 	nick = $(this).attr('data-email');
 	otherUUid = $(this).attr('data-uuid');
 });
-
 
 function loadPage(){
 	data = "uuid="+$("#userSessionuuid").val();
@@ -142,10 +300,6 @@ function wsEvt() {
 		}
 	});
 	
-	ws.onclose = function(data){
-		$("li[data-sessionId="+$("#sessionId").val()+"]").remove();
-		console.log("123123123123123");
-	}
 }
 
 function inChatt(){
@@ -255,7 +409,7 @@ function sendToMsg(){
 	})
 }
 
-
+*/
 
 
 
