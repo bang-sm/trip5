@@ -1,0 +1,9 @@
+@charset "UTF-8";
+.card-korea-map{
+	position: relative;
+}
+.card-korea-map-main{
+	position: absolute;
+    top: -10%;
+    left: 25%;
+}

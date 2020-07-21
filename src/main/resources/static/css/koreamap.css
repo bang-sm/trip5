@@ -1,0 +1,84 @@
+@charset "UTF-8";
+
+.land {
+   fill: #CCCCCC;
+				fill-opacity: 1;
+				stroke:white;
+				stroke-opacity: 1;
+				stroke-width:0.5;
+				z-index:-1;
+}
+#KR-11:hover {
+    fill: #000000;
+   
+
+}
+#KR-26:hover {
+    fill: #F3E2A9;
+}
+#KR-27:hover {
+    fill: #ffffff;
+}
+#KR-28:hover {
+     fill: #ffffff;
+}
+#KR-29:hover {
+      fill: #ffffff;
+}
+#KR-30:hover {
+    fill: #000000;
+}
+#KR-31:hover {
+    fill: #ffffff;
+}
+#KR-41{
+	transition:width 2s,height2s;
+}
+#KR-41:hover {
+width:100px;
+height:200px;
+    fill: #000000;
+}
+#KR-42{
+	transition:width 2s,height2s;
+}
+#KR-42:hover {
+    background-color: red;
+  animation-name: example;
+  animation-duration: 4s;
+  box-shadow:10px 10px black;
+}
+
+@keyframes example {
+  from {fill: red;}
+  to {fill: yellow;}
+}
+#KR-43:hover {
+    fill: #ffffff;
+}
+#KR-44:hover {
+    fill: #000000;
+}
+#KR-45:hover {
+    fill: #ffffff;
+}
+#KR-46:hover {
+    fill: #ffffff;
+}
+#KR-47:hover {
+      fill: #ffffff;
+}
+#KR-48:hover {
+    fill: #ffffff;
+}
+#KR-50:hover {
+    fill: #ffffff;
+}
+.TEXT{
+    fill: #000000;
+    font-size: 12px;
+    font-weight: bold;
+    text-anchor: middle;
+    alignment-baseline: middle;
+}
+
