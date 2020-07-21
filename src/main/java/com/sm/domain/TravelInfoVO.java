@@ -14,10 +14,7 @@ public class TravelInfoVO {
 	private int tsid;
 	private int tsidDay;
 	private String tsititle;
-	private int tsicategory;
 	private String tsicomment;
-	private String tsirootname;
-	private int tsirootorder;
 	
 	private List<TravelInfoVO> list;
 

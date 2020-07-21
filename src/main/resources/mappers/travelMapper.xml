@@ -55,7 +55,7 @@
 	<insert id="travel_firstSave" useGeneratedKeys="true" keyProperty="tsid"  parameterType="com.sm.domain.TravelVO">
 		INSERT INTO travel_story VALUES(
 			tsid,
-			#{uuid},
+			7,
 			#{tstitle},
 			tslike,
 			now(),
@@ -63,6 +63,16 @@
 			#{tsstartdate},
 			#{tsenddate},
 			tempsave
+		)
+	</insert>
+	
+	<insert id="travel_info_temp_save" useGeneratedKeys="true" keyProperty="tsiid" parameterType="com.sm.domain.TravelInfoVO">
+		INSERT INTO travel_story_info VALUES(
+			tsiid,
+			#{tsid},
+			#{tsidDay ,jdbcType=INTEGER},
+			#{tsititle ,jdbcType=VARCHAR},
+			#{tsicomment ,jdbcType=VARCHAR}
 		)
 	</insert>
 	
@@ -83,5 +93,75 @@
 		WHERE
 			tsid=#{tsid} AND uuid=#{uuid};
 	</select>
+	
+	<select id="getTravelInfo" resultType="com.sm.domain.TravelInfoVO">
+		SELECT 
+			*
+		FROM
+			travel_story_info 
+		WHERE
+			tsid=#{tsid};
+	</select>
+	<select id="getTravelRootInfo" resultType="com.sm.domain.TravelInfoRootVO">
+		SELECT 
+			*
+		FROM
+			tsi_root 
+		WHERE
+			tsid=#{tsid};
+	</select>
+	
+	<update id="tempSaveTravelInfo" parameterType="Map">
+		INSERT INTO travel_story_info
+			(
+				tsiid,
+				tsid,
+				tsidDay,
+				tsititle,
+				tsicomment
+			)
+			VALUES
+			<foreach collection="infoList" item="type" separator=",">
+			(
+				#{type.tsiid},
+				#{type.tsid},
+				#{type.tsidDay},
+				#{type.tsititle},
+				#{type.tsicomment}
+			)
+			</foreach>
+			ON DUPLICATE KEY UPDATE
+				tsititle = values(tsititle),
+				tsicomment = values(tsicomment)
+	</update>
+	
+	<update id="tempSaveTravleRoot" parameterType="Map">
+		INSERT INTO tsi_root
+			(
+				tsid,
+				tsirootname,
+				tsirootorder,
+				tsirootvehicle
+			)
+			VALUES
+			<foreach collection="rootList" item="type" separator=",">
+			(
+				#{type.tsid},
+				#{type.tsirootname},
+				#{type.tsirootorder},
+				#{type.tsirootvehicle}
+			)
+			</foreach>
+			ON DUPLICATE KEY UPDATE
+				tsirootname = values(tsirootname),
+				tsirootorder = values(tsirootorder),
+				tsirootvehicle = values(tsirootvehicle)
+	</update>
+	
+	<delete id="travel_root_delete">
+		DELETE FROM tsi_root
+		WHERE
+			tsid=#{tsid} AND tsirootorder=#{tsirootorder}
+	</delete>
 
 </mapper>
