@@ -38,11 +38,11 @@ public class TravelController {
 		return "/travel/travel_main";
 	}
 
-	@GetMapping(value = "/travel_detail")
+	@GetMapping(value = "/travel_blog")
 	public String travel_detail() {
-		logger.info("travel_detail");
+		logger.info("travel_blog");
 
-		return "/travel/travel_detail";
+		return "/travel/travel_blog";
 	}
 
 	@GetMapping(value = "/intro_date")
