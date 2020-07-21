@@ -19,6 +19,8 @@ import com.sm.domain.ChatMessage;
 public class ChatController {
 	private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
 
+
+	
 	// 채팅 페이지
 	@GetMapping(value = "/chatting/chat")
 	public String chatTest(HttpSession session, Model model) {
@@ -37,6 +39,8 @@ public class ChatController {
     @SendTo("/topic/public")
     public ChatMessage addUser(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor){
         headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
+        System.out.println(headerAccessor + "<-- headeraccess");
+        
         return chatMessage;
     }
 }

@@ -1,33 +1,34 @@
-var usernamePage = document.querySelector('#username-page');
-var chatPage = document.querySelector('#chat-page');
-var usernameForm = document.querySelector('#usernameForm');
-var messageForm = document.querySelector('#messageForm');
-var messageInput = document.querySelector('#message');
-var messageArea = document.querySelector('#messageArea');
-var connectingElement = document.querySelector('.connecting');
-
 var stompClient = null;
-var username = null;
 
-var colors = [
-    '#2196F3', '#32c787', '#00BCD4', '#ff5652',
-    '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
-];
+
+var nick;
+var blackListv;
+var blackUser = true;
+var otherUUid;
+
+var Now = new Date();
+var NowHours = Now.getHours();
+var NowMinutes = (Now.getMinutes() < 10) ? "0" + (Now.getMinutes()) : Now.getMinutes();
+
+$(document).ready(function(){
+	loadPage();
+	connect();
+});
+
+document.addEventListener("keypress", function(e) {
+	if (e.keyCode == 13) { //enter press
+		send();
+	}
+});
 
 function connect(event) {
 	console.log('connect//////');
-    username = document.querySelector('#name').value.trim();
 
-    if(username) {
-        usernamePage.classList.add('hidden');
-        chatPage.classList.remove('hidden');
+    var socket = new SockJS('/ws');
+    stompClient = Stomp.over(socket);
 
-        var socket = new SockJS('/ws');
-        stompClient = Stomp.over(socket);
-
-        stompClient.connect({}, onConnected, onError);
-    }
-    event.preventDefault();
+    stompClient.connect({}, onConnected, onError);
+//    event.preventDefault();
 }
 
 
@@ -40,9 +41,8 @@ function onConnected() {
     // Tell your username to the server
     stompClient.send("/app/chat.addUser",
         {},
-        JSON.stringify({sender: username, type: 'JOIN'})
+        JSON.stringify({sender: $("#userSessionId").val() , type: 'JOIN'})
     )
-    connectingElement.classList.add('hidden');
 }
 
 function onError(error) {
@@ -52,19 +52,22 @@ function onError(error) {
 }
 
 
-function sendMessage(event) {
+function send(event) {
 	console.log('sendMessage//////');
-    var messageContent = messageInput.value.trim();
+    var messageContent = $(".send-message-text").val();
+    console.log(messageContent + " mc/////")
     if(messageContent && stompClient) {
         var chatMessage = {
-            sender: username,
-            content: messageInput.value,
+            sender: $("#userSessionId").val(),
+            content: messageContent,
+            uuid: $("#userSessionuuid").val(),
             type: 'CHAT'
         };
+       
         stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
-        messageInput.value = '';
+        $("#message").val('');
     }
-    event.preventDefault();
+//    event.preventDefault();
 }
 
 
@@ -72,65 +75,98 @@ function onMessageReceived(payload) {
 	console.log('onMessageReceived//////')
     var message = JSON.parse(payload.body);
 	console.log(message);
-    var messageElement = document.createElement('li');
-
+    
     if(message.type === 'JOIN') { 
-        messageElement.classList.add('event-message');
-        message.content = message.sender + ' joined!';
+//        message.content = message.sender + ' joined!';
+    	
+        $(".contacts").append("<li data-toggle='tab' data-target='#inbox-message-2' data-sessionId='"+ $("#userSessionuuid").val() +"' data-name='"+ message.sender +"'>"+
+				"<img alt='' class='img-circle medium-image' src='../image/user.jpg' style='vertical-align: baseline'>"+
+					"<div class='vcentered info-combo'>"+
+						"<h3 class='no-margin-bottom name'>"+message.sender+"</h3>"+
+						"<h5>.....</h5>"+
+					"</div>" +
+					"<div class='contacts-add'>"+
+						"<span class='message-time'>" +NowHours + "시 " +NowMinutes+ "분</span>"+
+					"</div>"+
+				"</li>")
     } else if (message.type === 'LEAVE') {
-        messageElement.classList.add('event-message');
-        message.content = message.sender + ' left!';
+//        message.content = message.sender + ' left!';
+    	
+        $("li[data-name='"+message.sender+"']").remove();
     } else {
-        messageElement.classList.add('chat-message');
-
-        var avatarElement = document.createElement('i');
-        var avatarText = document.createTextNode(message.sender[0]);
-        avatarElement.appendChild(avatarText);
-        avatarElement.style['background-color'] = getAvatarColor(message.sender);
-
-        messageElement.appendChild(avatarElement);
-
-        var usernameElement = document.createElement('span');
-        var usernameText = document.createTextNode(message.sender);
-        usernameElement.appendChild(usernameText);
-        messageElement.appendChild(usernameElement);
+    	if(message.sender == $("#userSessionId").val()){
+    	$(".chat-body").append(" <div class='message my-message'>" +
+                "<img alt='' class='img-circle medium-image' src='../image/user.jpg'>"+
+                "<div class='message-body'>" +
+                    "<div class='message-body-inner'>"+
+                        "<div class='message-info'>"+
+                            "<h4>나</h4>"+
+                            "<h5> <i class='far fa-clock'></i>"+NowHours + " : " +NowMinutes+ "</h5>"+
+                        "</div>"+
+                        "<hr>"+
+                        "<div class='message-text'>"+message.content+"</div>"+
+                    "</div>"+
+                "</div>"+
+                "<br>"+
+            "</div>");
+    	$(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
+    	} else {
+    		$(".chat-body").append(
+					"<div class='message info'>"+
+            "<img alt='' class='img-circle medium-image' src='../image/user.jpg'>"+
+            "<div class='message-body'>"+
+                "<div class='message-info'>"+
+                    "<h4>" + "<div class='dropdown others'>" +
+					  "<a class='stretched-link othersMsg' href='#' style='color:white' role='button' id='dropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' data-uuid='"+message.uuid+"' data-email='" + message.sender + "'>"
+				  + message.sender +
+				  "</a>" +
+				  "<div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>"
+				    +"<button class='dropdown-item' onclick='blackList()' data-email='" + message.sender + "'>차단하기</button>"+
+				    "<button class='dropdown-item' data-backdrop='static' data-toggle='modal' data-target='#exampleModal' onclick='sendMsg()' data-uuid='"+message.uuid+"'>쪽지보내기</button>" +
+				  "</div>" 
+				  + "</div>" + "</h4>"+
+                    "<h5> <i class='far fa-clock'></i>"+NowHours + " : " +NowMinutes+ "</h5>"+
+                "</div>"+
+                "<hr>"+
+                "<div class='message-text'>"+
+                    message.content+
+                "</div>"+
+            "</div>"+
+            "<br>"+
+        "</div>");
+    	$(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
+    	}
+    	$(".send-message-text").val('');
     }
+}
 
-    var textElement = document.createElement('p');
-    var messageText = document.createTextNode(message.content);
-    textElement.appendChild(messageText);
+//usernameForm.addEventListener('submit', connect, true)
+//messageForm.addEventListener('submit', sendMessage, true)
 
-    messageElement.appendChild(textElement);
+$(document).on('click',".othersMsg" ,function(){
+	nick = $(this).attr('data-email');
+	otherUUid = $(this).attr('data-uuid');
+});
 
-    messageArea.appendChild(messageElement);
-    messageArea.scrollTop = messageArea.scrollHeight;
+function loadPage(){
+	data = "uuid="+$("#userSessionuuid").val();
+	console.log(data);
+	$.ajax({
+		url : "/my/load",
+		type : "POST",
+		cache : false,
+		data : data,
+		success : function(data1, status){
+			if(status == "success"){
+				console.log("data1 = " + data1);
+				blackListv = data1;
+			}
+		}
+	});
 }
 
 
-function getAvatarColor(messageSender) {
-    var hash = 0;
-    for (var i = 0; i < messageSender.length; i++) {
-        hash = 31 * hash + messageSender.charCodeAt(i);
-    }
-    var index = Math.abs(hash % colors.length);
-    return colors[index];
-}
-
-usernameForm.addEventListener('submit', connect, true)
-messageForm.addEventListener('submit', sendMessage, true)
-
-
-
-/*var ws;
-var nick;
-var blackListv;
-var blackUser = true;
-var otherUUid;
-
-var Now = new Date();
-var NowHours = Now.getHours();
-var NowMinutes = (Now.getMinutes() < 10) ? "0" + (Now.getMinutes()) : Now.getMinutes();
-
+/*
 $(document).ready(function(){
 	loadPage();
 	chatConn();

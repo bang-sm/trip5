@@ -103,7 +103,7 @@ public class SocketHandler {
 	            ChatMessage chatMessage = new ChatMessage();
 	            chatMessage.setType(MessageType.LEAVE);
 	            chatMessage.setSender(username);
-
+	            
 	            messagingTemplate.convertAndSend("/topic/public", chatMessage);
 	        }
 	    }

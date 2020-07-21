@@ -3,6 +3,7 @@ package com.sm.domain;
 import java.util.Date;
 
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -29,7 +30,9 @@ public class MemberVO {
 	@Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,20}", message = "8~20자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
 	private String memberpass;
 
+	
 	@NotBlank(message = "필수 정보입니다.")
+	@Pattern(regexp = "[A-Za-z0-9가-힣]+.{1,10}", message = "특수문자를 제외한1~10자 단어를 사용하세요.")
 	private String membernick;
 	
 	private int uuid;
