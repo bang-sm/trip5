@@ -38,15 +38,30 @@ $("#exampleModal").on('shown.bs.modal', function(){
 	var infowindow = new kakao.maps.InfoWindow({
 		zIndex : 1
 	});
-	searchPlaces();
+	searchPlacestwo();
 	// 키워드로 장소를 검색합니다
-	$('.map_btn').click(function(){
-		searchPlaces();
+	$('.map_btn1').click(function(){
+		searchPlacesone();
+		});
+	$('.map_btn2').click(function(){
+		searchPlacestwo();
 		});
 	// 키워드 검색을 요청하는 함수입니다
-	function searchPlaces() {
+	function searchPlacesone() {
 
-		var keyword = document.getElementById('keyword').value;
+		var keyword = document.getElementById('keyword1').value;
+
+		if (!keyword.replace(/^\s+|\s+$/g, '')) {
+			alert('키워드를 입력해주세요!');
+			return false;
+		}
+
+		// 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+		ps.keywordSearch(keyword, placesSearchCB);
+	}
+	function searchPlacestwo() {
+
+		var keyword = document.getElementById('keyword2').value;
 
 		if (!keyword.replace(/^\s+|\s+$/g, '')) {
 			alert('키워드를 입력해주세요!');
@@ -338,8 +353,8 @@ function naversearch(){
 	var result_for="";
 	var result_nav="";
 	$.ajax({
-		url: "/naver", 
-		type : "GET",
+		url: "/wish/rest/naver", 
+		type:"POST",
 		data : {
 			"keyword" : keyword
 		},
@@ -472,15 +487,15 @@ $(document).on("click",'.icon_main',function(){
 })
 
 //즐겨찾기(별 체크)
-$('.star_img').click(function(){
+$(document).on('click','.star_img',function(){
 	var check = $(this).attr("src");
-	var id=$(this).parent('td').children('input').val();
-	
+	var id=$(this).parent('td').children('input[name=placeid]').val();
+	console.log(id);
 	if(check.match("off")){
 		$(this).attr("src","../image/icon/star_on.png");
 		$.ajax({
-			url: "/bookmark", 
-			type : "GET",
+			url: "/wish/rest/bookmark", 
+			type : "POST",
 			data : {
 				"bookmark" : 1,
 				"placeid": id
@@ -491,8 +506,8 @@ $('.star_img').click(function(){
 	}else{
 		$(this).attr("src","../image/icon/star_off.png");
 		$.ajax({
-			url: "/bookmark", 
-			type : "GET",
+			url: "/wish/rest/bookmark", 
+			type : "POST",
 			data : {
 				"bookmark" : 0,
 				"placeid": id
@@ -513,8 +528,8 @@ $('.star_img').click(function(){
 	result="";
 	if ($target == 0) {//음식
 		$.ajax({
-			url: "/buttoncategory", 
-			type : "GET",
+			url: "/wish/rest/buttoncategory",
+			type:"POST",
 			data : {
 				"placecategory" : $target,
 				"placecheck": 0,
@@ -573,8 +588,8 @@ $('.star_img').click(function(){
 		});
 	} else if ($target == 1) {//카페
 		$.ajax({
-			url: "/buttoncategory", 
-			type : "GET",
+			url: "/wish/rest/buttoncategory", 
+			type:"POST",
 			data : {
 				"placecategory" : $target,
 				"placecheck": 0,
@@ -633,8 +648,8 @@ $('.star_img').click(function(){
 		});
 	} else if ($target == 2) {//관광지
 		$.ajax({
-			url: "/buttoncategory", 
-			type : "GET",
+			url: "/wish/rest/buttoncategory", 
+			type:"POST",
 			data : {
 				"placecategory" : $target,
 				"placecheck": 0,
@@ -694,8 +709,8 @@ $('.star_img').click(function(){
 		});
 	} else if ($target == 3) {//갔던곳
 		$.ajax({
-			url: "/goplace", 
-			type : "GET",
+			url: "/wish/rest/goplace", 
+			type:"POST",
 			data : {
 				"placecheck": 1,
 				"uuid": uuid
@@ -754,8 +769,8 @@ $('.star_img').click(function(){
 		});
 	} else {
 		$.ajax({
-			url: "/goplace", 
-			type : "GET",
+			url: "/wish/rest/goplace", 
+			type:"POST",
 			data : {
 				"placecheck": 0,
 				"uuid": uuid
@@ -777,7 +792,7 @@ $('.star_img').click(function(){
 					result+="</div>";
 					result+="</td>";
 					result+="<td class='td_two'>";
-					result+="<input type='hidden' class='placeid' name='placeid' th:value='"+data[i].placeid+"'/>";
+					result+="<input type='hidden' class='placeid' name='placeid' value='"+data[i].placeid+"'/>";
 					if(data[i].bookmark == 0){
 						result+="<img class='star_img' src='../image/icon/star_off.png'/>";
 					}else{
@@ -833,8 +848,8 @@ $(document).on('click','.checkbox1',function(){
 	var changeplace =$(this).parents("tr");
 	if($(this).is(":checked")){
 		$.ajax({
-			url: "/checkbox", 
-			type : "GET",
+			url: "/wish/rest/checkbox", 
+			type : "POST",
 			data : {
 				"placecheck" : 1,
 				"placeid": checkboxid
@@ -844,8 +859,8 @@ $(document).on('click','.checkbox1',function(){
 		});
 	}else{
 		$.ajax({
-			url: "/checkbox", 
-			type : "GET",
+			url: "/wish/rest/checkbox", 
+			type : "POST",
 			data : {
 				"placecheck" : 0,
 				"placeid": checkboxid
@@ -907,6 +922,7 @@ function wish_regist(){
 }
 //클릭시 블로그 보기 , 글 수정 , 글 삭제 버튼으로 전환
 $(document).on('click','.media-body',function(){
+	
 	var friend = $(this).parents('.media');
 	var look= friend.children('.media_look');
 	var update=friend.children('.media_update');
@@ -917,6 +933,8 @@ $(document).on('click','.media-body',function(){
 		opacity:"0",
 	},1000,
 	function(){
+		$(this).children('.title').css('fontSize','0');
+		$(this).children('.summary').css('fontSize','0');
 		friend.children('.media_look').css('display','block');
 		friend.children('.media_update').css('display','block');
 		friend.children('.media_delete').css('display','block');
@@ -934,8 +952,8 @@ $(document).on('click','.media_delete',function(){
    
    if(check){
 	   $.ajax({
-			url: "/delete", 
-			type : "GET",
+			url: "/wish/rest/delete", 
+			type: "POST",
 			data : {
 				"placeid": del
 			},
@@ -949,6 +967,8 @@ $(document).on('click','.media_delete',function(){
 
 $(document).on('click','.media_cancel',function(){
 	var pop = $(this).parents('.media');
+	$(this).parents('.media').children('.media-body').children('.title').css('fontSize','16px');
+	pop.children('.summary').css('fontSize','12px');
 	pop.children('.media_look').css("display","none");
 	pop.children('.media_update').css("display","none");
 	pop.children('.media_delete').css("display","none");

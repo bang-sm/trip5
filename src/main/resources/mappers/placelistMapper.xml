@@ -73,9 +73,9 @@
 			placecheck=#{placecheck} and uuid =#{uuid};
 	</select>
 	
-	<select id="buttoncategory" parameterType="map" resultType="com.sm.domain.PlacelistVo">
+	<select id="barchart" parameterType="map" resultType="int">
 		SELECT
-			*
+			count(placeid)
 		FROM
 			placeList
 		WHERE  
@@ -90,5 +90,38 @@
 		WHERE 
 			placeid = #{placeid};
 	</delete>
+	
+	<select id="chartcount" parameterType="map" resultType="int">
+		SELECT 
+		   	  count(placeid)
+		FROM 
+			  placeList
+		WHERE 
+			  placecategory = #{placecategory} and uuid = #{uuid};
+	
+	
+	</select>
+	
+	<select id="chartline" parameterType="map" resultType="int">
+		SELECT
+				count(placeid) 
+		FROM 
+				placeList 
+		WHERE 
+				uuid = #{uuid} and (DATE(placeregdate) BETWEEN  #{firstdate} and #{enddate});
+	
+	
+	</select>
+	
+	<select id="area" parameterType="map" resultType="int">
+		SELECT 
+				count(*) 
+		FROM 
+				placeList  
+		WHERE 
+				placejuso 
+		LIKE  
+				#{areaname} and uuid =#{uuid};
+	</select>
 
 </mapper>

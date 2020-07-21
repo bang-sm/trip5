@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -26,12 +27,20 @@ public class WishplaceController {
 	PlacelistService service;
 	
 	
+	
 	@GetMapping("/wish/place")
-	public String place(Model model,HttpSession session)  throws Exception{
+	public String placed(Model model,HttpSession session)  throws Exception{
 		//사용자 uuid 값 가지고 오기
-		MemberVO vo=(MemberVO) session.getAttribute("userInfo");  
+		MemberVO vo=vo=(MemberVO) session.getAttribute("userInfo");  
+		
 		logger.info("session : "+ vo);
-		int uuid = vo.getUuid();
+		int uuid;
+		try {
+			uuid=vo.getUuid();
+		}catch(NullPointerException e) {
+			logger.info("session 없음");
+			return "redirect:/user/login";
+		}
 		List<PlacelistVo> list = service.show(uuid);
 		model.addAttribute("place", service.show(uuid));
 		logger.info("확인 : " +list);
@@ -44,10 +53,46 @@ public class WishplaceController {
 	}
 	
 	@PostMapping("/placeregist")
-	public String placeregist(@Valid PlacelistVo placelistVo) throws Exception{
-		service.select(placelistVo);
+	public String placeregist(@Valid PlacelistVo placelistVo,Errors errors) throws Exception{
 		
+		
+		if(errors.hasErrors()) {
+			logger.info("@Valid 유효성 에러");
+			System.out.println("@Vaild 유효성 에러");
+			return "redirectL/wish/place";
+		}
+		service.select(placelistVo);
 		return "redirect:/wish/place";
+	}
+	
+	@GetMapping("/example")
+	public String example() throws Exception{
+		
+		return "common/commonSidebar";
+	}
+	
+	@GetMapping("/wish/placechart")
+	public String chart(Model model,HttpSession session)  throws Exception{
+		//사용자 uuid 값 가지고 오기
+		MemberVO vo=vo=(MemberVO) session.getAttribute("userInfo");  
+		
+		logger.info("session : "+ vo);
+		int uuid;
+		try {
+			uuid=vo.getUuid();
+		}catch(NullPointerException e) {
+			logger.info("session 없음");
+			return "redirect:/index";
+		}
+		List<PlacelistVo> list = service.show(uuid);
+		model.addAttribute("place", service.show(uuid));
+		logger.info("확인 : " +list);
+		return "wish/placechart";
+	}
+	
+	@GetMapping("/wish/korea")
+	public String korea()throws Exception{
+		return "wish/koreamap";
 	}
 	
 	

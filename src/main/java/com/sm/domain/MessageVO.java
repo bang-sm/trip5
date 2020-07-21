@@ -16,6 +16,7 @@ public class MessageVO {
 	private int msgid;
 	private Date msgregdate;
 	private String msgcontent;
+	private String msgsubject;
 	private int fromid;
 	private int sendid;
 	

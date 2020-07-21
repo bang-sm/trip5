@@ -4,105 +4,110 @@
 <meta charset="UTF-8">
 <title>내정보</title>
 <th:block th:replace="common/commonHead"></th:block>
-<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
 </head>
 <body>
 	<!-- 공통 헤드 nav -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:include="common/header :: header_nav"></nav>
 	<!-- //공통 헤드 nav -->
 
-	<!-- 내정보 헤더 -->
-	<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-		<span th:text="${member.membernick}"></span>
+	<div class="app">
+
+		<div class="cardList">
+			<button class="cardList__btn btn--left">
+				<div class="icon">
+					<svg>
+					<use xlink:href="#arrow-left"></use>
+				</svg>
+				</div>
+			</button>
+
+			<div class="cards__wrapper">
+				<div class="card current--card" data-url="/user/inform">
+					<div class="card__image">
+						<img src="../image/MyInfo.jpg" alt="" />
+					</div>
+				</div>
+
+				<div class="card next--card">
+					<div class="card__image" data-url="#">
+						<img src="../image/TripLog.jpg" alt="" />
+					</div>
+				</div>
+
+				<div class="card previous--card" >
+					<div class="card__image" data-url="#">
+						<img src="../image/Message.jpg" alt="" />
+					</div>
+				</div>
+			</div>
+
+			<button class="cardList__btn btn--right">
+				<div class="icon">
+					<svg>
+					<use xlink:href="#arrow-right"></use>
+				</svg>
+				</div>
+			</button>
+		</div>
+
+		<div class="infoList">
+			<div class="info__wrapper">
+				<div class="info current--info">
+					<h1 class="text name">My Info</h1>
+					<h4 class="text location">개인정보 관리</h4>
+					<p class="text description"><span th:text="${session.userInfo.membernick}"></span>님 반갑습니다~</p>
+				</div>
+
+				<div class="info next--info">
+					<h1 class="text name">Trip log</h1>
+					<h4 class="text location">여행일지 관리 </h4>
+					<p class="text description">나만의 여행일지 관리할 수 있어요!</p>
+				</div>
+
+				<div class="info previous--info">
+					<h1 class="text name">Message</h1>
+					<h4 class="text location">쪽지 관리</h4>
+					<p class="text description">나에게 온 쪽지를 관리 할 수 있어요!</p>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="app__bg">
+			<div class="app__bg__image current--image">
+				<img src="../image/MyInfo.jpg" alt="" />
+			</div>
+			<div class="app__bg__image next--image">
+				<img src="../image/TripLog.jpg" alt="" />
+			</div>
+			<div class="app__bg__image previous--image">
+				<img src="../image/Message.jpg" alt="" />
+			</div>
+		</div>
 	</div>
-	<!-- //내정보 헤더-->
-	<div class="container">
 
-		<!-- 1번 -->
-		<div class="card-deck mb-3 text-center">
-			<div class="card mb-4 shadow-sm">
-				<div class="card-header">
-					<h4 class="my-0 font-weight-normal">
-						<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">여행계획</font></font>
-					</h4>
-				</div>
-				<div class="card-body">
-					<h1 class="card-title pricing-card-title">
-						<font style="vertical-align: inherit;"><small class="text-muted"><font style="vertical-align: inherit;">월</font></small><font style="vertical-align: inherit;"> $ 0</font></font><small class="text-muted"><font style="vertical-align: inherit;"></font></small>
-					</h1>
-					<ul class="list-unstyled mt-3 mb-4">
-						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">10 명의 사용자 포함</font></font></li>
-						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2GB의 저장 용량</font></font></li>
-						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">이메일 지원</font></font></li>
-						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">도움말 센터 이용</font></font></li>
-					</ul>
-					<button type="button" class="btn btn-lg btn-block btn-outline-primary">
-						<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">수정</font></font>
-					</button>
-				</div>
-			</div>
-			<!-- //1번 -->
-
-			<!-- 2번 -->
-			<div class="card mb-4 shadow-sm">
-				<div class="card-header">
-					<h4 class="my-0 font-weight-normal">
-						<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">즐겨찾기</font></font>
-					</h4>
-				</div>
-				<div class="card-body">
-					<h1 class="card-title pricing-card-title">
-						<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$ (29) </font></font><small class="text-muted"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">/ 월</font></font></small>
-					</h1>
-					<ul class="list-unstyled mt-3 mb-4">
-						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">30 명의 사용자 포함</font></font></li>
-						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">15GB의 저장 용량</font></font></li>
-						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">전화 및 이메일 지원</font></font></li>
-						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">도움말 센터 이용</font></font></li>
-					</ul>
-					<button type="button" class="btn btn-lg btn-block btn-outline-primary">
-						<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">수정</font></font>
-					</button>
-				</div>
-			</div>
-			<!-- //2번 -->
-
-			<!-- 3번 -->
-			<div class="card mb-4 shadow-sm">
-				<div class="card-header">
-					<h4 class="my-0 font-weight-normal">
-						<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">블랙리스트</font></font>
-					</h4>
-				</div>
-				<div class="card-body">
-					<h1 class="card-title pricing-card-title">
-						<font style="vertical-align: inherit;"><small class="text-muted"><font style="vertical-align: inherit;">월</font></small><font style="vertical-align: inherit;"> $ 15</font></font><small class="text-muted"><font style="vertical-align: inherit;"></font></small>
-					</h1>
-					<ul class="list-unstyled mt-3 mb-4">
-						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">20 명의 사용자 포함</font></font></li>
-						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">스토리지 10GB</font></font></li>
-						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">우선 이메일 지원</font></font></li>
-						<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">도움말 센터 이용</font></font></li>
-					</ul>
-					<button type="button" class="btn btn-lg btn-block btn-outline-primary">
-						<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">수정</font></font>
-					</button>
-				</div>
-			</div>
-			<!-- //3번 -->
-			
-			
-			
-			<span th:text="${session.userInfo.membernick}"></span> 
+	<div class="loading__wrapper">
+		<div class="loader--text">Loading...</div>
+		<div class="loader">
+			<span></span>
+		</div>
+	</div>
 
 
-			<!-- 
-    <h1>
-    	<span sec:authentication="name"></span>님 환영합니다~
-    	
-	</h1>
-	<span sec:authentication="principal.Authorities"></span>권한
-	<span th:text="${member.memberemail}"></span>
-	<span th:text="${member.membernick}"></span>
-	 -->
+	<svg class="icons" style="display: none;">
+		<symbol id="arrow-left" xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'>
+			<polyline points='328 112 184 256 328 400' style='fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:48px' />
+		</symbol>
+		<symbol id="arrow-right" xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'>
+			<polyline points='184 112 328 256 184 400' style='fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:48px' />
+		</symbol>
+	</svg>
+</body>
+<link rel="stylesheet" type="text/css" th:href="@{../css/myinfo.css}">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/all.min.css">
+<link rel="stylesheet" type="text/css" href='https://fonts.googleapis.com/css?family=Montserrat&amp;display=swap"rel="stylesheet'>
+<script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.3.3/gsap.min.js"></script>
+<script src="../js/myinfo.js"></script>
+<script src="../js/myinfo2.js"></script>
 </html>

@@ -4,46 +4,83 @@
 <meta charset="UTF-8">
 <title>회원가입 페이지</title>
 </head>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<th:block th:replace="common/commonHead"></th:block>
+<link rel="stylesheet" type="text/css" th:href="@{/css/signup.css}">
 <script src="../js/signup.js"></script>
 <body>
-	<h1>회원 가입</h1>
-	<hr>
+	<div class="d-flex justify-content-center main">
+		<form th:action="@{/user/signup}" class="signupForm" method="post" modelAttribute="${memverVO}">
+			<div class="text-center h1">
+				<a class="logo" style="" href="/index">TRIP5</a>
+			</div>
+			<div class="emailInput">
+				<span class="text-center text-muted h8 msg">카카오톡으로 간편하게 로그인</span>
+				<!-- 카카오톡 로그인 버튼 -->
+				<a class="kakaoLogin" href="http://localhost:8080/oauth2/authorization/kakao">
+					<img class="kakaoImg" src="/image/kakao_login_medium_wide.png">
+				</a>
+			</div>
+			<hr>
+			<!-- 이메일(아이디) 입력  -->
+			<span class="head">아이디</span>
+			<div class="emailInput">
+				<input type="text" id="memberemail" class="col-8" name="memberemail" th:value="${memberVO.memberemail}" readonly="readonly" placeholder="이메일"> <input type="button" class="idCheck" style="width: 31.5%" value="중복 확인" />
 
+				<!-- 백앤드 유효성 검사 -->
+				<span class="idCheckMsg" th:text="${valid_memberemail}"></span> <input class="idCheckNum" type="hidden" name="idCheckNum" value="1" />
+				<!-- 프론트앤드 유효성 검사 -->
+				<span class="result"> <span class="msg"></span>
+				</span>
+			</div>
 
-	<form th:action="@{/user/signup}" method="post" modelAttribute="${memverVO}">
-		<!-- 이메일(아이디) 입력  -->
-		<div>
-			<input type="text" id="memberemail" name="memberemail"
-			 th:value="${memberVO.memberemail}" placeholder="이메일을 입력하세요">
-			<!-- 프론트앤드 유효성 검사 -->
-			<p class="result">
-				<span class="msg"></span>
-			</p>
-		</div>		
-		<button type="button" class="idCheck">아이디 확인</button>
-		<span th:text="${valid_memberemail}"></span>
-		
-		<input class="idCheckNum" type="hidden" name="idCheckNum" value="1"/>
-		
-		<!-- 비밀번호 입력  -->
-		<div>
-			<input type="password" name="memberpass"
-			 placeholder="비밀번호" th:value="${memberVO.memberpass}"> 
+			<!-- 모델창 -->
+			<a class="dropdown-item authButton" href="#" data-toggle="modal" data-target="#moaModal">이메일 인증 </a>
+
+			<!-- 비밀번호 입력  -->
+			<span class="head">비밀번호</span>
+			<div>
+				<input type="password" class="col-12" name="memberpass" placeholder="비밀번호" th:value="${memberVO.memberpass}">
+				<!-- 백앤드 유효성 검사 -->
+				<span class="check" th:text="${valid_memberpass}"></span>
+			</div>
+
+			<!-- 닉네임 입력 -->
+			<span class="head">닉네임</span>
+			<div>
+				<input type="text" class="col-12" name="membernick" placeholder="닉네임" th:value="${memberVO.membernick}">
+				<!-- 백앤드 유효성 검사 -->
+				<span class="check" th:text="${valid_membernick}"></span>
+			</div>
+
+			<button type="submit" class="btn btn-lg btn-warning btn-block">가입하기</button>
+		</form>
+	</div>
+
+	<!-- 이메일 인증창-->
+	<div class="modal fade" style="padding-top:12%" id="moaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">이메일 인증</h5>
+					<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">x</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<!-- 인증번호 발송 form -->
+					<input type="email" id="email" class="col-8" placeholder="이메일주소를 입력하세요.">
+					<button type="button" class="authSubmit">인증번호 발송</button>
+					<br> <br>
+					<!-- 인증번호 확인 form -->
+					<!--  받아온 인증코드를 컨트롤러로 넘겨서 일치하는지 확인 -->
+					<input type="text" class="authText col-8" placeholder="인증번호를 입력하세요">
+					<button type="submit" class="authNum">인증번호 입력</button>
+					<span class="authmsg"></span>
+					<div class="modal-footer">
+						<button class="btn btn-primary success" type="button" data-dismiss="modal">완료</button>
+					</div>
+				</div>
+			</div>
 		</div>
-		<!-- 백앤드 유효성 검사 -->
-		<span class="check" th:text="${valid_memberpass}"></span>
-
-		<!-- 닉네임 입력 -->
-		<div>
-			<input type="text" name="membernick" 
-			placeholder="닉네임" th:value="${memberVO.membernick}">
-		</div>
-		<!-- 백앤드 유효성 검사 -->
-		 <span class="check" th:text="${valid_membernick}"></span>
-		
-		<br>
-		<button type="submit">가입하기</button>
-	</form>
 </body>
 </html>

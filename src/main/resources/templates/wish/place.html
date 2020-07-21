@@ -3,119 +3,162 @@
 <head>
 <meta charset="UTF-8">
 <title>가야하는 맛집리스트</title>
-<link rel="stylesheet" type="text/css" th:href="@{/css/wish.css}">
 <th:block th:replace="common/commonHead"></th:block>
-
+<link rel="stylesheet" href="../css/dist/css/adminlte.min.css">
+<link rel="stylesheet" type="text/css" th:href="@{/css/wish.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/css/slick.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/css/slick-theme.css}">
 
 </head>
-<body>
+<body class="sidebar-mini layout-fixed" style="height: auto;">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:include="common/header :: header_nav"></nav>
-	<section>
-		<article>
-			<div class="wish_list">
-				<div class="wish_list_title">
-					<div class="wish_list_title_name">가고싶은 나만의 장소 & 맛집 추가해보세요!</div>
-					<button type="button" class="btn-primary btn-lg food_regist" data-toggle="modal" data-target="#exampleModal" >글 등록</button>
-				</div>
-
-				<div class="my_list">
-					<div class="main_table">
-						<div class="dropdown">
-							<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">카테고리</button>
-							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-								<div><button type="button" class="btn btn-success btn-filter btn-m" data-target='0'>음식</button></div>
-								<div><button type="button" class="btn btn-info btn-filter btn-m" data-target='1'>카페</button></div>
-								<div><button type="button" class="btn btn-warning btn-filter btn-m" data-target='2'>관광지</button></div>
-								<div><button type="button" class="btn btn-secondary btn-filter btn-m" data-target='3'>갔던곳</button></div>
-								<div><button type="button" class="btn btn-light btn-filter btn-m" data-target='all'>전체</button></div>
-							</div>
+	<div th:include="common/Sidebar :: header_aside"></div>
+	<div class="content-wrapper">
+	<div class="content-main-title">
+					<span class="h1">Wish List</span><img th:src="@{../image/plus60.png}" class="food_regist" data-toggle="modal" data-target="#exampleModal"/>
+	</div>
+		<section class="content">
+			<div class="row">
+				
+				<div class="col-md-6">
+					<div class="box food-box">
+						<div class="box-header with-border">
+							<h3 class="box-title ">음식</h3>
 						</div>
-						<button type="button" class="btn_m_register btn-primary " data-toggle="modal" data-target="#exampleModal" >글 등록</button>
-						<div class="main_button_theme">
-							<button type="button" class="btn btn-success btn-filter" data-target='0'>음식</button>
-							<button type="button" class="btn btn-info btn-filter" data-target='1'>카페</button>
-							<button type="button" class="btn btn-warning btn-filter" data-target='2'>관광지</button>
-							<button type="button" class="btn btn-secondary btn-filter" data-target='3'>갔던곳</button>
-							<button type="button" class="btn btn-light btn-filter" data-target='all'>전체</button>
-						</div>
-						<table class="table table-filter">
-							<tbody class="tbody">
-								<tr  class="tabletr"th:each="card  : ${place}" th:data-status='${card.placecategory}' th:data-check='${card.placecheck}' th:if="${card.placecheck==0}">
-									<td class="">
-										<div class="ckbox ">
-												<input th:if="${card.placecheck} =='0'"type="checkbox"  class="checkbox1 " th:id="${card.placeid}">
-												<input th:unless="${card.placecheck} =='0'"type="checkbox" class="checkbox1 "  th:id="${card.placeid}" checked>
-												<label th:for="${card.placeid}"></label>
-										</div>
-									</td>
-									<td class="td_two">
-										<input type='hidden' class="placeid" name="placeid" th:value="${card.placeid}"/>
-										<img th:if="${card.bookmark}== 0"class="star_img " th:src="@{../image/icon/star_off.png}" />
-										<img th:unless="${card.bookmark}== 0"class="star_img " th:src="@{../image/icon/star_on.png}" />
-									</td>
-									<td class="">
-										<div class="media">
-											<img th:src="@{../image/icon}+${card.iconname}+@{.png}" class="media-photo ">
-											<div class="media-body">
-												<span th:text="${card.placeregdate}" class="media-meta pull-right "></span>
-												<button th:if="${card.placecategory}==0"type="button" class="btn btn-outline-success btn_category ">음식</button>
-												<button th:if="${card.placecategory}==1"type="button" class="btn btn-outline-info btn_category ">카페</button>
-												<button th:if="${card.placecategory}==2"type="button" class="btn btn-outline-warning btn_category ">관광지</button>
-												<h4 th:text="${card.placename}" class="title "></h4>
-												<span th:text="${card.placejuso}" class="summary "></span>
+						<!-- /.box-header -->
+						<div class="box-body">
+							<table class="table table-bordered">
+								<tbody class="tbody">
+									<tr class="tabletr" th:each="card  : ${place}" th:data-status='${card.placecategory}' th:data-check='${card.placecheck}' th:if="${card.placecheck==0 && card.placecategory==0}">
+										<td class="tablesize">
+											<div class="ckbox ">
+												<input th:if="${card.placecheck} =='0'" type="checkbox" class="checkbox1 " th:id="${card.placeid}"> <input th:unless="${card.placecheck} =='0'" type="checkbox" class="checkbox1 " th:id="${card.placeid}" checked> <label th:for="${card.placeid}"></label>
 											</div>
+										</td>
+										<td class="td_two tablesize">
+											<input type='hidden' class="placeid" name="placeid" th:value="${card.placeid}" /> 
+											<img th:if="${card.bookmark}== 0" class="star_img " th:src="@{../image/icon/star_off.png}" /> 
+											<img th:unless="${card.bookmark}== 0" class="star_img " th:src="@{../image/icon/star_on.png}" />
+										</td>
+										<td class="tablesize">
+											<div class="media">
+												<img th:src="@{../image/icon}+${card.iconname}+@{.png}" class="media-photo ">
+												<div class="media-body">
+													<span th:text="${card.placeregdate}" class="media-meta pull-right "></span>
+													<h4 th:text="${card.placename}" class="title "></h4>
+													<span th:text="${card.placejuso}" class="summary "></span>
+												</div>
 												<button class="media_look">
 													<a class="blog" th:href='${card.bloglink}' target='_blank'>블로그 보기</a>
 												</button>
-												<button type="button" class="media_update">글 수정</button>
 												<button class="media_delete">글 삭제</button>
-											   	<img th:src="@{../image/icon/cancel.png}" class="media_cancel">
+												<img th:src="@{../image/icon/cancel.png}" class="media_cancel">
 											</div>
-									</td>
-								</tr>
-								<tr class="check_tr tabletr" th:each="card  : ${place}" th:data-status='${card.placecategory}' th:data-check='${card.placecheck}'th:unless="${card.placecheck==0}">
-								<td class="">
-										<div class="ckbox ">
-												<input th:if="${card.placecheck} =='0'"type="checkbox"  class="checkbox1" th:id="${card.placeid}">
-												<input th:unless="${card.placecheck} =='0'"type="checkbox" class="checkbox1"  th:id="${card.placeid}" checked>
-												<label th:for="${card.placeid}"></label>
-										</div>
-									</td>
-									<td class="">
-										<input type='hidden' name="placeid" th:value="${card.placeid}"/>
-										<img th:if="${card.bookmark}== 0"class="star_img" th:src="@{../image/icon/star_off.png}" />
-										<img th:unless="${card.bookmark}== 0"class="star_img" th:src="@{../image/icon/star_on.png}" />
-									</td>
-									<td class="">
-										<div class="media">
-											<img th:src="@{../image/icon}+${card.iconname}+@{.png}" class="media-photo">
-											<div class="media-body">
-												<span th:text="${card.placeregdate}" class="media-meta pull-right"></span>
-												<button th:if="${card.placecategory}==0"type="button" class="btn btn-outline-success btn_category">음식</button>
-												<button th:if="${card.placecategory}==1"type="button" class="btn btn-outline-info btn_category">카페</button>
-												<button th:if="${card.placecategory}==2"type="button" class="btn btn-outline-danger btn_category">관광지</button>
-												<h4 th:text="${card.placename}" class="title"></h4>
-												<span th:text="${card.placejuso}" class="summary"></span>
-												
-											</div>
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- /.box-body -->
 					</div>
+					<!-- /.box -->
+
+					<div class="box cafe-box">
+						<div class="box-header">
+							<h3 class="box-title ">카페</h3>
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body no-padding">
+							<table class="table table-condensed">
+								<tbody class="tbody">
+									<tr class="tabletr" th:each="card  : ${place}" th:data-status='${card.placecategory}' th:data-check='${card.placecheck}' th:if="${card.placecheck==0 && card.placecategory==1}">
+										<td class="tablesize">
+											<div class="ckbox ">
+												<input th:if="${card.placecheck} =='0'" type="checkbox" class="checkbox1 " th:id="${card.placeid}"> <input th:unless="${card.placecheck} =='0'" type="checkbox" class="checkbox1 " th:id="${card.placeid}" checked> <label th:for="${card.placeid}"></label>
+											</div>
+										</td>
+										<td class="td_two tablesize">
+											<input type='hidden' class="placeid" name="placeid" th:value="${card.placeid}" /> <img th:if="${card.bookmark}== 0" class="star_img " th:src="@{../image/icon/star_off.png}" /> <img th:unless="${card.bookmark}== 0" class="star_img " th:src="@{../image/icon/star_on.png}" />
+										</td>
+										<td class="tablesize">
+											<div class="media">
+												<img th:src="@{../image/icon}+${card.iconname}+@{.png}" class="media-photo ">
+												<div class="media-body">
+													<span th:text="${card.placeregdate}" class="media-meta pull-right "></span>
+													<h4 th:text="${card.placename}" class="title "></h4>
+													<span th:text="${card.placejuso}" class="summary "></span>
+												</div>
+												<button class="media_look">
+													<a class="blog" th:href='${card.bloglink}' target='_blank'>블로그 보기</a>
+												</button>
+												<button class="media_delete">글 삭제</button>
+												<img th:src="@{../image/icon/cancel.png}" class="media_cancel">
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- /.box-body -->
+					</div>
+					<!-- /.box -->
 				</div>
+				<!-- /.col -->
+				<div class="col-md-6">
+					<div class="place-box box">
+						<div class="box-header">
+							<h3 class="box-title  ">관광지</h3>
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body no-padding">
+							<table class="table">
+								<tbody class="tbody">
+									<tr class="tabletr" th:each="card  : ${place}" th:data-status='${card.placecategory}' th:data-check='${card.placecheck}' th:if="${card.placecheck==0 && card.placecategory==2}">
+										<td class="tablesize">
+											<div class="ckbox ">
+												<input th:if="${card.placecheck} =='0'" type="checkbox" class="checkbox1 " th:id="${card.placeid}"> <input th:unless="${card.placecheck} =='0'" type="checkbox" class="checkbox1 " th:id="${card.placeid}" checked> <label th:for="${card.placeid}"></label>
+											</div>
+										</td>
+										<td class="td_two tablesize">
+											<input type='hidden' class="placeid" name="placeid" th:value="${card.placeid}" /> <img th:if="${card.bookmark}== 0" class="star_img " th:src="@{../image/icon/star_off.png}" /> <img th:unless="${card.bookmark}== 0" class="star_img " th:src="@{../image/icon/star_on.png}" />
+										</td>
+										<td class="tablesize">
+											<div class="media">
+												<img th:src="@{../image/icon}+${card.iconname}+@{.png}" class="media-photo ">
+												<div class="media-body">
+													<span th:text="${card.placeregdate}" class="media-meta pull-right "></span>
+													<h4 th:text="${card.placename}" class="title "></h4>
+													<span th:text="${card.placejuso}" class="summary "></span>
+												</div>
+												<button class="media_look">
+													<a class="blog" th:href='${card.bloglink}' target='_blank'>블로그 보기</a>
+												</button>
+												<button class="media_delete">글 삭제</button>
+												<img th:src="@{../image/icon/cancel.png}" class="media_cancel">
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- /.box-body -->
+					</div>
+					<!-- /.box -->
+
+					<!-- /.box -->
+				</div>
+				<!-- /.col -->
 			</div>
-		</article>
-		<form th:id="regist_form" th:action="@{/placeregist}" method="POST">
+			<!-- /.row -->
+		</section>
+	</div>
+	<form th:id="regist_form" th:action="@{/placeregist}" method="POST">
 		<!-- 1번째 모달  -->
 		<div class="modal  fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sw">
 				<div class="modal-content ">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel" >나만의 맛집 & 장소 등록하기</h5>
+						<h5 class="modal-title" id="exampleModalLabel">나만의 맛집 & 장소 등록하기</h5>
 						<div class="option">
 							<div></div>
 						</div>
@@ -132,43 +175,37 @@
 						<div class="tab-content">
 							<div class="tab-pane fade show active place_map_all" id="qwe">
 								<div class="col-m-12 place_map_all_map">
-								<div class="searchkakao_app">
-												<span class="searchkakao_app_name">kakaomap</span>
-												<input type="text" value="이태원 맛집" id="keyword" size="20">
-												<img th:src="@{../image/icon/search.png}" class="map_btn"/>
-										</div>
+									<div class="searchkakao_app">
+										<span class="searchkakao_app_name">kakaomap</span> <input type="text" value="이태원 맛집" id="keyword1" size="20"> <img th:src="@{../image/icon/search.png}" class="map_btn1" />
+									</div>
 									<div id="map"></div>
-										<div class="custom_zoomcontrol radius_border">
-											<span class="zoomin"> 
-												<img class="zoomimg"th:src="@{../image/icon/plus.png}" alt="확대">
-											</span> 
-											<span class="zoomout"> 
-												<img class="zoomimg"th:src="@{../image/icon/minus.png}" alt="축소">
-											</span>
-										</div>
-									</div>
-									<div class="col-m-2 place_map_all_list">
-										<div class="map_wrap">
-											<div class="kakaomap_title">
-												<h1 class="Title">
-													<a id="local" class="local" href="?nil_profile=title&amp;nil_src=local">kakaomap</a>
-												</h1>
-												<div class="searchkakao">
-												<input type="text" value="이태원 맛집" id="keyword" size="20">
-												<img th:src="@{../image/icon/search.png}" class="map_btn"/>
-												</div>
-											</div>
-											
-											<div id="menu_wrap" class="bg_white">
-												<ul id="placesList"></ul>
-												<div id="pagination"></div>
-											</div>
-										</div>
-									</div>
-									<div class="hide_div">
-										<img th:src="@{../image/icon/play.png}" class="hide_btn">
+									<div class="custom_zoomcontrol radius_border">
+										<span class="zoomin"> <img class="zoomimg" th:src="@{../image/icon/plus.png}" alt="확대">
+										</span> <span class="zoomout"> <img class="zoomimg" th:src="@{../image/icon/minus.png}" alt="축소">
+										</span>
 									</div>
 								</div>
+								<div class="col-m-2 place_map_all_list">
+									<div class="map_wrap">
+										<div class="kakaomap_title">
+											<h1 class="Title">
+												<a id="local" class="local" href="?nil_profile=title&amp;nil_src=local">kakaomap</a>
+											</h1>
+											<div class="searchkakao">
+												<input type="text" value="이태원 맛집" id="keyword2" size="20"> <img th:src="@{../image/icon/search.png}" class="map_btn2" />
+											</div>
+										</div>
+
+										<div id="menu_wrap" class="bg_white">
+											<ul id="placesList"></ul>
+											<div id="pagination"></div>
+										</div>
+									</div>
+								</div>
+								<div class="hide_div">
+									<img th:src="@{../image/icon/play.png}" class="hide_btn">
+								</div>
+							</div>
 							<div class="tab-pane fade" id="asd">
 								<div class="naver_div">
 									<div class="naver_div_word">
@@ -183,19 +220,16 @@
 							</div>
 						</div>
 					</div>
-					
-						<div class="modal-footer">
-							<input type="hidden" name="placename" value="" /> 
-							<input type="hidden" name="placejuso" value="" /> 
-							<input type="hidden" name="bloglink" value="" /> 
-							<input type="hidden" name="iconname" value="" />
-							<th:block th:if="${session.userInfo}!= null">
-								<input type="hidden" name ="uuid" th:value="${session.userInfo.uuid}"/>
-							</th:block>
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">나가기</button>
-							<button type="button" class="btn-primary btn-lg" data-toggle="modal" data-target="#CheckModal" onclick="statuscheck()">완료</button>
-							
-						</div>
+
+					<div class="modal-footer">
+						<input type="hidden" name="placename" value="" /> <input type="hidden" name="placejuso" value="" /> <input type="hidden" name="bloglink" value="" /> <input type="hidden" name="iconname" value="" />
+						<th:block th:if="${session.userInfo}!= null">
+							<input type="hidden" name="uuid" th:value="${session.userInfo.uuid}" />
+						</th:block>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">나가기</button>
+						<button type="button" class="btn-primary btn-lg" data-toggle="modal" data-target="#CheckModal" onclick="statuscheck()">완료</button>
+
+					</div>
 				</div>
 			</div>
 		</div>
@@ -209,42 +243,49 @@
 							<i class="material-icons">clear</i>
 						</button>
 					</div>
-						<div class="modal-body">
-							<div class="place_category">
-								<select name="placecategory" class="custom-select">
-									<option selected>저장할 카테고리를 선택해주세요</option>
-									<option value="0">음식</option>
-									<option value="1">카페</option>
-									<option value="2">관광지</option>
-								</select>
-							</div>
-							<div class="food_category">
-								<button type="button" class="btn btn-outline-success btn-icon btn-icon-name" onclick="icon()">아이콘</button>
-							</div>
-							<div class="food_icon"></div>
-							<div class="my_check">
-								<div>
-									<button type="button" class="btn btn-outline-danger btn_check_place">장소</button>
-									<div class="btn_check_place_status"></div>
-								</div>
-								<div class="my_check_two">
-									<button type="button" class="btn btn-outline-info btn_check_blog">블로그</button>
-									<div class="btn_check_blog_status"></div>
-								</div>
-
-							</div>
+					<div class="modal-body">
+						<div class="place_category">
+							<select name="placecategory" class="custom-select">
+								<option selected>저장할 카테고리를 선택해주세요</option>
+								<option value="0">음식</option>
+								<option value="1">카페</option>
+								<option value="2">관광지</option>
+							</select>
 						</div>
-						<div class="modal-footer">
+						<div class="food_category">
+							<button type="button" class="btn btn-outline-success btn-icon btn-icon-name" onclick="icon()">아이콘</button>
+						</div>
+						<div class="food_icon"></div>
+						<div class="my_check">
+							<div>
+								<button type="button" class="btn btn-outline-danger btn_check_place">장소</button>
+								<div class="btn_check_place_status"></div>
+							</div>
+							<div class="my_check_two">
+								<button type="button" class="btn btn-outline-info btn_check_blog">블로그</button>
+								<div class="btn_check_blog_status"></div>
+							</div>
+
+						</div>
+					</div>
+					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 						<button type="button" class="btn btn-primary" onclick="wish_regist()">Save changes</button>
 					</div>
 				</div>
 			</div>
 		</div>
-		</form>
+	</form>
 	</section>
+	</div>
+
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e957a3a75c171b18d05297414326bb8d&libraries=services"></script>
 	<script src="../js/wish.js"></script>
 	<script src="../js/slick.min.js"></script>
+	<script src="../js/placedash.js"></script>
+	<script src="../js/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="../js/dist/js/adminlte.js"></script>
+	<script src="../js/dist/js/demo.js"></script>
+	<script src="../js/dist/js/pages/dashboard3.js"></script>
 </body>
 </html>

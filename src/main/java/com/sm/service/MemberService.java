@@ -77,7 +77,8 @@ public class MemberService implements UserDetailsService{
 		else {
 			HttpSession session=request.getSession(true);
 			session.setAttribute("userInfo", user);
-			System.out.println(user+"/////////////////////////////////////////////////////////////////////////////");
+			session.setMaxInactiveInterval(60*60);
+//			System.out.println(user+"/////////////////////////////////////////////////////////////////////////////");
 		}
 		
 		/*
@@ -86,7 +87,7 @@ public class MemberService implements UserDetailsService{
 		if(("admin").equals(user.getMemberemail())) {
 			auth.add(new SimpleGrantedAuthority(Role.ADMIN.getValue()));
 		}else {
-			auth.add(new SimpleGrantedAuthority(Role.MEMBER.getValue()));
+			auth.add(new SimpleGrantedAuthority(Role.USER.getValue()));
 		}
 		
 		return new User(user.getMemberemail(), user.getMemberpass(),auth);

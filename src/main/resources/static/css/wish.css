@@ -82,7 +82,7 @@ zoomimg {width:15px;height:15px;padding:12px 0;border:none;}
     background: url(//t1.daumcdn.net/localimg/localimages/07/2018/pc/title/kakaomap_logo.png) no-repeat 0 0;
     text-indent: -9999px;
 }
-#keyword{
+#keyword2{
 	float: left;
     width: 300px;
     height: 19px;
@@ -116,7 +116,7 @@ zoomimg {width:15px;height:15px;padding:12px 0;border:none;}
     -moz-box-shadow: 0 2px 1px 0 rgba(0,0,0,.15);
     box-shadow: 0 2px 1px 0 rgba(0,0,0,.15);
 }
-.map_btn{
+.map_btn2{
 	float:left;
 	padding:10px;
 }
@@ -153,9 +153,92 @@ zoomimg {width:15px;height:15px;padding:12px 0;border:none;}
 	padding: 0 20px;
 }
 /*  지도 css*/
-/* 음식점 리스트 hover */
-#placesList li:hover{
-	background-color: #58ACFA;
+
+
+/* main 화면 css */
+/* 테이블 css */
+.table td, .table th,table{
+	padding:0;
+	border-left:none;
+	border-right:none;
+	
+}
+.tabletr{
+	margin : 10px 0;
+	border-left:none;
+	border-right:none;
+}
+.media-body{
+	margin-left:30px;
+	padding:5px;
+}
+.title{
+	font-size:16px;
+	color:#2BBCDE;
+}
+.summary{
+	font-size:12px;
+}
+.td_two{
+	line-height: 3;
+    text-align: center;
+}
+input[type=checkbox]{
+	width:20px;
+	height:20px;
+}
+.ckbox{
+	line-height: 4;
+	text-align: center;
+}
+.box-body{
+	padding: 30px;
+}
+.media{
+	margin-left:30px;
+}
+.box-title{
+    color:white;
+    font-size: 1.1rem;
+    font-weight: 400;
+
+}
+.food-box >.box-header{
+	background-color: #28a745;
+}
+.cafe-box >.box-header{
+	background-color: #007bff;
+}
+.place-box >.box-header{
+	background-color:#dc3545;
+}
+.tabletr:hover{
+	background-color:#D8D8D8;
+}
+.box{
+	box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
+    margin-bottom: 1rem;
+    border: 0 solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
+.box-header{
+	padding: 11px 0 5px 11px;
+	border-radius: .25rem;
+}
+.content-wrapper{
+		margin-top:56px;
+	    background: #dcdcdd;
+}
+.content-main-title{
+	height:100px;
+	padding: 20px;
+}
+.content-main-title > span{
+	margin-left:10px;
+}
+.box-body{
+	background-color: white;
+	border-radius: 0.25rem;
 }
 /* 음식점 리스트 */
 .map_wrap{
@@ -316,7 +399,7 @@ a:hover { color: black; text-decoration: none;}
 .panel .btn-group .btn {
 	transition: background-color .3s ease;
 }
-.table-filter {
+/* .table-filter {
 	background-color: #fff;
 	border-bottom: 1px solid #eee;
 }
@@ -358,7 +441,7 @@ a:hover { color: black; text-decoration: none;}
 }
 .table-filter .media-body {
     display: block;
-    /* Had to use this style to force the div to expand (wasn't necessary with my bootstrap version 3.3.6) */
+    Had to use this style to force the div to expand (wasn't necessary with my bootstrap version 3.3.6)
 }
 .table-filter .media-meta {
 	font-size: 11px;
@@ -386,9 +469,10 @@ a:hover { color: black; text-decoration: none;}
 }
 .table-filter .media .summary {
 	font-size: 14px;
-}
+} */
 .pull-right{
 	float:right;
+	font-size: 11px;
 }
 
 .check_tr{
@@ -492,9 +576,6 @@ a:hover { color: black; text-decoration: none;}
 .dropdown{
 	display:none;
 }
-.wish_list_title_name{
-	font-size:30px;
-}
 #dropdownMenuButton{
 	width:160px;
 }
@@ -503,9 +584,6 @@ a:hover { color: black; text-decoration: none;}
 }
 
 @media(max-width:1200px){
-	.wish_list_title_name{
-	font-size:20px;
-	}
 	.food_regist{
 	height:40px;
 	font-size:10px;
@@ -557,9 +635,6 @@ a:hover { color: black; text-decoration: none;}
 	}
 	.summary{
 	font-size: 10px !important;
-	}
-	.wish_list_title_name{
-	margin-top: 25px;
 	}
 }
 
@@ -680,3 +755,5 @@ a:hover { color: black; text-decoration: none;}
 		font-size:12px;
 		margin: 0 10px 0 10px;
 	}}
+	
+

@@ -23,13 +23,17 @@ public class MemberDAO {
 	public void kakaoJoin(MemberVO memberVO) {
 		sql.insert(namespace + ".kakaoSignup",memberVO);
 	}
+	
+	// 회원 수
+	public void userCnt() {
+		sql.insert(namespace + ".userCnt");
+	}
 
 	// kakaoOk 변경
 	public void kakaoOk(String memberemail) {
 		sql.insert(namespace + ".kakaoOk",memberemail);
 	}
 
-	
 	// 아이디 가져오기
 	public MemberVO getUserById(String memberemail) {
 		return sql.selectOne(namespace + ".findById",memberemail);
@@ -40,4 +44,5 @@ public class MemberDAO {
 		return sql.selectOne(namespace + ".idCheck",memberemail);
 	}
 
+	
 }
