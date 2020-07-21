@@ -14,11 +14,10 @@ $(document).ready(function(){
 	// 로딩시 default 값으로 페이지 로딩
 	defaultlocaluid = 1; // default: 서울 
 
-	$("#first_local > option").attr("value3", defaultlocaluid).prop("selected", true);
+	// $("#first_local > option").attr("value3", defaultlocaluid).prop("selected", true);
 
 	$("#first_local").click(function(){
 		$("#hiddenOption1").hide();
-		$("#location1").empty();
 	});
 
 	$("#first_local").change(function(){ // 첫번째 칸 선택시
