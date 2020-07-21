@@ -122,12 +122,14 @@ p.quote{
 					startDate=$.datepicker.formatDate('yy-mm-dd', new Date(startDate));
 					endDate=$.datepicker.formatDate('yy-mm-dd', new Date(endDate));
 					
+					console.log(dateDiff);
 					$.ajax({
 						url: "/travel/travel_firstSave", 
 						type : "POST",
 						data : {
 							"tstitle" : $("#tstitle").val(),
 							"tsstartdate": startDate,
+							"datediff": dateDiff,
 							"tsenddate":endDate
 						},
 						success : function(data){

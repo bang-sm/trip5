@@ -692,6 +692,7 @@ none
 }
 /*progressbar*/
 #progressbar {
+	margin-top: 30px;
 	margin-bottom: 30px;
 	overflow: hidden;
 	/*CSS counters to number the steps*/
@@ -1087,3 +1088,6 @@ none
 @media all and (max-width: 400px){
   .step h2 {font-size:1.1em}
 }
+
+
+
