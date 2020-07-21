@@ -1,0 +1,18 @@
+@charset "UTF-8";
+
+.land {
+   fill: #CCCCCC;
+				fill-opacity: 1;
+				stroke:white;
+				stroke-opacity: 1;
+				stroke-width:0.5;
+				z-index:-1;
+}
+.TEXT{
+    fill: #000000;
+    font-size: 12px;
+    font-weight: bold;
+    text-anchor: middle;
+    alignment-baseline: middle;
+}
+
