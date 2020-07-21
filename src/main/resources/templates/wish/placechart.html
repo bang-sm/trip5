@@ -71,9 +71,6 @@
 								<button type="button" class="btn btn-tool" data-card-widget="collapse">
 									<i class="fas fa-minus"></i>
 								</button>
-								<button type="button" class="btn btn-tool" data-card-widget="remove">
-									<i class="fas fa-times"></i>
-								</button>
 							</div>
 						</div>
 						<div class="card-body" style="display: block;">
@@ -98,9 +95,6 @@
 							<div class="card-tools">
 								<button type="button" class="btn btn-tool" data-card-widget="collapse">
 									<i class="fas fa-minus"></i>
-								</button>
-								<button type="button" class="btn btn-tool" data-card-widget="remove">
-									<i class="fas fa-times"></i>
 								</button>
 							</div>
 						</div>
@@ -130,9 +124,6 @@
 								<button type="button" class="btn btn-tool" data-card-widget="collapse">
 									<i class="fas fa-minus"></i>
 								</button>
-								<button type="button" class="btn btn-tool" data-card-widget="remove">
-									<i class="fas fa-times"></i>
-								</button>
 							</div>
 						</div>
 						<div class="card-body">
@@ -159,24 +150,12 @@
 						<div class="card-header">
 							<h3 class="card-title">지역별 현황</h3>
 						</div>
-						<div class="card-body card-korea-map-main">
-							<img th:src="@{../image/korea/busan.png}" class='korea-image' id='busan'/>
-							<img th:src="@{../image/korea/chungcheongbukdo.png}" class='korea-image'/>
-							<img th:src="@{../image/korea/chungcheongnamdo.png}" class='korea-image'/>
-							<img th:src="@{../image/korea/daegu.png}" class='korea-image'/>
-							<img th:src="@{../image/korea/daejeon.png}" class='korea-image'/>
-							<img th:src="@{../image/korea/gangwon.png}" class='korea-image'/>
-							<img th:src="@{../image/korea/gwangju.png}" class='korea-image'/>
-							<img th:src="@{../image/korea/gyeonggi.png}" class='korea-image'/>
-							<img th:src="@{../image/korea/gyeongsangbukdo.png}" class='korea-image'/>
-							<img th:src="@{../image/korea/gyeongsangnamdo.png}" class='korea-image'/>
-							<img th:src="@{../image/korea/incheon.png}" class='korea-image'/>
-							<img th:src="@{../image/korea/jeju.png}" class='korea-image'/>
-							<img th:src="@{../image/korea/jeollabukdo.png}" class='korea-image'/>
-							<img th:src="@{../image/korea/jeollanamdo.png}" class='korea-image'/>
-							<img th:src="@{../image/korea/sejong.png}" class='korea-image'/>
-							<img th:src="@{../image/korea/seoul.png}" class='korea-image'/>
-							<img th:src="@{../image/korea/ulsan.png}" class='korea-image'/>
+						
+						<div>
+							<input type="checkbox" class="map-checkbox" name="map-checkbox"/><span>전체보기</span>
+						</div>
+						<div class="card-body card-korea-map-main" th:include="wish/koreamap :: korea_aside">
+						
 						</div>
 						<!-- /.card-body -->
 					</div>

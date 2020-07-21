@@ -1,10 +1,20 @@
-.card-korea-map-main img {
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-  margin-top:100px;
-  
+.card-korea-map{
+	position: relative;
 }
-.korea-image{
-	position:absolute;
+.card-korea-map-main{
+	 position:absolute; 
+	     top: -5%;
+    left: 20%;
+}
+.area-box{
+	fill:white;
+	stroke:black;
+	stroke-width:3;
+	opacity:0.5"
+}
+.area-detail{
+	display:none;
+}
+text{
+	font-size:20px;
 }

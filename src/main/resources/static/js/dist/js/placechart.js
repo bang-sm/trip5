@@ -200,20 +200,45 @@ $(document).ready(function(){
 		}});
 	
 	//지역별로 데이터 가지고 오기
-	$.ajax({
+/*	$.ajax({
 		url: "/wish/rest/area", 
 		type : "POST",
 		data : {},
 		success : function(data){
 			console.log(data);
 		}
-	});
+	});*/
 	
 	
 	
 	// 지역 선택시 지역 hover 느낌 주기
-	$(document).on('hover','.korea-image',function(){
-		
+	$('.land').on({
+		mouseenter:function(){
+			$("input[name=map-checkbox]").prop('checked', false)
+			$('.area-detail').css('display','none');
+			$(this).css('fill','#5858FA');
+			var areaname = $(this).attr('title');
+			console.log(areaname);
+			$('.'+areaname+'').css("display","block");
+			
+			
+			},
+		mouseleave:function(){
+			$(this).css('fill','#CCCCCC');
+			var areaname = $(this).attr('title');
+			console.log(areaname);
+			$('.'+areaname+'').css("display","none");
+		}
+	})
+	
+	$("input[name=map-checkbox]").on('click',function(){
+		if($("input[name=map-checkbox]").is(":checked") == true) {
+			console.log("체크 0");
+			$('.area-detail').css('display','block');
+		}else{
+			console.log("체크 X");
+			$('.area-detail').css('display','none');
+		}
 	})
 	
 	
