@@ -81,6 +81,26 @@ public class WeatherAPIservice {
 			break;
 		}
 		return baseTime;
+		
+//		switch (timeResult) {
+//		case 0: baseTime = "0200";
+//			break;
+//		case 1: baseTime = "0500";
+//			break;
+//		case 2: baseTime = "0800";
+//			break;
+//		case 3: baseTime = "1100";
+//			break;
+//		case 4: baseTime = "1400";
+//			break;
+//		case 5: baseTime = "1700";
+//			break;
+//		case 6: baseTime = "2000";
+//			break;
+//		case 7: baseTime = "2300";
+//			break;
+//		}
+//		return baseTime;
 	
 	} // end baseTime()
 	

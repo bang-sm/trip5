@@ -3,15 +3,22 @@ var nowWeather = new Map();
 
 var timeArr = new Array();
 var dateArr = new Array();
-
-
 var finalLocation = ""; // 나중에 DB로 보낼 locationuid
+
+var defaultlocaluid = 0;
+// var defaultlocalny = 0;
 
 $(document).ready(function(){
 	alert("로딩 완료");
 
+	// 로딩시 default 값으로 페이지 로딩
+	defaultlocaluid = 1; // default: 서울 
+
+	$("#first_local > option").attr("value3", defaultlocaluid).prop("selected", true);
+
 	$("#first_local").click(function(){
 		$("#hiddenOption1").hide();
+		$("#location1").empty();
 	});
 
 	$("#first_local").change(function(){ // 첫번째 칸 선택시
@@ -427,10 +434,10 @@ function setWeatherArr(data, timeArr, dateArr){
 
 		} // end data for
 
-
-
 	}// end 표출 arr for
 }
 
+function setDefaultLocal(){
 
+}
 
