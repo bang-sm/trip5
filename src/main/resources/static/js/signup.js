@@ -31,12 +31,13 @@ $(document).ready(function() {
 
 	// 이메일 메인페이지 전달
 	$(".success").click(function() {
-		authNum = "";
-		$(".authText").val("");
-		$(".authmsg").text("");
+		console.log("들어옴?");
 		if($(".authmsg").text() == "인증성공"){
 			$("#memberemail").val($("#email").val());
 		}
+		authNum = "";
+		$(".authText").val("");
+		$(".authmsg").text("");
 	});
 	
 	// 이메일(아이디) 중복체크 AJAX

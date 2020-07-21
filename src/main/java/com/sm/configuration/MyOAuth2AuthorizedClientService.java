@@ -40,7 +40,8 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 		OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
 //		System.out.println(oauth2User + "//////////////////////////oauth2User/////////////////////////////////");
 		System.out.println(oauth2User.getName());
-		System.out.println(oAuth2AuthorizedClient.getPrincipalName() +"   /// getPrincipalName");
+		String principalName = oAuth2AuthorizedClient.getPrincipalName();
+		System.out.println(principalName +"   /// getPrincipalName");
 		
 		
 		// 유저 이메일(아이디)
@@ -54,9 +55,9 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 		// MemberDAO
 		MemberVO memberVo = new MemberVO();
 //		memberVo.setMemberemail(memberemail);
-		memberVo.setMemberemail("kakaologin");
+		memberVo.setMemberemail(principalName);
 //		memberVo.setMembernick(membernick);
-		memberVo.setMembernick(oAuth2AuthorizedClient.getPrincipalName());
+		memberVo.setMembernick(principalName);
 		memberVo.setMemberpass("kakaologin");
 		memberVo.setKakaoOk("Y");
 		// 카카오톡 토큰
@@ -70,7 +71,10 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 //				// 카카오로그인 Y 넣기	
 //				memberDAO.kakaoOk(memberemail);
 //			} // end if
-				memberDAO.kakaoJoin(memberVo);
+			
+			if(!(memberDAO.idCheck(memberemail).equals(principalName))){
+			memberDAO.kakaoJoin(memberVo);
+		}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} // end try catch
