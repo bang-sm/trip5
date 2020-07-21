@@ -1,9 +1,10 @@
-@charset "UTF-8";
-.card-korea-map{
-	position: relative;
+.card-korea-map-main img {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  margin-top:100px;
+  
 }
-.card-korea-map-main{
-	position: absolute;
-    top: -10%;
-    left: 25%;
+.korea-image{
+	position:absolute;
 }

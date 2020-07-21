@@ -211,6 +211,11 @@ $(document).ready(function(){
 	
 	
 	
+	// 지역 선택시 지역 hover 느낌 주기
+	$(document).on('hover','.korea-image',function(){
+		
+	})
+	
 	
 	
 })
