@@ -169,7 +169,7 @@ button, input, select, textarea {
 	vertical-align: baseline;
 }
 
-button, input {
+button, input, select {
 	line-height: normal;
 }
 
@@ -177,13 +177,13 @@ button, select {
 	text-transform: none;
 }
 
-button, html input[type="button"], input[type="reset"], input[type="submit"]
+button, select, html input[type="button"], input[type="reset"], input[type="submit"]
 	{
 	-webkit-appearance: button;
 	cursor: pointer;
 }
 
-button[disabled], input[disabled] {
+button[disabled], input[disabled], select {
 	cursor: default;
 }
 
@@ -1449,11 +1449,20 @@ form textarea {
 	margin-bottom: 70px;
 }
 
-.find-location input[type="text"] {
-	width: 100%;
+.find-location {
+	width: 100;
+	background: #1e202b;
+	color: white;
+	opacity: 70%;
+	border-radius: 30px;
+}
+
+.find-location input[type="text"], select {
+	width: 30%;
 	padding: 20px 50px 20px 20px;
 	background: #1e202b;
 	color: white;
+	opacity: 70%;
 }
 
 .find-location input[type="submit"] {
@@ -2109,4 +2118,8 @@ form textarea {
 .site-footer .social-links a:hover {
 	background: #009ad8;
 	color: white;
+}
+
+#weather_local {
+	opacity: 90%;
 }

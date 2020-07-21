@@ -57,40 +57,35 @@
             </div>   -->
             <!-- .site-header -->
 
-			<div class="hero" data-bg-image="images/banner.png">
+			<div class="hero" data-bg-image="../image/weather/weather_bg.jpg" style="background-image: url(&quot;../image/weather/weather_bg.jpg&quot;);" >
 				<div class="container">
                     <!-- 위치 데이터 받아오는 곳 ajax-->
-					<form  class="find-location">
-                        <div class="input-group-option">
-                            <div class="cate" id="localCate">
-                                <label for="first_local">지역을 고르세요</label>
-                                                               
-                                <select id="first_local" name="first_local" placeholder="지역을 선택하세요">
-									<option id="hiddenOption1">지역을 선택하세요</option>									
-									<option th:each = "list : ${list}" th:value1 = "${list.localnx}" th:value2 = "${list.localny}" th:value3 = "${list.localuid}" th:value4 = "${list.localname}" th:text = "${list.localname}"></option>
-								</select>
-								<input id="parentuid" type="text" hidden="hidden" name="weatherparentuid"/>
+					<form class="find-location">
+						<!-- <label for="first_local">지역을 고르세요</label> -->
+														
+						<select id="first_local" name="first_local" placeholder="지역을 선택하세요">
+							<option id="hiddenOption1">지역을 선택하세요</option>									
+							<option th:each = "list : ${list}" th:value1 = "${list.localnx}" th:value2 = "${list.localny}" th:value3 = "${list.localuid}" th:value4 = "${list.localname}" th:text = "${list.localname}"></option>
+						</select>
+						<input id="parentuid" type="text" hidden="hidden" name="weatherparentuid"/>
 
-								<select id="second_local" name="second_local" placeholder="지역을 선택하세요" disabled = "disabled">
-								<!--	<option id="hiddenOption2">지역을 선택하세요</option> -->
-								</select>
-								<input id="weatherlocalnx" type="text" hidden="hidden" name="weatherlocalnx"/>
-								<input id="weatherlocalny" type="text" hidden="hidden" name="weatherlocalny"/>
-                            </div>
-                        </div>
-                    
+						<select id="second_local" name="second_local" placeholder="지역을 선택하세요" disabled = "disabled">
+						<!--	<option id="hiddenOption2">지역을 선택하세요</option> -->
+						</select>
+						<input id="weatherlocalnx" type="text" hidden="hidden" name="weatherlocalnx"/>
+						<input id="weatherlocalny" type="text" hidden="hidden" name="weatherlocalny"/>
 					</form>
 
 				</div>
             </div>
             
 			<div class="forecast-table">
-				<div class="container">
+				<div class="container" id="weather_local">
 					<div class="forecast-container">
                         <!-- 현재 날씨 header-->
 						<div class="today forecast">
 							<div class="forecast-header">
-								<div class="day">Monday</div>
+								<div class="day">현재 시간</div>
 								<div class="date" th:text = "${nowData}">6 Oct</div>
                             </div> 
                             
@@ -123,7 +118,7 @@
 							</div> <!-- .forecast-header -->
 							<div class="forecast-content">
 								<div class="forecast-icon">
-									<img id="SKY1" src="images/icons/icon-3.svg" alt="" width=48>
+									<img id="SKY1" alt="" width=48>
 								</div>
 								<div class="degree" id="degree1">23<sup>o</sup>C</div>
 								<span id="nowPOP1"></span>
@@ -135,7 +130,7 @@
 							</div> <!-- .forecast-header -->
 							<div class="forecast-content">
 								<div class="forecast-icon">
-									<img id="SKY2" src="images/icons/icon-5.svg" alt="" width=48>
+									<img id="SKY2" alt="" width=48>
 								</div>
 								<div class="degree" id="degree2">23<sup>o</sup>C</div>
 								<span id="nowPOP2"></span>
@@ -147,7 +142,7 @@
 							</div> <!-- .forecast-header -->
 							<div class="forecast-content">
 								<div class="forecast-icon">
-									<img id="SKY3" src="images/icons/icon-7.svg" alt="" width=48>
+									<img id="SKY3" alt="" width=48>
 								</div>
 								<div class="degree" id="degree3">23<sup>o</sup>C</div>
 								<span id="nowPOP3"></span>
@@ -159,7 +154,7 @@
 							</div> <!-- .forecast-header -->
 							<div class="forecast-content">
 								<div class="forecast-icon">
-									<img id="SKY4" src="images/icons/icon-12.svg" alt="" width=48>
+									<img id="SKY4" alt="" width=48>
 								</div>
 								<div class="degree" id="degree4">23<sup>o</sup>C</div>
 								<span id="nowPOP4"></span>
@@ -171,7 +166,7 @@
 							</div> <!-- .forecast-header -->
 							<div class="forecast-content">
 								<div class="forecast-icon">
-									<img id="SKY5" src="images/icons/icon-13.svg" alt="" width=48>
+									<img id="SKY5" alt="" width=48>
 								</div>
 								<div class="degree" id="degree5">23<sup>o</sup>C</div>
 								<span id="nowPOP5"></span>
@@ -183,7 +178,7 @@
 							</div> <!-- .forecast-header -->
 							<div class="forecast-content">
 								<div class="forecast-icon">
-									<img id="SKY6" src="images/icons/icon-14.svg" alt="" width=48>
+									<img id="SKY6" alt="" width=48>
 								</div>
 								<div class="degree" id="degree6">23<sup>o</sup>C</div>
 								<span id="nowPOP6"></span>
