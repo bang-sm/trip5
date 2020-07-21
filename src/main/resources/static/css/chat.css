@@ -81,7 +81,7 @@ Messages
 .medium-image {
     width: 45px;
     height: 45px;
-    margin-right: 5px;
+    margin-right: 15px;
 }
 
 .img-circle {
@@ -951,7 +951,6 @@ button.accent {
     top: 65px;
     width: 100%;
 }
-
 
 @media screen and (max-width: 730px) {
 

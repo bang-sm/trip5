@@ -1,5 +1,10 @@
 package com.sm.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -11,7 +16,6 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.sm.domain.ChatMessage;
 
@@ -19,7 +23,7 @@ import com.sm.domain.ChatMessage;
 public class ChatController {
 	private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
 
-
+	List<String> chatParticipant = new ArrayList<String>();
 	
 	// 채팅 페이지
 	@GetMapping(value = "/chatting/chat")
@@ -35,12 +39,37 @@ public class ChatController {
         return chatMessage;
     }
 
-    @MessageMapping("/chat.addUser")
+	@MessageMapping("/chat.addUser")
     @SendTo("/topic/public")
-    public ChatMessage addUser(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor){
+    public ChatMessage addUser(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor) {
         headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
+        
         System.out.println(headerAccessor + "<-- headeraccess");
+        
+        if(!chatParticipant.contains(chatMessage.getSender())) {
+        	chatParticipant.add(chatMessage.getSender());
+        }
+        for(int i = 0; i<chatParticipant.size(); i++) {
+        	System.out.println(chatParticipant.get(i));
+        }
+        
+        chatMessage.setParticipant(chatParticipant);
         
         return chatMessage;
     }
+	
+	@MessageMapping("/chat.outUser")
+	@SendTo("/topic/public")
+	public void outUser(@Payload ChatMessage chatMessage) {
+		System.out.println("outUser()실행/////" + chatMessage.getSender());
+		chatParticipant.remove(chatMessage.getSender());
+		for(int i = 0; i<chatParticipant.size(); i++) {
+        	System.out.println(chatParticipant.get(i) + " remove 후 ");
+        }
+	}
 }
+
+
+
+
+

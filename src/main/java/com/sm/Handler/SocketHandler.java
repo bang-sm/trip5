@@ -1,5 +1,8 @@
 package com.sm.Handler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +92,7 @@ public class SocketHandler {
 
 	    @EventListener
 	    public void handleWebSocketConnectListener(SessionConnectedEvent event) {
-	        logger.info("Received a new web socket connection");
+	        logger.info("유저 connected");
 	    }
 
 	    @EventListener
@@ -98,7 +101,7 @@ public class SocketHandler {
 
 	        String username = (String) headerAccessor.getSessionAttributes().get("username");
 	        if(username != null) {
-	            logger.info("User Disconnected : " + username);
+	            logger.info("나간 유저 : " + username);
 
 	            ChatMessage chatMessage = new ChatMessage();
 	            chatMessage.setType(MessageType.LEAVE);
