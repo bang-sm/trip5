@@ -31,7 +31,7 @@ public class WishplaceController {
 	@GetMapping("/wish/place")
 	public String placed(Model model,HttpSession session)  throws Exception{
 		//사용자 uuid 값 가지고 오기
-		MemberVO vo=vo=(MemberVO) session.getAttribute("userInfo");  
+		MemberVO vo=(MemberVO) session.getAttribute("userInfo");  
 		
 		logger.info("session : "+ vo);
 		int uuid;
