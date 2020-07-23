@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
@@ -23,6 +25,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -33,9 +37,15 @@ import com.sm.service.MemberService;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
+	
+	final static String kakaoClientId="2d3554ca6fbdc8ff7fdc4b74f4b28dd8";
+	final static String kakaoClientSecret="lI1VIyD61p6Ej0ZadJ7dt9iKuIoExRnZ";
+	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private DataSource dataSource;
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -70,10 +80,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	    .and()
 	    	.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 	    .and()
-	    	.rememberMe()
-	    	.rememberMeParameter("remember-me")
-	    	.tokenValiditySeconds(604800)
-	    .and()
 	    	.csrf().ignoringAntMatchers("/user/ajax/idCheck")
     	.and()
 	    	.csrf().ignoringAntMatchers("/weather/**")
@@ -89,6 +95,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.csrf().ignoringAntMatchers("/user/authEmail.do")	
 		.and()
 			.oauth2Login()	// Oauth2 로그인
+		.and()
+			.rememberMe()
+			 .userDetailsService(memberService)
+             .tokenRepository(tokenRepository()); // username, 토큰, 시리즈를 조합한 토큰 정보를 DB에 저장(rememberMe 쿠키랑 일치하는 지 확인하기 위함)
 			;
        
         http.sessionManagement()
@@ -102,13 +112,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         									  
 	}
 	
+    // tokenRepository의 구현체
+    @Bean
+    public PersistentTokenRepository tokenRepository() {
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource);
+        return jdbcTokenRepository;
+    }
 	
 	@Bean
 	@ConditionalOnMissingBean(ClientRegistrationRepository.class)
 	public ClientRegistrationRepository clientRegistrationRepository(OAuth2ClientProperties oAuth2ClientProperties) {
-		
-		String kakaoClientId="2d3554ca6fbdc8ff7fdc4b74f4b28dd8";
-		String kakaoClientSecret="lI1VIyD61p6Ej0ZadJ7dt9iKuIoExRnZ";
 		
 		List<ClientRegistration> registrations = oAuth2ClientProperties.getRegistration().keySet().stream()
 				.map(client -> getRegistration(oAuth2ClientProperties, client)).filter(Objects::nonNull)
