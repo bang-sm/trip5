@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sm.dao.TravelDAO;
+import com.sm.domain.MemberVO;
 import com.sm.domain.TravelInfoRootVO;
 import com.sm.domain.TravelInfoVO;
+import com.sm.domain.TravelReplyVO;
 import com.sm.domain.TravelVO;
 
 @Service
@@ -18,8 +20,6 @@ public class TravelService {
 
 	@Autowired
 	TravelDAO travelDAO;
-	@Autowired
-	HttpSession session;
 
 	// 일지 등록
 	public void storyRegist(TravelVO travelVO, TravelInfoVO travelinfoVO) {
@@ -82,6 +82,24 @@ public class TravelService {
 		map.put("tsirootorder", tsirootorder);
 		map.put("tsid", tsid);
 		travelDAO.travel_root_delete(map);
+	}
+
+
+	public HashMap<String,Object> getTravelBlogData(int uuid, int tsid) {
+		HashMap<String , Integer> param=new HashMap<>();
+		param.put("tsid", tsid);
+		param.put("uuid", uuid);
+		
+		HashMap<String, Object> map=new HashMap<String, Object>();
+		
+		map=travelDAO.getTravelBlogData(param);
+		
+		return map;
+	}
+	//리플 등록하기
+	public void travel_reply_save(HashMap<String, Object> param) {
+		System.out.println(param);
+		travelDAO.travel_reply_save(param);
 	}
 
 }

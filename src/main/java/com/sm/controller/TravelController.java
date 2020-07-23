@@ -1,5 +1,6 @@
 package com.sm.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -15,8 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sm.domain.MemberVO;
 import com.sm.domain.TravelInfoRootVO;
 import com.sm.domain.TravelInfoVO;
+import com.sm.domain.TravelReplyVO;
 import com.sm.domain.TravelVO;
 import com.sm.service.TravelService;
 
@@ -29,6 +32,9 @@ public class TravelController {
 	private static final Logger logger = LoggerFactory.getLogger(TravelController.class);
 
 	@Autowired
+	HttpSession session;
+
+	@Autowired
 	private TravelService travelService;
 
 	@GetMapping(value = "/travel_main")
@@ -38,9 +44,12 @@ public class TravelController {
 		return "/travel/travel_main";
 	}
 
+	// 유저키와 일지 키를 가지고 일지 모든 데이터 가져오기
 	@GetMapping(value = "/travel_blog")
-	public String travel_detail() {
+	public String travel_detail(int uuid, int tsid, Model model) {
 		logger.info("travel_blog");
+
+		model.addAttribute("travel", travelService.getTravelBlogData(uuid, tsid));
 
 		return "/travel/travel_blog";
 	}
@@ -61,7 +70,7 @@ public class TravelController {
 		logger.info("travel_firstSave");
 		travelService.travel_firstSave(travelVO);
 	}
-	
+
 	/**
 	 * @author smbang 일지디테일 임시저장용 맵핑
 	 */
@@ -70,21 +79,23 @@ public class TravelController {
 	public String travel_temp_save(@ModelAttribute TravelInfoVO travelInfoVO,
 			@ModelAttribute TravelInfoRootVO travelInfoRootVO) {
 		logger.info("travel_temp_save");
-		
-		travelService.tempSave(travelInfoVO,travelInfoRootVO);
-		
+
+		travelService.tempSave(travelInfoVO, travelInfoRootVO);
+
 		return "다녀왔습니다";
 	}
+
 	@ResponseBody
 	@PostMapping(value = "/travel_root_delete")
-	public String travel_root_delete(int tsirootorder,int tsid) throws Exception {
+	public String travel_root_delete(int tsirootorder, int tsid) throws Exception {
 		logger.info("travel_root_delete");
-		
-		System.out.println(tsirootorder + " /  "+tsid);
-		travelService.travel_root_delete(tsirootorder,tsid);
+
+		System.out.println(tsirootorder + " /  " + tsid);
+		travelService.travel_root_delete(tsirootorder, tsid);
 
 		return "삭제되었습니다";
 	}
+
 	@ResponseBody
 	@PostMapping(value = "/travel_detail_data")
 	public List<TravelInfoVO> travel_detail_data(String tsid) throws Exception {
@@ -105,11 +116,12 @@ public class TravelController {
 		if (tsid == "" || tsid == null) {
 			return "redirect:/index";
 		}
-		model.addAttribute("travel", travelService.getTravelStory(tsid)); //기본정보
-		model.addAttribute("travelInfo", travelService.getTravelInfo(tsid)); //임시저장된 상세정보
-		model.addAttribute("travelRootInfo", travelService.getTravelRootInfo(tsid)); //임시저장된 루트정보
+		model.addAttribute("travel", travelService.getTravelStory(tsid)); // 기본정보
+		model.addAttribute("travelInfo", travelService.getTravelInfo(tsid)); // 임시저장된 상세정보
+		model.addAttribute("travelRootInfo", travelService.getTravelRootInfo(tsid)); // 임시저장된 루트정보
 		return "/travel/regist";
 	}
+
 	@PostMapping(value = "/registSave")
 	public String regist_get(TravelVO travelVO, @ModelAttribute TravelInfoVO travelinfoVO,
 			@ModelAttribute TravelInfoRootVO travelinfoRootVO, HttpSession session) throws Exception {
@@ -122,7 +134,28 @@ public class TravelController {
 
 		return "redirect:/index";
 	}
-	
 
+	@ResponseBody
+	@PostMapping(value = "/travel_reply_save")
+	public int travel_reply_save(@ModelAttribute TravelReplyVO travelReplyVO) throws Exception {
+		logger.info("travel_reply_save");
+		int uuid;
+
+		HashMap<String, Object> param = new HashMap<>();
+		if (session.getAttribute("userInfo") != null) {
+			MemberVO vo = new MemberVO();
+			vo = (MemberVO) session.getAttribute("userInfo");
+			System.out.println(vo);
+			System.out.println(session.getAttribute("userInfo"));
+			uuid = vo.getUuid();
+			param.put("uuid", uuid);
+			param.put("reply", travelReplyVO);
+			travelService.travel_reply_save(param);
+		} else {
+			return 0;
+		}
+
+		return 1;
+	}
 
 }
