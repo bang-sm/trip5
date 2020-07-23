@@ -107,16 +107,20 @@ public class TravelDAO {
 
 	
 	//블로그데이터
+	@Transactional
 	public HashMap<String, Object> getTravelBlogData(HashMap<String, Integer> param) {
 		
 		List<TravelInfoVO> infoList=new ArrayList<TravelInfoVO>();
 		infoList=sqlSession.selectList("mappers.travelMapper.getTravelInfo",param);
 		TravelVO travelStory=new TravelVO();
 		travelStory=sqlSession.selectOne("mappers.travelMapper.getTravelStory",param);
+		List<TravelReplyVO> replyList=new ArrayList<TravelReplyVO>();
+		replyList=sqlSession.selectList("mappers.travelMapper.getTravelInfo",param);
 		
 		HashMap<String , Object> map=new HashMap<>();
 		map.put("infoList", infoList);
 		map.put("travelStory", travelStory);
+		map.put("replyList", replyList);
 		
 		return map;
 	}

@@ -46,7 +46,7 @@ public class TravelController {
 
 	// 유저키와 일지 키를 가지고 일지 모든 데이터 가져오기
 	@GetMapping(value = "/travel_blog")
-	public String travel_detail(int uuid, int tsid, Model model) {
+	public String travel_blog(int uuid, int tsid, Model model) {
 		logger.info("travel_blog");
 
 		model.addAttribute("travel", travelService.getTravelBlogData(uuid, tsid));
@@ -57,7 +57,7 @@ public class TravelController {
 	@GetMapping(value = "/intro_date")
 	public String intro_date() {
 		logger.info("intro_date");
-
+		
 		return "/travel/intro_date";
 	}
 
