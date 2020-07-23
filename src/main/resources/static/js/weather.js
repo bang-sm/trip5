@@ -14,7 +14,16 @@ $(document).ready(function(){
 	getDefaultLocal();
 
 	// 로딩시 default 값으로 페이지 로딩
-	getDefaultLocalInfo(defaultlocaluid);
+
+	if(defaultlocaluid == 0){
+
+		setDefaultWeather1(1);
+
+	} else {
+		
+		getDefaultLocalInfo(defaultlocaluid);
+	}
+
 
 	var now = new Date();
 
@@ -472,26 +481,26 @@ function saveDefaultLocal(finalLocation){
 }
 
 function getDefaultLocal(){
+	
+		$.ajax({
+			type : "POST",
+			url: "/weather/getuid",
+			async: false,
+			success: function(data){
+				// Session 에 uuid 없으면, 
 
-	$.ajax({
-		type : "POST",
-		url: "/weather/getuid",
-		async: false,
-		success: function(data){
-			// Session 에 uuid 없으면, 
-			defaultlocaluid = (data*1);
+				if(data == 0){
+					defaultlocaluid = 0; // default: 서울
+				} else {
+					
+					defaultlocaluid = (data*1);
+				}
 
-			if(defaultlocaluid == 0 || defaultlocaluid == null){
-				defaultlocaluid = 1; // default: 서울
+			},
+			error : function(request,status,error){
+				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			}
-			
-		},
-		error : function(request,status,error){
-			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		}
-
-	}); // end ajax
-
+		}); // end ajax
 } // end getDefaultLocal
 
 function setDefaultWeather1(defaultlocaluid){
@@ -578,8 +587,6 @@ function getDefaultLocalInfo(defaultlocaluid){
 		}); // end ajax
 	}
 } // end getDefaultLocalInfo()
-
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // CHART JS ///////////////////////////////////// CHART JS ///////////////////////////////////
@@ -731,7 +738,8 @@ var  gradientBarChartConfiguration = {
 	}
 };
 
-var chart_labels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+// var chart_labels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+var chart_labels = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
 var chart_data = [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100];
 
 
