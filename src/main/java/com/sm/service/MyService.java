@@ -35,4 +35,7 @@ public class MyService {
 	public int sendToMsg(MessageVO messageVO) {
 		return dao.sendToMsg(messageVO);
 	}
+	
+	
+	
 }

@@ -40,6 +40,4 @@ public class MyDAO {
 	public int sendToMsg(MessageVO messageVO) {
 		return sqlsession.insert("mappers.myMapper.sendToMsg", messageVO);
 	}
-	
-	
 }

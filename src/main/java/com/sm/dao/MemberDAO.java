@@ -43,6 +43,5 @@ public class MemberDAO {
 	public MemberVO idCheck(String memberemail) throws Exception{
 		return sql.selectOne(namespace + ".idCheck",memberemail);
 	}
-
 	
 }

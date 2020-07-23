@@ -42,11 +42,12 @@ public class MyController {
 	
 	@PostMapping("/sendMsg")
 	public void sendMsg(MessageVO messageVO) {
-		System.out.println(messageVO);
-		
 		myService.sendToMsg(messageVO);
-		
 	}
 	
-	
+	@PostMapping("/sendOther")
+	public int sendMsgOther(MemberVO memberVO) {
+		int uuid = myService.selectUuid(memberVO).getUuid();
+		return uuid;
+	}
 }
