@@ -75,10 +75,10 @@ public class ChatController {
 	@GetMapping("/my/message")
 	public String message(MessageVO messageVO, Model model) throws ParseException {
 		List<MessageVO> list = myService.sendMessage(messageVO);
-		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		SimpleDateFormat format2 = new SimpleDateFormat("MM월dd일 HH:mm");
 		for(int i = 0; i < list.size(); i++) {
-			Date date = format1.parse(messageVO.getMsgregdate());
+			Date date = format1.parse(list.get(i).getMsgregdate());
 			list.get(i).setMsgregdate(format2.format(date));
 		}
 		
