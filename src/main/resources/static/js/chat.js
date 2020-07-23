@@ -11,6 +11,10 @@ var NowMinutes;
 
 var outer = '';
 
+var inUser = new Array();
+
+var lastOne = false;
+
 function getdate(){
 	Now = new Date();
 	NowHours = Now.getHours();
@@ -21,9 +25,12 @@ $(document).ready(function(){
 	loadPage();
 	connect();
 	
-//	$(window).on("beforeunload", function () {
-//		return "레알 나감????????????";
-//    });
+	$(window).on("beforeunload", function () {
+		if(lastOne){
+			outUser();
+		}
+		return "레알 나감????????????";
+    });
 });
 
 document.addEventListener("keypress", function(e) {
@@ -83,10 +90,17 @@ function send(event) {
 }
 
 function outUser(event){
-	var chatMessage = {
-			sender: outer,
-			type: 'LEAVE'
-	};
+	if(lastOne){
+		var chatMessage = {
+				sender: $("#userSessionId").val(),
+				type: 'LEAVE'
+		}
+	} else {
+		var chatMessage = {
+				sender: outer,
+				type: 'LEAVE'
+		};
+	}
 	stompClient.send("/app/chat.outUser", {}, JSON.stringify(chatMessage));
 }
 
@@ -98,6 +112,8 @@ function onMessageReceived(payload) {
     
     if(message.type === 'JOIN') {
     	console.log(userNick + " <-- 멤버 닉네임")
+    	if(inUser.length == 1) lastOne = false;
+    	inUser.push(message.participant[message.participant.length-1])
     	for(i = 0; i<message.participant.length; i++){
     		if(!$("li[data-name='"+message.participant[i]+"']").length){
     		$(".contacts").append("<li data-toggle='tab' data-target='#inbox-message-2' data-name='"+message.participant[i]+"'>"+
@@ -114,6 +130,8 @@ function onMessageReceived(payload) {
     		}
     	}
     } else if (message.type === 'LEAVE') {
+    	inUser.splice(inUser.indexOf(message.sender),1);
+    	if(inUser.length == 1) lastOne = true;
     	console.log(message.sender + ' 메세지센더')
     	console.log($("li[data-name='"+message.sender+"']").attr('data-name') + ' 나간 사람 아이디');
     	outer = $("li[data-name='"+message.sender+"']").attr('data-name');

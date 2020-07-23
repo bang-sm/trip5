@@ -48,7 +48,6 @@ public class MyController {
 	@PostMapping("/sendOther")
 	public int sendMsgOther(MemberVO memberVO) {
 		int uuid = myService.selectUuid(memberVO).getUuid();
-		System.out.println("uuid = " + uuid);
 		return uuid;
 	}
 }
