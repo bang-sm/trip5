@@ -2,6 +2,7 @@
 
 $(document).ready(function() {
 	//일지 댓글 등록
+	
 	$(".reply_submit").click(function(){
 		$.ajax({
 	        type : 'post',
@@ -11,17 +12,37 @@ $(document).ready(function() {
 	        	toastr.success("실패하였습니다");
 	        },
 	        success : function(data){
-	        	console.log(data);
-	        	if(data==1){
+	        	if(null){
+	        		toastr.error("실패하였습니다.");
+	        	}else{
 	        		toastr.success("등록되었습니다");
-	        	}else if(data==0){
-	        		toastr.error("로그인이 필요합니다");
+	        		$("#replyBox").empty();
+	        		for (var i = 0; i < data.length; i++) {
+						var replyList="";
+						replyList+='<div class="comment-list">';
+						replyList+='<div class="single-comment justify-content-between d-flex">';
+						replyList+='<div class="user justify-content-between d-flex">';
+						replyList+='<div class="thumb">';
+						replyList+='<img src="img/blog/c1.jpg" alt="">';
+						replyList+='</div>';
+						replyList+='<div class="desc">';
+						replyList+='<h5>';
+						replyList+='<span>'+data[i].memberName+'</span>';
+						replyList+='</h5>';
+						replyList+='<p class="date">'+data[i].replyRegdate+'</p>';
+						replyList+='<p class="comment">'+data[i].tsReplyComment+'</p>';
+						replyList+='</div>';
+						replyList+='</div>';
+						replyList+='</div>';
+						replyList+='</div>';
+						console.log(replyList);
+						$("#replyBox").append(replyList);
+					}
+	        		$("#comment_count").text(data.length+" 개의 댓글");
 	        	}
 	        },
 	    });
 	});
-
-	
 	//로딩시 에디터에잇는 내용 가져와서 뿌려주기
 	$.ajax({
         type : 'post',

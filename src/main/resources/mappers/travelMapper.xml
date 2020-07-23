@@ -173,8 +173,23 @@
 			#{uuid},
 			#{reply.tsReplyComment},
 			#{reply.tsId},
-			reply_regdate
+			now()
 		)
 	</insert>
+	
+	<select id="getTravelReply" parameterType="hashmap"  resultType="com.sm.domain.TravelReplyVO">
+		SELECT 
+			ts_reply_id ,
+			(SELECT membernick FROM `member` WHERE uuid=a.uuid) AS memberName,
+			ts_reply_comment ,
+			ts_id ,
+			reply_regdate,
+			(SELECT count(*) FROM travel_story_reply WHERE ts_id=#{tsid}) AS count
+		FROM 
+			travel_story_reply a
+		WHERE
+		     ts_id=#{tsid}
+		;
+	</select>
 
 </mapper>

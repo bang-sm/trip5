@@ -48,9 +48,9 @@
 					</div>
 				</div>
 
-				<div class="comments-area">
-					<h4>코멘트 총 개수</h4>
-					<div class="comment-list">
+				<div class="comments-area" id="replyBox">
+					<h4 th:text="|${travel.replyList[0].count} 개의 등록된 댓글|" id="comment_count">코멘트 총 개수</h4>
+					<div class="comment-list" th:each="reply : ${travel.replyList}">
 						<div class="single-comment justify-content-between d-flex">
 							<div class="user justify-content-between d-flex">
 								<div class="thumb">
@@ -58,10 +58,10 @@
 								</div>
 								<div class="desc">
 									<h5>
-										<a href="#">작성자</a>
+										<span th:text="${reply.memberName}">작성자</span>
 									</h5>
-									<p class="date">2020-09-09</p>
-									<p class="comment">코멘트내용</p>
+									<p class="date" th:text="${reply.replyRegdate}">2020-09-09</p>
+									<p class="comment" th:text="${reply.tsReplyComment}">코멘트내용</p>
 								</div>
 							</div>
 						</div>

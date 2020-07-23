@@ -98,8 +98,11 @@ public class TravelService {
 	}
 	//리플 등록하기
 	public void travel_reply_save(HashMap<String, Object> param) {
-		System.out.println(param);
 		travelDAO.travel_reply_save(param);
+	}
+
+	public List<TravelReplyVO> travel_reply_list(int tsId) {
+		return travelDAO.travel_reply_list(tsId);
 	}
 
 }

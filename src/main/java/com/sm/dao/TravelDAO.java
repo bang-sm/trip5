@@ -115,7 +115,7 @@ public class TravelDAO {
 		TravelVO travelStory=new TravelVO();
 		travelStory=sqlSession.selectOne("mappers.travelMapper.getTravelStory",param);
 		List<TravelReplyVO> replyList=new ArrayList<TravelReplyVO>();
-		replyList=sqlSession.selectList("mappers.travelMapper.getTravelInfo",param);
+		replyList=sqlSession.selectList("mappers.travelMapper.getTravelReply",param);
 		
 		HashMap<String , Object> map=new HashMap<>();
 		map.put("infoList", infoList);
@@ -127,7 +127,12 @@ public class TravelDAO {
 
 
 	public void travel_reply_save(HashMap<String, Object> param) {
-		//sqlSession.insert("mappers.travelMapper.travel_reply_save",param);
+		sqlSession.insert("mappers.travelMapper.travel_reply_save",param);
+	}
+
+
+	public List<TravelReplyVO> travel_reply_list(int tsid) {
+		return sqlSession.selectList("mappers.travelMapper.getTravelReply",tsid);
 	}
 
 }

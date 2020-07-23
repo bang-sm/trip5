@@ -1,5 +1,6 @@
 package com.sm.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -137,10 +138,11 @@ public class TravelController {
 
 	@ResponseBody
 	@PostMapping(value = "/travel_reply_save")
-	public int travel_reply_save(@ModelAttribute TravelReplyVO travelReplyVO) throws Exception {
+	public List<TravelReplyVO> travel_reply_save(@ModelAttribute TravelReplyVO travelReplyVO) throws Exception {
 		logger.info("travel_reply_save");
 		int uuid;
-
+		List<TravelReplyVO> list=new ArrayList<TravelReplyVO>();
+		
 		HashMap<String, Object> param = new HashMap<>();
 		if (session.getAttribute("userInfo") != null) {
 			MemberVO vo = new MemberVO();
@@ -150,12 +152,14 @@ public class TravelController {
 			uuid = vo.getUuid();
 			param.put("uuid", uuid);
 			param.put("reply", travelReplyVO);
+			//댓글 insert
 			travelService.travel_reply_save(param);
+			//댓글리스트목록가져오기
+			list=travelService.travel_reply_list(travelReplyVO.getTsId());
 		} else {
-			return 0;
+			return null;
 		}
-
-		return 1;
+		return list;
 	}
 
 }
