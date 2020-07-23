@@ -1,12 +1,16 @@
 package com.sm.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -16,18 +20,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.sm.domain.ChatMessage;
-import com.sm.domain.Participant;
-
-import lombok.Getter;
-import lombok.Setter;
+import com.sm.domain.MessageVO;
+import com.sm.service.MyService;
 
 @Controller
-@Setter
-@Getter
 public class ChatController {
 	private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
 
 	private List<String> chatParticipant = new ArrayList<String>();
+	
+	@Autowired
+	private MyService myService;
 	
 	// 채팅 페이지
 	@GetMapping(value = "/chatting/chat")
@@ -67,6 +70,20 @@ public class ChatController {
 		for(int i = 0; i<chatParticipant.size(); i++) {
         	System.out.println(chatParticipant.get(i) + " remove 후 ");
         }
+	}
+	
+	@GetMapping("/my/message")
+	public String message(MessageVO messageVO, Model model) throws ParseException {
+		List<MessageVO> list = myService.sendMessage(messageVO);
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+		SimpleDateFormat format2 = new SimpleDateFormat("MM월dd일 HH:mm");
+		for(int i = 0; i < list.size(); i++) {
+			Date date = format1.parse(messageVO.getMsgregdate());
+			list.get(i).setMsgregdate(format2.format(date));
+		}
+		
+		model.addAttribute("list", list);
+		return "chatting/message";
 	}
 }
 

@@ -1,5 +1,6 @@
 package com.sm.domain;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
@@ -14,10 +15,11 @@ import lombok.Setter;
 public class MessageVO {
 
 	private int msgid;
-	private Date msgregdate;
+	private String msgregdate;
 	private String msgcontent;
 	private String msgsubject;
 	private int fromid;
 	private int sendid;
+	private String membernick;
 	
 }

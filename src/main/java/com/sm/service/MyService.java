@@ -36,6 +36,8 @@ public class MyService {
 		return dao.sendToMsg(messageVO);
 	}
 	
-	
+	public List<MessageVO> sendMessage(MessageVO messageVO){
+		return dao.sendMessage(messageVO);
+	}
 	
 }

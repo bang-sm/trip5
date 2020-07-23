@@ -113,7 +113,7 @@ function onMessageReceived(payload) {
     if(message.type === 'JOIN') {
     	console.log(userNick + " <-- 멤버 닉네임")
     	if(inUser.length == 1) lastOne = false;
-    	inUser.push(message.participant[message.participant.length-1])
+    	inUser.push(message.participant[message.participant.length-1]) // 메세지 센더 이슈?
     	for(i = 0; i<message.participant.length; i++){
     		if(!$("li[data-name='"+message.participant[i]+"']").length){
     		$(".contacts").append("<li data-toggle='tab' data-target='#inbox-message-2' data-name='"+message.participant[i]+"'>"+
