@@ -5,17 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.simple.JSONObject;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sm.domain.MemberVO;
 import com.sm.domain.WeatherInfoVO;
 import com.sm.domain.WeatherLocalVO;
 import com.sm.service.WeatherAPIservice;
@@ -84,4 +84,40 @@ public class WeatherController {
 		return list;
 	}
 		
+	@ResponseBody
+	@PostMapping("/updateuid")
+	public String updateWeatherlocaluid(HttpSession httpSession, int weatherlocaluid) {
+		
+		weatherService.updateWeatherlocaluid(httpSession, weatherlocaluid);
+		
+		return "OK";
+	}
+	
+	
+	@ResponseBody
+	@PostMapping("/getuid")
+	public int getWeatherlocaluid(HttpSession httpSession) throws Exception{
+		
+		MemberVO memberVO = new MemberVO();
+		memberVO = (MemberVO) httpSession.getAttribute("userInfo");  
+		
+		int uuid = memberVO.getUuid();
+//		int uuid = 4; // 나중에 바꾸기 
+		
+		int result = weatherService.selectWeatherlocaluid(uuid);
+		
+//		System.out.println(result + "/////////");
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/getlocalinfo")
+	public WeatherLocalVO selectlocalInfoBylocaluid(int localuid) {
+		
+		WeatherLocalVO weatherLocalVO = new WeatherLocalVO();
+		
+		weatherLocalVO = weatherService.selectlocalInfoBylocaluid(localuid);
+		return weatherLocalVO;
+	}
+	
 }

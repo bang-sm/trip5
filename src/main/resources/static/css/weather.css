@@ -286,7 +286,7 @@ form textarea {
 /*
  * Reusable Components Style
  */
-.button, form input[type="submit"], form button, form input[type="reset"]
+.button, form input[type="submit"], form input[type="button"], form button, form input[type="reset"]
 	{
 	border: none;
 	background: #009ad8;
@@ -1465,12 +1465,13 @@ form textarea {
 	opacity: 70%;
 }
 
-.find-location input[type="submit"] {
+.find-location input[type="button"] {
 	position: absolute;
 	top: 5px;
 	right: 5px;
 	bottom: 5px;
 	padding: 0 40px;
+	opacity: 80%;
 }
 
 .forecast-container {
@@ -2122,4 +2123,13 @@ form textarea {
 
 #weather_local {
 	opacity: 90%;
+}
+
+#nowText {
+	float: right;
+	padding-right: 20px;
+}
+
+#nowDate {
+	padding-left: 15px;
 }

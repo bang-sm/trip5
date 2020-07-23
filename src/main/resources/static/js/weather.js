@@ -10,15 +10,18 @@ var defaultlocaluid = 0;
 
 $(document).ready(function(){
 
-	var now = new Date();
-	alert("로딩 완료");
-	alert(now.getMonth());
-	
+	// Session 에서 uuid 가져오기
+	getDefaultLocal();
 
 	// 로딩시 default 값으로 페이지 로딩
-	defaultlocaluid = 1; // default: 서울 
+	getDefaultLocalInfo(defaultlocaluid);
 
-	// $("#first_local > option").attr("value3", defaultlocaluid).prop("selected", true);
+	var now = new Date();
+
+	var nowMonth = parseInt(now.getMonth()) + 1 ;
+	var nowDate = parseInt(now.getDate());
+	
+	$("#nowDate").html(nowMonth + " 월 " + nowDate + " 일");
 
 	$("#first_local").click(function(){
 		$("#hiddenOption1").hide();
@@ -26,7 +29,6 @@ $(document).ready(function(){
 
 	$("#first_local").change(function(){ // 첫번째 칸 선택시
 
-		$("#second_local").removeAttr("disabled");
 		$("#location2").empty();
 
 		var locationdiv = $("#location1");
@@ -60,7 +62,6 @@ $(document).ready(function(){
 		var localny = $("#second_local > option:selected").attr("value2");
 		var localname = $("#second_local > option:selected").attr("value3");
 		var localuid = $("#second_local > option:selected").attr("value4");
-
 		// alert("localnx = " + localnx + " localny = " + localny);
 
 		var locationdiv = $("#location2");
@@ -71,11 +72,15 @@ $(document).ready(function(){
 		getWeatherAPI(localnx, localny);
 
 		finalLocation = localuid;
-
 	});
 
-	// getCategory(0,0);  // depth0 카테고리 읽기
 
+	$("#saveuid").click(function(){
+
+		// TODO : 누르면 저장 카테고리에 있는 localuid DB 에 업데이트!! 
+		saveDefaultLocal(finalLocation);
+
+	});
 });
 
 function getCategory(localuid){
@@ -86,6 +91,7 @@ function getCategory(localuid){
 			type : "POST",
 			url: "/weather/depth2",
 			dataType: 'JSON',
+			async: false,
 			data: {
 				"weatherparentuid" : localuid
 			},
@@ -99,6 +105,8 @@ function getCategory(localuid){
 				}
 						
 			}); 
+	
+	$("#second_local").removeAttr("disabled");
 	
 } // end getCategory()	
 
@@ -138,7 +146,7 @@ function getWeatherAPI(weatherlocalnx, weatherlocalny){
 				},
 			success: function(data){
 				
-				alert("api받아짐");
+				// alert("api받아짐");
 				sortNowWeatherData(data); // nowWeather map setting 완료!!
 				console.log("sortNowWeatherData 완료! - Map 사용!");
 				
@@ -219,7 +227,6 @@ function setSKY(SKY, PTY, location){
 	var sunny = "../image/weather/sunny.svg";
 	var sun_cloud = "../image/weather/sun_cloud.svg";
 	var cloudy = "../image/weather/cloudy.svg";
-	var foggy = "../image/weather/foggy.svg";
 	var rainy = "../image/weather/rainy.svg";
 	var snowy = "../image/weather/snowy.svg";
 
@@ -398,7 +405,9 @@ function getfsctDate(data){
 }
 
 function setWeatherArr(data, timeArr, dateArr){
-
+	
+	var weatherMap = new Map();
+	
 	for(var i = 0; i < 6; i++){
 
 		var date = dateArr[i];
@@ -406,20 +415,21 @@ function setWeatherArr(data, timeArr, dateArr){
 		
 		for(var j = 0; j <data.length; j++){
 			
-			var valueSKY = 0;
-			var valuePTY = 0;
-
 			if(data[j].fcstDate == date && data[j].fcstTime == time){
 
 				var category = data[j].category;
 				var value = data[j].fcstValue;
 
+				var tempSKY = -1;
+				var tempPTY = -1;
+				
 				switch (category) {
+					
 					case "SKY":
-						valueSKY = value;
+						tempSKY = value;
 					break;
 					case "PTY":
-						valuePTY = value;
+						tempPTY = value;
 					break;
 					case "POP":
 						setPOP(value, $("#nowPOP" + String( 1 + i )));
@@ -430,16 +440,166 @@ function setWeatherArr(data, timeArr, dateArr){
 					default:
 						break;
 				}
-			}
 
-			setSKY(valueSKY, valuePTY, $("#SKY" + String( 1 + i )));
+				if(tempPTY != -1){
+					weatherMap.set("valuePTY", parseInt(value));
+				}
 
+				if(tempSKY != -1){
+					weatherMap.set("valueSKY", parseInt(value));
+				}
+				
+			} //end if
+			
 		} // end data for
 
-	}// end 표출 arr for
+		console.log("date :" + date);
+		console.log("time :" + time);
+		console.log("PTY :" + weatherMap.get("valuePTY"));
+		console.log("SKY :" + weatherMap.get("valueSKY"));
+
+		setSKY(weatherMap.get("valueSKY"), weatherMap.get("valuePTY"), $("#SKY" + String( 1 + i )));
+
+		weatherMap.set("valuePTY", -1);
+		weatherMap.set("valueSKY", -1);
+
+	} // end 표출 arr for
+
+} // end setWeatherArr()
+
+function saveDefaultLocal(finalLocation){
+
+	if(finalLocation != null || finalLocation != ""){
+		
+		$.ajax({
+			type : "POST",
+			url: "/weather/updateuid",
+			async: false,
+			data: {
+				"weatherlocaluid" : finalLocation
+			},
+			success: function(data){
+				if(data == "OK"){
+					alert("update 완료");
+				}
+				
+			},
+			error : function(request,status,error){
+				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+	
+		}); // end ajax
+
+	}
+	
 }
 
-function setDefaultLocal(){
+function getDefaultLocal(){
+
+	$.ajax({
+		type : "POST",
+		url: "/weather/getuid",
+		async: false,
+		success: function(data){
+			// Session 에 uuid 없으면, 
+			defaultlocaluid = (data*1);
+
+			if(defaultlocaluid == 0 || defaultlocaluid == null){
+				defaultlocaluid = 1; // default: 서울
+			}
+			
+		},
+		error : function(request,status,error){
+			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+
+	}); // end ajax
+
+} // end getDefaultLocal
+
+function setDefaultWeather1(defaultlocaluid){
+
+	// alert("setDefaultWeather()");
+	$("#first_local > option[value3="+ defaultlocaluid +"]").attr("selected", "selected");
+
+	var localnx = $("#first_local > option:selected").attr("value1");
+	var localny = $("#first_local > option:selected").attr("value2");
+	var localname = $("#first_local > option:selected").attr("value4");
+
+	var locationdiv = $("#location1");
+
+	getWeatherAPI(localnx, localny);
+	locationdiv.html(localname);
+	getCategory(defaultlocaluid);
+	finalLocation = defaultlocaluid;
+
+} // end setDefaultWeather()
+
+
+function setDefaultWeather2(defaultlocaluid, parentuid){
+
+	$("#first_local > option[value3="+ parentuid +"]").attr("selected", "selected");
+	var localname1 = $("#first_local > option:selected").attr("value4");
+	var locationdiv1 = $("#location1");
+	
+	getCategory(parentuid);
+	locationdiv1.html(localname1);
+
+	$("#second_local > option[value4 = "+ defaultlocaluid +"]").attr("selected", "selected");
+
+	var localnx = $("#second_local > option:selected").attr("value1");
+	var localny = $("#second_local > option:selected").attr("value2");
+	var localname = $("#second_local > option:selected").attr("value3");
+	var localuid = $("#second_local > option:selected").attr("value4");
+
+	var locationdiv = $("#location2");
+	locationdiv.html(localname);
+
+	$("#weatherlocalnx").val(localnx);
+	$("#weatherlocalny").val(localny);
+	getWeatherAPI(localnx, localny);
+
+	finalLocation = localuid;
+
+} // end setDefaultWeather()
+
+
+function getDefaultLocalInfo(defaultlocaluid){
+
+	if(defaultlocaluid != 0 || defaultlocaluid != null){
+
+		$.ajax({
+			type : "POST",
+			url: "/weather/getlocalinfo",
+			// async: false,
+			data: {
+				"localuid" : defaultlocaluid
+			},
+			success: function(data){
+				
+				// depth 구별 - 0 일 경우
+				//				1 일 경우
+				var depth = data.localdepth;
+				var parent = data.localparent;
+
+				switch (depth) {
+					case 0:
+						setDefaultWeather1(defaultlocaluid);
+						break;
+					case 1:
+						setDefaultWeather2(defaultlocaluid, parent);
+						break;
+				
+					default:
+						break;
+				}
+				
+			},
+			error : function(request,status,error){
+				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+	
+		}); // end ajax
+	}
 
 }
-

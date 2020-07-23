@@ -36,5 +36,45 @@
 
 </select>
 
+<select id="selectWeatherlocaluid" resultType="int">
+
+	SELECT
+		weatherlocaluid
+	FROM
+		member
+	WHERE
+	 	uuid = #{uuid}
+	;
+
+</select>
+
+<update id="updateWeatherlocaluid" parameterType="map">
+
+	UPDATE 
+		member 
+	SET
+		weatherlocaluid = #{weatherlocaluid}
+	WHERE 
+		uuid = #{uuid}
+	;
+
+</update>
+
+<select id="selectlocalInfoBylocaluid" resultType="com.sm.domain.WeatherLocalVO">
+
+	SELECT
+			localuid,
+			localname,
+			localnx, 
+			localny,
+			localparent,
+			localdepth  
+	FROM
+			weatherLocal
+	WHERE
+			localuid = #{localuid}
+	;
+
+</select>
 
 </mapper>

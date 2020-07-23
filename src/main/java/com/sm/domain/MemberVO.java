@@ -42,6 +42,7 @@ public class MemberVO {
 	private String sessionlog;
 	private String kakaoOk;
 	private int blackuuid;
+	private int weatherlocaluid;
 	
 	
 }
