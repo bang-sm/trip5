@@ -76,11 +76,9 @@ $(document).ready(function(){
 
 
 	$("#saveuid").click(function(){
-
-		// TODO : 누르면 저장 카테고리에 있는 localuid DB 에 업데이트!! 
 		saveDefaultLocal(finalLocation);
-
 	});
+
 });
 
 function getCategory(localuid){
@@ -96,12 +94,7 @@ function getCategory(localuid){
 				"weatherparentuid" : localuid
 			},
 			success: function(data){
-					// for (var index = 0; index < data.length; index++) {
-					// 	console.log(data[index].localname);
-					// }	
-
 					buildSelect(data);
-					
 				}
 						
 			}); 
@@ -114,22 +107,15 @@ function getCategory(localuid){
 function buildSelect(data){
 	
 		var elm = $("select#second_local");
-			
-		// alert("buildSelect");
 		var list = data;
-		
-		// alert(list.length);
+
 		var result = "<option id='hiddenOption2'> 지역을 선택하세요 </option>";
-		
 		for(i = 0; i < list.length; i++){
-		
 			result += "<option value1 = '" + list[i].localnx + "' value2 = '" + list[i].localny + "' value3 = '" + list[i].localname + "' value4 = '" + list[i].localuid +"'>";
 			result += list[i].localname;
 			result += "</option>";
-			
 		}
 		
-		// alert(result);
 		elm.html(result);
 	
 } // end buildSelect()
@@ -146,9 +132,8 @@ function getWeatherAPI(weatherlocalnx, weatherlocalny){
 				},
 			success: function(data){
 				
-				// alert("api받아짐");
 				sortNowWeatherData(data); // nowWeather map setting 완료!!
-				console.log("sortNowWeatherData 완료! - Map 사용!");
+				// console.log("sortNowWeatherData 완료! - Map 사용!");
 				
 				// 오늘 날씨 설정
 				setSKY(nowWeather.get("nowSKY"), nowWeather.get("nowPTY"), $("#nowSKY"));
@@ -346,16 +331,14 @@ function setTime(data){
 	
 	var setTime = 0;
 	var setTimeString = "";
-	// console.log(startTime);
-	// console.log(startDate);
 	var fsctDateArr = getfsctDate(data);
-	console.log("리턴 받은 배열의 길이 : " + fsctDateArr.length);
-	console.log(fsctDateArr[0]);
+
+	// console.log("리턴 받은 배열의 길이 : " + fsctDateArr.length);
+	// console.log(fsctDateArr[0]);
 
 	for(var index = 0; index < 6; index++){
 
 		setTime = startTime + (300 * (index + 1));
-		// console.log("if 문 전" + setTime);
 
 		if(setTime >= 2400){
 			setTime -= 2400;
@@ -366,15 +349,11 @@ function setTime(data){
 			setTimeString = String (setTime/100) + ":00";
 		}
 
-		// console.log("if문 뒤" + setTime);
 		$("#nowTime" + String(index + 1)).html(setTimeString);
 		
 		timeArr[index] = setTime;		
-	
 		dateArr[index] = fsctDateArr[update];
-		// console.log(fsctDateArr[0]);
-
-		update = 0;
+		update = 0; // 초기화
 
 	} // end for
 
@@ -386,7 +365,6 @@ function getfsctDate(data){
 
 	var fsctDateArr = new Array();
 	var startDate = data[0].fcstDate;
-	// console.log(startDate);
 
 	fsctDateArr[0] = startDate;
 
@@ -395,7 +373,6 @@ function getfsctDate(data){
 		var date = data[i].fcstDate;
 
 		if(startDate != date){
-			// console.log(date);
 			fsctDateArr.push(date);
 			startDate = date;
 		}
@@ -453,10 +430,10 @@ function setWeatherArr(data, timeArr, dateArr){
 			
 		} // end data for
 
-		console.log("date :" + date);
-		console.log("time :" + time);
-		console.log("PTY :" + weatherMap.get("valuePTY"));
-		console.log("SKY :" + weatherMap.get("valueSKY"));
+		// console.log("date :" + date);
+		// console.log("time :" + time);
+		// console.log("PTY :" + weatherMap.get("valuePTY"));
+		// console.log("SKY :" + weatherMap.get("valueSKY"));
 
 		setSKY(weatherMap.get("valueSKY"), weatherMap.get("valuePTY"), $("#SKY" + String( 1 + i )));
 
@@ -480,7 +457,7 @@ function saveDefaultLocal(finalLocation){
 			},
 			success: function(data){
 				if(data == "OK"){
-					alert("update 완료");
+					toastr.success("등록되었습니다"); 
 				}
 				
 			},
@@ -519,7 +496,6 @@ function getDefaultLocal(){
 
 function setDefaultWeather1(defaultlocaluid){
 
-	// alert("setDefaultWeather()");
 	$("#first_local > option[value3="+ defaultlocaluid +"]").attr("selected", "selected");
 
 	var localnx = $("#first_local > option:selected").attr("value1");
@@ -601,5 +577,219 @@ function getDefaultLocalInfo(defaultlocaluid){
 	
 		}); // end ajax
 	}
+} // end getDefaultLocalInfo()
 
-}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// CHART JS ///////////////////////////////////// CHART JS ///////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+// var gradientChartOptionsConfigurationWithTooltipPurple = {
+// 	maintainAspectRatio: false,
+// 	legend: {
+// 	  display: false
+// 	},
+
+// 	tooltips: {
+// 	  backgroundColor: '#f5f5f5',
+// 	  titleFontColor: '#333',
+// 	  bodyFontColor: '#666',
+// 	  bodySpacing: 4,
+// 	  xPadding: 12,
+// 	  mode: "nearest",
+// 	  intersect: 0,
+// 	  position: "nearest"
+// 	},
+// 	responsive: true,
+// 	scales: {
+// 	  yAxes: [{
+// 		barPercentage: 1.6,
+// 		gridLines: {
+// 		  drawBorder: false,
+// 		  color: 'rgba(29,140,248,0.0)',
+// 		  zeroLineColor: "transparent",
+// 		},
+// 		ticks: {
+// 		  suggestedMin: 60,
+// 		  suggestedMax: 125,
+// 		  padding: 20,
+// 		  fontColor: "#2380f7"
+// 		}
+// 	  }],
+
+// 	  xAxes: [{
+// 		barPercentage: 1.6,
+// 		gridLines: {
+// 		  drawBorder: false,
+// 		  color: 'rgba(29,140,248,0.1)',
+// 		  zeroLineColor: "transparent",
+// 		},
+// 		ticks: {
+// 		  padding: 20,
+// 		  fontColor: "#2380f7"
+// 		}
+// 	  }]
+
+// 	}
+// };
+
+// var gradientChartOptionsConfigurationWithTooltipBlue = {
+// 	maintainAspectRatio: false,
+// 	legend: {
+// 	  display: false
+// 	},
+
+// 	tooltips: {
+// 	  backgroundColor: '#f5f5f5',
+// 	  titleFontColor: '#333',
+// 	  bodyFontColor: '#666',
+// 	  bodySpacing: 4,
+// 	  xPadding: 12,
+// 	  mode: "nearest",
+// 	  intersect: 0,
+// 	  position: "nearest"
+// 	},
+// 	responsive: true,
+// 	scales: {
+// 	  yAxes: [{
+// 		barPercentage: 1.6,
+// 		gridLines: {
+// 		  drawBorder: false,
+// 		  color: 'rgba(29,140,248,0.0)',
+// 		  zeroLineColor: "transparent",
+// 		},
+// 		ticks: {
+// 		  suggestedMin: 60,
+// 		  suggestedMax: 125,
+// 		  padding: 20,
+// 		  fontColor: "#2380f7"
+// 		}
+// 	  }],
+
+// 	  xAxes: [{
+// 		barPercentage: 1.6,
+// 		gridLines: {
+// 		  drawBorder: false,
+// 		  color: 'rgba(29,140,248,0.1)',
+// 		  zeroLineColor: "transparent",
+// 		},
+// 		ticks: {
+// 		  padding: 20,
+// 		  fontColor: "#2380f7"
+// 		}
+// 	  }]
+// 	}
+// };
+
+var  gradientBarChartConfiguration = {
+	maintainAspectRatio: false,
+	legend: {
+	  display: false
+	},
+
+	tooltips: {
+	  backgroundColor: '#f5f5f5',
+	  titleFontColor: '#333',
+	  bodyFontColor: '#666',
+	  bodySpacing: 4,
+	  xPadding: 12,
+	  mode: "nearest",
+	  intersect: 0,
+	  position: "nearest"
+	},
+	responsive: true,
+	scales: {
+	  yAxes: [{
+
+		gridLines: {
+		  drawBorder: false,
+		  color: 'rgba(29,140,248,0.1)',
+		  zeroLineColor: "transparent",
+		},
+		ticks: {
+		  suggestedMin: 60,
+		  suggestedMax: 120,
+		  padding: 20,
+		  fontColor: "#9e9e9e",
+		  beginAtZero:true
+		}
+	  }],
+
+	  xAxes: [{
+
+		gridLines: {
+		  drawBorder: false,
+		  color: 'rgba(29,140,248,0.1)',
+		  zeroLineColor: "transparent",
+		},
+		ticks: {
+		  padding: 20,
+		  fontColor: "#9e9e9e"
+		}
+	  }]
+	}
+};
+
+var chart_labels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+var chart_data = [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100];
+
+
+var ctx = document.getElementById("chartBig1").getContext('2d');
+
+var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
+
+gradientStroke.addColorStop(1, 'rgba(72,72,176,0.1)');
+gradientStroke.addColorStop(0.4, 'rgba(72,72,176,0.0)');
+gradientStroke.addColorStop(0, 'rgba(119,52,169,0)'); //purple colors
+
+var config = {
+	type: 'bar',
+	responsive: true,
+	legend: {
+	  display: false
+	},
+	data: {
+	  labels: ['USA', 'GER', 'AUS', 'UK', 'RO', 'BR'],
+	  datasets: [{
+		label: "Countries",
+		fill: true,
+		backgroundColor: gradientStroke,
+		hoverBackgroundColor: gradientStroke,
+		borderColor: '#1f8ef1',
+		borderWidth: 2,
+		borderDash: [],
+		borderDashOffset: 0.0,
+		data: [53, 20, 10, 80, 100, 45],
+	  }]
+	},
+	options: gradientBarChartConfiguration
+};
+
+var myChartData = new Chart(ctx, config);
+
+$("#0").click(function() {
+  var data = myChartData.config.data;
+  data.datasets[0].data = chart_data;
+  data.labels = chart_labels;
+  myChartData.update();
+});
+
+$("#1").click(function() {
+  var chart_data = [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120];
+  var data = myChartData.config.data;
+  data.datasets[0].data = chart_data;
+  data.labels = chart_labels;
+  myChartData.update();
+});
+
+$("#2").click(function() {
+  var chart_data = [60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 130];
+  var data = myChartData.config.data;
+  data.datasets[0].data = chart_data;
+  data.labels = chart_labels;
+  myChartData.update();
+});
+
+
+
