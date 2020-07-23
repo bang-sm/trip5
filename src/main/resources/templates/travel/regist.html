@@ -6,54 +6,87 @@
 <title>일지등록</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="../css/travel_regist.css">
-<link rel="stylesheet" type="text/css" href="../css/map.css">
 <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
 <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet">
+
+
 </head>
 <body translate="no" style="background-color: rgba(0, 0, 0, 0)">
 	<div class="info">
-		<h1>나의 여행일지</h1>
+		<h1 th:text="${travel.tstitle}">나의 여행일지</h1>
 		<span> <i class="fa fa-home"></i> <a href="/index">홈으로 돌아가기</a>
 			<div class="spoilers">
 				<span th:text="${travel.tsstartdate}"></span> - <span th:text="${travel.tsenddate}"></span>
 			</div>
 		</span>
+		<ul id="progressbar">
+			<li th:each="travelInfo, numStat : ${travelInfo}">
+				<!-- <th:block th:text="${index.count}"> --> <!-- <input type="hidden" th:value="${travelInfo.tsiid}" th:attrappend="name=${'list['+numStat.count+'].tsiid'}"> -->
+			</li>
+		</ul>
 	</div>
 
+	<form class="steps" action="/travel/registSave" name="travel_info">
 
-	<form class="steps">
-		<ul id="progressbar">
-			<li th:each="num, numStat: ${#numbers.sequence(1,travel.datediff)}">DAY</li>
-		</ul>
+		<fieldset th:each="travelInfo, numStat : ${travelInfo}">
+			<th:block th:if="${numStat.count <= numStat.size}">
+				<input type="hidden" id="tsid" th:value="${travel.tsid}" th:attrappend="name=${'list['+numStat.count+'].tsid'}">
+				<input type="hidden" id="tsiid" th:value="${travelInfo.tsiid}" th:attrappend="name=${'list['+numStat.count+'].tsiid'}">
+				<h2 class="fs-title">
+					<th:block th:text="${numStat.count}"></th:block>
+					<input type="hidden" th:value="${travelInfo.tsidDay}" th:attrappend="name=${'list['+numStat.count+'].tsidDay'}"> DAY
+				</h2>
+				<h3 class="fs-subtitle">추억을 작성하세요</h3>
+				<!-- Begin What's Your First Name Field -->
+				<div class="hs_firstname field hs-form-field">
+					<input type="hidden" value="디데이 입력할곳"> 
+					<label>머릿말을 입력하세요 *</label> 
+					<input th:attrappend="name=${'list['+numStat.count+'].tsititle'}" th:value="${travelInfo.tsititle}"> 
+					<label>일지작성 *</label> 
+					<input id="summernote" class="summernote" type="textarea">
+					<textarea class="tsicomment" th:attrappend="name=${'list['+numStat.count+'].tsicomment'}" style="display: none;">
+					</textarea>
 
-		<fieldset th:each="num, numStat: ${#numbers.sequence(1,travel.datediff)}">
-			<h2 class="fs-title">
-				<th:block th:text="${numStat.count}"></th:block>
-				DAY
-			</h2>
-			<h3 class="fs-subtitle">추억을 작성하세요</h3>
-			<!-- Begin What's Your First Name Field -->
-			<div class="hs_firstname field hs-form-field">
-				<input type="hidden" value="디데이 입력할곳"> 
-				<label for="firstname-99a6d115-5e68-4355-a7d0-529207feb0b3_2983">머릿말을 입력하세요 *</label>
-				 <input id="firstname-99a6d115-5e68-4355-a7d0-529207feb0b3_2983" name="tsiname" type="text"> 
-				 <label for="firstname-99a6d115-5e68-4355-a7d0-529207feb0b3_2983">일지작성 *</label> 
-				 <input id="firstname-99a6d115-5e68-4355-a7d0-529207feb0b3_2983" class="summernote" name="firstname" type="textarea">
-
-				<ul id="progress" class="place_box">
-				</ul>
-				<input type="button" value="경로추가" class="add_place" />
-				<div class="sort_item"></div>
+				</div>
+				<input th:if="${numStat.count} > 1" type="button" data-page="5" name="previous" class="previous action-button" value="이전" />
+				<input th:if="${numStat.count <= numStat.size}" type="button" data-page="1" name="next" class="next action-button" value="다음" />
+				<input type="button" class="action-button temp_save" value="임시저장" />
+			</th:block>
+		</fieldset>
+		<fieldset>
+			<input type="button" value="나의여행경로" class="add_place" />
+			<div id="sort_item">
+				<th:block th:if="${not #strings.isEmpty(travelRootInfo)}">
+					<div class="step active" th:each="travelRootInfo, numStat : ${travelRootInfo}">
+						<input type="hidden" class="tsid" th:value="${travelRootInfo.tsid}" th:attrappend="name=${'rootlist['+numStat.index+'].tsid'}"> 
+						<h2 th:data-step-id="${numStat.count}" id="stepcount">
+							<input type="text" class="rootname" th:value="${travelRootInfo.tsirootname}" th:attrappend="name=${'rootlist['+numStat.index+'].tsirootname'}">
+						</h2>
+						<p>
+							<input class="rootorder" type="hidden" th:value="${travelRootInfo.tsirootorder}" th:attrappend="name=${'rootlist['+numStat.index+'].tsirootorder'}">
+							<select id="tsirootvehicle" th:attrappend="name=${'rootlist['+numStat.index+'].tsirootvehicle'}">
+								<option th:selected="${travelRootInfo.tsirootvehicle == 'BIKE'}" value="BIKE">자전거</option>
+								<option th:selected="${travelRootInfo.tsirootvehicle == 'CAR'}" value="CAR">자동차</option>
+								<option th:selected="${travelRootInfo.tsirootvehicle == 'TRAIN'}"value="TRAIN">기차</option>
+								<option th:selected="${travelRootInfo.tsirootvehicle == 'AIRPLANE'}" value="AIRPLANE">비행기</option>
+								<option th:selected="${travelRootInfo.tsirootvehicle == 'WALK'}" value="WALK">도보</option>
+								<option th:selected="${travelRootInfo.tsirootvehicle == 'ARRIVE'}" value="ARRIVE">도착지</option>
+							</select>
+						</p>
+						<button type="button" class="root_delete">삭제</button>
+					</div>
+				</th:block>
 			</div>
-			
-
-			<input th:if="${numStat.count} > 1" type="button" data-page="5" name="previous" class="previous action-button" value="이전" /> <input th:if="${numStat.count < numStat.size}" type="button" data-page="1" name="next" class="next action-button" value="다음" /> <input th:if="${numStat.count eq numStat.size}" id="submit" class="hs-button primary large action-button next" type="submit" value="등록">
+			<input type="button" data-page="5" name="previous" class="previous action-button" value="이전" />
+			 <input type="button" class="action-button temp_save" value="임시저장" />
+			  <input id="submit" class="hs-button primary large action-button next" type="button" value="등록">
 		</fieldset>
 	</form>
-
 </body>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>

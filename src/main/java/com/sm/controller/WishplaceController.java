@@ -31,7 +31,7 @@ public class WishplaceController {
 	@GetMapping("/wish/place")
 	public String placed(Model model,HttpSession session)  throws Exception{
 		//사용자 uuid 값 가지고 오기
-		MemberVO vo=vo=(MemberVO) session.getAttribute("userInfo");  
+		MemberVO vo=(MemberVO) session.getAttribute("userInfo");  
 		
 		logger.info("session : "+ vo);
 		int uuid;
@@ -39,7 +39,7 @@ public class WishplaceController {
 			uuid=vo.getUuid();
 		}catch(NullPointerException e) {
 			logger.info("session 없음");
-			return "redirect:/index";
+			return "redirect:/user/login";
 		}
 		List<PlacelistVo> list = service.show(uuid);
 		model.addAttribute("place", service.show(uuid));
@@ -86,10 +86,13 @@ public class WishplaceController {
 		}
 		List<PlacelistVo> list = service.show(uuid);
 		model.addAttribute("place", service.show(uuid));
-		int foodcount = service.foodchart(uuid);
-		
 		logger.info("확인 : " +list);
 		return "wish/placechart";
+	}
+	
+	@GetMapping("/wish/korea")
+	public String korea()throws Exception{
+		return "wish/koreamap";
 	}
 	
 	

@@ -1,28 +1,7 @@
-* {
-	margin: 0;
-	padding: 0;
-}
-
 .chat_container {
 	width: 1200px;
 	margin: 100px auto;
 	padding: 25px
-}
-
-input {
-	width: 330px;
-	height: 25px;
-}
-
-.chatin{
-	width: 30%;
-	margin: 10px auto;
-	padding: 5px;
-	display: block;
-	text-align:center;
-	border: 1px solid #3DB7CC;
-	border-radius: 10px;
-	color: #3DB7CC;
 }
 
 body{
@@ -81,7 +60,7 @@ Messages
 .medium-image {
     width: 45px;
     height: 45px;
-    margin-right: 5px;
+    margin-right: 10px;
 }
 
 .img-circle {
@@ -951,7 +930,6 @@ button.accent {
     top: 65px;
     width: 100%;
 }
-
 
 @media screen and (max-width: 730px) {
 

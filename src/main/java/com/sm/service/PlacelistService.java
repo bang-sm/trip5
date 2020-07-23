@@ -37,17 +37,24 @@ public class PlacelistService{
 		return dao.goplace(placecheck,uuid);
 	}
 	
-	public List<PlacelistVo> buttoncategory(int placecategory,int placecheck,int uuid) throws Exception{
-		return dao.buttoncategory(placecategory,placecheck,uuid);
+	public int barchart(int placecategory,int placecheck,int uuid) throws Exception{
+		return dao.barchart(placecategory,placecheck,uuid);
 	}
 	
 	public void delete(int placeid) throws Exception{
 		dao.delete(placeid);
 	}
-	public int  foodchart(int uuid) throws Exception{
-		return dao.foodchart(uuid);
+	public int  chartcount(int category,int uuid) throws Exception{
+		return dao.chartcount(category,uuid);
 	}
 	
+	public int linechart(int first,int end, int uuid) throws Exception{
+		return dao.linechart(first,end,uuid);
+	}
+	
+	public int area(int area, int uuid) throws Exception{
+		return dao.area(area,uuid);
+	}
 	
 	
 }

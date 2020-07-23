@@ -180,6 +180,11 @@ $("#exampleModal").on('shown.bs.modal', function(){
 		el.className = 'item';
 		// 음식점 클릭시 해당 가게 이름 현재 맛집으로 설정
 		el.addEventListener('click',function(){
+			$('.alarm-name').text(places.place_name);
+			$('.alarm').css("display","block");
+			setTimeout(function() {
+				$('.alarm').css("display","none");
+				}, 1000);
 			$('.btn_check_place').removeClass('btn-outline-danger');
 			$('.btn_check_place').addClass('btn-danger');
 			$('input[name=placename]').val(places.place_name);
@@ -405,6 +410,10 @@ function naversearch(){
 								$('.btn_check_blog').addClass('btn-info');
 								$('input[name=bloglink]').val(hidden);
 								btn_check=1;
+								$('.alarm-blog').css("display","block");
+								setTimeout(function() {
+									$('.alarm-blog').css("display","none");
+									}, 1000);
 							}else{
 								alert("블로그 등록은 한개밖에 할수 없습니다. 등록을 해제해주세요!");
 							}
@@ -428,6 +437,8 @@ var food_icons= ["barbecue","burrito","chicken","cola","crab","beef","pork","dim
 var cafe_icons=["bingsu","bread","cafe","cafe_coffee","cake","coffe","croissant","milk",];
 var place_icons=["basilica","bigben","bridge","church","gondola","mountain","sea","temple","top-of-a-hill",
 				"tour-bus","tourlist","tourlist2","train","travel"];
+
+
 
 
 function icon() {
@@ -888,12 +899,15 @@ $('.custom-select').change(function(){
 	
 	if(name ==0){
 		console.log("음식");
+		icon();
 		$('.btn-icon-name').html("음식 아이콘");
 	}else if(name ==1){
 		console.log("카페");
+		icon();
 		$('.btn-icon-name').html("카페 아이콘");
 	}else{
 		console.log("관광지");
+		icon();
 		$('.btn-icon-name').html("관광지 아이콘");
 	}
 })

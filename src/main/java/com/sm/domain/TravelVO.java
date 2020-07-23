@@ -16,7 +16,7 @@ public class TravelVO {
 	private String tsstartdate; //여행시작일
 	private String tsenddate; //여행마지막일
 	private String tempSave; //임시저장 여부용
-	private String datediff;
+	private int datediff;  //날짜차이
 	
 	
 	private int tsreplyid;

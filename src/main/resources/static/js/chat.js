@@ -1,18 +1,36 @@
 var stompClient = null;
-
-
+var userNick;
 var nick;
 var blackListv;
 var blackUser = true;
 var otherUUid;
 
-var Now = new Date();
-var NowHours = Now.getHours();
-var NowMinutes = (Now.getMinutes() < 10) ? "0" + (Now.getMinutes()) : Now.getMinutes();
+var Now;
+var NowHours;
+var NowMinutes;
+
+var outer = '';
+
+var inUser = new Array();
+
+var lastOne = false;
+
+function getdate(){
+	Now = new Date();
+	NowHours = Now.getHours();
+	NowMinutes = (Now.getMinutes() < 10) ? "0" + (Now.getMinutes()) : Now.getMinutes();
+}
 
 $(document).ready(function(){
 	loadPage();
 	connect();
+	
+	$(window).on("beforeunload", function () {
+		if(lastOne){
+			outUser();
+		}
+		return "레알 나감????????????";
+    });
 });
 
 document.addEventListener("keypress", function(e) {
@@ -25,9 +43,13 @@ function connect(event) {
 	console.log('connect//////');
 
     var socket = new SockJS('/ws');
+    console.log('1');
     stompClient = Stomp.over(socket);
-
+    console.log('2');
+    console.log(socket);
+    
     stompClient.connect({}, onConnected, onError);
+    console.log('3');
 //    event.preventDefault();
 }
 
@@ -41,16 +63,13 @@ function onConnected() {
     // Tell your username to the server
     stompClient.send("/app/chat.addUser",
         {},
-        JSON.stringify({sender: $("#userSessionId").val() , type: 'JOIN'})
+        JSON.stringify({uuid: $("#userSessionuuid").val(), sender: $("#userSessionId").val() , type: 'JOIN'})
     )
 }
 
 function onError(error) {
 	console.log('onError//////');
-    connectingElement.textContent = 'Could not connect to WebSocket server. Please refresh this page to try again!';
-    connectingElement.style.color = 'red';
 }
-
 
 function send(event) {
 	console.log('sendMessage//////');
@@ -67,36 +86,62 @@ function send(event) {
         stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
         $("#message").val('');
     }
-//    event.preventDefault();
+//  event.preventDefault();
 }
 
+function outUser(event){
+	if(lastOne){
+		var chatMessage = {
+				sender: $("#userSessionId").val(),
+				type: 'LEAVE'
+		}
+	} else {
+		var chatMessage = {
+				sender: outer,
+				type: 'LEAVE'
+		};
+	}
+	stompClient.send("/app/chat.outUser", {}, JSON.stringify(chatMessage));
+}
 
 function onMessageReceived(payload) {
+	blackUser = true;
 	console.log('onMessageReceived//////')
     var message = JSON.parse(payload.body);
 	console.log(message);
     
-    if(message.type === 'JOIN') { 
-//        message.content = message.sender + ' joined!';
-    	
-        $(".contacts").append("<li data-toggle='tab' data-target='#inbox-message-2' data-sessionId='"+ $("#userSessionuuid").val() +"' data-name='"+ message.sender +"'>"+
-				"<img alt='' class='img-circle medium-image' src='../image/user.jpg' style='vertical-align: baseline'>"+
-					"<div class='vcentered info-combo'>"+
-						"<h3 class='no-margin-bottom name'>"+message.sender+"</h3>"+
-						"<h5>.....</h5>"+
-					"</div>" +
-					"<div class='contacts-add'>"+
-						"<span class='message-time'>" +NowHours + "시 " +NowMinutes+ "분</span>"+
-					"</div>"+
-				"</li>")
+    if(message.type === 'JOIN') {
+    	console.log(userNick + " <-- 멤버 닉네임")
+    	if(inUser.length == 1) lastOne = false;
+    	inUser.push(message.participant[message.participant.length-1])
+    	for(i = 0; i<message.participant.length; i++){
+    		if(!$("li[data-name='"+message.participant[i]+"']").length){
+    		$(".contacts").append("<li data-toggle='tab' data-target='#inbox-message-2' data-name='"+message.participant[i]+"'>"+
+    				"<img alt='' class='img-circle medium-image' src='../image/user.jpg' style='vertical-align: baseline'>"+
+    				"<div class='vcentered info-combo'>"+
+    				"<h3 class='no-margin-bottom name'>"+message.participant[i]+"</h3>"+
+    				"<h5>...</h5>"+
+    				"</div>"+
+    				"<div class='contacts-add'>"+
+    				($("#userSessionId").val() != message.participant[i] ? "<button type='button' class='btn btn-outline-secondary btn-sm sendMsgOther' data-backdrop='static' data-toggle='modal' data-target='#exampleModal' style='border:none' onclick='sendToOther()' data-nick='" + message.participant[i] + "'><i class='far fa-envelope' style='font-size:1.05rem'></i></button>"+
+        					"<button type='button' class='btn btn-outline-secondary btn-sm othersMsg' style='border:none' onclick='blackList()' data-email='" + message.participant[i] + "'><i class='fas fa-comment-slash'></i></button>" : '') +
+    				"</div>"+
+    		"</li>")
+    		}
+    	}
     } else if (message.type === 'LEAVE') {
-//        message.content = message.sender + ' left!';
-    	
+    	inUser.splice(inUser.indexOf(message.sender),1);
+    	if(inUser.length == 1) lastOne = true;
+    	console.log(message.sender + ' 메세지센더')
+    	console.log($("li[data-name='"+message.sender+"']").attr('data-name') + ' 나간 사람 아이디');
+    	outer = $("li[data-name='"+message.sender+"']").attr('data-name');
         $("li[data-name='"+message.sender+"']").remove();
+        outUser();
     } else {
+    	getdate();
     	if(message.sender == $("#userSessionId").val()){
     	$(".chat-body").append(" <div class='message my-message'>" +
-                "<img alt='' class='img-circle medium-image' src='../image/user.jpg'>"+
+                "<img alt='' class='img-circle medium-image' src='../image/user.jpg' style='margin-right:15px'>"+
                 "<div class='message-body'>" +
                     "<div class='message-body-inner'>"+
                         "<div class='message-info'>"+
@@ -109,32 +154,45 @@ function onMessageReceived(payload) {
                 "</div>"+
                 "<br>"+
             "</div>");
+    	$("li[data-name='"+message.sender+"'] h5").text(message.content);
     	$(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
     	} else {
-    		$(".chat-body").append(
-					"<div class='message info'>"+
-            "<img alt='' class='img-circle medium-image' src='../image/user.jpg'>"+
-            "<div class='message-body'>"+
-                "<div class='message-info'>"+
-                    "<h4>" + "<div class='dropdown others'>" +
-					  "<a class='stretched-link othersMsg' href='#' style='color:white' role='button' id='dropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' data-uuid='"+message.uuid+"' data-email='" + message.sender + "'>"
-				  + message.sender +
-				  "</a>" +
-				  "<div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>"
-				    +"<button class='dropdown-item' onclick='blackList()' data-email='" + message.sender + "'>차단하기</button>"+
-				    "<button class='dropdown-item' data-backdrop='static' data-toggle='modal' data-target='#exampleModal' onclick='sendMsg()' data-uuid='"+message.uuid+"'>쪽지보내기</button>" +
-				  "</div>" 
-				  + "</div>" + "</h4>"+
-                    "<h5> <i class='far fa-clock'></i>"+NowHours + " : " +NowMinutes+ "</h5>"+
-                "</div>"+
-                "<hr>"+
-                "<div class='message-text'>"+
-                    message.content+
-                "</div>"+
-            "</div>"+
-            "<br>"+
-        "</div>");
-    	$(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
+    		getdate();
+    		
+    		for(i = 0; i<blackListv.length; i++){
+    			if(blackListv[i].blackuuid == message.uuid){
+    				blackUser = false;
+    				break;
+    			}
+    		}
+    		
+    		if(blackUser){
+    			$(".chat-body").append(
+    					"<div class='message info'>"+
+    					"<img alt='' class='img-circle medium-image' src='../image/user.jpg'>"+
+    					"<div class='message-body'>"+
+    					"<div class='message-info'>"+
+    					"<h4>" + "<div class='dropdown others'>" +
+    					"<a class='stretched-link othersMsg' href='#' style='color:white' role='button' id='dropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' data-uuid='"+message.uuid+"' data-email='" + message.sender + "'>"
+    					+ message.sender +
+    					"</a>" +
+    					"<div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>"
+    					+"<button class='dropdown-item' onclick='blackList()' data-email='" + message.sender + "'>차단하기</button>"+
+    					"<button class='dropdown-item' data-backdrop='static' data-toggle='modal' data-target='#exampleModal' onclick='sendMsg()' data-uuid='"+message.uuid+"'>쪽지보내기</button>" +
+    					"</div>" 
+    					+ "</div>" + "</h4>"+
+    					"<h5> <i class='far fa-clock'></i> "+NowHours + " : " +NowMinutes+ "</h5>"+
+    					"</div>"+
+    					"<hr>"+
+    					"<div class='message-text'>"+
+    					message.content+
+    					"</div>"+
+    					"</div>"+
+    					"<br>"+
+    			"</div>");
+    			$("li[data-name='"+message.sender+"'] h5").text(message.content);
+    			$(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
+    		}
     	}
     	$(".send-message-text").val('');
     }
@@ -149,6 +207,7 @@ $(document).on('click',".othersMsg" ,function(){
 });
 
 function loadPage(){
+	userNick = $("#userSessionId").val()
 	data = "uuid="+$("#userSessionuuid").val();
 	console.log(data);
 	$.ajax({
@@ -163,6 +222,101 @@ function loadPage(){
 			}
 		}
 	});
+}
+
+function blackList(){
+	if(confirm("차단하시겠습니까?")){
+		// 내 uuid 와 상대방 nickname request
+		data = "uuid="+$("#userSessionuuid").val() + "&membernick="+nick
+		console.log(data);
+		$.ajax({
+			url : "/my/black",
+			type : "POST",
+			cache : false,
+			data : data,
+			success : function(data, status){
+				if(status == "success"){
+					alert("차단되었습니다.");
+					$("div.dropdown-menu button[data-email="+nick+"]").text("차단해제");
+					$("button[data-email="+nick+"]").removeAttr("onclick");
+					$("button[data-email="+nick+"]").attr("onclick", "disBlackList()");
+					
+					loadPage();
+				}
+			}
+		});
+	} else {
+		return ;
+	}
+}
+
+function disBlackList(){
+	if(confirm("차단을 푸시겠습니까?")){
+		// 내 uuid 와 상대방 nickname request
+		data = "&membernick="+nick
+		console.log(data);
+		$.ajax({
+			url : "/my/disblack",
+			type : "POST",
+			cache : false,
+			data : data,
+			success : function(data, status){
+				if(status == "success"){
+					alert("차단해제 되었습니다.");
+					$("div.dropdown-menu button[data-email="+nick+"]").text("차단하기");
+					$("button[data-email="+nick+"]").removeAttr("onclick");
+					$("button[data-email="+nick+"]").attr("onclick", "blackList()");
+					
+					loadPage();
+				}
+			}
+		});
+	} else {
+		return ;
+	}
+}
+
+function sendMsg(){
+	$(".recep").val(nick);
+}
+
+function sendToOther(){
+	nick = $(".sendMsgOther").attr('data-nick');
+	console.log(nick + "///// 이것은 nick이다")
+	$.ajax({
+		url: "/my/sendOther",
+		type: "POST",
+		cache: false,
+		data : "&membernick="+nick,
+		success: function(data, status){
+			if(status == "success"){
+				otherUUid = data;
+			}
+		}
+	});
+	$(".recep").val(nick);
+}
+
+function sendToMsg(){
+	
+	$.ajax({
+		url : "/my/sendMsg",
+		type : "POST",
+		cache : false,
+		data : {
+			"msgcontent" : $("#message-text").val(),
+			"fromid" : otherUUid,
+			"sendid" : $("#userSessionuuid").val(),
+			"msgsubject" : $("#message-subject").val()
+		},
+		success : function(data,status){
+			if(status == "success"){
+				alert("쪽지를 보냈습니다!");
+				$(".modal").hide();
+				$("body > div.modal-backdrop.fade.show").remove();
+			}
+		}
+	})
 }
 
 

@@ -1,32 +1,128 @@
-/* Fundraising Grader
-*
-* Generic Copyright, yadda yadd yadda
-*
-* Plug-ins: jQuery Validate, jQuery 
-* Easing
-*/
+
 
 $(document).ready(function() {
 	
-	   
+	//로딩시 에디터에잇는 내용 가져와서 뿌려주기
+	$.ajax({
+        type : 'post',
+        url : '/travel/travel_detail_data',
+        data : {
+        	"tsid" : $("#tsid").val()
+        },
+        error: function(xhr, status, error){
+            alert("데이터를 가져오지못했습니다..");
+        },
+        success : function(data){
+        	summernote_print(data);
+        },
+    });
+	
+	function summernote_print(data){
+		console.log(data);
+		$(".summernote").each(function(i,item){
+			$(item).summernote('code', data[i].tsicomment);
+		});
+	}
+	
+	//일지 데이터 가져오기
+	
+	//루트 드래그 인덱스 매기기
+	$("#sort_item").sortable({
+		placeholder:"itemBoxHighlight",
+        start: function(event, ui) {
+            ui.item.data('start_pos', ui.item.index());
+        },
+        stop: function(event, ui) {
+            var spos = ui.item.data('start_pos');
+            var epos = ui.item.index();
+            reorder();
+        }
+	});
+	$("#sort_item").disableSelection(); //안에 내용들은 드래그 되지않기
+	
+	//드래그 한후 인덱스 리로드 하기
+	function reorder() {
+	    $(".step").each(function(i, box) {
+	        $(box).find("#stepcount").attr("data-step-id",i+1);
+	        $(box).find(".rootorder").attr("name","rootlist["+i+"].tsirootorder");
+	        $(box).find(".rootorder").val(i);
+	        $(box).find(".tsid").attr("name","rootlist["+i+"].tsid");
+	        $(box).find(".rootname").attr("name","rootlist["+i+"].tsirootname");
+	        $(box).find("#tsirootvehicle").attr("name","rootlist["+i+"].tsirootvehicle");
+	    });
+	}
+	
+	//경로추가 함수
 	$(".add_place").click(function(){
 		var input_data="";
 		input_data+='<div class="step active">';
-		input_data+='<h2 data-step-id="1"><input type="text"></h2>';
+		input_data+='<input type="hidden" class="tsid" value='+$("#tsid").val()+' name="rootlist['+$(this).next().children('.step').length+'].tsid">';
+		input_data+='<h2 data-step-id="'+eval($(this).next().children('.step').length+1)+'" id="stepcount"><input type="text" class="rootname" name="rootlist['+$(this).next().children('.step').length+'].tsirootname"></h2>';
 		input_data+='<p>';
-		input_data+='<select id="tsirootvehicle">';
-		input_data+='<option>자전거</option>';
-		input_data+='<option>자동차</option>';
-		input_data+='<option>기차</option>';
-		input_data+='<option>도보</option>';
-		input_data+='<option>도착지</option>';
+		input_data+='<input class="rootorder" type="hidden" value="'+$(this).next().children('.step').length+'" name="rootlist['+$(this).next().children('.step').length+'].tsirootorder">';
+		input_data+='<select id="tsirootvehicle" name="rootlist['+$(this).next().children('.step').length+'].tsirootvehicle">';
+		input_data+='<option value="BIKE">자전거</option>';
+		input_data+='<option value="CAR">자동차</option>';
+		input_data+='<option value="TRAIN">기차</option>';
+		input_data+='<option value="AIRPLANE">비행기</option>';
+		input_data+='<option value="WALK">도보</option>';
+		input_data+='<option value="ARRIVE">도착지</option>';
 		input_data+='</select>';
 		input_data+='</p>';
-		input_data+='<button class="delete">삭제</button>';
+		input_data+='<button type="button" class="root_delete">삭제</button>';
 		input_data+='</div>';
 		
 		$(this).next().append(input_data);
-	})
+	});
+	
+	//경로 삭제 및 인덱스 재정렬
+	$(document).on('click','.root_delete',function(){
+		$(this).parent().remove();
+		var order=eval($(this).parent().find("h2").attr("data-step-id")-1);
+		$(".root_delete").parent().each(function(i,item){
+				alert(i);
+			 $(item).find("#stepcount").attr("data-step-id",i+1);
+			 $(item).find(".rootname").attr("name","rootlist["+i+"].tsirootname");
+			 $(item).find(".tsid").attr("name","rootlist["+i+"].tsid");
+			 $(item).find("#tsirootvehicle").attr("name","rootlist["+i+"].tsirootvehicle");
+			 $(item).find(".rootorder").attr("name","rootlist["+i+"].tsirootorder");
+			 $(item).find(".rootorder").val(i);
+		});
+		 $.ajax({
+	            type : 'post',
+	            url : '/travel/travel_root_delete',
+	            data : {
+	            	"tsirootorder" : $(this).parent().find(".rootorder").val(),
+	            	"tsid" : $("#tsid").val()
+	            },
+	            error: function(xhr, status, error){
+	                alert(error);
+	            },
+	            success : function(data){
+	            	console.log(data);
+	            },
+	        });
+		
+	});
+	//임시저장
+	$(".temp_save").click(function(){
+		$('.tsicomment').each(function(i,item){
+			$(item).val($(item).parent().find("#summernote").summernote('code'));
+		})
+		$.ajax({
+            type : 'post',
+            url : '/travel/travel_temp_save',
+            data : $(this.form).serialize(),
+            error: function(xhr, status, error){
+                alert(error);
+            },
+            success : function(data){
+                alert(data)
+            },
+        });
+	});
+	
+	//텍스트 에디터 세팅
 	$('.summernote').summernote({
 		 placeholder: '추억을 작성하세요',
 		 height:400,

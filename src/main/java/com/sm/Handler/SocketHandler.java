@@ -1,5 +1,7 @@
 package com.sm.Handler;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
+import com.sm.controller.ChatController;
 import com.sm.domain.ChatMessage;
 import com.sm.domain.ChatMessage.MessageType;
 
@@ -89,25 +92,25 @@ public class SocketHandler {
 
 	    @EventListener
 	    public void handleWebSocketConnectListener(SessionConnectedEvent event) {
-	        logger.info("Received a new web socket connection");
+	        logger.info("유저 connected");
 	    }
 
 	    @EventListener
 	    public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
 	        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
-
+	       	
 	        String username = (String) headerAccessor.getSessionAttributes().get("username");
 	        if(username != null) {
-	            logger.info("User Disconnected : " + username);
+	            logger.info("나간 유저 : " + username);
 
 	            ChatMessage chatMessage = new ChatMessage();
 	            chatMessage.setType(MessageType.LEAVE);
 	            chatMessage.setSender(username);
 	            
 	            messagingTemplate.convertAndSend("/topic/public", chatMessage);
+	            System.out.println("보내짐???");
 	        }
 	    }
-	
 }
 
 

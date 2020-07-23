@@ -45,21 +45,52 @@ public class PlacelistDAO {
 		return sql.selectList("mappers.placelistMapper.goplace",gmap);
 	}
 	
-	public List<PlacelistVo> buttoncategory(int placecategory,int placecheck,int uuid){
+	public int barchart(int placecategory,int placecheck,int uuid){
 		HashMap<String, Integer> bmap = new HashMap<>();
 		bmap.put("placecategory", placecategory);
 		bmap.put("placecheck", placecheck);
 		bmap.put("uuid", uuid);
 		
 		
-		return sql.selectList("mappers.placelistMapper.buttoncategory",bmap);
+		return sql.selectOne("mappers.placelistMapper.barchart",bmap);
 	}
 	
 	public void delete(int placeid) {
 		sql.delete("mappers.placelistMapper.delete",placeid);
 	}
 	
-	public int foodchart(int uuid) {
-		return sql.selectOne("mappers.placelistMapper.foodchart",uuid);
+	public int chartcount(int category,int uuid) {
+		System.out.println("cate : "+ category);
+		HashMap<String, Integer> fmap = new HashMap<>();
+		fmap.put("placecategory", category);
+		fmap.put("uuid", uuid);
+		return sql.selectOne("mappers.placelistMapper.chartcount",fmap);
+	}
+	
+	public int linechart(int first,int end, int uuid) {
+		String enddate;
+		String firstdate = "2020-0"+Integer.toString(first)+"-01";
+		if(end == 13) {
+			enddate = "2020-0"+Integer.toString(end-1)+"-31";
+		}else {
+			enddate = "2020-0"+Integer.toString(end)+"-01";
+		}
+		System.out.println(firstdate);
+		System.out.println(enddate);
+		HashMap<String, Object> fmap = new HashMap<>();
+		fmap.put("firstdate", firstdate);
+		fmap.put("enddate", enddate);
+		fmap.put("uuid", uuid);
+		return sql.selectOne("mappers.placelistMapper.chartline",fmap);
+	}
+	
+	
+	public int area(int area,int uuid) {
+		String [] areaname = {"서울%","경기%","강원%","인천%","충북%","충남%","세종%","대전%","광주%","전북%","전남%","경북%","경남%","대구%","울산%","부산%","제주%"};
+		
+		HashMap<String, Object> fmap = new HashMap<>();
+		fmap.put("areaname", areaname[area]);
+		fmap.put("uuid", uuid);
+		return sql.selectOne("mappers.placelistMapper.area",fmap);
 	}
 }
