@@ -57,8 +57,7 @@
 	<!-- 아이디 확인 -->
 	<select id="idCheck" resultType="com.sm.domain.MemberVO">
 		select 
-			memberemail, 
-			kakaoOk 
+			memberemail 
 		from 
 			member
 		where 
