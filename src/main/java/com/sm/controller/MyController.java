@@ -50,4 +50,5 @@ public class MyController {
 		int uuid = myService.selectUuid(memberVO).getUuid();
 		return uuid;
 	}
+	
 }

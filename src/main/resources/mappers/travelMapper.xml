@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="mappers.travelMapper">
 
 	<!-- 스토리등록 -->
@@ -163,5 +164,17 @@
 		WHERE
 			tsid=#{tsid} AND tsirootorder=#{tsirootorder}
 	</delete>
+	
+	<insert id="travel_reply_save" parameterType="Map">
+		INSERT INTO travel_story_reply 
+		VALUES
+		(
+			ts_reply_id,
+			#{uuid},
+			#{reply.tsReplyComment},
+			#{reply.tsId},
+			reply_regdate
+		)
+	</insert>
 
 </mapper>

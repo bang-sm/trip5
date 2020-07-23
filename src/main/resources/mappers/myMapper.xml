@@ -41,11 +41,13 @@
 			(now(), #{msgcontent}, #{fromid}, #{sendid}, #{msgsubject})
 	</insert>
 	
-	
-		
-	
-	
-	
-	
+	<select id="sendMessage" parameterType="com.sm.domain.MessageVO" resultType="com.sm.domain.MessageVO">
+		select 
+			m.membernick membernick, msg_id msgid, msg_regdate msgregdate, msg_content msgcontent, from_id fromid, send_id sendid, msg_subject msgsubject 
+		from 
+			member m, messageList l 
+		where 
+			m.uuid = l.from_id and l.send_id = #{sendid}
+	</select>
 	
 </mapper>

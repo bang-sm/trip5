@@ -5,56 +5,51 @@
 <title>travel</title>
 <th:block th:replace="common/commonHead"></th:block>
 <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
-<link rel="stylesheet" type="text/css" th:href="@{/css/travelBlog.css}">
+<link rel="stylesheet" type="text/css" href="../css/travelblog.css">
+<link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 </head>
 
 <body>
 	<!-- 공통 헤드 nav -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:include="common/header :: header_nav"></nav>
 	<div class="container">
-		<div class="row">
+		<div class="row" style="margin-top: 20px">
 			<div class="col-lg-12 posts-list">
 				<div class="single-post row">
 					<div class="col-lg-12">
 						<div class="feature-img">
 							<img class="img-fluid" src="https://placeimg.com/1200/400">
+							<div class="banner_content text-center">
+								<h2 th:text="${travel.travelStory.tstitle}"></h2>
+								<a href="#" class="btn theme_btn" th:text="|#${travel.travelStory.tshashtagone}|">추억보기</a>
+								<a href="#" class="btn theme_btn" th:text="|#${travel.travelStory.tshashtagone}|">추억보기</a>
+								<a href="#" class="btn theme_btn" th:text="|#${travel.travelStory.tshashtagone}|">추억보기</a>
+								<a href="#" class="btn theme_btn" th:text="|#${travel.travelStory.tshashtagone}|">추억보기</a>
+							</div>
 						</div>
 					</div>
-					<div class="col-lg-3  col-md-3">
+					<div class="col-lg-12  col-md-12">
 						<div class="blog_info text-right">
 							<div class="post_tag">
-								<a href="#">Food,</a>
-								<a class="active" href="#">Technology,</a>
-								<a href="#">Politics,</a>
-								<a href="#">Lifestyle</a>
+								<span th:text="|${travel.travelStory.tsstartdate} - |"></span>
+								<span href="#" th:text="${travel.travelStory.tsenddate}"></span>
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-12 col-md-12 blog_details">
-						<h2>Astronomy Binoculars A Great Alternative</h2>
-						<p class="excert">MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.</p>
-						<p>Boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction of the camp price. However, who has the willpower to actually sit through a self-imposed MCSE training. who has the willpower to actually sit through a self-imposed</p>
-						<p>Boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction of the camp price. However, who has the willpower to actually sit through a self-imposed MCSE training. who has the willpower to actually sit through a self-imposed</p>
-					</div>
-					<div class="col-lg-12">
-						<div class="quotes">MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction of the camp price. However, who has the willpower to actually sit through a self-imposed MCSE training.</div>
-						<div class="row">
-							<div class="col-6">
-								<img class="img-fluid" src="img/blog/post-img1.jpg" alt="">
-							</div>
-							<div class="col-6">
-								<img class="img-fluid" src="img/blog/post-img2.jpg" alt="">
-							</div>
-							<div class="col-lg-12 mt-25">
-								<p>MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction of the camp price. However, who has the willpower.</p>
-								<p>MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction of the camp price. However, who has the willpower.</p>
-							</div>
-						</div>
+					<div class="col-lg-12 col-md-12 blog_details" th:each="list : ${travel.infoList}">
+						<h3 class="line">
+							<span class="planNum ff_cou" th:text="|${list.tsidDay} DAY|">
+							</span>
+						</h3>
+						<h3 class="faciName ff_shu">
+							<span th:text="${list.tsititle}"></span>
+						</h3>
+						<p th:utext="${list.tsicomment}"></p>
 					</div>
 				</div>
-				
+
 				<div class="comments-area">
-					<h4>05 Comments</h4>
+					<h4>코멘트 총 개수</h4>
 					<div class="comment-list">
 						<div class="single-comment justify-content-between d-flex">
 							<div class="user justify-content-between d-flex">
@@ -63,69 +58,28 @@
 								</div>
 								<div class="desc">
 									<h5>
-										<a href="#">Emilly Blunt</a>
+										<a href="#">작성자</a>
 									</h5>
-									<p class="date">December 4, 2017 at 3:12 pm</p>
-									<p class="comment">Never say goodbye till the end comes!</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="comment-list">
-						<div class="single-comment justify-content-between d-flex">
-							<div class="user justify-content-between d-flex">
-								<div class="thumb">
-									<img src="img/blog/c4.jpg" alt="">
-								</div>
-								<div class="desc">
-									<h5>
-										<a href="#">Maria Luna</a>
-									</h5>
-									<p class="date">December 4, 2017 at 3:12 pm</p>
-									<p class="comment">Never say goodbye till the end comes!</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="comment-list">
-						<div class="single-comment justify-content-between d-flex">
-							<div class="user justify-content-between d-flex">
-								<div class="thumb">
-									<img src="img/blog/c5.jpg" alt="">
-								</div>
-								<div class="desc">
-									<h5>
-										<a href="#">Ina Hayes</a>
-									</h5>
-									<p class="date">December 4, 2017 at 3:12 pm</p>
-									<p class="comment">Never say goodbye till the end comes!</p>
+									<p class="date">2020-09-09</p>
+									<p class="comment">코멘트내용</p>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="comment-form">
-					<h4>Leave a Reply</h4>
+					<h4>Comment</h4>
 					<form>
-						<div class="form-group form-inline">
-							<div class="form-group col-lg-6 col-md-6 name">
-								<input type="text" class="form-control" id="name" placeholder="Enter Name" onfocus="if (!window.__cfRLUnblockHandlers) return false; this.placeholder = ''" onblur="if (!window.__cfRLUnblockHandlers) return false; this.placeholder = 'Enter Name'">
-							</div>
-							<div class="form-group col-lg-6 col-md-6 email">
-								<input type="email" class="form-control" id="email" placeholder="Enter email address" onfocus="if (!window.__cfRLUnblockHandlers) return false; this.placeholder = ''" onblur="if (!window.__cfRLUnblockHandlers) return false; this.placeholder = 'Enter email address'">
-							</div>
-						</div>
 						<div class="form-group">
-							<input type="text" class="form-control" id="subject" placeholder="Subject" onfocus="if (!window.__cfRLUnblockHandlers) return false; this.placeholder = ''" onblur="if (!window.__cfRLUnblockHandlers) return false; this.placeholder = 'Subject'">
+							<input type="hidden" name="tsId" th:value="${travel.travelStory.tsid}">
+							<input type="text" class="form-control" name="tsReplyComment" placeholder="코멘트를 남겨주세요">
 						</div>
-						<div class="form-group">
-							<textarea class="form-control mb-10" rows="5" name="message" placeholder="Messege" onfocus="if (!window.__cfRLUnblockHandlers) return false; this.placeholder = ''" onblur="if (!window.__cfRLUnblockHandlers) return false; this.placeholder = 'Messege'" required=""></textarea>
-						</div>
-						<a href="#" class="primary-btn button_hover">Post Comment</a>
+						<button type="button" class="primary-btn button_hover reply_submit">등록</button>
 					</form>
 				</div>
 			</div>
 		</div>
 	</div>
 </body>
+<script type="text/javascript" src="../js/travel.js"></script>
 </html>
