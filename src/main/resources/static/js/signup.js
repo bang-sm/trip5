@@ -4,6 +4,8 @@ var authNum;
 $(document).ready(function() {
 	// 이메일 인증메일 보내기 AJAX
 	$(".authSubmit").click(function() {
+		console.log("하이욤");
+		$("#sendMsg").text("인증번호 전송 중입니다.");
 		$.ajax({
 			url : "/user/authEmail.do",
 			type : "POST",
@@ -11,9 +13,16 @@ $(document).ready(function() {
 				"email" : $("#email").val()
 			},
 			success : function(data) {
-				alert("인증번호가 전송되었습니다.");
+				$("#sendMsg").text("");
+				alert("인증번호가 전송 성공했습니다.");
 				authEmailNum = data;
-			} // end function
+			} // end success function
+			,error: function(data) {
+				console.log("인증번호 전송 실패");
+				$("#sendMsg").text("");
+				alert("인증번호 전송이 실패했습니다.");
+				authEmailNum = data;
+			} // end error function
 		}); // ajax 끝
 	});
 
@@ -33,6 +42,7 @@ $(document).ready(function() {
 	$(".success").click(function() {
 		console.log("들어옴?");
 		if($(".authmsg").text() == "인증성공"){
+			console.log("들어왔어요임마")
 			$("#memberemail").val($("#email").val());
 		}
 		authNum = "";

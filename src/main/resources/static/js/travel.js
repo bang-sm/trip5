@@ -1,6 +1,26 @@
 
 
 $(document).ready(function() {
+	//일지 댓글 등록
+	$(".reply_submit").click(function(){
+		$.ajax({
+	        type : 'post',
+	        url : '/travel/travel_reply_save',
+	        data : $(this.form).serialize(),
+	        error: function(xhr, status, error){
+	        	toastr.success("실패하였습니다");
+	        },
+	        success : function(data){
+	        	console.log(data);
+	        	if(data==1){
+	        		toastr.success("등록되었습니다");
+	        	}else if(data==0){
+	        		toastr.error("로그인이 필요합니다");
+	        	}
+	        },
+	    });
+	});
+
 	
 	//로딩시 에디터에잇는 내용 가져와서 뿌려주기
 	$.ajax({
@@ -18,7 +38,6 @@ $(document).ready(function() {
     });
 	
 	function summernote_print(data){
-		console.log(data);
 		$(".summernote").each(function(i,item){
 			$(item).summernote('code', data[i].tsicomment);
 		});
@@ -117,7 +136,7 @@ $(document).ready(function() {
                 alert(error);
             },
             success : function(data){
-                alert(data)
+            	toastr.success("임시저장 되었습니다");
             },
         });
 	});

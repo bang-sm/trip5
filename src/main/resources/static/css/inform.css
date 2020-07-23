@@ -23,23 +23,34 @@ td {
 	border-right: 1px solid #f4f6f9;
 }
 
-.profileRight div:not(.photo){
-	display: inline-block;
+.form-group{
+}
+
+
+.profileRight a, .profileRight div:not(.photo):not(.form-group)
+,.change, .cancel{
 	padding: 5px 10px;
 	margin-top: 15px;
 	margin-left: 5px;
-	border: 1px solid black;
+	display: inline-block;
+	padding: .5em .75em;
+	color: #999;
+	font-size: inherit;
+	line-height: normal;
+	vertical-align: middle;
+	background-color: #fdfdfd;
+	cursor: pointer;
+	border: 1px solid #ebebeb;
+	border-bottom-color: #e2e2e2;
+	border-radius: .25em;
+	color: black;
 }
 
-.profileRight div:not(.photo):hover{
+.change:hover, .cancel:hover {
 	cursor: pointer;
 }
 
-.change:hover, .cancel:hover{
-	cursor:pointer;
-}
-
-.photo {
+.photo{
 	width: 100px;
 	height: 100px;
 	border: 1px solid black;
@@ -54,18 +65,35 @@ td {
 	height: 100px;
 }
 
-.change, .cancel {
-	display: inline-block;
-	padding: 5px 25px;
-	margin-top: 25px;
-	border: 1px solid #dfdfdf;
-	font-size: small;
-}
-
-.profileLeft, .nickname{
+.profileLeft, .nickname {
 	background-color: #f0f0f0;
 }
 
-.width_pl{
+.width_pl {
 	width: 25%;
+}
+/*------------------------------------------------------------*/
+/* 					프로필 사진 				 */
+/*------------------------------------------------------------*/
+.filebox label{
+	padding: 5px 10px;
+	margin: 0px;
+	display: inline-block;
+	font-size: inherit;
+	line-height: normal;
+	vertical-align: middle;
+	background-color: #fdfdfd;
+	cursor: pointer;
+	color: black;
+}
+
+.filebox input[type="file"] { /* 파일 필드 숨기기 */
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
 }
