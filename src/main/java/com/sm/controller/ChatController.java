@@ -1,8 +1,6 @@
 package com.sm.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -18,12 +16,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.sm.domain.ChatMessage;
+import com.sm.domain.Participant;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Controller
+@Setter
+@Getter
 public class ChatController {
 	private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
 
-	List<String> chatParticipant = new ArrayList<String>();
+	private List<String> chatParticipant = new ArrayList<String>();
 	
 	// 채팅 페이지
 	@GetMapping(value = "/chatting/chat")
@@ -48,9 +52,6 @@ public class ChatController {
         
         if(!chatParticipant.contains(chatMessage.getSender())) {
         	chatParticipant.add(chatMessage.getSender());
-        }
-        for(int i = 0; i<chatParticipant.size(); i++) {
-        	System.out.println(chatParticipant.get(i));
         }
         
         chatMessage.setParticipant(chatParticipant);
