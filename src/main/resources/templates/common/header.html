@@ -18,7 +18,7 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarResponsive">
 			<ul class="navbar-nav ml-auto">
-				<li class="nav-item"><a class="nav-link" ><i class="far fa-envelope-open"></i></a></li>
+				<li class="nav-item"><a th:if="${session.userInfo != null}" class="nav-link" th:href=@{/my/message(sendid=${session.userInfo.uuid})}><i class="far fa-envelope-open"></i></a></li>
 				<li class="nav-item"><a class="nav-link" th:href="@{/chatting/chat}">채팅</a></li>
 				<li class="nav-item"><a class="nav-link" th:href="@{/weather/weather}">날씨</a></li>
 				<li class="nav-item"><a class="nav-link" href="#">날씨</a></li>
