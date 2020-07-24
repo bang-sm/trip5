@@ -44,4 +44,9 @@ public class MemberDAO {
 		return sql.selectOne(namespace + ".idCheck",memberemail);
 	}
 	
+	// uuid 가저오기
+	public int uuidCheck(String memberemail) throws Exception{
+		return sql.selectOne(namespace + ".uuidCheck",memberemail);
+	}
+	
 }
