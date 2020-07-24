@@ -36,6 +36,15 @@ public class MyService {
 		return dao.sendToMsg(messageVO);
 	}
 	
+	public List<MessageVO> sendMessage(MessageVO messageVO){
+		return dao.sendMessage(messageVO);
+	}
 	
+	public int countMessage(MessageVO messageVO) {
+		return dao.countMessage(messageVO);
+	}
 	
+	public List<MessageVO> receiveMessage(MessageVO messageVO){
+		return dao.receiveMessage(messageVO);
+	}
 }

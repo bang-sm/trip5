@@ -97,16 +97,15 @@ public class WeatherController {
 	@ResponseBody
 	@PostMapping("/getuid")
 	public int getWeatherlocaluid(HttpSession httpSession) throws Exception{
-		
+		int result = 0;
 		MemberVO memberVO = new MemberVO();
-		memberVO = (MemberVO) httpSession.getAttribute("userInfo");  
 		
-		int uuid = memberVO.getUuid();
-//		int uuid = 4; // 나중에 바꾸기 
-		
-		int result = weatherService.selectWeatherlocaluid(uuid);
-		
-//		System.out.println(result + "/////////");
+		if(httpSession != null) {
+			
+			memberVO = (MemberVO) httpSession.getAttribute("userInfo");  
+			int uuid = memberVO.getUuid();
+			result = weatherService.selectWeatherlocaluid(uuid);
+		}
 		return result;
 	}
 	

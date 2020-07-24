@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sm.domain.TravelInfoRootVO;
 import com.sm.domain.TravelInfoVO;
+import com.sm.domain.TravelReplyVO;
 import com.sm.domain.TravelVO;
 
 @Repository
@@ -99,9 +100,39 @@ public class TravelDAO {
 		sqlSession.delete("mappers.travelMapper.travel_root_delete",map);
 	}
 
-	//루즈정보
+	//루트정보
 	public List<TravelInfoRootVO> getTravelRootInfo(String tsid) {
 		return sqlSession.selectList("mappers.travelMapper.getTravelRootInfo",tsid);
+	}
+
+	
+	//블로그데이터
+	@Transactional
+	public HashMap<String, Object> getTravelBlogData(HashMap<String, Integer> param) {
+		
+		List<TravelInfoVO> infoList=new ArrayList<TravelInfoVO>();
+		infoList=sqlSession.selectList("mappers.travelMapper.getTravelInfo",param);
+		TravelVO travelStory=new TravelVO();
+		travelStory=sqlSession.selectOne("mappers.travelMapper.getTravelStory",param);
+		List<TravelReplyVO> replyList=new ArrayList<TravelReplyVO>();
+		replyList=sqlSession.selectList("mappers.travelMapper.getTravelReply",param);
+		
+		HashMap<String , Object> map=new HashMap<>();
+		map.put("infoList", infoList);
+		map.put("travelStory", travelStory);
+		map.put("replyList", replyList);
+		
+		return map;
+	}
+
+
+	public void travel_reply_save(HashMap<String, Object> param) {
+		sqlSession.insert("mappers.travelMapper.travel_reply_save",param);
+	}
+
+
+	public List<TravelReplyVO> travel_reply_list(int tsid) {
+		return sqlSession.selectList("mappers.travelMapper.getTravelReply",tsid);
 	}
 
 }
