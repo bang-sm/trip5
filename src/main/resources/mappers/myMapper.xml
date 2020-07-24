@@ -3,51 +3,86 @@
 <mapper namespace="mappers.myMapper">
 	
 	<select id="selectUuid" parameterType="com.sm.domain.MemberVO" resultType="com.sm.domain.MemberVO">
-	select 
+	SELECT 
 		uuid 
-	from 
+	FROM 
 		member 
-	where 
+	WHERE 
 		membernick = #{membernick}
 	</select>
 	
 	
 	<insert id="insertBlackList" parameterType="int">
-		insert into 
+		INSERT INTO 
 			blackList 
-		values (#{myuid}, #{otheruid})
+		VALUES (#{myuid}, #{otheruid})
 	</insert>
 	
 	<select id="selectBlackList" parameterType="int" resultType="com.sm.domain.MemberVO">
-		select 
+		SELECT 
 			black_uuid as blackuuid
-		from 
+		FROM
 			blackList 
-		where 
+		WHERE
 			uuid = #{uuid} 
 	</select>
 	
 	<delete id="deleteBlackList" parameterType="int">
-		delete from 
+		DELETE FROM 
 			blackList 
-		where 
+		WHERE 
 			black_uuid = #{otheruid}
 	</delete>
 	
 	<insert id="sendToMsg" parameterType="com.sm.domain.MessageVO">
-		insert into 
-			messageList (msg_regdate , msg_content , from_id , send_id, msg_subject) 
-		values
+		INSERT INTO 
+			messageList (msg_regdate, 
+			msg_content, 
+			from_id, 
+			send_id, 
+			msg_subject) 
+		VALUES
 			(now(), #{msgcontent}, #{fromid}, #{sendid}, #{msgsubject})
 	</insert>
 	
 	<select id="sendMessage" parameterType="com.sm.domain.MessageVO" resultType="com.sm.domain.MessageVO">
-		select 
-			m.membernick membernick, msg_id msgid, msg_regdate msgregdate, msg_content msgcontent, from_id fromid, send_id sendid, msg_subject msgsubject 
-		from 
+		SELECT 
+			m.membernick membernick, 
+			msg_id msgid, msg_regdate msgregdate, 
+			msg_content msgcontent, 
+			from_id fromid, 
+			send_id sendid, 
+			msg_subject msgsubject 
+		FROM 
 			member m, messageList l 
-		where 
+		WHERE 
 			m.uuid = l.from_id and l.send_id = #{sendid}
+	</select>
+	
+	<select id="countMessage" parameterType="com.sm.domain.MessageVO" resultType="int">
+		SELECT 
+			count(*) 
+		FROM 
+			messageList 
+		WHERE 
+			from_id = #{fromid}
+	</select>
+	
+	<select id="receive" parameterType="com.sm.domain.MessageVO" resultType="com.sm.domain.MessageVO">
+	SELECT 
+		m.membernick membernick, 
+		msg_id msgid, 
+		msg_regdate msgregdate, 
+		msg_content msgcontent, 
+		from_id fromid, 
+		send_id sendid, 
+		msg_subject msgsubject 
+	FROM 
+		member m, 
+		messageList l 
+	WHERE 
+		m.uuid = l.from_id AND 
+		l.from_id = #{fromid}
 	</select>
 	
 </mapper>
