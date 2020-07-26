@@ -26,7 +26,7 @@ public class MemberDAO {
 	
 	// 회원 수
 	public void userCnt() {
-		sql.insert(namespace + ".userCnt");
+		sql.selectOne(namespace + ".userCnt");
 	}
 
 	// kakaoOk 변경

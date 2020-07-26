@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -95,6 +94,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()
 			.csrf().ignoringAntMatchers("/user/authEmail.do")	
 		.and()
+			.csrf().ignoringAntMatchers("/adminNotice/ajax/**")	
+		.and()
 			.oauth2Login()	// Oauth2 로그인
 		.and()
 			.rememberMe()
@@ -167,7 +168,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     
     /*
      * 자기 자신이 로그인하고 재로그인시 로그인 안되는 문제 해결
-     * 
      */
     @Bean
     public SessionRegistry sessionRegistry() {
