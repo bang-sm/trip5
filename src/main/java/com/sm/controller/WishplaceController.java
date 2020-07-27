@@ -42,7 +42,10 @@ public class WishplaceController {
 			return "redirect:/user/login";
 		}
 		List<PlacelistVo> list = service.show(uuid);
+		logger.info("date : "+ list.get(0).getPlaceregdate());
 		model.addAttribute("place", service.show(uuid));
+		
+		
 		logger.info("확인 : " +list);
 		return "wish/place";
 	}

@@ -30,7 +30,6 @@ $("#exampleModal").on('shown.bs.modal', function(){
 		map.relayout(); }
 	, 3000)
 
-
 	// 장소 검색 객체를 생성합니다
 	var ps = new kakao.maps.services.Places();
 
@@ -121,19 +120,55 @@ $("#exampleModal").on('shown.bs.modal', function(){
 			// 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
 			// LatLngBounds 객체에 좌표를 추가합니다
 			bounds.extend(placePosition);
-
+			var areaname;
 			// 마커와 검색결과 항목에 mouseover 했을때
 			// 해당 장소에 인포윈도우에 장소명을 표시합니다
 			// mouseout 했을 때는 인포윈도우를 닫습니다
 			(function(marker, title) {
 				kakao.maps.event.addListener(marker, 'mouseover', function() {
 					displayInfowindow(marker, title);
+					areaname = title;
 				});
 
 				kakao.maps.event.addListener(marker, 'mouseout', function() {
 					infowindow.close();
 				});
+				
+				/* kakao.maps.event.addListener(marker, 'click', function() {
+					 alert("장소 : " +areaname);
+					 console.log(areaname);
+					 $('.alarm-name').text(areaname);
+						$('.alarm').css("display","block");
+						setTimeout(function() {
+							$('.alarm').css("display","none");
+							}, 1000);
+						$('.btn_check_place').removeClass('btn-outline-danger');
+						$('.btn_check_place').addClass('btn-danger');
+						$('input[name=placename]').val(areaname);
+						$('input[name=placejuso]').val(places.address_name);
+					 });*/
+				 kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+					    searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
+					        if (status === kakao.maps.services.Status.OK) {
+					        	alert("주소 : "+result[0].address.address_name);
+					            var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
+					            detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
+					            
+					            var content = '<div class="bAddr">' +
+					                            '<span class="title">법정동 주소정보</span>' + 
+					                            detailAddr + 
+					                        '</div>';
 
+					            // 마커를 클릭한 위치에 표시합니다 
+					            marker.setPosition(mouseEvent.latLng);
+					            marker.setMap(map);
+
+					            // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
+					            infowindow.setContent(content);
+					            infowindow.open(map, marker);
+					        }   
+					    });
+					});
 				itemEl.onmouseover = function() {
 					displayInfowindow(marker, title);
 				};
@@ -190,8 +225,15 @@ $("#exampleModal").on('shown.bs.modal', function(){
 			$('input[name=placename]').val(places.place_name);
 			$('input[name=placejuso]').val(places.address_name);
 		});
+		
+		
 
 		return el;
+	}
+	var geocoder = new kakao.maps.services.Geocoder();
+	function searchDetailAddrFromCoords(coords, callback) {
+	    // 좌표로 법정동 상세 주소 정보를 요청합니다
+	    geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
 	}
 
 	// 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
