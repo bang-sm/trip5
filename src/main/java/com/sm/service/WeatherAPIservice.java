@@ -142,7 +142,7 @@ public class WeatherAPIservice {
 		inputUrl+=localnx+"";
 		inputUrl+="&ny=";
 		inputUrl+=localny+"";
-		
+
 //		System.out.println(inputUrl.toString());
 		
 	    try {

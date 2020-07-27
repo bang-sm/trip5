@@ -2238,7 +2238,7 @@ button:focus {
   }
 }
 
-b, sup, sub, u, del {
+b, sub, del {
   color: #f8b600;
 }
 

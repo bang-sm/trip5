@@ -9,12 +9,28 @@ var defaultlocaluid = 0;
 // var defaultlocalny = 0;
 
 $(document).ready(function(){
-	alert("로딩 완료");
+
+	// Session 에서 uuid 가져오기
+	getDefaultLocal();
 
 	// 로딩시 default 값으로 페이지 로딩
-	defaultlocaluid = 1; // default: 서울 
 
-	// $("#first_local > option").attr("value3", defaultlocaluid).prop("selected", true);
+	if(defaultlocaluid == 0){
+
+		setDefaultWeather1(1);
+
+	} else {
+		
+		getDefaultLocalInfo(defaultlocaluid);
+	}
+
+
+	var now = new Date();
+
+	var nowMonth = parseInt(now.getMonth()) + 1 ;
+	var nowDate = parseInt(now.getDate());
+	
+	$("#nowDate").html(nowMonth + " 월 " + nowDate + " 일");
 
 	$("#first_local").click(function(){
 		$("#hiddenOption1").hide();
@@ -22,7 +38,6 @@ $(document).ready(function(){
 
 	$("#first_local").change(function(){ // 첫번째 칸 선택시
 
-		$("#second_local").removeAttr("disabled");
 		$("#location2").empty();
 
 		var locationdiv = $("#location1");
@@ -56,7 +71,6 @@ $(document).ready(function(){
 		var localny = $("#second_local > option:selected").attr("value2");
 		var localname = $("#second_local > option:selected").attr("value3");
 		var localuid = $("#second_local > option:selected").attr("value4");
-
 		// alert("localnx = " + localnx + " localny = " + localny);
 
 		var locationdiv = $("#location2");
@@ -67,10 +81,12 @@ $(document).ready(function(){
 		getWeatherAPI(localnx, localny);
 
 		finalLocation = localuid;
-
 	});
 
-	// getCategory(0,0);  // depth0 카테고리 읽기
+
+	$("#saveuid").click(function(){
+		saveDefaultLocal(finalLocation);
+	});
 
 });
 
@@ -82,19 +98,17 @@ function getCategory(localuid){
 			type : "POST",
 			url: "/weather/depth2",
 			dataType: 'JSON',
+			async: false,
 			data: {
 				"weatherparentuid" : localuid
 			},
 			success: function(data){
-					// for (var index = 0; index < data.length; index++) {
-					// 	console.log(data[index].localname);
-					// }	
-
 					buildSelect(data);
-					
 				}
 						
 			}); 
+	
+	$("#second_local").removeAttr("disabled");
 	
 } // end getCategory()	
 
@@ -102,24 +116,16 @@ function getCategory(localuid){
 function buildSelect(data){
 	
 		var elm = $("select#second_local");
-			
-		// alert("buildSelect");
 		var list = data;
-		
-		// alert(list.length);
+
 		var result = "<option id='hiddenOption2'> 지역을 선택하세요 </option>";
-		
 		for(i = 0; i < list.length; i++){
-		
 			result += "<option value1 = '" + list[i].localnx + "' value2 = '" + list[i].localny + "' value3 = '" + list[i].localname + "' value4 = '" + list[i].localuid +"'>";
 			result += list[i].localname;
 			result += "</option>";
-			
 		}
 		
-		// alert(result);
 		elm.html(result);
-	
 	
 } // end buildSelect()
 
@@ -135,9 +141,8 @@ function getWeatherAPI(weatherlocalnx, weatherlocalny){
 				},
 			success: function(data){
 				
-				alert("api받아짐");
 				sortNowWeatherData(data); // nowWeather map setting 완료!!
-				console.log("sortNowWeatherData 완료! - Map 사용!");
+				// console.log("sortNowWeatherData 완료! - Map 사용!");
 				
 				// 오늘 날씨 설정
 				setSKY(nowWeather.get("nowSKY"), nowWeather.get("nowPTY"), $("#nowSKY"));
@@ -216,7 +221,6 @@ function setSKY(SKY, PTY, location){
 	var sunny = "../image/weather/sunny.svg";
 	var sun_cloud = "../image/weather/sun_cloud.svg";
 	var cloudy = "../image/weather/cloudy.svg";
-	var foggy = "../image/weather/foggy.svg";
 	var rainy = "../image/weather/rainy.svg";
 	var snowy = "../image/weather/snowy.svg";
 
@@ -336,16 +340,14 @@ function setTime(data){
 	
 	var setTime = 0;
 	var setTimeString = "";
-	// console.log(startTime);
-	// console.log(startDate);
 	var fsctDateArr = getfsctDate(data);
-	console.log("리턴 받은 배열의 길이 : " + fsctDateArr.length);
-	console.log(fsctDateArr[0]);
+
+	// console.log("리턴 받은 배열의 길이 : " + fsctDateArr.length);
+	// console.log(fsctDateArr[0]);
 
 	for(var index = 0; index < 6; index++){
 
 		setTime = startTime + (300 * (index + 1));
-		// console.log("if 문 전" + setTime);
 
 		if(setTime >= 2400){
 			setTime -= 2400;
@@ -356,15 +358,11 @@ function setTime(data){
 			setTimeString = String (setTime/100) + ":00";
 		}
 
-		// console.log("if문 뒤" + setTime);
 		$("#nowTime" + String(index + 1)).html(setTimeString);
 		
 		timeArr[index] = setTime;		
-	
 		dateArr[index] = fsctDateArr[update];
-		// console.log(fsctDateArr[0]);
-
-		update = 0;
+		update = 0; // 초기화
 
 	} // end for
 
@@ -376,7 +374,6 @@ function getfsctDate(data){
 
 	var fsctDateArr = new Array();
 	var startDate = data[0].fcstDate;
-	// console.log(startDate);
 
 	fsctDateArr[0] = startDate;
 
@@ -385,7 +382,6 @@ function getfsctDate(data){
 		var date = data[i].fcstDate;
 
 		if(startDate != date){
-			// console.log(date);
 			fsctDateArr.push(date);
 			startDate = date;
 		}
@@ -395,7 +391,9 @@ function getfsctDate(data){
 }
 
 function setWeatherArr(data, timeArr, dateArr){
-
+	
+	var weatherMap = new Map();
+	
 	for(var i = 0; i < 6; i++){
 
 		var date = dateArr[i];
@@ -403,20 +401,21 @@ function setWeatherArr(data, timeArr, dateArr){
 		
 		for(var j = 0; j <data.length; j++){
 			
-			var valueSKY = 0;
-			var valuePTY = 0;
-
 			if(data[j].fcstDate == date && data[j].fcstTime == time){
 
 				var category = data[j].category;
 				var value = data[j].fcstValue;
 
+				var tempSKY = -1;
+				var tempPTY = -1;
+				
 				switch (category) {
+					
 					case "SKY":
-						valueSKY = value;
+						tempSKY = value;
 					break;
 					case "PTY":
-						valuePTY = value;
+						tempPTY = value;
 					break;
 					case "POP":
 						setPOP(value, $("#nowPOP" + String( 1 + i )));
@@ -427,16 +426,378 @@ function setWeatherArr(data, timeArr, dateArr){
 					default:
 						break;
 				}
-			}
 
-			setSKY(valueSKY, valuePTY, $("#SKY" + String( 1 + i )));
+				if(tempPTY != -1){
+					weatherMap.set("valuePTY", parseInt(value));
+				}
 
+				if(tempSKY != -1){
+					weatherMap.set("valueSKY", parseInt(value));
+				}
+				
+			} //end if
+			
 		} // end data for
 
-	}// end 표출 arr for
+		// console.log("date :" + date);
+		// console.log("time :" + time);
+		// console.log("PTY :" + weatherMap.get("valuePTY"));
+		// console.log("SKY :" + weatherMap.get("valueSKY"));
+
+		setSKY(weatherMap.get("valueSKY"), weatherMap.get("valuePTY"), $("#SKY" + String( 1 + i )));
+
+		weatherMap.set("valuePTY", -1);
+		weatherMap.set("valueSKY", -1);
+
+	} // end 표출 arr for
+
+} // end setWeatherArr()
+
+function saveDefaultLocal(finalLocation){
+
+	if(finalLocation != null || finalLocation != ""){
+		
+		$.ajax({
+			type : "POST",
+			url: "/weather/updateuid",
+			async: false,
+			data: {
+				"weatherlocaluid" : finalLocation
+			},
+			success: function(data){
+				if(data == "OK"){
+					toastr.success("등록되었습니다"); 
+				}
+				
+			},
+			error : function(request,status,error){
+				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+	
+		}); // end ajax
+
+	}
+	
 }
 
-function setDefaultLocal(){
+function getDefaultLocal(){
+	
+		$.ajax({
+			type : "POST",
+			url: "/weather/getuid",
+			async: false,
+			success: function(data){
+				// Session 에 uuid 없으면, 
 
-}
+				if(data == 0){
+					defaultlocaluid = 0; // default: 서울
+				} else {
+					
+					defaultlocaluid = (data*1);
+				}
+
+			},
+			error : function(request,status,error){
+				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+		}); // end ajax
+} // end getDefaultLocal
+
+function setDefaultWeather1(defaultlocaluid){
+
+	$("#first_local > option[value3="+ defaultlocaluid +"]").attr("selected", "selected");
+
+	var localnx = $("#first_local > option:selected").attr("value1");
+	var localny = $("#first_local > option:selected").attr("value2");
+	var localname = $("#first_local > option:selected").attr("value4");
+
+	var locationdiv = $("#location1");
+
+	getWeatherAPI(localnx, localny);
+	locationdiv.html(localname);
+	getCategory(defaultlocaluid);
+	finalLocation = defaultlocaluid;
+
+} // end setDefaultWeather()
+
+
+function setDefaultWeather2(defaultlocaluid, parentuid){
+
+	$("#first_local > option[value3="+ parentuid +"]").attr("selected", "selected");
+	var localname1 = $("#first_local > option:selected").attr("value4");
+	var locationdiv1 = $("#location1");
+	
+	getCategory(parentuid);
+	locationdiv1.html(localname1);
+
+	$("#second_local > option[value4 = "+ defaultlocaluid +"]").attr("selected", "selected");
+
+	var localnx = $("#second_local > option:selected").attr("value1");
+	var localny = $("#second_local > option:selected").attr("value2");
+	var localname = $("#second_local > option:selected").attr("value3");
+	var localuid = $("#second_local > option:selected").attr("value4");
+
+	var locationdiv = $("#location2");
+	locationdiv.html(localname);
+
+	$("#weatherlocalnx").val(localnx);
+	$("#weatherlocalny").val(localny);
+	getWeatherAPI(localnx, localny);
+
+	finalLocation = localuid;
+
+} // end setDefaultWeather()
+
+
+function getDefaultLocalInfo(defaultlocaluid){
+
+	if(defaultlocaluid != 0 || defaultlocaluid != null){
+
+		$.ajax({
+			type : "POST",
+			url: "/weather/getlocalinfo",
+			// async: false,
+			data: {
+				"localuid" : defaultlocaluid
+			},
+			success: function(data){
+				
+				// depth 구별 - 0 일 경우
+				//				1 일 경우
+				var depth = data.localdepth;
+				var parent = data.localparent;
+
+				switch (depth) {
+					case 0:
+						setDefaultWeather1(defaultlocaluid);
+						break;
+					case 1:
+						setDefaultWeather2(defaultlocaluid, parent);
+						break;
+				
+					default:
+						break;
+				}
+				
+			},
+			error : function(request,status,error){
+				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+	
+		}); // end ajax
+	}
+} // end getDefaultLocalInfo()
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// CHART JS ///////////////////////////////////// CHART JS ///////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+// var gradientChartOptionsConfigurationWithTooltipPurple = {
+// 	maintainAspectRatio: false,
+// 	legend: {
+// 	  display: false
+// 	},
+
+// 	tooltips: {
+// 	  backgroundColor: '#f5f5f5',
+// 	  titleFontColor: '#333',
+// 	  bodyFontColor: '#666',
+// 	  bodySpacing: 4,
+// 	  xPadding: 12,
+// 	  mode: "nearest",
+// 	  intersect: 0,
+// 	  position: "nearest"
+// 	},
+// 	responsive: true,
+// 	scales: {
+// 	  yAxes: [{
+// 		barPercentage: 1.6,
+// 		gridLines: {
+// 		  drawBorder: false,
+// 		  color: 'rgba(29,140,248,0.0)',
+// 		  zeroLineColor: "transparent",
+// 		},
+// 		ticks: {
+// 		  suggestedMin: 60,
+// 		  suggestedMax: 125,
+// 		  padding: 20,
+// 		  fontColor: "#2380f7"
+// 		}
+// 	  }],
+
+// 	  xAxes: [{
+// 		barPercentage: 1.6,
+// 		gridLines: {
+// 		  drawBorder: false,
+// 		  color: 'rgba(29,140,248,0.1)',
+// 		  zeroLineColor: "transparent",
+// 		},
+// 		ticks: {
+// 		  padding: 20,
+// 		  fontColor: "#2380f7"
+// 		}
+// 	  }]
+
+// 	}
+// };
+
+// var gradientChartOptionsConfigurationWithTooltipBlue = {
+// 	maintainAspectRatio: false,
+// 	legend: {
+// 	  display: false
+// 	},
+
+// 	tooltips: {
+// 	  backgroundColor: '#f5f5f5',
+// 	  titleFontColor: '#333',
+// 	  bodyFontColor: '#666',
+// 	  bodySpacing: 4,
+// 	  xPadding: 12,
+// 	  mode: "nearest",
+// 	  intersect: 0,
+// 	  position: "nearest"
+// 	},
+// 	responsive: true,
+// 	scales: {
+// 	  yAxes: [{
+// 		barPercentage: 1.6,
+// 		gridLines: {
+// 		  drawBorder: false,
+// 		  color: 'rgba(29,140,248,0.0)',
+// 		  zeroLineColor: "transparent",
+// 		},
+// 		ticks: {
+// 		  suggestedMin: 60,
+// 		  suggestedMax: 125,
+// 		  padding: 20,
+// 		  fontColor: "#2380f7"
+// 		}
+// 	  }],
+
+// 	  xAxes: [{
+// 		barPercentage: 1.6,
+// 		gridLines: {
+// 		  drawBorder: false,
+// 		  color: 'rgba(29,140,248,0.1)',
+// 		  zeroLineColor: "transparent",
+// 		},
+// 		ticks: {
+// 		  padding: 20,
+// 		  fontColor: "#2380f7"
+// 		}
+// 	  }]
+// 	}
+// };
+
+var  gradientBarChartConfiguration = {
+	maintainAspectRatio: false,
+	legend: {
+	  display: false
+	},
+
+	tooltips: {
+	  backgroundColor: '#f5f5f5',
+	  titleFontColor: '#333',
+	  bodyFontColor: '#666',
+	  bodySpacing: 4,
+	  xPadding: 12,
+	  mode: "nearest",
+	  intersect: 0,
+	  position: "nearest"
+	},
+	responsive: true,
+	scales: {
+	  yAxes: [{
+
+		gridLines: {
+		  drawBorder: false,
+		  color: 'rgba(29,140,248,0.1)',
+		  zeroLineColor: "transparent",
+		},
+		ticks: {
+		  suggestedMin: 60,
+		  suggestedMax: 120,
+		  padding: 20,
+		  fontColor: "#9e9e9e",
+		  beginAtZero:true
+		}
+	  }],
+
+	  xAxes: [{
+
+		gridLines: {
+		  drawBorder: false,
+		  color: 'rgba(29,140,248,0.1)',
+		  zeroLineColor: "transparent",
+		},
+		ticks: {
+		  padding: 20,
+		  fontColor: "#9e9e9e"
+		}
+	  }]
+	}
+};
+
+// var chart_labels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+var chart_labels = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+var chart_data = [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100];
+
+
+var ctx = document.getElementById("chartBig1").getContext('2d');
+
+var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
+
+gradientStroke.addColorStop(1, 'rgba(72,72,176,0.1)');
+gradientStroke.addColorStop(0.4, 'rgba(72,72,176,0.0)');
+gradientStroke.addColorStop(0, 'rgba(119,52,169,0)'); //purple colors
+
+var config = {
+	type: 'bar',
+	responsive: true,
+	legend: {
+	  display: false
+	},
+	data: {
+	  labels: ['USA', 'GER', 'AUS', 'UK', 'RO', 'BR'],
+	  datasets: [{
+		label: "Countries",
+		fill: true,
+		backgroundColor: gradientStroke,
+		hoverBackgroundColor: gradientStroke,
+		borderColor: '#1f8ef1',
+		borderWidth: 2,
+		borderDash: [],
+		borderDashOffset: 0.0,
+		data: [53, 20, 10, 80, 100, 45],
+	  }]
+	},
+	options: gradientBarChartConfiguration
+};
+
+var myChartData = new Chart(ctx, config);
+
+$("#0").click(function() {
+  var data = myChartData.config.data;
+  data.datasets[0].data = chart_data;
+  data.labels = chart_labels;
+  myChartData.update();
+});
+
+$("#1").click(function() {
+  var chart_data = [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120];
+  var data = myChartData.config.data;
+  data.datasets[0].data = chart_data;
+  data.labels = chart_labels;
+  myChartData.update();
+});
+
+$("#2").click(function() {
+  var chart_data = [60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 130];
+  var data = myChartData.config.data;
+  data.datasets[0].data = chart_data;
+  data.labels = chart_labels;
+  myChartData.update();
+});
+
+
 

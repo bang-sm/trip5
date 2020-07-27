@@ -29,7 +29,6 @@ public class MyDAO {
 	}
 	
 	public List<MemberVO> selectBlack(int uuid) {
-		
 		return sqlsession.selectList("mappers.myMapper.selectBlackList", uuid);
 	}
 	
@@ -41,5 +40,15 @@ public class MyDAO {
 		return sqlsession.insert("mappers.myMapper.sendToMsg", messageVO);
 	}
 	
+	public List<MessageVO> sendMessage(MessageVO messageVO) {
+		return sqlsession.selectList("mappers.myMapper.sendMessage", messageVO);
+	}
 	
+	public int countMessage(MessageVO messageVO) {
+		return sqlsession.selectOne("mappers.myMapper.countMessage", messageVO);
+	}
+	
+	public List<MessageVO> receiveMessage(MessageVO messageVO){
+		return sqlsession.selectList("mappers.myMapper.receive", messageVO);
+	}
 }

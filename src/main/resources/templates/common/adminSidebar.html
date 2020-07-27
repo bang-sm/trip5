@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="css/dist/css/adminlte.min.css">
+<th:block th:replace="common/commonHead"></th:block>
+</head>
+<body class="sidebar-mini layout-fixed" style="height: auto;">
+	<div class="wrapper" th:fragment="adminHeader_aside">
+		<aside class="main-sidebar sidebar-dark-primary elevation-4">
+			<!-- Brand Logo -->
+			<a th:href="@{/index}" class="brand-link">
+				<!-- <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> -->
+				<span class="brand-text font-weight-light">ADMIN PAGE</span>
+			</a>
+
+			<!-- Sidebar -->
+			<div class="sidebar">
+				<!-- Sidebar user panel (optional) -->
+				<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+					<div class="image">
+						<img th:src="@{../image/face.jpg}" class="img-circle elevation-2" alt="User Image">
+					</div>
+					<div class="info">
+						<a href="#" class="d-block">admin</a>
+						<!-- 사용자 이름 받아오기 -->
+					</div>
+				</div>
+
+				<!-- Sidebar Menu -->
+				<nav class="mt-2">
+					<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+						<!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+						<li class="nav-item"><a href="/admin" class="nav-link">
+								<span class="nav-icon material-icons"> pie_chart </span>
+								<span>통계</span>
+							</a></li>
+						<li class="nav-item"><a href="#" class="nav-link">
+								<i class="nav-icon fa fa-users"></i>
+								<p>유저관리</p>
+							</a></li>
+						<li class="nav-item"><a href="/admin/notice" class="nav-link">
+								<i class="nav-icon fa fa-bullhorn"></i>
+								<p>공지관리</p>
+							</a></li>
+				</nav>
+				<!-- /.sidebar-menu -->
+			</div>
+			<!-- /.sidebar -->
+		</aside>
+
+	</div>
+	<!-- 이거 가져가서 자기 페이지 밑에 쓰세요 -->
+	<script src="../js/placedash.js"></script>
+	<script src="js/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="js/dist/js/adminlte.js"></script>
+	<script src="js/dist/js/demo.js"></script>
+	<script src="js/dist/js/pages/dashboard3.js"></script>
+
+</body>
+</html>

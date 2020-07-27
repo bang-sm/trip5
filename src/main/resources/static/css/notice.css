@@ -1,0 +1,10 @@
+.slideNotice{
+ background-color:#343a40;
+ color: white;	
+  position: fixed;
+  top: 55px;
+  width: 100%;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}

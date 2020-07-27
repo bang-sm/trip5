@@ -1,5 +1,5 @@
 var stompClient = null;
-
+var userNick;
 var nick;
 var blackListv;
 var blackUser = true;
@@ -11,6 +11,10 @@ var NowMinutes;
 
 var outer = '';
 
+var inUser = new Array();
+
+var lastOne = false;
+
 function getdate(){
 	Now = new Date();
 	NowHours = Now.getHours();
@@ -18,8 +22,15 @@ function getdate(){
 }
 
 $(document).ready(function(){
+	alert(inUser.length+'//////');
 	loadPage();
 	connect();
+	
+	$(window).on("beforeunload", function () {
+		if(lastOne){
+			outUser();
+		}
+    });
 });
 
 document.addEventListener("keypress", function(e) {
@@ -35,6 +46,7 @@ function connect(event) {
     console.log('1');
     stompClient = Stomp.over(socket);
     console.log('2');
+    console.log(socket);
     
     stompClient.connect({}, onConnected, onError);
     console.log('3');
@@ -43,7 +55,6 @@ function connect(event) {
 
 
 function onConnected() {
-	
 	console.log('onConnected//////');
     // Subscribe to the Public Topic
     stompClient.subscribe('/topic/public', onMessageReceived);
@@ -51,15 +62,13 @@ function onConnected() {
     // Tell your username to the server
     stompClient.send("/app/chat.addUser",
         {},
-        JSON.stringify({sender: $("#userSessionId").val() , uuid: $("#userSessionuuid").val(), type: 'JOIN'})
+        JSON.stringify({uuid: $("#userSessionuuid").val(), sender: $("#userSessionId").val() , type: 'JOIN'})
     )
-    
 }
 
 function onError(error) {
 	console.log('onError//////');
 }
-
 
 function send(event) {
 	console.log('sendMessage//////');
@@ -76,14 +85,21 @@ function send(event) {
         stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
         $("#message").val('');
     }
-//    event.preventDefault();
+//  event.preventDefault();
 }
 
 function outUser(event){
-	var chatMessage = {
-			sender: outer,
-			type: 'LEAVE'
-	};
+	if(lastOne){
+		var chatMessage = {
+				sender: $("#userSessionId").val(),
+				type: 'LEAVE'
+		}
+	} else {
+		var chatMessage = {
+				sender: outer,
+				type: 'LEAVE'
+		};
+	}
 	stompClient.send("/app/chat.outUser", {}, JSON.stringify(chatMessage));
 }
 
@@ -93,21 +109,28 @@ function onMessageReceived(payload) {
     var message = JSON.parse(payload.body);
 	console.log(message);
     
-    if(message.type === 'JOIN') { 
+    if(message.type === 'JOIN') {
+    	console.log(userNick + " <-- 멤버 닉네임")
+    	lastOne = false;
+    	inUser.push(message.participant[message.participant.length-1]) // 메세지 센더 이슈?
     	for(i = 0; i<message.participant.length; i++){
     		if(!$("li[data-name='"+message.participant[i]+"']").length){
     		$(".contacts").append("<li data-toggle='tab' data-target='#inbox-message-2' data-name='"+message.participant[i]+"'>"+
     				"<img alt='' class='img-circle medium-image' src='../image/user.jpg' style='vertical-align: baseline'>"+
     				"<div class='vcentered info-combo'>"+
     				"<h3 class='no-margin-bottom name'>"+message.participant[i]+"</h3>"+
-    				"<h5>채팅방에 입장하셨습니다!</h5>"+
-    				"</div>" +
+    				"<h5>...</h5>"+
+    				"</div>"+
     				"<div class='contacts-add'>"+
+    				($("#userSessionId").val() != message.participant[i] ? "<button type='button' class='btn btn-outline-secondary btn-sm sendMsgOther' data-backdrop='static' data-toggle='modal' data-target='#exampleModal' style='border:none' onclick='sendToOther()' data-nick='" + message.participant[i] + "'><i class='far fa-envelope' style='font-size:1.05rem'></i></button>"+
+        					"<button type='button' class='btn btn-outline-secondary btn-sm othersMsg' style='border:none' onclick='blackList()' data-email='" + message.participant[i] + "'><i class='fas fa-comment-slash'></i></button>" : '') +
     				"</div>"+
     		"</li>")
     		}
     	}
     } else if (message.type === 'LEAVE') {
+    	inUser.splice(inUser.indexOf(message.sender),1);
+    	if(inUser.length == 1) lastOne = true;
     	console.log(message.sender + ' 메세지센더')
     	console.log($("li[data-name='"+message.sender+"']").attr('data-name') + ' 나간 사람 아이디');
     	outer = $("li[data-name='"+message.sender+"']").attr('data-name');
@@ -183,6 +206,7 @@ $(document).on('click',".othersMsg" ,function(){
 });
 
 function loadPage(){
+	userNick = $("#userSessionId").val()
 	data = "uuid="+$("#userSessionuuid").val();
 	console.log(data);
 	$.ajax({
@@ -212,7 +236,7 @@ function blackList(){
 			success : function(data, status){
 				if(status == "success"){
 					alert("차단되었습니다.");
-					$("button[data-email="+nick+"]").text("차단해제");
+					$("div.dropdown-menu button[data-email="+nick+"]").text("차단해제");
 					$("button[data-email="+nick+"]").removeAttr("onclick");
 					$("button[data-email="+nick+"]").attr("onclick", "disBlackList()");
 					
@@ -238,7 +262,7 @@ function disBlackList(){
 			success : function(data, status){
 				if(status == "success"){
 					alert("차단해제 되었습니다.");
-					$("button[data-email="+nick+"]").text("차단하기");
+					$("div.dropdown-menu button[data-email="+nick+"]").text("차단하기");
 					$("button[data-email="+nick+"]").removeAttr("onclick");
 					$("button[data-email="+nick+"]").attr("onclick", "blackList()");
 					
@@ -252,6 +276,23 @@ function disBlackList(){
 }
 
 function sendMsg(){
+	$(".recep").val(nick);
+}
+
+function sendToOther(){
+	nick = $(".sendMsgOther").attr('data-nick');
+	console.log(nick + "///// 이것은 nick이다")
+	$.ajax({
+		url: "/my/sendOther",
+		type: "POST",
+		cache: false,
+		data : "&membernick="+nick,
+		success: function(data, status){
+			if(status == "success"){
+				otherUUid = data;
+			}
+		}
+	});
 	$(".recep").val(nick);
 }
 

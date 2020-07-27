@@ -26,8 +26,6 @@ public class WishplaceController {
 	@Autowired
 	PlacelistService service;
 	
-	
-	
 	@GetMapping("/wish/place")
 	public String placed(Model model,HttpSession session)  throws Exception{
 		//사용자 uuid 값 가지고 오기
