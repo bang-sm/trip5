@@ -193,8 +193,18 @@ public class TravelController {
 	@ResponseBody
 	@PostMapping(value = "/bookmark")
 	public int bookmark(int tsid,HttpSession session) throws Exception {
-		int uuid=memberKey(session);
-		int status=travelService.bookmark(tsid,uuid);
+		
+		int status;
+		
+		if (session.getAttribute("userInfo") != null) {
+			MemberVO vo = new MemberVO();
+			vo = (MemberVO) session.getAttribute("userInfo");
+			int uuid=vo.getUuid();
+			travelService.bookmark(tsid,uuid);
+			status=1;
+		}else {
+			status=0;
+		}
 		
 		return status;
 	}
@@ -205,17 +215,5 @@ public class TravelController {
 		
 		
 		return 0;
-	}
-	
-	public int memberKey(HttpSession session) {
-		int uuid;
-		if (session.getAttribute("userInfo") != null) {
-			MemberVO vo = new MemberVO();
-			vo = (MemberVO) session.getAttribute("userInfo");
-			uuid=vo.getUuid();
-			return uuid;
-		} else {
-			return 0;
-		}
 	}
 }

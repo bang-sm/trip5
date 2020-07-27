@@ -90,7 +90,7 @@ $(document).ready(function() {
 	        		book_mark_on+='<i id="bookmark_st" class="fa fa-check"></i>';
 	        		$(book_mark_div).append(book_mark_on);
 	        	}else if(data==0){
-	        		toastr.error("이미추가되었습니다");
+	        		toastr.error("로그인이 필요합니다");
 	        	}
 	        }
 		});

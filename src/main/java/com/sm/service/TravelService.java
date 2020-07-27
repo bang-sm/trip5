@@ -124,19 +124,15 @@ public class TravelService {
 		return travelDAO.likeCount(tsid);
 	}
 	//북마크
-	public int bookmark(int tsid, int uuid) {
-		int status;
+	public void bookmark(int tsid, int uuid) {
 		HashMap<String , Integer> param=new HashMap<>();
 		param.put("uuid", uuid);
 		param.put("tsid", tsid);
 		try {
 			travelDAO.bookmark(param);
-			status=1;
 		} catch (Exception e) {
-			status=0;
+			System.out.println(e.getMessage());
 		}
-		
-		return status;
 	}
 
 }
