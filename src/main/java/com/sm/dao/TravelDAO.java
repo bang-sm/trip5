@@ -135,4 +135,30 @@ public class TravelDAO {
 		return sqlSession.selectList("mappers.travelMapper.getTravelReply",tsid);
 	}
 
+	//댓글삭제
+	public void travel_reply_delete(HashMap<String, Integer> param) {
+		sqlSession.delete("mappers.travelMapper.delete_my_reply",param);
+	}
+
+	//좋아요 추가
+	public void travel_like(int tsid) {
+		sqlSession.update("mappers.travelMapper.travel_like",tsid);
+	}
+
+	//좋아요개수
+	public int likeCount(int tsid) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("mappers.travelMapper.likeCount",tsid);
+	}
+
+	//북마크
+	public void bookmark(HashMap<String, Integer> param) {
+		sqlSession.insert("mappers.travelMapper.bookmark",param);
+	}
+
+	//북마크삭제
+	public void bookmarkDelete(HashMap<String, Integer> param) {
+		sqlSession.delete("mappers.travelMapper.bookmarkDelete",param);		
+	}
+
 }

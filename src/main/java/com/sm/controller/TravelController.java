@@ -148,8 +148,6 @@ public class TravelController {
 		if (session.getAttribute("userInfo") != null) {
 			MemberVO vo = new MemberVO();
 			vo = (MemberVO) session.getAttribute("userInfo");
-			System.out.println(vo);
-			System.out.println(session.getAttribute("userInfo"));
 			uuid = vo.getUuid();
 			param.put("uuid", uuid);
 			param.put("reply", travelReplyVO);
@@ -166,11 +164,58 @@ public class TravelController {
 	//댓글삭제
 	@ResponseBody
 	@PostMapping(value = "/travel_reply_delete")
-	public int travel_reply_delete(int uuid,HttpSession session) throws Exception {
+	public int travel_reply_delete(int uuid,int ts_reply_id,HttpSession session) throws Exception {
 		
-		System.out.println(uuid);
+		if (session.getAttribute("userInfo") != null) {
+			MemberVO vo = new MemberVO();
+			vo = (MemberVO) session.getAttribute("userInfo");
+			
+			if(vo.getUuid()==uuid) {
+				travelService.travel_reply_delete(uuid,ts_reply_id);
+			}
+		} else {
+			return 0;
+		}
+		
+		return 1;
+	}
+	//좋아요
+	@ResponseBody
+	@PostMapping(value = "/travel_like")
+	public int travel_like(int tsid) throws Exception {
+		
+		travelService.travel_like(tsid);
+		int like=travelService.likeCount(tsid);
+		
+		return like;
+	}
+	//북마크
+	@ResponseBody
+	@PostMapping(value = "/bookmark")
+	public int bookmark(int tsid,HttpSession session) throws Exception {
+		int uuid=memberKey(session);
+		int status=travelService.bookmark(tsid,uuid);
+		
+		return status;
+	}
+	//팔로우
+	@ResponseBody
+	@PostMapping(value = "/follow")
+	public int follow(int uuid,HttpSession session) throws Exception {
+		
 		
 		return 0;
 	}
-
+	
+	public int memberKey(HttpSession session) {
+		int uuid;
+		if (session.getAttribute("userInfo") != null) {
+			MemberVO vo = new MemberVO();
+			vo = (MemberVO) session.getAttribute("userInfo");
+			uuid=vo.getUuid();
+			return uuid;
+		} else {
+			return 0;
+		}
+	}
 }

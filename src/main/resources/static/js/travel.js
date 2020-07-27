@@ -17,9 +17,11 @@ $(document).ready(function() {
 	        	}else{
 	        		toastr.success("등록되었습니다");
 	        		$("#replyBox").empty();
+	        		console.log($("#myKey").val());
 	        		for (var i = 0; i < data.length; i++) {
+	        			
 						var replyList="";
-						replyList+='<div class="comment-list">';
+						replyList+='<div class="comment-list dropdown">';
 						replyList+='<div class="single-comment justify-content-between d-flex">';
 						replyList+='<div class="user justify-content-between d-flex">';
 						replyList+='<div class="thumb">';
@@ -33,9 +35,14 @@ $(document).ready(function() {
 						replyList+='<p class="comment" data-uid='+data[i].uuid+'>'+data[i].tsReplyComment+'</p>';
 						replyList+='</div>';
 						replyList+='</div>';
-						replyList+='<div class="reply-btn">';
-						replyList+='<button type="button" data-uuid='+data[i].uuid+' class="btn-reply text-uppercase">삭제</button>';
-						replyList+='</div>';
+						
+						if($("#myKey").val()==data[i].uuid){
+							replyList+='<div class="reply-btn">';
+							replyList+='<input type="hidden" value='+data[i].tsReplyId+' class="reply_id">';
+							replyList+='<button type="button" data-uuid='+data[i].uuid+' class="btn-reply text-uppercase">삭제</button>';
+							replyList+='</div>';
+						}
+						
 						replyList+='</div>';
 						replyList+='</div>';
 						$("#replyBox").append(replyList);
@@ -45,20 +52,90 @@ $(document).ready(function() {
 	        },
 	    });
 	});
-	//삭제
-	$(documnet).on('click','.reply_submit',function(){
+	//좋아요
+	$("#tslike").click(function(){
 		$.ajax({
-	        type : 'post',
-	        url : '/travel/travel_reply_delete',
+			type : 'post',
+	        url : '/travel/travel_like',
 	        data : {
-	        	"uuid" : $(this).attr("data-uuid")
+	        	"tsid" : $("#tsid").val()
+	        },
+	        error: function(xhr, status, error){
+	        	toastr.success("실패하였습니다");
+	        },
+	        success : function(data){
+	        	toastr.success(data);
+	        	$("#likeNum").text(data);
+	        }
+		});
+	});
+	
+	//북마크
+	$("#bookmark").click(function(){
+		var book_mark_div=$(this);
+		$.ajax({
+			type : 'post',
+	        url : '/travel/bookmark',
+	        data : {
+	        	"tsid" : $("#tsid").val()
 	        },
 	        error: function(xhr, status, error){
 	        	toastr.success("실패하였습니다");
 	        },
 	        success : function(data){
 	        	
+	        	if(data==1){
+	        		toastr.success("북마크에 추가하였습니다.");
+	        		var book_mark_on="";
+	        		book_mark_on+='<i id="bookmark_st" class="fa fa-check"></i>';
+	        		$(book_mark_div).append(book_mark_on);
+	        	}else if(data==0){
+	        		toastr.error("이미추가되었습니다");
+	        	}
+	        }
+		});
+	});
+	//팔로우
+	$("#follow").click(function(){
+		$.ajax({
+			type : 'post',
+	        url : '/travel/follow',
+	        data : {
+	        	"uuid" : $("#myKey").val()
 	        },
+	        error: function(xhr, status, error){
+	        	toastr.success("실패하였습니다");
+	        },
+	        success : function(data){
+	        	toastr.success(data);
+	        	$("#likeNum").text(data);
+	        }
+		});
+	});
+	
+	//삭제
+	$(document).on('click','.btn-reply',function(){
+		var remove_box=$(this).parents(".comment-list");
+		console.log(remove_box);
+		$.ajax({
+	        type : 'post',
+	        url : '/travel/travel_reply_delete',
+	        data : {
+	        	"uuid" : $(this).attr("data-uuid"),
+	        	"ts_reply_id" : $(this).prev().val()
+	        },
+	        error: function(xhr, status, error){
+	        	toastr.success("실패하였습니다");
+	        },
+	        success : function(data){
+	        	if(data==1){
+	        		toastr.success("삭제되었습니다");
+	        		$(remove_box).remove();
+	        	}else if(data==0){
+	        		toastr.error("잘못된 접근입니다");
+	        	}	
+	        	
+	        }
 	    });
 	});
 	//로딩시 에디터에잇는 내용 가져와서 뿌려주기
