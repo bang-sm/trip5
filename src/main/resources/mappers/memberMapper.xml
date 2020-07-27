@@ -64,6 +64,16 @@
 			memberemail = #{memberemail}
 	</select>
 
+	<!-- uuid 확인 -->
+	<select id="uuidCheck" resultType="int">
+		select 
+			uuid 
+		from 
+			member
+		where 
+			memberemail = #{memberemail}
+	</select>
+
 	<!-- 회원 수 -->
 	<select id="userCnt" resultType="int">
 		select

@@ -13,7 +13,6 @@
 <body class="sidebar-mini layout-fixed" style="height: auto;">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:include="common/header :: header_nav"></nav>
 	<div th:include="common/Sidebar :: header_aside"></div>
-	<input type="hidden" id="userUuid" th:value="${session.userInfo.uuid}"/>
 	<div class="content-wrapper" style="min-height: 1157.69px; margin-top: 50px">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -41,15 +40,15 @@
             </div>
             <div class="card-body p-0">
               <ul class="nav nav-pills flex-column">
-                <li class="nav-item active send">
-                  <a th:href=@{/my/message(sendid=${session.userInfo.uuid})} class="nav-link">
+                <li class="nav-item send">
+                  <a href="#" class="nav-link">
                     <i class="fas fa-inbox"></i> 보낸 쪽지함
-                    <span class="badge bg-primary float-right">12</span>
                   </a>
                 </li>
                 <li class="nav-item receive">
                   <a href="#" class="nav-link ">
                     <i class="far fa-envelope"></i> 받은 쪽지함
+                    <span th:if="${cntMsg != null}" class="badge bg-primary float-right cntMsg" th:text="${cntMsg}"></span>
                   </a>
                 </li>
                 <li class="nav-item trash">
@@ -84,7 +83,7 @@
             <div class="card-body p-0">
               <div class="table-responsive mailbox-messages">
                 <table class="table table-hover table-striped">
-                  <tbody>
+                  <tbody class="tb-cl">
                   <tr th:each="list : ${list}">
                     <td>
                       <div class="icheck-primary">

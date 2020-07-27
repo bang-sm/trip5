@@ -18,6 +18,7 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.sm.domain.ChatMessage;
 import com.sm.domain.MessageVO;
@@ -72,7 +73,7 @@ public class ChatController {
         }
 	}
 	
-	@GetMapping("/my/message")
+	@GetMapping("/my/clip")
 	public String message(MessageVO messageVO, Model model) throws ParseException {
 		List<MessageVO> list = myService.sendMessage(messageVO);
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -82,8 +83,14 @@ public class ChatController {
 			list.get(i).setMsgregdate(format2.format(date));
 		}
 		
+		messageVO.setFromid(messageVO.getSendid());
+		
+		int count = myService.countMessage(messageVO);
+		
+		model.addAttribute("cntMsg", count);
 		model.addAttribute("list", list);
-		return "chatting/message";
+		
+		return "/chatting/message";
 	}
 }
 

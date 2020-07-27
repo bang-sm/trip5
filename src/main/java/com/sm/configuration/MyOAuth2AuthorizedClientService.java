@@ -31,6 +31,7 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 
 	@Override
 	public void saveAuthorizedClient(OAuth2AuthorizedClient oAuth2AuthorizedClient, Authentication authentication) {
+		System.out.println("인식좀 되라 ...제발ㅇ아아아아ㅏ앙");
 		try {
 
 //			String providerType = oAuth2AuthorizedClient.getClientRegistration().getRegistrationId();
@@ -45,7 +46,7 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 			System.out.println(principalName + "   /// getPrincipalName");
 
 			// 유저 이메일(아이디)
-//			String memberemail = ((LinkedHashMap<?, ?>) oauth2User.getAttribute("kakao_account")).get("email") + "";
+			String memberemail = ((LinkedHashMap<?, ?>) oauth2User.getAttribute("kakao_account")).get("email") + "";
 //		System.out.println(memberemail + "//////////////////////////memberemail/////////////////////////////////");
 
 			// 유저 닉네임
@@ -63,14 +64,7 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 			// 카카오톡 토큰
 			System.out.println(accessToken.getTokenValue());
 
-			// 카카오로그인이 안되있을 때 밀어넣기
-//			if(memberDAO.idCheck(memberemail) == null){
-//				memberDAO.kakaoJoin(memberVo);
-//			}else {
-//				// 카카오로그인 Y 넣기	
-//				memberDAO.kakaoOk(memberemail);
-//			} // end if
-			System.out.println("야야야야");
+			// 카카오회원가입 안되있을 때 밀어넣기
 			try {
 				if(memberDAO.idCheck(principalName).equals(null))
 					memberDAO.kakaoJoin(memberVo);
@@ -78,6 +72,14 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 			} catch (Exception e) {
 				memberDAO.kakaoJoin(memberVo);
 			}
+			
+			
+			// uuid 값 넣기
+			int uuid = memberDAO.uuidCheck(principalName);
+			System.out.println(uuid);
+			
+			memberVo.setUuid(uuid);
+			
 			// 로그인 세션 저장
 			session.setAttribute("userInfo", memberVo);
 			session.setMaxInactiveInterval(60 * 60);
@@ -104,7 +106,7 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 
 	@Override
 	public void removeAuthorizedClient(String clientRegistrationId, String principalName) {
-
+    
 	}
-
+	
 }

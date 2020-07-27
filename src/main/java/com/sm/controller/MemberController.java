@@ -103,18 +103,6 @@ public class MemberController {
 		return "/user/inform";
 	}
 
-	// 어드민 페이지
-	@GetMapping("/admin")
-	public String dispAdmin() {
-		return "/admin";
-	}
-
-	// 관리자 페이지 자료들 불러올 때
-	@PostMapping("/admin/ajax/userCnt")
-	public String[] userCnt() {
-
-		return null;
-	}
 	
 	// 인증번호 -------------------------------------------------------------------
 	@ResponseBody

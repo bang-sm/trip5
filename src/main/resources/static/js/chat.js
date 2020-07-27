@@ -22,6 +22,7 @@ function getdate(){
 }
 
 $(document).ready(function(){
+	alert(inUser.length+'//////');
 	loadPage();
 	connect();
 	
@@ -29,7 +30,6 @@ $(document).ready(function(){
 		if(lastOne){
 			outUser();
 		}
-		return "레알 나감????????????";
     });
 });
 
@@ -55,7 +55,6 @@ function connect(event) {
 
 
 function onConnected() {
-	
 	console.log('onConnected//////');
     // Subscribe to the Public Topic
     stompClient.subscribe('/topic/public', onMessageReceived);
@@ -112,7 +111,7 @@ function onMessageReceived(payload) {
     
     if(message.type === 'JOIN') {
     	console.log(userNick + " <-- 멤버 닉네임")
-    	if(inUser.length == 1) lastOne = false;
+    	lastOne = false;
     	inUser.push(message.participant[message.participant.length-1]) // 메세지 센더 이슈?
     	for(i = 0; i<message.participant.length; i++){
     		if(!$("li[data-name='"+message.participant[i]+"']").length){
