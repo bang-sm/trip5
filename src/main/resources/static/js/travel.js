@@ -23,23 +23,41 @@ $(document).ready(function() {
 						replyList+='<div class="single-comment justify-content-between d-flex">';
 						replyList+='<div class="user justify-content-between d-flex">';
 						replyList+='<div class="thumb">';
-						replyList+='<img src="img/blog/c1.jpg" alt="">';
+						replyList+='<img src="https://placeimg.com/60/60" alt="">';
 						replyList+='</div>';
 						replyList+='<div class="desc">';
 						replyList+='<h5>';
-						replyList+='<span>'+data[i].memberName+'</span>';
+						replyList+='<span class="member_drop_menu">'+data[i].memberName+'</span>';
 						replyList+='</h5>';
 						replyList+='<p class="date">'+data[i].replyRegdate+'</p>';
-						replyList+='<p class="comment">'+data[i].tsReplyComment+'</p>';
+						replyList+='<p class="comment" data-uid='+data[i].uuid+'>'+data[i].tsReplyComment+'</p>';
+						replyList+='</div>';
+						replyList+='</div>';
+						replyList+='<div class="reply-btn">';
+						replyList+='<button type="button" data-uuid='+data[i].uuid+' class="btn-reply text-uppercase">삭제</button>';
 						replyList+='</div>';
 						replyList+='</div>';
 						replyList+='</div>';
-						replyList+='</div>';
-						console.log(replyList);
 						$("#replyBox").append(replyList);
 					}
-	        		$("#comment_count").text(data.length+" 개의 댓글");
+	        		$("#comment_count").html(data.length+" 개의 댓글");
 	        	}
+	        },
+	    });
+	});
+	//삭제
+	$(documnet).on('click','.reply_submit',function(){
+		$.ajax({
+	        type : 'post',
+	        url : '/travel/travel_reply_delete',
+	        data : {
+	        	"uuid" : $(this).attr("data-uuid")
+	        },
+	        error: function(xhr, status, error){
+	        	toastr.success("실패하였습니다");
+	        },
+	        success : function(data){
+	        	
 	        },
 	    });
 	});

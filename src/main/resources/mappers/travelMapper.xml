@@ -180,6 +180,7 @@
 	<select id="getTravelReply" parameterType="hashmap"  resultType="com.sm.domain.TravelReplyVO">
 		SELECT 
 			ts_reply_id ,
+			uuid,
 			(SELECT membernick FROM `member` WHERE uuid=a.uuid) AS memberName,
 			ts_reply_comment ,
 			ts_id ,

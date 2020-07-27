@@ -136,6 +136,7 @@ public class TravelController {
 		return "redirect:/index";
 	}
 
+	//댓글저장
 	@ResponseBody
 	@PostMapping(value = "/travel_reply_save")
 	public List<TravelReplyVO> travel_reply_save(@ModelAttribute TravelReplyVO travelReplyVO) throws Exception {
@@ -160,6 +161,16 @@ public class TravelController {
 			return null;
 		}
 		return list;
+	}
+	
+	//댓글삭제
+	@ResponseBody
+	@PostMapping(value = "/travel_reply_delete")
+	public int travel_reply_delete(int uuid,HttpSession session) throws Exception {
+		
+		System.out.println(uuid);
+		
+		return 0;
 	}
 
 }
