@@ -76,24 +76,11 @@ public class MyController {
 		int cnt = myService.countMessage(messageVO);
 		
 		return cnt;
-		
-//		List<MessageVO> list = myService.receiveMessage(messageVO);
-//		
-//		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//		SimpleDateFormat format2 = new SimpleDateFormat("MM월dd일 HH:mm");
-//		for(int i = 0; i < list.size(); i++) {
-//			Date date = format1.parse(list.get(i).getMsgregdate());
-//			list.get(i).setMsgregdate(format2.format(date));
-//		}
-//		
-//		return list;
 	}
 	
 	@PostMapping("/receive")
 	public List<MessageVO> receiveMsg(MessageVO messageVO) throws ParseException{
 		List<MessageVO> list = myService.receiveMessage(messageVO);
-		
-		messageVO.setFromid(messageVO.getSendid());
 		
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		SimpleDateFormat format2 = new SimpleDateFormat("MM월dd일 HH:mm");
