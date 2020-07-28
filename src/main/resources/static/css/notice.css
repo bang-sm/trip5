@@ -1,10 +1,24 @@
-.slideNotice{
- background-color:#343a40;
- color: white;	
-  position: fixed;
-  top: 55px;
-  width: 100%;
-  left: 0;
-  right: 0;
-  z-index: 2;
+/*메인페이지 헤더 슬라이더 공지*/
+.slideNotice {
+	background-color: #343a40;
+	color: white;
+	position: fixed;
+	top: 55px;
+	width: 100%;
+	left: 0;
+	right: 0;
+	z-index: 2;
+}
+
+.sNoticeMsg{
+	margin: 0px 400px 0px 0px;
+	display: inline-block;
+}
+
+.nSlideInput {
+	width: 100%;
+}
+
+.sNoticeBtn {
+	margin: 10px;
 }

@@ -7,16 +7,13 @@
 <link rel="stylesheet" href="../css/dist/css/adminlte.min.css">
 <link rel="stylesheet" type="text/css" th:href="@{/css/slick.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/css/slick-theme.css}">
-<link rel="stylesheet" type="text/css" th:href="@{/css/admin.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/notice.css}">
 
 <script src="../js/admin.js"></script>
-
-<!-- 차트 링크 -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="../js/notice.js"></script>
 
 <!-- Google 아이콘 -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
 </head>
 
 <body class="sidebar-mini layout-fixed" style="height: auto;">
@@ -25,7 +22,27 @@
 	<div th:include="common/adminSidebar :: adminHeader_aside"></div>
 	<!-- //공통 헤드 nav -->
 	<div class="content-wrapper px-5" style="padding-top: 80px">
-		야야야
+		<div class="container">
+			<div class="card mb-4 shadow-sm">
+				<div class="card-header">
+					<h4 class="my-0 font-weight-normal float-left">슬라이드 공지</h4>
+				</div>
+				<div class="card-body noticeSlide">
+					<div th:each="sNoticeContent : ${sNoticeContent}" class="sNoticecontent" style="margin-bottom: 5px;">
+						<input th:if='${sNoticeContent.snEnrollment.equals("Y")}' class="nSlideCheck" type="checkbox" checked="checked" style="vertical-align: middle; zoom: 3; margin-right: 3px;" />
+						<input th:unless='${sNoticeContent.snEnrollment.equals("Y")}' class="nSlideCheck" type="checkbox" style="vertical-align: middle; zoom: 3; margin-right: 3px;" /> 
+						<input class="nSlideInput col-lg-7 col-md-6 col-9" th:value="${sNoticeContent.snContent}" type="text" maxlength="80" style="vertical-align: middle; height: 50px; margin-right: 10px;"/>
+						<button type="button" class="btn col-lg-2 col-md-2 col-3 btn-lg btn-inlineblock btn-outline-primary sNoticeUpdate" style="margin-right: 5px;">수정</button>
+						<button type="button" class="btn col-lg-2 col-md-2 col-3 btn-lg btn-inlineblock btn-outline-primary sNoticeDelete">삭제</button>
+						<div th:text="${sNoticeContent.snId}" class="sNoticeUid" style="display: none"/>
+					</div>
+				</div>
+				<div class="sNoticeBtn">
+					<button type="button" class="btn col-lg-1 col-md-1 col-2 btn-md btn-inlineblock btn-outline-primary enrollmentSNotice">등록</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	</div>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e957a3a75c171b18d05297414326bb8d&libraries=services"></script>
 	<script src="../js/wish.js"></script>
