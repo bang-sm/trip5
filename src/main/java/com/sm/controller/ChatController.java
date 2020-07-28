@@ -92,6 +92,17 @@ public class ChatController {
 		
 		return "/chatting/message";
 	}
+	
+	@GetMapping("/my/clipread")
+	public String messageRead(MessageVO messageVO, Model model) {
+		MessageVO msg= myService.clipRead(messageVO);
+		int cnt = myService.countMessage(messageVO);
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("cntMsg",cnt);
+		
+		return "/chatting/messageRead";
+	}
 }
 
 

@@ -48,7 +48,8 @@
 	<select id="sendMessage" parameterType="com.sm.domain.MessageVO" resultType="com.sm.domain.MessageVO">
 		SELECT 
 			m.membernick membernick, 
-			msg_id msgid, msg_regdate msgregdate, 
+			msg_id msgid, 
+			msg_regdate msgregdate, 
 			msg_content msgcontent, 
 			from_id fromid, 
 			send_id sendid, 
@@ -56,7 +57,8 @@
 		FROM 
 			member m, messageList l 
 		WHERE 
-			m.uuid = l.from_id and l.send_id = #{sendid}
+			m.uuid = l.from_id AND 
+			l.send_id = #{sendid}
 	</select>
 	
 	<select id="countMessage" parameterType="com.sm.domain.MessageVO" resultType="int">
@@ -64,8 +66,15 @@
 			count(*) 
 		FROM 
 			messageList 
-		WHERE 
-			from_id = #{fromid}
+		WHERE
+		<choose>
+			<when test="fromid != 0">
+				from_id = #{fromid}
+			</when>
+			<otherwise>
+				from_id = #{sendid}
+			</otherwise>
+		</choose> 
 	</select>
 	
 	<select id="receive" parameterType="com.sm.domain.MessageVO" resultType="com.sm.domain.MessageVO">
@@ -81,8 +90,37 @@
 		member m, 
 		messageList l 
 	WHERE 
-		m.uuid = l.from_id AND 
+		m.uuid = l.send_id AND 
 		l.from_id = #{fromid}
 	</select>
 	
+	<select id="clipread" parameterType="com.sm.domain.MessageVO" resultType="com.sm.domain.MessageVO">
+	SELECT 
+		m.membernick membernick, 
+		msg_id msgid, 
+		msg_regdate msgregdate, 
+		msg_content msgcontent, 
+		from_id fromid, 
+		send_id sendid, 
+		msg_subject msgsubject, 
+		t.membernick othernick
+	FROM 
+		member m, 
+		messageList l,
+		(SELECT membernick FROM member WHERE uuid = #{sendid}) t
+	WHERE 
+		m.uuid = l.from_id AND
+		l.msg_id = #{msgid};
+	</select>
+	
 </mapper>
+
+
+
+
+
+
+
+
+
+
