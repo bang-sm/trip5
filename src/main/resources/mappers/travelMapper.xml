@@ -165,7 +165,7 @@
 			tsid=#{tsid} AND tsirootorder=#{tsirootorder}
 	</delete>
 	
-	<insert id="travel_reply_save" parameterType="Map">
+	<insert id="travel_reply_save" parameterType="Map" useGeneratedKeys="true" keyProperty="ts_reply_id">
 		INSERT INTO travel_story_reply 
 		VALUES
 		(
@@ -180,6 +180,7 @@
 	<select id="getTravelReply" parameterType="hashmap"  resultType="com.sm.domain.TravelReplyVO">
 		SELECT 
 			ts_reply_id ,
+			uuid,
 			(SELECT membernick FROM `member` WHERE uuid=a.uuid) AS memberName,
 			ts_reply_comment ,
 			ts_id ,
@@ -191,5 +192,41 @@
 		     ts_id=#{tsid}
 		;
 	</select>
+	<delete id="delete_my_reply" parameterType="map">
+		DELETE FROM travel_story_reply
+		WHERE
+			uuid=#{uuid} AND ts_reply_id=#{ts_reply_id}
+			
+	</delete>
+	<update id="travel_like">
+		UPDATE travel_story
+		SET
+			tslike=tslike+1
+		WHERE
+			tsid=#{tsid}
+	</update>
+	
+	<select id="likeCount" resultType="int">
+		SELECT
+			tslike
+		FROM 
+			travel_story
+		WHERE 
+			tsid=#{tsid}
+	</select>
+	
+	<insert id="bookmark" parameterType="map">
+		INSERT INTO bookmark 
+		VALUES
+		(
+			#{uuid},
+			#{tsid}
+		)
+	</insert>
+	<delete id="bookmarkDelete" parameterType="map">
+		DELETE FROM bookmark
+		WHERE
+			uuid=#{uuid} AND ts_id=#{tsid}
+	</delete>
 
 </mapper>

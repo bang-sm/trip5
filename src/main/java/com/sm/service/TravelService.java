@@ -104,5 +104,35 @@ public class TravelService {
 	public List<TravelReplyVO> travel_reply_list(int tsId) {
 		return travelDAO.travel_reply_list(tsId);
 	}
+	//리플삭제
+	public void travel_reply_delete(int uuid,int ts_reply_id) {
+		HashMap<String , Integer> param=new HashMap<>();
+		param.put("uuid", uuid);
+		param.put("ts_reply_id", ts_reply_id);
+		
+		travelDAO.travel_reply_delete(param);	
+	}
+
+	//좋아요
+	public void travel_like(int tsid) {
+		
+		travelDAO.travel_like(tsid);
+	}
+	//좋아요 개수
+	public int likeCount(int tsid) {
+		// TODO Auto-generated method stub
+		return travelDAO.likeCount(tsid);
+	}
+	//북마크
+	public void bookmark(int tsid, int uuid) {
+		HashMap<String , Integer> param=new HashMap<>();
+		param.put("uuid", uuid);
+		param.put("tsid", tsid);
+		try {
+			travelDAO.bookmark(param);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
 
 }
