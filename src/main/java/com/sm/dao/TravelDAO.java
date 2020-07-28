@@ -147,10 +147,12 @@ public class TravelDAO {
 
 	//좋아요개수
 	public int likeCount(int tsid) {
-		// TODO Auto-generated method stub
 		return sqlSession.selectOne("mappers.travelMapper.likeCount",tsid);
 	}
-
+	//북마크 되어있는지 안되어있는지 체크
+	public int bookmarkCheck(HashMap<String, Integer> param) {
+		return sqlSession.selectOne("mappers.travelMapper.bookmarkCheck",param);
+	}
 	//북마크
 	public void bookmark(HashMap<String, Integer> param) {
 		sqlSession.insert("mappers.travelMapper.bookmark",param);
@@ -161,4 +163,25 @@ public class TravelDAO {
 		sqlSession.delete("mappers.travelMapper.bookmarkDelete",param);		
 	}
 
+	//팔로우하기
+	public void follow(HashMap<String, Integer> param) {
+		// TODO Auto-generated method stub
+		sqlSession.insert("mappers.travelMapper.follow",param);
+	}
+
+	//팔로우 되어있는지 체크
+	public int followCheck(HashMap<String, Integer> param) {
+		
+		return sqlSession.selectOne("mappers.travelMapper.followCheck",param);
+	}
+	//팔로우 삭제
+	public void follow_delete(HashMap<String, Integer> param) {
+		sqlSession.delete("mappers.travelMapper.followDelete",param);
+	}
+
+
+	public int tempTravelCheck(int uuid) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("mappers.travelMapper.tempTravelCheck",uuid);
+	}
 }
