@@ -12,4 +12,12 @@ import lombok.ToString;
 public class SlideNoticeVO {
 	private int snId;
 	private String snContent;
+	private String snEnrollment;
+	
+	public SlideNoticeVO(int snId, String snContent) {
+		super();
+		this.snId = snId;
+		this.snContent = snContent;
+	}
+	
 }
