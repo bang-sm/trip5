@@ -28,7 +28,7 @@
 						</div>
 						<!-- /.box-header -->
 						<div class="box-body">
-							<table class="table table-bordered">
+							<table class="table">
 								<tbody class="tbody">
 									<tr class="tabletr" th:each="card  : ${place}" th:data-status='${card.placecategory}' th:data-check='${card.placecheck}' th:if="${card.placecheck==0 && card.placecategory==0}">
 										<td class="tablesize">
@@ -230,7 +230,10 @@
 					</div>
 
 					<div class="modal-footer">
-						<input type="hidden" name="placename" value="" /> <input type="hidden" name="placejuso" value="" /> <input type="hidden" name="bloglink" value="" /> <input type="hidden" name="iconname" value="" />
+						<input type="hidden" name="placename" value="" /> 
+						<input type="hidden" name="placejuso" value="" /> 
+						<input type="hidden" name="bloglink" value="" /> 
+						<input type="hidden" name="iconname" value="" />
 						<th:block th:if="${session.userInfo}!= null">
 							<input type="hidden" name="uuid" th:value="${session.userInfo.uuid}" />
 						</th:block>

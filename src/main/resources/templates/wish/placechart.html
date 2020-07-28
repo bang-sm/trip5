@@ -28,7 +28,7 @@
 						</div>
 						<!-- /.box-header -->
 						<div class="box-body">
-							<table class="table table-bordered">
+							<table class="table ">
 								<tbody class="tbody">
 									<tr class="tabletr" th:each="card  : ${place}" th:data-status='${card.placecategory}' th:data-check='${card.placecheck}' th:if="${card.placecheck==1}">
 										<td class="tablesize">
@@ -149,11 +149,12 @@
 				<div class="card card-info card-korea-map" style="width:100%;height:800px;">
 						<div class="card-header">
 							<h3 class="card-title">지역별 현황</h3>
+							<div class="all-look">
+								<input type="checkbox" class="map-checkbox" name="map-checkbox" /><span>전체보기</span>
+							</div>
 						</div>
 						
-						<div>
-							<input type="checkbox" class="map-checkbox" name="map-checkbox"/><span>전체보기</span>
-						</div>
+						
 						<div class="card-body card-korea-map-main" th:include="wish/koreamap :: korea_aside">
 						
 						</div>

@@ -96,5 +96,22 @@ public class WishplaceController {
 		return "wish/koreamap";
 	}
 	
+	@GetMapping("/mypage")
+	public String mypage(Model model,HttpSession session) throws Exception{
+		MemberVO vo=vo=(MemberVO) session.getAttribute("userInfo");  
+		
+		logger.info("session : "+ vo);
+		int uuid;
+		try {
+			uuid=vo.getUuid();
+		}catch(NullPointerException e) {
+			logger.info("session 없음");
+			return "redirect:/index";
+		}
+		model.addAttribute("mypage",service.mypage(uuid));
+		
+		return "wish/mypagetotal";
+	}
+	
 	
 }

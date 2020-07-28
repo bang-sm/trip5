@@ -111,8 +111,9 @@ $("#exampleModal").on('shown.bs.modal', function(){
 		for (var i = 0; i < places.length; i++) {
 
 			// 마커를 생성하고 지도에 표시합니다
-			var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x), marker = addMarker(
-					placePosition, i), itemEl = getListItem(i, places[i]); // 검색 결과
+			var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x)
+			, marker = addMarker(placePosition, i),
+			itemEl = getListItem(i, places[i]); // 검색 결과
 																			// 항목
 																			// Element를
 																			// 생성합니다
@@ -134,41 +135,9 @@ $("#exampleModal").on('shown.bs.modal', function(){
 					infowindow.close();
 				});
 				
-				/* kakao.maps.event.addListener(marker, 'click', function() {
-					 alert("장소 : " +areaname);
-					 console.log(areaname);
-					 $('.alarm-name').text(areaname);
-						$('.alarm').css("display","block");
-						setTimeout(function() {
-							$('.alarm').css("display","none");
-							}, 1000);
-						$('.btn_check_place').removeClass('btn-outline-danger');
-						$('.btn_check_place').addClass('btn-danger');
-						$('input[name=placename]').val(areaname);
-						$('input[name=placejuso]').val(places.address_name);
-					 });*/
-				 kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
-					    searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
-					        if (status === kakao.maps.services.Status.OK) {
-					        	alert("주소 : "+result[0].address.address_name);
-					            var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
-					            detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
-					            
-					            var content = '<div class="bAddr">' +
-					                            '<span class="title">법정동 주소정보</span>' + 
-					                            detailAddr + 
-					                        '</div>';
-
-					            // 마커를 클릭한 위치에 표시합니다 
-					            marker.setPosition(mouseEvent.latLng);
-					            marker.setMap(map);
-
-					            // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
-					            infowindow.setContent(content);
-					            infowindow.open(map, marker);
-					        }   
-					    });
-					});
+				 kakao.maps.event.addListener(marker, 'click', function() {
+					 searchaddress(areaname);
+					 });
 				itemEl.onmouseover = function() {
 					displayInfowindow(marker, title);
 				};
@@ -189,6 +158,32 @@ $("#exampleModal").on('shown.bs.modal', function(){
 		map.setBounds(bounds);
 	}
 
+	
+	//장소 이름으로 리스트에 있는 주소값 가지고 오기
+   function searchaddress(areaname){
+	   var count = $('.item');
+	   var name =count.children('.info').children('h5');
+	   for(i=0;i<name.length;i++){
+		if(name[i].innerHTML == areaname){
+			console.log("정답 : "+ name[i].innerHTML + " , " + "areaname : " + areaname);
+			var juso = count.children('.info').children('.jibun ');
+			console.log(juso[i].innerHTML);
+			
+			$('input[name=placejuso]').val(juso[i].innerHTML);
+			$('input[name=placename]').val(name[i].innerHTML);
+			$('.alarm-name').text(name[i].innerHTML);
+			$('.alarm').css("display","block");
+			setTimeout(function() {
+				$('.alarm').css("display","none");
+				}, 1000);
+			$('.btn_check_place').removeClass('btn-outline-danger');
+			$('.btn_check_place').addClass('btn-danger');
+			
+		}   
+	   }
+   }
+	
+	
 	// 검색결과 항목을 Element로 반환하는 함수입니다
 	function getListItem(index, places) {
 
@@ -227,6 +222,8 @@ $("#exampleModal").on('shown.bs.modal', function(){
 		});
 		
 		
+		
+		
 
 		return el;
 	}
@@ -235,6 +232,8 @@ $("#exampleModal").on('shown.bs.modal', function(){
 	    // 좌표로 법정동 상세 주소 정보를 요청합니다
 	    geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
 	}
+	
+	
 
 	// 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
 	function addMarker(position, idx, title) {
@@ -252,7 +251,9 @@ $("#exampleModal").on('shown.bs.modal', function(){
 																		// 좌상단 좌표
 			offset : new kakao.maps.Point(13, 37)
 		// 마커 좌표에 일치시킬 이미지 내에서의 좌표
-		}, markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions), marker = new kakao.maps.Marker(
+		}, 
+		markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions), 
+		marker = new kakao.maps.Marker(
 				{
 					position : position, // 마커의 위치
 					image : markerImage
@@ -261,6 +262,7 @@ $("#exampleModal").on('shown.bs.modal', function(){
 		marker.setMap(map); // 지도 위에 마커를 표출합니다
 		markers.push(marker); // 배열에 생성된 마커를 추가합니다
 
+		
 		return marker;
 	}
 

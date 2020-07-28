@@ -1,5 +1,6 @@
 package com.sm.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.sm.domain.MypageVO;
 import com.sm.domain.PlacelistVo;
 
 @Repository
@@ -93,4 +95,69 @@ public class PlacelistDAO {
 		fmap.put("uuid", uuid);
 		return sql.selectOne("mappers.placelistMapper.area",fmap);
 	}
+	
+	public HashMap<String, Object> mypage(int uuid){
+		HashMap<String, Object> mymap = new HashMap<>();
+		List<MypageVO> followme =new ArrayList<MypageVO>();
+		followme = sql.selectList("mappers.placelistMapper.followme",uuid);
+		int followmecount = followme.size();
+		
+		List<MypageVO> followyou =new ArrayList<MypageVO>();
+		followyou = sql.selectList("mappers.placelistMapper.followyou",uuid);
+		int followyoucount = followyou.size();
+		
+		List<MypageVO> follower =new ArrayList<MypageVO>();
+		follower= sql.selectList("mappers.placelistMapper.follower",uuid);
+		int followercount = follower.size();
+		
+		List<MypageVO> bm =new ArrayList<MypageVO>();
+		bm= sql.selectList("mappers.placelistMapper.bmcount",uuid);
+		int bmcount = bm.size();
+		
+		String [] name = new String[followmecount+followyoucount];
+		for(int i=0;i<followme.size();i++) {
+			name[i]=sql.selectOne("mappers.placelistMapper.membername",followme.get(i).getFollowUuid());
+		}
+		
+		for(int j=0;j<followyou.size();j++) {
+			name[followme.size()+j]=sql.selectOne("mappers.placelistMapper.membername",followyou.get(j).getUuid());
+		}
+		
+		for(String t : name) {
+			System.out.println("사람은 : "+t);
+		}
+		
+		
+		
+		
+		mymap.put("followme", followme);
+		mymap.put("followmecount", followmecount);
+		mymap.put("followyou", followyou);
+		mymap.put("followyoucount", followyoucount);
+		mymap.put("follower", follower);
+		mymap.put("followercount", followercount);
+		mymap.put("bm", bm);
+		mymap.put("bmcount", bmcount);
+		mymap.put("membername", name);
+		
+		return  mymap;
+	}
+	
+	
+	
+	/*
+	 * public List<FollowVO> followme(int uuid) { return
+	 * sql.selectList("mappers.placelistMapper.followme",uuid); }
+	 * 
+	 * public List<FollowVO> followyou(int uuid) { return
+	 * sql.selectList("mappers.placelistMapper.followyou",uuid); }
+	 * 
+	 * public List<FollowVO> follwer(int uuid) { return
+	 * sql.selectList("mappers.placelistMapper.follwer",uuid); } public
+	 * List<BookmarkVO> bmcount(int uuid) { return
+	 * sql.selectList("mappers.placelistMapper.bmcount",uuid); }
+	 * 
+	 * public String membername(int uuid) { return
+	 * sql.selectOne("mappers.placelistMapper.membername",uuid); }
+	 */
 }

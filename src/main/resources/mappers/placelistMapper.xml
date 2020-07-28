@@ -123,5 +123,51 @@
 		LIKE  
 				#{areaname} and uuid =#{uuid};
 	</select>
+	
+	<select id="followme" parameterType="int" resultType="com.sm.domain.MypageVO">
+	SELECT
+			*
+	FROM
+			follow
+	WHERE 
+			uuid=#{uuid} and status ='N';
+	</select>
+	
+	<select id="followyou" parameterType="int" resultType="com.sm.domain.MypageVO">
+	SELECT
+			*
+	FROM
+			follow
+	WHERE 
+			follow_uuid=#{uuid} and status ='N';
+	</select>
+	
+	<select id="follower" parameterType="int" resultType="com.sm.domain.MypageVO">
+	SELECT
+			*
+	FROM
+			follow
+	WHERE 
+			(uuid=#{uuid} OR follow_uuid=#{uuid}) AND status ='Y';
+	</select>
+	
+	<select id="bmcount" parameterType="int" resultType="com.sm.domain.MypageVO">
+	SELECT
+			*
+	FROM
+			bookmark
+	WHERE 
+			uuid=#{uuid};
+	</select>
+	
+	<select id="membername" parameterType="int" resultType="String">
+	SELECT
+			membernick
+	FROM
+			member
+	WHERE
+			uuid=#{uuid};
+	
+	</select>
 
 </mapper>
