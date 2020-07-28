@@ -26,7 +26,6 @@ function sendMsg(){
 		data : "sendid="+$("#userUuid").val(),
 		success : function(data, status){
 			if(status == "success"){
-				toastr.success('성공');
 				console.log(data);
 				$(".tb-cl").html('');
 				
@@ -34,14 +33,12 @@ function sendMsg(){
 					$(".tb-cl").append("<tr>" +
                     "<td>" +
                       "<div class='icheck-primary'>"+
-                        "<input type='checkbox' value='' id='check1'>"+
+                        "<input type='checkbox' value='' class='check1'>"+
                         "<label for='check1'></label>"+
                       "</div>"+
                     "</td>"+
-                    "<td class='mailbox-star'><a href='#'></a></td>"+
-                    "<td class='mailbox-name'><a href='read-mail.html'>"+data[i].membernick+"</a></td>"+
-                    "<td class='mailbox-subject'>"+data[i].msgsubject+"</td>"+
-                    "<td class='mailbox-attachment'></td>"+
+                    "<td class='mailbox-name'>"+data[i].membernick+"</td>"+
+                    "<td class='mailbox-subject'><a href='/my/clipread?msgid="+data[i].msgid+"&sendid="+data[i].sendid+"' class='alert-link' style='color:black'>"+data[i].msgsubject+"</a></td>"+
                     "<td class='mailbox-date'>"+data[i].msgregdate+"</td>"+
                   "</tr>");
 				}
@@ -58,7 +55,6 @@ function cntMsg(){
 		data : "fromid="+$("#userUuid").val(),
 		success : function(data, status){
 			if(status == "success"){
-				toastr.success('성공2');
 				console.log(data);
 				$(".cntMsg").text(data);
 			}
@@ -80,14 +76,12 @@ function receiveMsg(){
 					$(".tb-cl").append("<tr>" +
                     "<td>" +
                       "<div class='icheck-primary'>"+
-                        "<input type='checkbox' value='' id='check1'>"+
+                        "<input type='checkbox' value='' class='check1'>"+
                         "<label for='check1'></label>"+
                       "</div>"+
                     "</td>"+
-                    "<td class='mailbox-star'><a href='#'></a></td>"+
-                    "<td class='mailbox-name'><a href='read-mail.html'>"+data[i].membernick+"</a></td>"+
-                    "<td class='mailbox-subject'>"+data[i].msgsubject+"</td>"+
-                    "<td class='mailbox-attachment'></td>"+
+                    "<td class='mailbox-name'>"+data[i].membernick+"</td>"+
+                    "<td class='mailbox-subject'><a href='/my/clipread?msgid="+data[i].msgid+"&sendid="+data[i].sendid+"&fromid="+data[i].fromid+"' class='alert-link' style='color:black'>"+data[i].msgsubject+"</a></td>"+
                     "<td class='mailbox-date'>"+data[i].msgregdate+"</td>"+
                   "</tr>");
 				}
@@ -95,4 +89,16 @@ function receiveMsg(){
 			}
 		}
 	});
+}
+
+function chkAll(){
+	if($(".check1").is(":checked")){
+		$(".check1").prop("checked", false);
+	} else {
+		$(".check1").prop("checked", true);
+	}
+}
+
+function trash(){
+	
 }
