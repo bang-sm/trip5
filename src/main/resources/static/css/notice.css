@@ -1,4 +1,4 @@
-/*메인페이지 헤더 슬라이더 공지*/
+ㄴ/*메인페이지 헤더 슬라이더 공지*/
 .slideNotice {
 	background-color: #343a40;
 	color: white;
@@ -11,7 +11,7 @@
 }
 
 .sNoticeMsg{
-	margin: 0px 400px 0px 0px;
+	margin: 0px 200px 0px 0px;
 	display: inline-block;
 }
 
