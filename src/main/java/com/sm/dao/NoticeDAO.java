@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.sm.domain.PopUpNoticeVO;
 import com.sm.domain.SlideNoticeVO;
 
 @Repository
@@ -19,7 +20,7 @@ public class NoticeDAO {
 	
 	// 슬라이드 공지 내용 가져오기
 	public List<SlideNoticeVO> sNoticeContent() throws Exception{
-		return sql.selectList(namespace + ".slideContent");
+		return sql.selectList(namespace + ".sNoticeContent");
 	}
 	
 	// 슬라이드 공지 추가
@@ -51,5 +52,26 @@ public class NoticeDAO {
 	public List<String> sNoticeShow() throws Exception{
 		return sql.selectList(namespace + ".sNoticeShow");
 	}
+
+	//////////////////////팝업////////////////////////////
+	// 팝업 공지 내용 가져오기
+	public List<PopUpNoticeVO> pNoticeContent() throws Exception{
+		return sql.selectList(namespace + ".pNoticeContent");
+	}
+
+	// 특정 ipnd 팝업 공지 내용 가져오기
+	public List<PopUpNoticeVO> pNoticeData(int pnId) throws Exception{
+		return sql.selectList(namespace + ".pNoticeData",pnId);
+	}
+
+	// 특정 ipnd 팝업 공지 내용 수정
+	public void pNoticeUpdate(PopUpNoticeVO popUpNoticeVO) throws Exception{
+		sql.update(namespace + ".pNoticeUpdate",popUpNoticeVO);
+		
+	}
 	
-}
+	// 팝업 공지 삭제
+	public void pNoticeDelete(int pNoticeUid) throws Exception{
+		sql.update(namespace + ".pNoticeDelete",pNoticeUid);
+	}
+} // end class

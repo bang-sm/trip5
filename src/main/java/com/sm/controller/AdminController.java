@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.sm.domain.PopUpNoticeVO;
 import com.sm.domain.SlideNoticeVO;
 import com.sm.service.NoticeService;
 
@@ -35,9 +36,12 @@ public class AdminController {
 	@GetMapping("/admin/notice")
 	public String dispAdminNotice(Model model) throws Exception {
 		
-		List<SlideNoticeVO> content = noticeService.sNoticeNotice();
+		List<SlideNoticeVO> snContent = noticeService.sNoticeContent();
+		List<PopUpNoticeVO> pnContent = noticeService.pNoticeContent();
 		
-		model.addAttribute("sNoticeContent",content);
+		
+		model.addAttribute("sNoticeContent",snContent);
+		model.addAttribute("pNoticeContent",pnContent);
 		
 		return "/admin/notice";
 	}

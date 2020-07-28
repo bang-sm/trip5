@@ -3,7 +3,7 @@
 <mapper namespace="mappers.noticeMapper">
 
 	<!-- 슬라이드 공지 내용 -->
-	<select id="slideContent"
+	<select id="sNoticeContent"
 		resultType="com.sm.domain.SlideNoticeVO">
 		SELECT
 			*
@@ -79,6 +79,46 @@
 			snEnrollment = 'Y' 
 	</select>
 	
-	
+	<!-- ////////////////////////////팝업////////////////////////// -->
+	<!-- 팝업 공지 출력 -->
+	<select id="pNoticeContent"
+		resultType="com.sm.domain.PopUpNoticeVO">
+		SELECT
+			*
+		FROM
+			popupNotice
+	</select>
 
+	<!-- 특정 pnid 슬라이드 공지 내용 -->
+	<select id="pNoticeData" parameterType="int"
+		resultType="com.sm.domain.PopUpNoticeVO">
+		SELECT 
+			* 
+		FROM
+			popupNotice
+		WHERE
+			pnId = #{pnId};
+	</select>
+	
+	<!-- 팝업 공지 수정 -->
+	<update id="pNoticeUpdate" parameterType="com.sm.domain.PopUpNoticeVO">
+		UPDATE
+			popupNotice
+		SET
+			pnHeader = #{pnHeader},
+			pnContent = #{pnContent} 
+		WHERE 
+			pnId = #{pnId};
+	</update>
+	
+	<!-- 팝업 공지 삭제 -->
+	<update id="pNoticeDelete" parameterType="int">
+		UPDATE
+			popupNotice
+		SET
+			pnHeader = '',
+			pnContent = ''
+		WHERE 
+			pnId = #{pnId};
+	</update>
 </mapper>
