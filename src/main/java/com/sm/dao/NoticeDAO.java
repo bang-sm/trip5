@@ -74,4 +74,15 @@ public class NoticeDAO {
 	public void pNoticeDelete(int pNoticeUid) throws Exception{
 		sql.update(namespace + ".pNoticeDelete",pNoticeUid);
 	}
+	
+	// 팝업 공지 등록 안함
+	public void pNoticeEnrollNo() throws Exception{
+		sql.update(namespace + ".pNoticeEnrollNo");
+	}
+
+	// 팝업 공지 등록 함
+	public void pNoticeEnrollYes(HashMap<String, int[]> pnId) throws Exception{
+		sql.update(namespace + ".pNoticeEnrollYes",pnId);
+	}
+	
 } // end class

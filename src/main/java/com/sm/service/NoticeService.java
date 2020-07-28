@@ -88,4 +88,13 @@ public class NoticeService {
 		noticeDao.pNoticeDelete(pNoticeUid);
 	} // end sNoticeDelete
 	
+	// 팝업 공지 등록 안함
+	public void pNoticeEnrollNo() throws Exception {
+		noticeDao.pNoticeEnrollNo();
+	} // end sNoticeEnrollNo
+	
+	// 팝업 공지 등록 함
+	public void pNoticeEnrollYes(HashMap<String, int[]> pnId) throws Exception {
+		noticeDao.pNoticeEnrollYes(pnId);
+	} // end sNoticeEnrollYes
 }

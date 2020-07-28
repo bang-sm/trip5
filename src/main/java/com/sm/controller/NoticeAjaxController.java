@@ -93,5 +93,22 @@ public class NoticeAjaxController {
 		System.out.println(pNoticeUid);
 		noticeService.pNoticeDelete(Integer.parseInt(pNoticeUid));
 	}
+	
+	// 팝업 공지 등록
+	@ResponseBody
+	@PostMapping("/adminNotice/ajax/pNoticeEnrol")
+	public void pNoticeEnrol(@RequestParam(value="pnId[]") int[] pnId) throws Exception {
+		System.out.println("들어옴");
+		System.out.println("uid : " +pnId[0] + "\n");
+		
+		// N으로 모두 초기화
+		noticeService.pNoticeEnrollNo();
+		for (int i = 0; i < pnId.length; i++) {
+			System.out.println(pnId[i]);
+		}
+		HashMap<String, int[]> hm = new HashMap<>();
+		hm.put("pnId", pnId);
+		noticeService.pNoticeEnrollYes(hm);
+	}
 
 } // end controller

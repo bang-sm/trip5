@@ -47,13 +47,13 @@
 			<!-- 팝업 공지 -->
 			<div class="card mb-4 shadow-sm">
 				<div class="card-header">
-					<h4 class="my-0 font-weight-normal float-left">슬라이드 공지</h4>
+					<h4 class="my-0 font-weight-normal float-left">팝업 공지</h4>
 				</div>
 				<div class="card-body noticeSlide">
 					<div th:each="pNoticeContent : ${pNoticeContent}" class="nPopUpcontent" style="margin-bottom: 5px;">
 						<input th:if='${pNoticeContent.pnEnrollment.equals("Y")}' class="nPopUpCheck" type="checkbox" checked="checked" style="vertical-align: middle; zoom: 3; margin-right: 3px; margin-left: 3px;" />
 						<input th:unless='${pNoticeContent.pnEnrollment.equals("Y")}' class="nPopUpCheck" type="checkbox" style="vertical-align: middle; zoom: 3; margin-right: 3px; margin-left: 3px;" />
-						<input class="nPopUpInput col-lg-7 col-md-10 col-8" th:value="|제목 : ${pNoticeContent.pnHeader}|" type="button" maxlength="80" style="vertical-align: middle; height: 50px; margin-right: 10px;" data-toggle="modal" data-target="#myModal" />
+						<input class="nPopUpInput col-lg-7 col-md-10 col-8" th:value="${pNoticeContent.pnHeader}" type="button" maxlength="80" style="vertical-align: middle; height: 50px; margin-right: 10px;" data-toggle="modal" data-target="#myModal" />
 						<div class="updelBtn col-lg-3 col-md-11 col-11">
 							<button type="button" class="btn col-12 btn-lg btn-inlineblock btn-outline-primary pNoticeDelete" style="padding-left: 3px; padding-right: 3px;">삭제</button>
 						</div>
@@ -70,7 +70,6 @@
 
 	<!-- Modal -->
 	<div id="myModal" class="modal fade" role="dialog">
-		// fade는 투명 효과
 		<div class="modal-dialog">
 
 			<!-- Modal content-->

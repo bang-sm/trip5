@@ -121,4 +121,26 @@
 		WHERE 
 			pnId = #{pnId};
 	</update>
+	
+	<!-- 팝업 공지 등록 N -->
+	<update id="pNoticeEnrollNo">
+		UPDATE 
+			popupNotice
+		SET
+			pnEnrollment = 'N';
+	</update>
+	
+	<!-- 팝업 공지 등록 Y -->
+	<update id="pNoticeEnrollYes" parameterType="hashmap">
+		UPDATE 
+			popupNotice
+		SET
+			pnEnrollment = 'Y' 
+		WHERE 
+			pnId IN
+		<foreach collection="pnId" item="pnId" index="i"
+		 open="(" close=")" separator=",">
+            #{pnId}
+        </foreach> 
+	</update>
 </mapper>
