@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>쪽지함</title>
+<th:block th:replace="common/commonHead"></th:block>
+<link rel="stylesheet" href="../css/dist/css/adminlte.min.css">
+<link rel="stylesheet" type="text/css" th:href="@{/css/slick.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/slick-theme.css}">
+<script src="https://code.jquery.com/jquery-3.4.1.js" type="text/javascript"></script>
+<script src="../js/messageRead.js"></script>
+</head>
+<body class="sidebar-mini layout-fixed" style="height: auto;">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:include="common/header :: header_nav"></nav>
+	<div th:include="common/Sidebar :: header_aside"></div>
+	<div class="content-wrapper" style="min-height: 1157.69px; margin-top: 50px">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Read</h1>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">카테고리</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body p-0">
+                <ul class="nav nav-pills flex-column">
+                  <li class="nav-item">
+                    <a th:href=@{/my/clip(sendid=${session.userInfo.uuid})} class="nav-link">
+                      <i class="fas fa-inbox"></i> 보낸 쪽지함
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="far fa-envelope"></i> 받은 쪽지함
+                       <span th:if="${cntMsg != null}" class="badge bg-primary float-right cntMsg" th:text="${cntMsg}"></span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="fas fa-trash-alt"></i> 휴지통
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        <div class="col-md-9">
+          <div class="card card-primary card-outline">
+            <div class="card-header">
+              <h3 class="card-title">Read Mail</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body p-0">
+              <div class="mailbox-read-info">
+                <h5 th:text="${msg.msgsubject}" style="margin-bottom:5px"></h5>
+                <h6 th:if="${session.userInfo.uuid == msg.sendid}  " th:text="|To - ${msg.membernick}|"></h6>
+                <h6 th:if ="${session.userInfo.uuid != msg.sendid}" th:text="|From - ${msg.othernick}|"></h6>
+                  <span class="mailbox-read-time" th:text="${msg.msgregdate}"></span>
+              </div>
+              <!-- /.mailbox-read-info -->
+              <div class="mailbox-read-message">
+                <p th:text="${msg.msgcontent}"></p>
+              </div>
+              <!-- /.mailbox-read-message -->
+            </div>
+            <div class="card-footer">
+              <div class="float-right">
+                <button type="button" class="btn btn-default"><i class="fas fa-reply"></i> 이전 쪽지</button>
+                <button type="button" class="btn btn-default"><i class="fas fa-share"></i> 다음 쪽지</button>
+              </div>
+              <button type="button" class="btn btn-default"><i class="far fa-trash-alt"></i> 삭제 하기</button>
+            </div>
+            <!-- /.card-footer -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div></section>
+    <!-- /.content -->
+  </div>	
+	
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e957a3a75c171b18d05297414326bb8d&libraries=services"></script>
+	<script src="../js/wish.js"></script>
+	<script src="../js/slick.min.js"></script>
+	<script src="../js/placedash.js"></script>
+	<script src="../js/dist/js/adminlte.js"></script>
+	<script src="../js/dist/js/demo.js"></script>
+</body>
+</html>

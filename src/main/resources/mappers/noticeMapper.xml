@@ -2,32 +2,145 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mappers.noticeMapper">
 
-<!-- 	<insert id="signup" parameterType="com.sm.domain.MemberVO">
-		INSERT INTO member
-			(memberpass,
-			 memberemail,
-			 membernick,
-			 memberregdate)
-		VALUES
-			(#{memberpass},
-			#{memberemail},
-			#{membernick},
-			now());
-	</insert>
- -->
 	<!-- 슬라이드 공지 내용 -->
-	<select id="slideContent" resultType="String">
+	<select id="sNoticeContent"
+		resultType="com.sm.domain.SlideNoticeVO">
 		SELECT
-			snContent
+			*
 		FROM
 			slideNotice
 	</select>
-	
-		<!-- 슬라이드 공지 개수 -->
+
+	<!-- 슬라이드 공지 개수 -->
 	<select id="slideCount" resultType="int">
 		select
 			count(*)
 		from
 			slideNotice
-	</select>	
+	</select>
+
+	<!-- 슬라이드 공지 개수 추가 -->
+	<insert id="slideJoin">
+		INSERT INTO slideNotice
+			(snContent)
+		VALUES
+			('');
+	</insert>
+	
+	<!-- 슬라이드 공지 삭제 -->
+	<update id="slideDelete" parameterType="int">
+		UPDATE
+			slideNotice
+		SET
+			snContent = ''
+		WHERE 
+			snId = #{snId};
+	</update>
+	
+	<!-- 슬라이드 공지 수정 -->
+	<update id="sNoticeUpdate" parameterType="com.sm.domain.SlideNoticeVO">
+		UPDATE
+			slideNotice
+		SET
+			snContent = #{snContent} 
+		WHERE 
+			snId = #{snId};
+	</update>
+	
+	<!-- 슬라이드 공지 등록 N -->
+	<update id="sNoticeEnrollNo">
+		UPDATE 
+			slideNotice
+		SET
+			snEnrollment = 'N';
+	</update>
+
+	<!-- 슬라이드 공지 등록 Y -->
+	<update id="sNoticeEnrollYes" parameterType="hashmap">
+		UPDATE 
+			slideNotice
+		SET
+			snEnrollment = 'Y' 
+		WHERE 
+			snId IN
+		<foreach collection="snId" item="snId" index="i"
+		 open="(" close=")" separator=",">
+            #{snId}
+        </foreach> 
+	</update>
+	
+	<!-- Enroll Y 인 Content 출력 -->
+	<select id="sNoticeShow" resultType="String">
+		SELECT
+			snContent
+		FROM
+			slideNotice
+		WHERE
+			snEnrollment = 'Y' 
+	</select>
+	
+	<!-- ////////////////////////////팝업////////////////////////// -->
+	<!-- 팝업 공지 출력 -->
+	<select id="pNoticeContent"
+		resultType="com.sm.domain.PopUpNoticeVO">
+		SELECT
+			*
+		FROM
+			popupNotice
+	</select>
+
+	<!-- 특정 pnid 슬라이드 공지 내용 -->
+	<select id="pNoticeData" parameterType="int"
+		resultType="com.sm.domain.PopUpNoticeVO">
+		SELECT 
+			* 
+		FROM
+			popupNotice
+		WHERE
+			pnId = #{pnId};
+	</select>
+	
+	<!-- 팝업 공지 수정 -->
+	<update id="pNoticeUpdate" parameterType="com.sm.domain.PopUpNoticeVO">
+		UPDATE
+			popupNotice
+		SET
+			pnHeader = #{pnHeader},
+			pnContent = #{pnContent} 
+		WHERE 
+			pnId = #{pnId};
+	</update>
+	
+	<!-- 팝업 공지 삭제 -->
+	<update id="pNoticeDelete" parameterType="int">
+		UPDATE
+			popupNotice
+		SET
+			pnHeader = '',
+			pnContent = ''
+		WHERE 
+			pnId = #{pnId};
+	</update>
+	
+	<!-- 팝업 공지 등록 N -->
+	<update id="pNoticeEnrollNo">
+		UPDATE 
+			popupNotice
+		SET
+			pnEnrollment = 'N';
+	</update>
+	
+	<!-- 팝업 공지 등록 Y -->
+	<update id="pNoticeEnrollYes" parameterType="hashmap">
+		UPDATE 
+			popupNotice
+		SET
+			pnEnrollment = 'Y' 
+		WHERE 
+			pnId IN
+		<foreach collection="pnId" item="pnId" index="i"
+		 open="(" close=")" separator=",">
+            #{pnId}
+        </foreach> 
+	</update>
 </mapper>

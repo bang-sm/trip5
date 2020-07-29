@@ -52,7 +52,7 @@ $(document).ready(function(){
 				        datasets: [{
 				            label: ['방문 O'],
 				            data: [
-				              data.visitfood,data.visitcafe,data.visitcafe
+				              data.visitfood,data.visitcafe,data.visitplace
 				            ],
 				            borderColor: "rgba(255, 201, 14, 1)",
 				            backgroundColor: [

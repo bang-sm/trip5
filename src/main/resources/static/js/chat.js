@@ -22,7 +22,6 @@ function getdate(){
 }
 
 $(document).ready(function(){
-	alert(inUser.length+'//////');
 	loadPage();
 	connect();
 	

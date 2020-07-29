@@ -1,11 +1,13 @@
 package com.sm.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sm.dao.PlacelistDAO;
+import com.sm.domain.MypageVO;
 import com.sm.domain.PlacelistVo;
 
 import lombok.AllArgsConstructor;
@@ -55,6 +57,28 @@ public class PlacelistService{
 	public int area(int area, int uuid) throws Exception{
 		return dao.area(area,uuid);
 	}
+	
+	public HashMap<String, Object> mypage(int uuid) throws Exception{
+		return dao.mypage(uuid);
+	}
+	
+	public HashMap<String, Object> following(int uuid) throws Exception{
+		return dao.following(uuid);
+	}
+	
+	public HashMap<String, Object> follower(int uuid) throws Exception{
+		return dao.follower(uuid);
+	}
+	
+	public HashMap<String, Object> mypagebookmark(int uuid) throws Exception{
+		return dao.mypagebookmark(uuid);
+	}
+	
+	public HashMap<String, Object> mypagelike(int uuid) throws Exception{
+		return dao.mypagelike(uuid);
+	}
+	
+	
 	
 	
 }

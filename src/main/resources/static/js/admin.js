@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$.ajax({
+/*	$.ajax({
 		url : "/admin/ajax/userCnt",
 		type : "POST",
 		success : function(data) {
@@ -23,5 +23,5 @@ $(document).ready(function() {
 			
 		} // end function
 	}); // ajax 끝
-	
+	*/
 })

@@ -5,7 +5,7 @@
 <title>travel</title>
 <th:block th:replace="common/commonHead"></th:block>
 <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
-<link rel="stylesheet" type="text/css" href="../css/travelblog.css">
+<link rel="stylesheet" type="text/css" th:href="@{/css/travelblog.css}">
 <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 </head>
 
@@ -21,10 +21,11 @@
 							<img class="img-fluid" src="https://placeimg.com/1200/400">
 							<div class="banner_content text-center">
 								<h2 th:text="${travel.travelStory.tstitle}"></h2>
-								<a href="#" class="btn theme_btn" th:text="|#${travel.travelStory.tshashtagone}|">추억보기</a>
-								<a href="#" class="btn theme_btn" th:text="|#${travel.travelStory.tshashtagone}|">추억보기</a>
-								<a href="#" class="btn theme_btn" th:text="|#${travel.travelStory.tshashtagone}|">추억보기</a>
-								<a href="#" class="btn theme_btn" th:text="|#${travel.travelStory.tshashtagone}|">추억보기</a>
+								<input type="hidden" th:value="${travel.travelStory.uuid}" id="ts_uuid">
+								<a href="#" class="btn theme_btn" th:text="|#${travel.travelStory.tshashtagone}|"></a>
+								<a href="#" class="btn theme_btn" th:text="|#${travel.travelStory.tshashtagone}|"></a>
+								<a href="#" class="btn theme_btn" th:text="|#${travel.travelStory.tshashtagone}|"></a>
+								<a href="#" class="btn theme_btn" th:text="|#${travel.travelStory.tshashtagone}|"></a>
 							</div>
 						</div>
 					</div>
@@ -34,6 +35,22 @@
 								<span th:text="|${travel.travelStory.tsstartdate} - |"></span>
 								<span href="#" th:text="${travel.travelStory.tsenddate}"></span>
 							</div>
+							<ul class="navbar-nav mr-auto">
+								<li class="nav-item">
+								    <button type="button" class="btn btn-link" id="tslike">
+								    	<i class="fa fa-thumbs-up"></i>좋아요!
+								    	<i class="fa fa-envelope-o">
+								            <span class="badge badge-danger" id="likeNum" th:text="${travel.travelStory.tslike}"></span>
+							          	</i>
+								    </button>
+								    <button type="button" class="btn btn-info" id="bookmark">북마크
+								    	<i id="bookmark_st" class=""></i>
+								     </button>
+								    <button type="button" class="btn btn-info" id="follow">팔로우
+								    	<i id="follow_st" class=""></i>
+								    </button>
+								</li>
+						      </ul>
 						</div>
 					</div>
 					<div class="col-lg-12 col-md-12 blog_details" th:each="list : ${travel.infoList}">
@@ -47,22 +64,36 @@
 						<p th:utext="${list.tsicomment}"></p>
 					</div>
 				</div>
-
-				<div class="comments-area" id="replyBox">
+				
+				<div class="comments-area dropdown" id="replyBox">
 					<h4 th:text="|${travel.replyList[0].count} 개의 등록된 댓글|" id="comment_count">코멘트 총 개수</h4>
 					<div class="comment-list" th:each="reply : ${travel.replyList}">
 						<div class="single-comment justify-content-between d-flex">
 							<div class="user justify-content-between d-flex">
 								<div class="thumb">
-									<img src="img/blog/c1.jpg" alt="">
+									<img src="https://placeimg.com/60/60">
 								</div>
 								<div class="desc">
-									<h5>
-										<span th:text="${reply.memberName}">작성자</span>
+									<h5 class="pointer btn dropdown-toggle" data-toggle="dropdown" >
+										<input type="hidden" th:value="${reply.uuid}" class="uuid">
+										<span th:text="${reply.memberName}" class="member_drop_menu">작성자</span>
 									</h5>
+								 	<ul class="dropdown-menu" >
+									    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">쪽지보내기</a></li>
+									    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">팔로우</a></li>
+									    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">일지보기</a></li>
+								  	</ul>
 									<p class="date" th:text="${reply.replyRegdate}">2020-09-09</p>
 									<p class="comment" th:text="${reply.tsReplyComment}">코멘트내용</p>
 								</div>
+							</div>
+							<div class="reply-btn">
+								<th:block th:if="${session.userInfo != null}">
+									<th:block th:if="${reply.uuid == session.userInfo.uuid}">
+										<input type="hidden" th:value="${reply.tsReplyId}" class="reply_id">
+										<button type="button" th:data-uuid="${reply.uuid}" class="btn-reply text-uppercase">삭제</button>
+									</th:block>
+								</th:block>
 							</div>
 						</div>
 					</div>
@@ -71,7 +102,7 @@
 					<h4>Comment</h4>
 					<form>
 						<div class="form-group">
-							<input type="hidden" name="tsId" th:value="${travel.travelStory.tsid}">
+							<input type="hidden" name="tsId" th:value="${travel.travelStory.tsid}" id="tsid">
 							<input type="text" class="form-control" name="tsReplyComment" placeholder="코멘트를 남겨주세요">
 						</div>
 						<button type="button" class="primary-btn button_hover reply_submit">등록</button>
@@ -80,6 +111,10 @@
 			</div>
 		</div>
 	</div>
+	<th:block th:if="${session.userInfo != null}">
+			<input type="hidden" th:value="${session.userInfo.uuid}" id="myKey">
+	</th:block>
+	
 </body>
 <script type="text/javascript" src="../js/travel.js"></script>
 </html>

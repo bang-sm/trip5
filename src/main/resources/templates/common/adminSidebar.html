@@ -5,6 +5,7 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="css/dist/css/adminlte.min.css">
 <th:block th:replace="common/commonHead"></th:block>
+
 </head>
 <body class="sidebar-mini layout-fixed" style="height: auto;">
 	<div class="wrapper" th:fragment="adminHeader_aside">
@@ -33,15 +34,15 @@
 					<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 						<!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-						<li class="nav-item"><a href="/admin" class="nav-link">
-								<span class="nav-icon material-icons"> pie_chart </span>
-								<span>통계</span>
+						<li class="nav-item"><a href="/admin" class="nav-link menu1" data-url="/admin">
+								<span class="nav-icon material-icons" style="vertical-align: text-top;"> pie_chart </span>
+								<p>통계</p>
 							</a></li>
-						<li class="nav-item"><a href="#" class="nav-link">
+						<li class="nav-item"><a href="#" class="nav-link menu2">
 								<i class="nav-icon fa fa-users"></i>
 								<p>유저관리</p>
 							</a></li>
-						<li class="nav-item"><a href="/admin/notice" class="nav-link">
+						<li class="nav-item"><a href="/admin/notice" class="nav-link menu3" data-url="/admin/notice">
 								<i class="nav-icon fa fa-bullhorn"></i>
 								<p>공지관리</p>
 							</a></li>

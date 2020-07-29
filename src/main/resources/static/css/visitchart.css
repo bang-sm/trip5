@@ -18,3 +18,27 @@
 text{
 	font-size:20px;
 }
+.all-look{
+	display:inline-block;
+	float:right;
+}
+.map-checkbox{
+	position: absolute;
+    right: 100px;
+    top: 15px
+}
+
+
+
+@media(max-width:1200px) {
+	.card-korea-map-main{
+		left:2%;
+	}
+}
+@media(max-width:768px) {
+	.card-korea-map-main{
+		left:20%;
+	}
+}
+	
+}
