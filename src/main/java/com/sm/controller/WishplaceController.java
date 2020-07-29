@@ -1,5 +1,6 @@
 package com.sm.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.sm.domain.MemberVO;
+import com.sm.domain.MypageVO;
 import com.sm.domain.PlacelistVo;
 import com.sm.service.PlacelistService;
 
@@ -40,7 +42,10 @@ public class WishplaceController {
 			return "redirect:/user/login";
 		}
 		List<PlacelistVo> list = service.show(uuid);
+		logger.info("date : "+ list.get(0).getPlaceregdate());
 		model.addAttribute("place", service.show(uuid));
+		
+		
 		logger.info("확인 : " +list);
 		return "wish/place";
 	}
@@ -92,6 +97,24 @@ public class WishplaceController {
 	public String korea()throws Exception{
 		return "wish/koreamap";
 	}
+	
+	@GetMapping("/mypage")
+	public String mypage(Model model,HttpSession session) throws Exception{
+		MemberVO vo=vo=(MemberVO) session.getAttribute("userInfo");  
+		
+		logger.info("session : "+ vo);
+		int uuid;
+		try {
+			uuid=vo.getUuid();
+		}catch(NullPointerException e) {
+			logger.info("session 없음");
+			return "redirect:/index";
+		}
+		model.addAttribute("mypage",service.mypage(uuid));
+		
+		return "wish/mypagetotal";
+	}
+	
 	
 	
 }

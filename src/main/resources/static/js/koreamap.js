@@ -9,7 +9,6 @@ $(document).ready(function(){
 		data : {},
 		success : function(data){
 			console.log(data);
-			$('.text').value("경기 :");
 			$('.Gyeonggi-line').text("경기 : "+data[1]);
 			$('.Seoul-line').text("서울 : "+data[0]);
 			$('.Incheon-line').text("인천 : "+data[3]);

@@ -96,15 +96,16 @@ zoomimg {width:15px;height:15px;padding:12px 0;border:none;}
 }
 #keyword1{
 	float: left;
-    width: 300px;
+    width: 40%;
     height: 19px;
     padding: 20px;
     border: 0 none;
     font-weight: bold;
     font-size: 16px;
     line-height: 19px;
-    background-color: transparent;
+    background-color: white;
     outline: 0;
+    
 }
 .searchkakao{
     width: 350px;
@@ -159,12 +160,14 @@ zoomimg {width:15px;height:15px;padding:12px 0;border:none;}
 /* 테이블 css */
 .table td, .table th,table{
 	padding:0;
+	border:1px solid #dee2e6;
 	border-left:none;
 	border-right:none;
 	
 }
 .tabletr{
 	margin : 10px 0;
+	border:1px solid #dee2e6;
 	border-left:none;
 	border-right:none;
 }
@@ -799,7 +802,7 @@ a:hover { color: black; text-decoration: none;} */
 	 transition: all 0.2s linear 0s;
 }
  .effect.effect-3:before {
-	 content: "\f178";
+	 content: 'go';
 	 font-family: FontAwesome;
 	 position: absolute;
 	 display: flex;

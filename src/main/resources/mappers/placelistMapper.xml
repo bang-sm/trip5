@@ -123,5 +123,124 @@
 		LIKE  
 				#{areaname} and uuid =#{uuid};
 	</select>
+	
+	<select id="followme" parameterType="int" resultType="com.sm.domain.MypageVO">
+	SELECT
+			*
+	FROM
+			follow
+	WHERE 
+			uuid=#{uuid} and status ='N';
+	</select>
+	
+	<select id="followyou" parameterType="int" resultType="com.sm.domain.MypageVO">
+	SELECT
+			*
+	FROM
+			follow
+	WHERE 
+			follow_uuid=#{uuid} and status ='N';
+	</select>
+	
+	<select id="follower" parameterType="int" resultType="com.sm.domain.MypageVO">
+	SELECT
+			*
+	FROM
+			follow
+	WHERE 
+			(uuid=#{uuid} OR follow_uuid=#{uuid}) AND status ='Y';
+	</select>
+	
+	<select id="bmcount" parameterType="int" resultType="com.sm.domain.MypageVO">
+	SELECT
+			*
+	FROM
+			bookmark
+	WHERE 
+			uuid=#{uuid};
+	</select>
+	
+	<select id="membername" parameterType="int" resultType="String">
+	SELECT
+			membernick
+	FROM
+			member
+	WHERE
+			uuid=#{uuid};
+	
+	</select>
+	
+	<select id="following" parameterType="int" resultType="com.sm.domain.MypageVO">
+	SELECT 
+			b.membernick ,mp.p_name
+	FROM 
+			member b ,member_profile mp
+	WHERE	
+			 b.uuid = mp.uuid and b.uuid=#{uuid};
+	</select>
+	
+	<select id="followingyoucheck" parameterType="int" resultType="int">
+		SELECT 
+				follow_uuid 
+		FROM 
+				follow 
+		WHERE 
+				uuid=#{uuid} and status='N';
+	</select>
+	
+	<select id="followingmecheck" parameterType="int" resultType="int">
+		SELECT 
+				uuid
+		FROM
+				follow 
+		WHERE 
+				follow_uuid=3 and status ='N';
+	</select>
+	<select id="followeryoucheck" parameterType="int" resultType="int">
+		SELECT 
+				follow_uuid 
+		FROM 
+				follow 
+		WHERE 
+				uuid=#{uuid} and status='Y';
+	</select>
+	
+	<select id="followermecheck" parameterType="int" resultType="int">
+		SELECT 
+				uuid
+		FROM
+				follow 
+		WHERE 
+				follow_uuid=3 and status ='Y';
+	</select>
+	
+	<select id="mypagebm" parameterType="int" resultType="int">
+	SELECT
+			ts_id
+	FROM
+			bookmark
+	WHERE 
+			uuid=#{uuid};
+	</select>
+	
+	<select id="mypagetravelstory" parameterType="int" resultType="com.sm.domain.TravelVO">
+	SELECT
+			*
+	FROM
+			travel_story
+	WHERE 
+			tsid=#{tsid};
+	</select>
+	
+	<select id="mypagelike" parameterType="int" resultType="com.sm.domain.TravelVO">
+	SELECT
+			*
+	FROM
+			travel_story
+	WHERE 
+			uuid=#{uuid}
+	ORDER by tslike DESC ;
+	</select>
+	
 
 </mapper>

@@ -1,5 +1,6 @@
 package com.sm.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -11,10 +12,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -129,5 +128,63 @@ public class WishPlaceRestController {
 		
 		return arr;
 	}
-
+	
+	@PostMapping("/mypage/following")
+	public HashMap<String, Object> following(HttpSession session) throws Exception{
+		MemberVO vo=vo=(MemberVO) session.getAttribute("userInfo");  
+		
+		logger.info("session : "+ vo);
+		int uuid = 0;
+		try {
+			uuid=vo.getUuid();
+		}catch(NullPointerException e) {
+			logger.info("session 없음");
+		}
+		
+		return service.following(uuid);
+	}
+	
+	@PostMapping("/mypage/follower")
+	public HashMap<String, Object> follower(HttpSession session) throws Exception{
+		MemberVO vo=vo=(MemberVO) session.getAttribute("userInfo");  
+		
+		logger.info("session : "+ vo);
+		int uuid = 0;
+		try {
+			uuid=vo.getUuid();
+		}catch(NullPointerException e) {
+			logger.info("session 없음");
+		}
+		
+		return service.follower(uuid);
+	}
+	@PostMapping("/mypage/bookmark")
+	public HashMap<String, Object> mypagebookmark(HttpSession session) throws Exception{
+		MemberVO vo=vo=(MemberVO) session.getAttribute("userInfo");  
+		
+		logger.info("session : "+ vo);
+		int uuid = 0;
+		try {
+			uuid=vo.getUuid();
+		}catch(NullPointerException e) {
+			logger.info("session 없음");
+		}
+		
+		return service.mypagebookmark(uuid);
+	}
+	
+	@PostMapping("/mypage/like")
+	public HashMap<String, Object> mypagelike(HttpSession session) throws Exception{
+		MemberVO vo=vo=(MemberVO) session.getAttribute("userInfo");  
+		
+		logger.info("session : "+ vo);
+		int uuid = 0;
+		try {
+			uuid=vo.getUuid();
+		}catch(NullPointerException e) {
+			logger.info("session 없음");
+		}
+		
+		return service.mypagelike(uuid);
+	}
 }

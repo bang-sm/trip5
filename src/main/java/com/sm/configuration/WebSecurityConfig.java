@@ -92,6 +92,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()
 			.csrf().ignoringAntMatchers("/wish/**")
 		.and()
+			.csrf().ignoringAntMatchers("/mypage/**")
+		.and()
 			.csrf().ignoringAntMatchers("/user/authEmail.do")	
 		.and()
 			.csrf().ignoringAntMatchers("/adminNotice/ajax/**")	

@@ -1,5 +1,6 @@
 package com.sm.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -7,7 +8,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.sm.domain.MypageVO;
 import com.sm.domain.PlacelistVo;
+import com.sm.domain.TravelVO;
 
 @Repository
 public class PlacelistDAO {
@@ -93,4 +96,155 @@ public class PlacelistDAO {
 		fmap.put("uuid", uuid);
 		return sql.selectOne("mappers.placelistMapper.area",fmap);
 	}
+	
+	public HashMap<String, Object> mypage(int uuid){
+		HashMap<String, Object> mymap = new HashMap<>();
+		List<MypageVO> followme =new ArrayList<MypageVO>();
+		followme = sql.selectList("mappers.placelistMapper.followme",uuid);
+		int followmecount = followme.size();
+		
+		List<MypageVO> followyou =new ArrayList<MypageVO>();
+		followyou = sql.selectList("mappers.placelistMapper.followyou",uuid);
+		int followyoucount = followyou.size();
+		
+		List<MypageVO> follower =new ArrayList<MypageVO>();
+		follower= sql.selectList("mappers.placelistMapper.follower",uuid);
+		int followercount = follower.size();
+		
+		List<MypageVO> bm =new ArrayList<MypageVO>();
+		bm= sql.selectList("mappers.placelistMapper.bmcount",uuid);
+		int bmcount = bm.size();
+		
+		//수락요청 보낸거
+		String [] followmename = new String[followmecount];
+		
+		//수락요청 온거
+		String [] followyouname = new String[followyoucount];
+		for(int i=0;i<followme.size();i++) {
+			followmename[i]=sql.selectOne("mappers.placelistMapper.membername",followme.get(i).getFollowUuid());
+		}
+		
+		for(int j=0;j<followyou.size();j++) {
+			followyouname[j]=sql.selectOne("mappers.placelistMapper.membername",followyou.get(j).getUuid());
+		}
+		
+		for(String t : followmename) {
+			System.out.println("수락요청 보냄 : "+t);
+		}
+		
+		for(String t : followyouname) {
+			System.out.println("수락요청 받은 : "+ t);
+		}
+		
+		
+		
+		mymap.put("followme", followme);
+		mymap.put("followmecount", followmecount);
+		mymap.put("followyou", followyou);
+		mymap.put("followyoucount", followyoucount);
+		mymap.put("follower", follower);
+		mymap.put("followercount", followercount);
+		mymap.put("bm", bm);
+		mymap.put("bmcount", bmcount);
+		mymap.put("followmename", followmename);
+		mymap.put("followyouname", followyouname);
+		
+		return  mymap;
+	}
+	
+	public HashMap<String, Object> following(int uuid){
+		HashMap<String, Object> mymap = new HashMap<>();
+		List<Integer> flm =new ArrayList<Integer>();
+		flm = sql.selectList("mappers.placelistMapper.followingyoucheck",uuid);
+		List<MypageVO> followingme = new ArrayList<MypageVO>();
+		for(int i =0;i<flm.size();i++) {
+			try {
+				MypageVO mypageVO = sql.selectOne("mappers.placelistMapper.following",flm.get(i));
+				followingme.add(mypageVO);
+			}catch(IndexOutOfBoundsException e) {
+				System.out.println("꺼억");
+			}
+		}
+		
+		List<Integer> fly =new ArrayList<Integer>();
+		fly = sql.selectList("mappers.placelistMapper.followingmecheck",uuid);
+		List<MypageVO> followingyou = new ArrayList<MypageVO>();
+		for(int i =0;i<flm.size();i++) {
+			try {
+				MypageVO mypageVO = sql.selectOne("mappers.placelistMapper.following",fly.get(i));
+				followingyou.add(mypageVO);
+			}catch(IndexOutOfBoundsException e) {
+				System.out.println("꺼억");
+			}
+		}
+		mymap.put("followingme", followingme);
+		mymap.put("followingyou", followingyou);
+		return mymap;
+	}
+	
+	public HashMap<String, Object> follower(int uuid){
+		HashMap<String, Object> mymap = new HashMap<>();
+		List<Integer> flm =new ArrayList<Integer>();
+		flm = sql.selectList("mappers.placelistMapper.followeryoucheck",uuid);
+		List<MypageVO> follower = new ArrayList<MypageVO>();
+		for(int i =0;i<flm.size();i++) {
+			try {
+				MypageVO mypageVO = sql.selectOne("mappers.placelistMapper.following",flm.get(i));
+				follower.add(mypageVO);
+			}catch(IndexOutOfBoundsException e) {
+				System.out.println("꺼억");
+			}
+		}
+		
+		List<Integer> fly =new ArrayList<Integer>();
+		fly = sql.selectList("mappers.placelistMapper.followermecheck",uuid);
+		for(int i =0;i<flm.size();i++) {
+			try {
+				MypageVO mypageVO = sql.selectOne("mappers.placelistMapper.following",fly.get(i));
+				follower.add(mypageVO);
+			}catch(IndexOutOfBoundsException e) {
+				System.out.println("꺼억");
+			}
+		}
+		mymap.put("follower", follower);
+		return mymap;
+	}
+	
+	public HashMap<String, Object> mypagebookmark(int uuid){
+		HashMap<String, Object> mymap = new HashMap<>();
+		//먼저 uuid 로 게시글 목록가지고 오기
+		
+		List<Integer> bm =new ArrayList<Integer>();
+		bm = sql.selectList("mappers.placelistMapper.mypagebm",uuid);
+		List<TravelVO> bookmark = new ArrayList<TravelVO>();
+		for(int i=0;i<bm.size();i++) {
+			try {
+				TravelVO travelVO = sql.selectOne("mappers.placelistMapper.mypagetravelstory",bm.get(i));
+				bookmark.add(travelVO);
+			}catch(IndexOutOfBoundsException e) {
+				System.out.println("꺼억");
+			}
+		}
+		mymap.put("bookmark",bookmark);
+		return mymap;
+	}
+	
+	
+	public HashMap<String, Object> mypagelike(int uuid){
+		HashMap<String, Object> mymap = new HashMap<>();
+		//먼저 uuid 로 게시글 목록가지고 오기
+		List<TravelVO> like = new ArrayList<TravelVO>();
+		like=sql.selectList("mappers.placelistMapper.mypagelike",uuid);
+		int count=0;
+		for(int i=0;i<like.size();i++) {
+			count+=like.get(i).getTslike();
+		}
+		
+		mymap.put("count", count);
+		mymap.put("like", like);
+		return mymap;
+	}
+	
+	
+	
 }

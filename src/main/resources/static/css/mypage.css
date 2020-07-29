@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+
+.followingme-list{
+	padding-left: 0;
+}
+.followingyou-list{
+	padding-left: 0;
+}
+.img-circle-size{
+	width:4.1rem;
+	height:auto;
+	float:left;
+}
+.followname{
+	float:left;
+	font-size:0.9rem;
+}
+.send{
+	float:right;
+	font-size:0.9rem;
+}
+.list-group-item::after{
+	clear:both;
+}
