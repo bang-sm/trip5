@@ -1,5 +1,6 @@
 package com.sm.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -127,5 +128,63 @@ public class WishPlaceRestController {
 		
 		return arr;
 	}
-
+	
+	@PostMapping("/mypage/following")
+	public HashMap<String, Object> following(HttpSession session) throws Exception{
+		MemberVO vo=vo=(MemberVO) session.getAttribute("userInfo");  
+		
+		logger.info("session : "+ vo);
+		int uuid = 0;
+		try {
+			uuid=vo.getUuid();
+		}catch(NullPointerException e) {
+			logger.info("session 없음");
+		}
+		
+		return service.following(uuid);
+	}
+	
+	@PostMapping("/mypage/follower")
+	public HashMap<String, Object> follower(HttpSession session) throws Exception{
+		MemberVO vo=vo=(MemberVO) session.getAttribute("userInfo");  
+		
+		logger.info("session : "+ vo);
+		int uuid = 0;
+		try {
+			uuid=vo.getUuid();
+		}catch(NullPointerException e) {
+			logger.info("session 없음");
+		}
+		
+		return service.follower(uuid);
+	}
+	@PostMapping("/mypage/bookmark")
+	public HashMap<String, Object> mypagebookmark(HttpSession session) throws Exception{
+		MemberVO vo=vo=(MemberVO) session.getAttribute("userInfo");  
+		
+		logger.info("session : "+ vo);
+		int uuid = 0;
+		try {
+			uuid=vo.getUuid();
+		}catch(NullPointerException e) {
+			logger.info("session 없음");
+		}
+		
+		return service.mypagebookmark(uuid);
+	}
+	
+	@PostMapping("/mypage/like")
+	public HashMap<String, Object> mypagelike(HttpSession session) throws Exception{
+		MemberVO vo=vo=(MemberVO) session.getAttribute("userInfo");  
+		
+		logger.info("session : "+ vo);
+		int uuid = 0;
+		try {
+			uuid=vo.getUuid();
+		}catch(NullPointerException e) {
+			logger.info("session 없음");
+		}
+		
+		return service.mypagelike(uuid);
+	}
 }

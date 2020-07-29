@@ -1,10 +1,8 @@
 package com.sm.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Setter
-@Getter
+@Data
 public class MypageVO {
 	
 	private int uuid;
@@ -12,6 +10,7 @@ public class MypageVO {
 	private char status;
 	private int tsId;
 	private String membernick;
+	private String pName;
 	
 	
 	

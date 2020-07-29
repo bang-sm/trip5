@@ -62,5 +62,23 @@ public class PlacelistService{
 		return dao.mypage(uuid);
 	}
 	
+	public HashMap<String, Object> following(int uuid) throws Exception{
+		return dao.following(uuid);
+	}
+	
+	public HashMap<String, Object> follower(int uuid) throws Exception{
+		return dao.follower(uuid);
+	}
+	
+	public HashMap<String, Object> mypagebookmark(int uuid) throws Exception{
+		return dao.mypagebookmark(uuid);
+	}
+	
+	public HashMap<String, Object> mypagelike(int uuid) throws Exception{
+		return dao.mypagelike(uuid);
+	}
+	
+	
+	
 	
 }

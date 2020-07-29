@@ -1,5 +1,6 @@
 package com.sm.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.sm.domain.MemberVO;
+import com.sm.domain.MypageVO;
 import com.sm.domain.PlacelistVo;
 import com.sm.service.PlacelistService;
 
@@ -112,6 +114,7 @@ public class WishplaceController {
 		
 		return "wish/mypagetotal";
 	}
+	
 	
 	
 }
