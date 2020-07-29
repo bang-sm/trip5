@@ -42,16 +42,12 @@ function connect(event) {
 	console.log('connect//////');
 
     var socket = new SockJS('/ws');
-    console.log('1');
     stompClient = Stomp.over(socket);
-    console.log('2');
     console.log(socket);
     
     stompClient.connect({}, onConnected, onError);
-    console.log('3');
 //    event.preventDefault();
 }
-
 
 function onConnected() {
 	console.log('onConnected//////');
@@ -102,6 +98,17 @@ function outUser(event){
 	stompClient.send("/app/chat.outUser", {}, JSON.stringify(chatMessage));
 }
 
+
+function sendAlarm(){
+	var alarmMessage = {
+			type : 'ALARM',
+			sender: nick,
+			content: "쪽지가 도착했습니다!"
+	};
+	
+	stompClient.send("/app/chat.sendAlarm", {}, JSON.stringify(alarmMessage));
+}
+
 function onMessageReceived(payload) {
 	blackUser = true;
 	console.log('onMessageReceived//////')
@@ -135,6 +142,10 @@ function onMessageReceived(payload) {
     	outer = $("li[data-name='"+message.sender+"']").attr('data-name');
         $("li[data-name='"+message.sender+"']").remove();
         outUser();
+    } else if (message.type === 'ALARM'){
+    	if(message.sender == $("#userSessionId").val()){
+    		$("#clip").html("<i class='far fa-envelope-open'></i><span style='margin-left:5px' id='count' class='badge badge-danger'>N</span>");
+    	}
     } else {
     	getdate();
     	if(message.sender == $("#userSessionId").val()){
@@ -297,26 +308,32 @@ function sendToOther(){
 
 function sendToMsg(){
 	
-	$.ajax({
-		url : "/my/sendMsg",
-		type : "POST",
-		cache : false,
-		data : {
-			"msgcontent" : $("#message-text").val(),
-			"fromid" : otherUUid,
-			"sendid" : $("#userSessionuuid").val(),
-			"msgsubject" : $("#message-subject").val()
-		},
-		success : function(data,status){
-			if(status == "success"){
-				alert("쪽지를 보냈습니다!");
-				$(".modal").hide();
-				$("body > div.modal-backdrop.fade.show").remove();
+	if($("#message-subject").val().trim().length == 0){
+		toastr.success("제목은 반드시 입력해야 합니다", "오류", {"iconClass": 'customer-info'});
+	} else {
+		$.ajax({
+			url : "/my/sendMsg",
+			type : "POST",
+			cache : false,
+			data : {
+				"msgcontent" : $("#message-text").val(),
+				"fromid" : otherUUid,
+				"sendid" : $("#userSessionuuid").val(),
+				"msgsubject" : $("#message-subject").val()
+			},
+			success : function(data,status){
+				if(status == "success"){
+					alert("쪽지를 보냈습니다!");
+					sendAlarm();
+					$("#message-text").val(''),
+					$("#message-subject").val(''),
+					$(".modal").hide();
+					$("body > div.modal-backdrop.fade.show").remove();
+				}
 			}
-		}
-	})
+		})
+	}
 }
-
 
 /*
 $(document).ready(function(){
