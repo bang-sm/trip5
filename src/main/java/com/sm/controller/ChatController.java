@@ -73,6 +73,14 @@ public class ChatController {
         }
 	}
 	
+	@MessageMapping("/chat.sendAlarm")
+	@SendTo("/topic/public")
+	public ChatMessage sendAlarm(@Payload ChatMessage chatMessage) {
+		System.out.println(chatMessage.getContent() + " ///////////////////////////");
+		
+		return chatMessage;
+	}
+	
 	@GetMapping("/my/clip")
 	public String message(MessageVO messageVO, Model model) throws ParseException {
 		List<MessageVO> list = myService.sendMessage(messageVO);
@@ -95,7 +103,12 @@ public class ChatController {
 	
 	@GetMapping("/my/clipread")
 	public String messageRead(MessageVO messageVO, Model model) {
+		int read = 0;
 		MessageVO msg= myService.clipRead(messageVO);
+		
+		if(messageVO.getFromid() != 0) {
+			read = myService.readed(messageVO);
+		}
 		int cnt = myService.countMessage(messageVO);
 		
 		model.addAttribute("msg", msg);
