@@ -7,7 +7,6 @@ public class WeatherInfoVO {
 
 	private String fcstTime;
 	private String fcstDate;
-
 	private String category;
 	private double fcstValue;
 	

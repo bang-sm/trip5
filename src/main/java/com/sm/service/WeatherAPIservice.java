@@ -210,9 +210,9 @@ public class WeatherAPIservice {
 	    return list;
 	}
 	
-	public Map<String, String> sortNowData(List<WeatherInfoVO> list) {
+	public Map<String, Object> sortNowData(List<WeatherInfoVO> list) {
 
-		Map<String, String> nowData = new HashMap<String, String>();
+		Map<String, Object> nowData = new HashMap<String, Object>();
 		
 		String nowDate = list.get(0).getFcstDate();
 		String nowTime = list.get(0).getFcstTime();
@@ -232,39 +232,39 @@ public class WeatherAPIservice {
 				switch (category) {
 				
 				case "POP": 
-					nowData.put("POP", "list.get(i).getFcstValue()");
+					nowData.put("POP", list.get(i).getFcstValue());
 					break;
 					
-				case "REH": 
-					nowData.put("HUM", "list.get(i).getFcstValue()");
+				case "REH":
+					nowData.put("HUM", list.get(i).getFcstValue());
 					break;
 					
 				case "SKY": 
-					nowData.put("SKY", "list.get(i).getFcstValue()");
+					nowData.put("SKY", list.get(i).getFcstValue());
 					break;
 					
 				case "PTY": 
-					nowData.put("SKY", "11"); // 비오면 SKY 11 로 표시
+					nowData.put("PTY", list.get(i).getFcstValue()); 
 					break;
 					
 				case "T3H": 
-					nowData.put("TEMP", "list.get(i).getFcstValue()");
+					nowData.put("TEMP", list.get(i).getFcstValue());
 					break;
 					
 				case "TMN": 
-					nowData.put("MIN", "list.get(i).getFcstValue()");
+					nowData.put("MIN", list.get(i).getFcstValue());
 					break;
 					
 				case "TMX": 
-					nowData.put("MAX", "list.get(i).getFcstValue()");
+					nowData.put("MAX", list.get(i).getFcstValue());
 					break;
 					
 				case "VEC": 
-					nowData.put("VEC", "list.get(i).getFcstValue()");
+					nowData.put("VEC", list.get(i).getFcstValue());
 					break;
 					
 				case "WSD": 
-					nowData.put("WSD", "list.get(i).getFcstValue()");
+					nowData.put("WSD", list.get(i).getFcstValue());
 					break;
 
 				default:
