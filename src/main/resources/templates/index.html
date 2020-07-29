@@ -7,14 +7,12 @@
 <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/css/notice.css}">
 <script src="../js/main.js"></script>
-<script src="../js/adminNotice.js"></script>
+<script src="../js/notice.js"></script>
+<script src="//cdn.jsdelivr.net/npm/js-cookie@2.2.0/src/js.cookie.min.js"></script>
 </head>
 <body>
 	<!-- 공통 헤드 nav -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:include="common/header :: header_nav"></nav>
-	<script>
-		console.log($('.slideNotice').height())
-	</script>
 	<!-- //공통 헤드 nav -->
 	<section class="home_banner_area">
 		<div class="banner_inner d-flex align-items-center">
@@ -64,5 +62,6 @@
 		</div>
 	</div>
 	<!-- /.container -->
+
 </body>
 </html>

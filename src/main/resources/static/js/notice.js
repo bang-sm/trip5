@@ -1,218 +1,132 @@
-var pnId = 0;	// 팝업공지 수
-var cnt = 0;	// 비어있는 내용 수
+var slideNotice = '';
+var msg = '';
 
-/* 슬라이드 공지 삭제 */
-$(document).on(
-		"click",
-		".sNoticeDelete",
-		function() {
-			$(this).parents(".sNoticecontent").children('.nSlideInput').val("")
-			$.ajax({
-				url : "/adminNotice/ajax/sNoticeDelete",
-				data : {
-					"sNoticeUid" : $(this).parents(".sNoticecontent").children(
-							'.sNoticeUid').text()
-				},
-				type : "POST",
-				success : function(data) {
-					toastr.success("공지를 삭제했습니다.");
-				}
-			}) // Ajax 끝
-		})
+$(document)
+		.ready(
+				function() {
 
-/* 슬라이드 공지 수정 */
-$(document).on(
-		"click",
-		".sNoticeUpdate",
-		function() {
-			console.log("들어옴");
-			$.ajax({
-				url : "/adminNotice/ajax/sNoticeUpdate",
-				data : {
-					"snId" : $(this).parents(".sNoticecontent").children(
-							'.sNoticeUid').text(),
-					"snContent" : $(this).parents(".sNoticecontent").children(
-							'.nSlideInput').val()
-				},
-				type : "POST",
-				success : function(data) {
-					toastr.success("공지를 수정했습니다.");
-				}
-			}) // Ajax 끝
-		})
+					// 슬라이드 공지
+					$.ajax({
+								url : "/adminNotice/ajax/sNoticeShow",
+								type : "POST",
+								success : function(data) {
+									msg = ''; // 초기화
+									for (var i = 0; i < data.length; i++) {
+										slideNotice += '<p class="sNoticeMsg">'
+												+ data[i] + '</p>';
+									}
+									msg = '<MARQUEE scrollamount="10" class = "slideNotice">'
+											+ slideNotice + '</MARQUEE>';
 
-/* 슬라이드 공지 등록 */
-$(document).on(
-		"click",
-		".enrollmentSNotice",
-		function() {
-			var snId = []; // 배열선언
-			cnt = 0; // 초기화
-			$("input:checkbox[class='nSlideCheck']:checked").parents(
-					".sNoticecontent").children('.sNoticeUid').each(function() {
-				snId.push($(this).text());
-				if($(this).parents(".sNoticecontent").children(".nSlideInput").val().trim() == ""){
-					cnt++;
-				} // end if
-			})
+									$('.marquee').append(msg);
+								}
+							}) // Ajax 끝
 
-			if (snId.length != 0) { // 값이 있을 때
-				var data = {
-					"snId" : snId
-				// 배열 저장
-				};
-			} else { // 값이 없을 때
-				console.log("???")
-				snId.push(-1);
-				cnt = -2;
-				var data = {
-					"snId" : snId
-				}
-			}
+					// 팝업공지 공지
+					$.ajax({
+								url : "/adminNotice/ajax/pNoticeContent",
+								type : "POST",
+								success : function(data) {
+									msg = ''; // 초기화
+									for (var i = 0; i < data.length; i++) {
+										if(data[i].pnEnrollment == 'Y'){
+											msg += '<div data-popup_id="popup"'; 
+											msg += 'data-open_to= "' + data[i].pnDate + '" '; 
+											msg += 'data-t="' + data[i].pnTop + '" '; 
+											msg += 'data-l="' + data[i].pnLeft + '" ';
+											msg += 'data-w="' + data[i].pnWidth + '" '; 
+											msg += 'data-h="' + data[i].pnHeight + '" ';
+											msg += 'class="popup_layer">';
+											msg += '<button class="popup_close_btn"> &times; </button>';
+											msg += '<div class = "popup_header"> 제목 : '	+ data[i].pnHeader + '</div><hr>'
+											msg += '<div class = "popup_content">' + data[i].pnContent + '</div>'
+											msg += '	<div class="popup_footer">';
+											msg += '	<button class="close_with_cookie_btn" data-expired="1">';
+											msg += '	<span>ⓧ</span>하루동안 이창을 열지 않음';
+											msg += '	</button>';
+											msg += '	</div>';
+											msg += '</div>';
+										}
+									}
+									$('body').append(msg);
 
+									// 팝업창을 찾아서 띄울지 말지 판단하고 팝업창을 보이게 함
+									$('[data-popup_id]')
+											.each(
+													function() {
+														var el = $(this);
+														var data = el.data();
+														console.log("들어옵니까?");
+														// 쿠키에 저장된 값이 없으면 팝업창을
+														// 띄움
+														if (!Cookies.get(data.popup_id)) {
+															var today = new Date();
+															var d = (el
+																	.data('open_to') || '')
+																	.split(/[\s,\-:]+/);
+															var open_date = new Date(
+																	+d[0],
+																	+d[1] - 1,
+																	+d[2],
+																	+d[3] || 23,
+																	+d[4] || 59,
+																	+d[5] || 59);
+															if (today < open_date) {
+																el.css({
+																			position : 'fixed',
+																			backgroundColor : 'white',
+																			zIndex : 3,
+																			top : data.t,
+																			left : data.l,
+																			width : data.w,
+																			height : data.h
+																		}).show();
+															} 
+														} else {  // 날짜 넘었을 때
+															console.log("왜 안됨");
+															el.css({
+																display : 'none'
+															})
+														}
+													});
 
-			if(cnt == 0){
-				$.ajax({
-					url : "/adminNotice/ajax/sNoticeEnrol",
-					data : data,
-					type : "POST",
-					success : function(data) {
-						toastr.success("공지를 등록했습니다.");
-					},
-					error:function(request,status,error){
-						toastr.error("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-					}
-				}) // Ajax 끝
-			} else{
-				if(cnt == -2){
-					toastr.error("등록할 공지를 신청하세요.");				
-				} else{
-					toastr.error("공백은 공지로 등록할 수 없습니다.");				
-				} // end if
-			} // end if
-			
-		})
+									// 오늘하루 열지 않음 처리
+									$('.close_with_cookie_btn')
+											.on('click',
+												function(e) {
+													e.preventDefault();
+	
+													var el = $(this);
+													var popup = el
+															.parents('[data-popup_id]');
+													var id = popup
+															.data('popup_id');
+													var expired = +(el
+															.data('expired') || '1'); // 1일뒤에
+																						// 만료되는
+													// 쿠키
+	
+													// 쿠키가 언제까지 유지될지 설정한 다음에
+													// 팝업창을 닫는다.
+													Cookies
+															.set(id,
+																'popup_closed',
+																{
+																	expires : expired
+																});
+													popup.hide();
+												});
+	
+									// 팝업창 닫기 버튼 처리
+									$('.popup_close_btn').on(
+											'click',
+											function(e) {
+												e.preventDefault();
 
-/*------------------------------------------------------------*/
-/* 팝업 */
-/*------------------------------------------------------------*/
-/* 팝업 공지창 정보 전달 */
-$(document).on(
-		"click",
-		".nPopUpInput",
-		function() {
-			pnId = $(this).parents(".nPopUpcontent").children('.pNoticeUid')
-					.text()
-
-			console.log(pnId);
-
-			$.ajax({
-				url : "/adminNotice/ajax/pNoticeData",
-				data : {
-					"pNoticeUid" : $(this).parents(".nPopUpcontent").children(
-							'.pNoticeUid').text()
-				},
-				type : "POST",
-				success : function(data) {
-					$('.title').val(data[0].pnHeader);
-					$('.textPopUpNotice').val(data[0].pnContent);
-				}
-			}) // Ajax 끝
-
-		})
-
-/* 팝업 공지 수정 */
-$(document).on(
-		"click",
-		".pNoticeUpdate",
-		function() {
-			console.log("들어옴");
-			$('.' + pnId).parents(".nPopUpcontent").children('.nPopUpInput')
-					.val("제목 : " + $('.title').val());
-
-			$.ajax({
-				url : "/adminNotice/ajax/pNoticeUpdate",
-				data : {
-					"pnId" : pnId,
-					"pnHeader" : $('.title').val(),
-					"pnContent" : $('.textPopUpNotice').val()
-				},
-				type : "POST",
-				success : function(data) {
-					toastr.success("공지를 수정했습니다.");
-				}
-			}) // Ajax 끝
-		})
-
-/* 팝업 공지 삭제 */
-$(document).on(
-		"click",
-		".pNoticeDelete",
-		function() {
-			$(this).parents(".nPopUpcontent").children('.nPopUpInput').val(
-					"제목 : ")
-
-			$.ajax({
-				url : "/adminNotice/ajax/pNoticeDelete",
-				data : {
-					"pNoticeUid" : $(this).parents(".nPopUpcontent").children(
-							'.pNoticeUid').text()
-				},
-				type : "POST",
-				success : function(data) {
-					toastr.success("공지를 삭제했습니다.");
-				}
-			}) // Ajax 끝
-		})
-
-/* 슬라이드 공지 등록 */
-$(document).on(
-		"click",
-		".enrollmentPNotice",
-		function() {
-			var pnId = []; // 배열선언
-			cnt = 0; // 초기화
-			$("input:checkbox[class='nPopUpCheck']:checked").parents(
-					".nPopUpcontent").children('.pNoticeUid').each(function() {
-				pnId.push($(this).text());
-				if($(this).parents(".nPopUpcontent").children(".nPopUpInput").val().trim() == ""){
-					cnt++;
-				}
-			})
-
-			if (pnId.length != 0) { // 값이 있을 때
-				console.log("enrollmentPNotice 들어옴")
-				var data = {
-					"pnId" : pnId
-				// 배열 저장
-				};
-			} else { // 값이 없을 때
-				console.log("pnId 값이 없음")
-				pnId.push(-1);
-				cnt = -2;
-				var data = {
-					"pnId" : pnId
-				}
-			} // end if
-			
-			if(cnt == 0){
-				$.ajax({
-					url : "/adminNotice/ajax/pNoticeEnrol",
-					data : data,
-					type : "POST",
-					success : function(data) {
-						toastr.success("공지를 등록했습니다.");
-					},
-				    error:function(request,status,error){
-					   toastr.error("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-				    }
-				}) // Ajax 끝
-			} else{
-				if(cnt == -2){
-					toastr.error("등록할 공지를 신청하세요.");				
-				} else{
-					toastr.error("공백은 공지로 등록할 수 없습니다.");				
-				} // end if
-			} // end if
-
-		})
+												$(this).parents(
+														'[data-popup_id]')
+														.hide();
+											});
+								}
+							}) // Ajax 끝
+				})
