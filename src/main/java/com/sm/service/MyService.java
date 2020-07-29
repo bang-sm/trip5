@@ -47,4 +47,8 @@ public class MyService {
 	public List<MessageVO> receiveMessage(MessageVO messageVO){
 		return dao.receiveMessage(messageVO);
 	}
+	
+	public MessageVO clipRead(MessageVO messageVO) {
+		return dao.clipRead(messageVO);
+	}
 }

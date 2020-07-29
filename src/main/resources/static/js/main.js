@@ -4,3 +4,4 @@ function fnMove(seq) {
 		scrollTop : offset.top
 	}, 400);
 }
+

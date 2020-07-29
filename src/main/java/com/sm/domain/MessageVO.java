@@ -21,5 +21,5 @@ public class MessageVO {
 	private int fromid;
 	private int sendid;
 	private String membernick;
-	
+	private String othernick;
 }

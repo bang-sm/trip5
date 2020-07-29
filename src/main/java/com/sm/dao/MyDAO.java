@@ -51,4 +51,12 @@ public class MyDAO {
 	public List<MessageVO> receiveMessage(MessageVO messageVO){
 		return sqlsession.selectList("mappers.myMapper.receive", messageVO);
 	}
+	
+	public MessageVO clipRead(MessageVO messageVO) {
+		return sqlsession.selectOne("mappers.myMapper.clipread", messageVO);
+	}
+	
+	
+	
+	
 }

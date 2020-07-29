@@ -83,14 +83,17 @@ $(document).ready(function() {
 	        	toastr.success("실패하였습니다");
 	        },
 	        success : function(data){
-	        	
+	        	//1 : 삭제 2: 인서트 999: 로그인필요
 	        	if(data==1){
-	        		toastr.success("북마크에 추가하였습니다.");
-	        		var book_mark_on="";
-	        		book_mark_on+='<i id="bookmark_st" class="fa fa-check"></i>';
-	        		$(book_mark_div).append(book_mark_on);
-	        	}else if(data==0){
-	        		toastr.error("로그인이 필요합니다");
+	        		toastr.error("북마크에서 제외되었습니다.");
+	        		$("#bookmark_st").removeClass("fa fa-check");
+	        	}else if(data==2){
+	        		toastr.success("북마트 추가되었습니다.");
+	        		$("#bookmark_st").addClass("fa fa-check");
+	        	}else if(data==999){
+	        		toastr.error("로그인이 필요합니다.");
+	        	}else{
+	        		toastr.error("잘못된요청입니다");
 	        	}
 	        }
 		});
@@ -101,14 +104,24 @@ $(document).ready(function() {
 			type : 'post',
 	        url : '/travel/follow',
 	        data : {
-	        	"uuid" : $("#myKey").val()
+	        	"followId" : $("#ts_uuid").val(),
 	        },
 	        error: function(xhr, status, error){
 	        	toastr.success("실패하였습니다");
 	        },
 	        success : function(data){
-	        	toastr.success(data);
-	        	$("#likeNum").text(data);
+	        	//1 : 삭제 2: 인서트 999: 로그인필요
+	        	if(data==1){
+	        		toastr.error("팔로우에서 제외되었습니다");
+	        		$("#follow_st").removeClass("fa fa-check");
+	        	}else if(data==2){
+	        		toastr.success("팔로우 완료!");
+	        		$("#follow_st").addClass("fa fa-check");
+	        	}else if(data==999){
+	        		toastr.error("로그인이 필요합니다.");
+	        	}else{
+	        		toastr.error("잘못된요청입니다");
+	        	}
 	        }
 		});
 	});

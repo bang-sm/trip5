@@ -215,6 +215,14 @@
 			tsid=#{tsid}
 	</select>
 	
+	<select id="bookmarkCheck" parameterType="map" resultType="int">
+		SELECT
+			count(*)
+		FROM
+			bookmark
+		WHERE 
+			uuid=#{uuid} AND ts_id =#{tsid};
+	</select>
 	<insert id="bookmark" parameterType="map">
 		INSERT INTO bookmark 
 		VALUES
@@ -228,5 +236,37 @@
 		WHERE
 			uuid=#{uuid} AND ts_id=#{tsid}
 	</delete>
+	<insert id="follow" parameterType="map">
+		INSERT INTO follow 
+		VALUES
+		(
+			#{uuid},
+			#{followId},
+			status
+		)
+	</insert>
+	<select id="followCheck" parameterType="map" resultType="int">
+		SELECT
+		 	count(*) 
+	 	FROM 
+ 			follow 
+		WHERE 
+			uuid=#{uuid} AND follow_uuid =#{followId};
+	</select>
+	<delete id="followDelete">
+		DELETE FROM follow
+		WHERE
+			uuid=#{uuid} AND follow_uuid=#{followId}
+	</delete>
+	
+	<!-- 임시저장되어있는 나의 일지 개수 -->	
+	<select id="tempTravelCheck" parameterType="int" resultType="int">
+		SELECT
+			count(*)
+		FROM
+			travel_story 
+		WHERE
+			uuid=#{uuid} AND tempsave ='Y';
+	</select>
 
 </mapper>

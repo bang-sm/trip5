@@ -69,7 +69,7 @@
 
               <div class="card-tools">
                 <div class="input-group input-group-sm">
-                  <input type="text" class="form-control" placeholder="검색어 입력...">
+                  <input type="text" class="form-control" placeholder="제목 검색...">
                   <div class="input-group-append">
                     <div class="btn btn-primary">
                       <i class="fas fa-search"></i>
@@ -87,14 +87,12 @@
                   <tr th:each="list : ${list}">
                     <td>
                       <div class="icheck-primary">
-                        <input type="checkbox" value="" id="check1">
+                        <input type="checkbox" value="" class="check1">
                         <label for="check1"></label>
                       </div>
                     </td>
-                    <td class="mailbox-star"><a href="#"></a></td>
-                    <td class="mailbox-name" th:text="${list.membernick}"><a href="read-mail.html"></a></td>
-                    <td class="mailbox-subject" th:text="${list.msgsubject}"></td>
-                    <td class="mailbox-attachment"></td>
+                    <td class="mailbox-name" th:text="${list.membernick}"></td>
+                    <td class="mailbox-subject"><a th:href=@{/my/clipread(msgid=${list.msgid},sendid=${list.sendid})} class='alert-link' style='color:black'><span th:text="${list.msgsubject}"></span></a></td>
                     <td class="mailbox-date" th:text="${list.msgregdate}"></td>
                   </tr>
                   </tbody>
@@ -107,12 +105,9 @@
             <div class="card-footer p-0">
               <div class="mailbox-controls">
                 <!-- Check all button -->
-                <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="far fa-square"></i>
-                </button>
+                <button type="button" class="btn btn-default btn-sm checkbox-toggle" onclick="chkAll()"><i class="far fa-square"></i></button>
                 <div class="btn-group">
                   <button type="button" class="btn btn-default btn-sm"><i class="far fa-trash-alt"></i></button>
-                  <button type="button" class="btn btn-default btn-sm"><i class="fas fa-reply"></i></button>
-                  <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i></button>
                 </div>
                 <!-- /.btn-group -->
                 <div class="float-right">

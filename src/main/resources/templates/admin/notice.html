@@ -23,26 +23,70 @@
 	<!-- //공통 헤드 nav -->
 	<div class="content-wrapper px-5" style="padding-top: 80px">
 		<div class="container">
+			<!-- 슬라이드 공지 -->
 			<div class="card mb-4 shadow-sm">
 				<div class="card-header">
 					<h4 class="my-0 font-weight-normal float-left">슬라이드 공지</h4>
 				</div>
 				<div class="card-body noticeSlide">
 					<div th:each="sNoticeContent : ${sNoticeContent}" class="sNoticecontent" style="margin-bottom: 5px;">
-						<input th:if='${sNoticeContent.snEnrollment.equals("Y")}' class="nSlideCheck" type="checkbox" checked="checked" style="vertical-align: middle; zoom: 3; margin-right: 3px;" />
-						<input th:unless='${sNoticeContent.snEnrollment.equals("Y")}' class="nSlideCheck" type="checkbox" style="vertical-align: middle; zoom: 3; margin-right: 3px;" /> 
-						<input class="nSlideInput col-lg-7 col-md-6 col-9" th:value="${sNoticeContent.snContent}" type="text" maxlength="80" style="vertical-align: middle; height: 50px; margin-right: 10px;"/>
-						<button type="button" class="btn col-lg-2 col-md-2 col-3 btn-lg btn-inlineblock btn-outline-primary sNoticeUpdate" style="margin-right: 5px;">수정</button>
-						<button type="button" class="btn col-lg-2 col-md-2 col-3 btn-lg btn-inlineblock btn-outline-primary sNoticeDelete">삭제</button>
-						<div th:text="${sNoticeContent.snId}" class="sNoticeUid" style="display: none"/>
+						<input th:if='${sNoticeContent.snEnrollment.equals("Y")}' class="nSlideCheck" type="checkbox" checked="checked" style="vertical-align: middle; zoom: 3; margin-right: 3px; margin-left: 3px;" />
+						<input th:unless='${sNoticeContent.snEnrollment.equals("Y")}' class="nSlideCheck" type="checkbox" style="vertical-align: middle; zoom: 3; margin-right: 3px; margin-left: 3px;" />
+						<input class="nSlideInput col-lg-7 col-md-9 col-8" th:value="${sNoticeContent.snContent}" type="text" maxlength="80" style="vertical-align: middle; height: 50px; margin-right: 10px;" />
+						<div class="updelBtn col-lg-3 col-md-12 col-12">
+							<button type="button" class="btn col-5 btn-lg btn-inlineblock btn-outline-primary sNoticeUpdate" style="margin-right: 5px; padding-left: 3px; padding-right: 3px;">수정</button>
+							<button type="button" class="btn col-5 btn-lg btn-inlineblock btn-outline-primary sNoticeDelete" style="padding-left: 3px; padding-right: 3px;">삭제</button>
+						</div>
+						<div th:text="${sNoticeContent.snId}" class="sNoticeUid" style="display: none" />
 					</div>
 				</div>
 				<div class="sNoticeBtn">
-					<button type="button" class="btn col-lg-1 col-md-1 col-2 btn-md btn-inlineblock btn-outline-primary enrollmentSNotice">등록</button>
+					<button type="button" class="btn col-lg-3 col-md-3 col-3 btn-md btn-inlineblock btn-outline-primary enrollmentSNotice">등록</button>
+				</div>
+			</div>
+			<!-- 팝업 공지 -->
+			<div class="card mb-4 shadow-sm">
+				<div class="card-header">
+					<h4 class="my-0 font-weight-normal float-left">팝업 공지</h4>
+				</div>
+				<div class="card-body noticeSlide">
+					<div th:each="pNoticeContent : ${pNoticeContent}" class="nPopUpcontent" style="margin-bottom: 5px;">
+						<input th:if='${pNoticeContent.pnEnrollment.equals("Y")}' class="nPopUpCheck" type="checkbox" checked="checked" style="vertical-align: middle; zoom: 3; margin-right: 3px; margin-left: 3px;" />
+						<input th:unless='${pNoticeContent.pnEnrollment.equals("Y")}' class="nPopUpCheck" type="checkbox" style="vertical-align: middle; zoom: 3; margin-right: 3px; margin-left: 3px;" />
+						<input class="nPopUpInput col-lg-7 col-md-10 col-8" th:value="${pNoticeContent.pnHeader}" type="button" maxlength="80" style="vertical-align: middle; height: 50px; margin-right: 10px;" data-toggle="modal" data-target="#myModal" />
+						<div class="updelBtn col-lg-3 col-md-11 col-11">
+							<button type="button" class="btn col-12 btn-lg btn-inlineblock btn-outline-primary pNoticeDelete" style="padding-left: 3px; padding-right: 3px;">삭제</button>
+						</div>
+						<div th:text="${pNoticeContent.pnId}" th:class="|pNoticeUid ${pNoticeContent.pnId}|" style="display: none" />
+					</div>
+				</div>
+				<div class="nPopUpBtn">
+					<button type="button" class="btn col-lg-3 col-md-3 col-3 btn-md btn-inlineblock btn-outline-primary enrollmentPNotice">등록</button>
 				</div>
 			</div>
 		</div>
 	</div>
+	</div>
+
+	<!-- Modal -->
+	<div id="myModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">제목 : <input class="title"/></h4>
+					<button type="button" class="close" data-dismiss="modal">x</button>
+				</div>
+				<div class="modal-body">
+					<textarea class="textPopUpNotice"></textarea>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default pNoticeUpdate" data-dismiss="modal">수정</button>
+				</div>
+			</div>
+
+		</div>
 	</div>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e957a3a75c171b18d05297414326bb8d&libraries=services"></script>
 	<script src="../js/wish.js"></script>

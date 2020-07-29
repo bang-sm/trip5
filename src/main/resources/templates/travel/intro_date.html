@@ -87,6 +87,7 @@ p.quote{
 	
 	</div>
 	<button id="btn_cancle">취소</button>
+	<input type="hidden" th:value="${count}" id="tempCheck"/>
 </body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -144,6 +145,17 @@ p.quote{
 			$("#btn_cancle").click(function(){
 				history.back();
 			});
+			
+			if($("#tempCheck").val() > 0){
+				
+				var result = confirm('임시저장된 글이있습니다 마이페이지로 이동하시겠습니까?');
+				if(result){
+					location.href="/user/inform";
+				}
+				
+			}
+			
+			
 			
 	})
 </script>

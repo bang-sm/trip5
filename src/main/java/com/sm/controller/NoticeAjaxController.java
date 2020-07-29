@@ -3,14 +3,13 @@ package com.sm.controller;
 import java.util.HashMap;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sm.domain.PopUpNoticeVO;
 import com.sm.domain.SlideNoticeVO;
 import com.sm.service.NoticeService;
 
@@ -66,6 +65,50 @@ public class NoticeAjaxController {
 		System.out.println(noticeService.sNoticeShow());
 		
 		return noticeService.sNoticeShow();
+	}
+	
+	/////////////////////////////////////팝업///////////////////////////////////////////
+	@ResponseBody
+	@PostMapping("/adminNotice/ajax/pNoticeData")
+	public List<PopUpNoticeVO> pNoticeData(String pNoticeUid) throws Exception {
+		System.out.println("들어옴");
+		
+		
+		return noticeService.pNoticeData(Integer.parseInt(pNoticeUid));
+	}
+
+	@ResponseBody
+	@PostMapping("/adminNotice/ajax/pNoticeUpdate")
+	public void pNoticeUpdate(int pnId, String pnHeader, String pnContent) throws Exception {
+		System.out.println("들어옴");
+		System.out.println(pnId + pnHeader + pnContent);
+		
+		noticeService.pNoticeUpdate(pnId, pnHeader, pnContent);
+	}
+	
+	@ResponseBody
+	@PostMapping("/adminNotice/ajax/pNoticeDelete")
+	public void pNoticeDelete(String pNoticeUid) throws Exception {
+		System.out.println("들어옴");
+		System.out.println(pNoticeUid);
+		noticeService.pNoticeDelete(Integer.parseInt(pNoticeUid));
+	}
+	
+	// 팝업 공지 등록
+	@ResponseBody
+	@PostMapping("/adminNotice/ajax/pNoticeEnrol")
+	public void pNoticeEnrol(@RequestParam(value="pnId[]") int[] pnId) throws Exception {
+		System.out.println("들어옴");
+		System.out.println("uid : " +pnId[0] + "\n");
+		
+		// N으로 모두 초기화
+		noticeService.pNoticeEnrollNo();
+		for (int i = 0; i < pnId.length; i++) {
+			System.out.println(pnId[i]);
+		}
+		HashMap<String, int[]> hm = new HashMap<>();
+		hm.put("pnId", pnId);
+		noticeService.pNoticeEnrollYes(hm);
 	}
 
 } // end controller

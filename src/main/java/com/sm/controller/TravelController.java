@@ -49,15 +49,24 @@ public class TravelController {
 	@GetMapping(value = "/travel_blog")
 	public String travel_blog(int uuid, int tsid, Model model) {
 		logger.info("travel_blog");
-
 		model.addAttribute("travel", travelService.getTravelBlogData(uuid, tsid));
 
 		return "/travel/travel_blog";
 	}
 
 	@GetMapping(value = "/intro_date")
-	public String intro_date() {
+	public String intro_date(HttpSession session,Model model) {
 		logger.info("intro_date");
+		int count;
+		if (session.getAttribute("userInfo") != null) {
+			MemberVO vo = new MemberVO();
+			vo = (MemberVO) session.getAttribute("userInfo");
+			int uuid=vo.getUuid();
+			count=travelService.tempTravelCheck(uuid);
+		}else {
+			count=0;
+		}
+		model.addAttribute("count",count);
 		
 		return "/travel/intro_date";
 	}
@@ -200,20 +209,29 @@ public class TravelController {
 			MemberVO vo = new MemberVO();
 			vo = (MemberVO) session.getAttribute("userInfo");
 			int uuid=vo.getUuid();
-			travelService.bookmark(tsid,uuid);
-			status=1;
+			status=travelService.bookmark(tsid,uuid);
 		}else {
-			status=0;
+			status=999;
 		}
+		//1 : 삭제 2: 인서트 999: 로그인필요
 		
 		return status;
 	}
 	//팔로우
 	@ResponseBody
 	@PostMapping(value = "/follow")
-	public int follow(int uuid,HttpSession session) throws Exception {
+	public int follow(int followId,HttpSession session) throws Exception {
+		int status;
+		if (session.getAttribute("userInfo") != null) {
+			MemberVO vo = new MemberVO();
+			vo = (MemberVO) session.getAttribute("userInfo");
+			int uuid=vo.getUuid();
+			status=travelService.follow(followId,uuid);
+		}else {
+			status=999;
+		}
+		//1 : 삭제 2: 인서트 999: 로그인필요
 		
-		
-		return 0;
+		return status;
 	}
 }
