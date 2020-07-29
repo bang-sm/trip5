@@ -48,6 +48,9 @@
 					</textarea>
 
 				</div>
+				 <button type="button" class="btn btn-info add_img">사진업로드
+			    	<i class="fa fa-plus add_img"></i>
+			     </button>
 				<input th:if="${numStat.count} > 1" type="button" data-page="5" name="previous" class="previous action-button" value="이전" />
 				<input th:if="${numStat.count <= numStat.size}" type="button" data-page="1" name="next" class="next action-button" value="다음" />
 				<input type="button" class="action-button temp_save" value="임시저장" />
