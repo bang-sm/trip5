@@ -1,8 +1,35 @@
 
 
 $(document).ready(function() {
-	//일지 댓글 등록
 	
+	//이미지 업로드
+	$(".add_img").click(function(){
+		$.ajax({
+			url:"file_upload",
+			type: "POST",
+			data: formData,
+			enctype: 'multipart/form-data',
+			processData : false,
+			contentType : false,
+			cache: false,
+	        
+	        success: function (file_model) {
+				// success process
+				$('#file_origin').val(file_model.originalFileName);
+	        },
+
+	        error: function () {
+				 // error process
+				swal({
+					title : "File Upload",
+					text : "파일 업로드에 실패하였습니다. <br/> 관리자에게 문의해주세요.",
+					type : "error"
+				});
+	        }
+		});
+	})
+	
+	//일지 댓글 등록
 	$(".reply_submit").click(function(){
 		$.ajax({
 	        type : 'post',
