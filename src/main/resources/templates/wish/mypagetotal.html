@@ -39,7 +39,7 @@
 							<span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
 
 							<div class="info-box-content">
-								<span class="info-box-text">Likes</span> <span class="info-box-number like-count"></span>
+								<span class="info-box-text">Likes</span> <span class="info-box-number like-count" th:text="|${mypage.likecount} 개|"></span>
 							</div>
 							<!-- /.info-box-content -->
 						</div>
@@ -55,7 +55,7 @@
 							<span class="info-box-icon bg-success elevation-1"><i class="fas fa-star"></i></span>
 
 							<div class="info-box-content">
-								<span class="info-box-text">Bookmark</span> <span class="info-box-number" th:text="|${mypage.bmcount} 개|"></span>
+								<span class="info-box-text">Bookmark</span> <span class="info-box-number" th:text="|${mypage.bookmarkcount} 개|"></span>
 							</div>
 							<!-- /.info-box-content -->
 						</div>
@@ -79,7 +79,7 @@
 							<span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
 
 							<div class="info-box-content">
-								<span class="info-box-text">Following</span> <span class="info-box-number" th:text="|${mypage.followmecount + mypage.followyoucount} 명| "></span>
+								<span class="info-box-text">Following</span> <span class="info-box-number" th:text="|${mypage.followingcount} 명| "></span>
 							</div>
 
 							<!-- /.info-box-content -->
@@ -95,7 +95,6 @@
 							<div class="card-header">
 								<h3 class="card-title">Like</h3>
 								<div class="card-tools">
-									<span data-toggle="tooltip" title="3 New Messages" class="badge badge-warning">3</span>
 									<button type="button" class="btn btn-tool" data-card-widget="collapse">
 										<i class="fas fa-minus"></i>
 									</button>
@@ -106,10 +105,10 @@
 							</div>
 							<!-- /.card-header -->
 							<div class="card-body">
-							<table class="table">
+							<table class="table bookmark-table">
 									<thead class="thead-dark">
 										<tr>
-											<th scope="col">번호</th>
+											<th scope="col">Rank</th>
 											<th scope="col">Title</th>
 											<th scope="col">like</th>
 											<th scope="col">regdate</th>
@@ -132,7 +131,6 @@
 							<div class="card-header">
 								<h3 class="card-title">Bookmark</h3>
 								<div class="card-tools">
-									<span data-toggle="tooltip" title="3 New Messages" class="badge badge-warning">3</span>
 									<button type="button" class="btn btn-tool" data-card-widget="collapse">
 										<i class="fas fa-minus"></i>
 									</button>
@@ -143,13 +141,13 @@
 							</div>
 							<!-- /.card-header -->
 							<div class="card-body">
-								<table class="table">
+							<input class="form-control" id="myInputbookmark" type="text" placeholder="Search..">
+								<table class="table table-dark table-hover">
 									<thead class="thead-dark">
 										<tr>
-											<th scope="col">번호</th>
-											<th scope="col">Title</th>
-											<th scope="col">like</th>
-											<th scope="col">regdate</th>
+											<th scope="col" class="col-one">TITLE</th>
+											<th scope="col" class="col-two">USER</th>
+											<th scope="col" class="col-thr">DATE</th>
 										</tr>
 									</thead>
 									<tbody class="bookmark-tbody">
@@ -169,7 +167,6 @@
 							<div class="card-header">
 								<h3 class="card-title">Follower</h3>
 								<div class="card-tools">
-									<span data-toggle="tooltip" title="3 New Messages" class="badge badge-warning">3</span>
 									<button type="button" class="btn btn-tool" data-card-widget="collapse">
 										<i class="fas fa-minus"></i>
 									</button>
@@ -180,6 +177,7 @@
 							</div>
 							<!-- /.card-header -->
 							<div class="card-body">
+							<input class="form-control" id="myInput" type="text" placeholder="Search..">
 								<table class="table">
 									<tbody class="follower-tbody">
 									</tbody>
@@ -197,7 +195,6 @@
 							<div class="card-header">
 								<h3 class="card-title">Following</h3>
 								<div class="card-tools">
-									<span data-toggle="tooltip" title="3 New Messages" class="badge badge-warning">3</span>
 									<button type="button" class="btn btn-tool" data-card-widget="collapse">
 										<i class="fas fa-minus"></i>
 									</button>
@@ -208,12 +205,11 @@
 							</div>
 							<!-- /.card-header -->
 							<div class="card-body following-list">
-								<ul class="followingme-list">
-								
-								</ul>
-								<ul class="followingyou-list">
-								
-								</ul>
+							<input class="form-control" id="myInputfollowing" type="text" placeholder="Search..">
+								<table class="table">
+									<tbody class="following-tbody">
+									</tbody>
+								</table>
 							</div>
 							<!-- /.card-body -->
 							<div class="card-footer"></div>
@@ -1085,5 +1081,6 @@
 	<script src="../js/dist/js/adminlte.js"></script>
 	<script src="../js/dist/js/demo.js"></script>
 	<script src="../js/dist/js/pages/dashboard3.js"></script>
+	<script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>
 </html>

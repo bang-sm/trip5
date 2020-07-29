@@ -7,7 +7,7 @@ public class MypageVO {
 	
 	private int uuid;
 	private int followUuid;
-	private char status;
+	private String status;
 	private int tsId;
 	private String membernick;
 	private String pName;

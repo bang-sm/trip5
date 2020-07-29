@@ -124,23 +124,6 @@
 				#{areaname} and uuid =#{uuid};
 	</select>
 	
-	<select id="followme" parameterType="int" resultType="com.sm.domain.MypageVO">
-	SELECT
-			*
-	FROM
-			follow
-	WHERE 
-			uuid=#{uuid} and status ='N';
-	</select>
-	
-	<select id="followyou" parameterType="int" resultType="com.sm.domain.MypageVO">
-	SELECT
-			*
-	FROM
-			follow
-	WHERE 
-			follow_uuid=#{uuid} and status ='N';
-	</select>
 	
 	<select id="follower" parameterType="int" resultType="com.sm.domain.MypageVO">
 	SELECT
@@ -148,7 +131,7 @@
 	FROM
 			follow
 	WHERE 
-			(uuid=#{uuid} OR follow_uuid=#{uuid}) AND status ='Y';
+			(uuid=#{uuid} OR follow_uuid=#{uuid});
 	</select>
 	
 	<select id="bmcount" parameterType="int" resultType="com.sm.domain.MypageVO">
@@ -172,11 +155,20 @@
 	
 	<select id="following" parameterType="int" resultType="com.sm.domain.MypageVO">
 	SELECT 
-			b.membernick ,mp.p_name
+			b.membernick ,b.uuid,mp.p_name
 	FROM 
 			member b ,member_profile mp
 	WHERE	
 			 b.uuid = mp.uuid and b.uuid=#{uuid};
+	</select>
+	
+	<select id="status" parameterType="map" resultType="String">
+	SELECT 
+			status 
+	FROM 
+			follow 
+	WHERE 
+			uuid = #{uuid} and follow_uuid =#{follow_uuid};
 	</select>
 	
 	<select id="followingyoucheck" parameterType="int" resultType="int">
@@ -185,7 +177,7 @@
 		FROM 
 				follow 
 		WHERE 
-				uuid=#{uuid} and status='N';
+				uuid=#{uuid};
 	</select>
 	
 	<select id="followingmecheck" parameterType="int" resultType="int">
@@ -194,7 +186,7 @@
 		FROM
 				follow 
 		WHERE 
-				follow_uuid=3 and status ='N';
+				follow_uuid=#{uuid};
 	</select>
 	<select id="followeryoucheck" parameterType="int" resultType="int">
 		SELECT 
@@ -202,7 +194,7 @@
 		FROM 
 				follow 
 		WHERE 
-				uuid=#{uuid} and status='Y';
+				uuid=#{uuid};
 	</select>
 	
 	<select id="followermecheck" parameterType="int" resultType="int">
@@ -211,7 +203,7 @@
 		FROM
 				follow 
 		WHERE 
-				follow_uuid=3 and status ='Y';
+				follow_uuid=#{uuid};
 	</select>
 	
 	<select id="mypagebm" parameterType="int" resultType="int">
@@ -223,13 +215,13 @@
 			uuid=#{uuid};
 	</select>
 	
-	<select id="mypagetravelstory" parameterType="int" resultType="com.sm.domain.TravelVO">
+	<select id="mypagetravelstory" parameterType="int" resultType="com.sm.domain.travelmembernickVO">
 	SELECT
-			*
+			ts.tstitle ,ts.tsregdate ,m.membernick 
 	FROM
-			travel_story
+			travel_story ts,member m
 	WHERE 
-			tsid=#{tsid};
+			tsid=#{tsid} and ts.uuid =m.uuid ;
 	</select>
 	
 	<select id="mypagelike" parameterType="int" resultType="com.sm.domain.TravelVO">
@@ -241,6 +233,36 @@
 			uuid=#{uuid}
 	ORDER by tslike DESC ;
 	</select>
+	
+	<insert id="followok" parameterType="map">
+	INSERT INTO 
+				follow 
+	VALUES
+				(#{uuid},#{follow_uuid},'Y');
+				
+	UPDATE 
+			follow 
+	SET 
+			status = 'Y' 
+	WHERE 
+			uuid=#{follow_uuid} and follow_uuid=#{uuid};
+		
+	</insert>
+	
+	 <update id="followdel" parameterType="map">
+	UPDATE 
+			follow 
+	SET 
+			status = 'N' 
+	where 
+			uuid=#{follow_uuid} and follow_uuid=#{uuid};
+	
+	DELETE FROM 
+				follow
+	WHERE 
+				uuid=#{uuid} and follow_uuid=#{follow_uuid};
+	
+	</update> 
 	
 
 </mapper>

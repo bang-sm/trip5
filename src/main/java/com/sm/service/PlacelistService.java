@@ -78,7 +78,13 @@ public class PlacelistService{
 		return dao.mypagelike(uuid);
 	}
 	
+	public void followok(int uuid, int followuuid) throws Exception{
+		dao.followok(uuid,followuuid);
+	}
 	
+	public void followdel(int uuid, int followuuid) throws Exception{
+		dao.followdel(uuid,followuuid);
+	}
 	
 	
 }
