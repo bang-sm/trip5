@@ -67,25 +67,41 @@ public class NoticeAjaxController {
 		return noticeService.sNoticeShow();
 	}
 	
+	///////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////팝업///////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////
+	/* 팝업 공지창 정보 전달 */
 	@ResponseBody
 	@PostMapping("/adminNotice/ajax/pNoticeData")
 	public List<PopUpNoticeVO> pNoticeData(String pNoticeUid) throws Exception {
 		System.out.println("들어옴");
 		
-		
 		return noticeService.pNoticeData(Integer.parseInt(pNoticeUid));
 	}
 
+	/*메인페이지에  팝업 공지창 정보 전달 */
+	@ResponseBody
+	@PostMapping("/adminNotice/ajax/pNoticeContent")
+	public List<PopUpNoticeVO> pNoticeContent() throws Exception {
+		System.out.println("들어옴");
+		
+		return noticeService.pNoticeContent();
+	}
+
+	/* 팝업 공지 수정 */
 	@ResponseBody
 	@PostMapping("/adminNotice/ajax/pNoticeUpdate")
-	public void pNoticeUpdate(int pnId, String pnHeader, String pnContent) throws Exception {
+	public void pNoticeUpdate(int pnId, String pnHeader, String pnContent,
+			String pnTop, String pnLeft, String pnWidth, String pnHeight, String pnDate) throws Exception {
 		System.out.println("들어옴");
-		System.out.println(pnId + pnHeader + pnContent);
+		System.out.println(pnId + pnHeader + pnContent +
+				pnTop + pnLeft + pnWidth + pnHeight + pnDate);
 		
-		noticeService.pNoticeUpdate(pnId, pnHeader, pnContent);
+		noticeService.pNoticeUpdate(pnId, pnHeader, pnContent,
+				pnTop, pnLeft, pnWidth, pnHeight, pnDate);
 	}
 	
+	/* 팝업 공지 삭제 */
 	@ResponseBody
 	@PostMapping("/adminNotice/ajax/pNoticeDelete")
 	public void pNoticeDelete(String pNoticeUid) throws Exception {

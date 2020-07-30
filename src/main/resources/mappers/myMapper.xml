@@ -59,6 +59,8 @@
 		WHERE 
 			m.uuid = l.from_id AND 
 			l.send_id = #{sendid}
+		ORDER BY 
+			msg_regdate desc
 	</select>
 	
 	<select id="countMessage" parameterType="com.sm.domain.MessageVO" resultType="int">
@@ -69,10 +71,14 @@
 		WHERE
 		<choose>
 			<when test="fromid != 0">
-				from_id = #{fromid}
+				from_id = #{fromid} 
+				AND
+				msg_unwrite = 1
 			</when>
 			<otherwise>
 				from_id = #{sendid}
+				AND
+				msg_unwrite = 1
 			</otherwise>
 		</choose> 
 	</select>
@@ -85,13 +91,16 @@
 		msg_content msgcontent, 
 		from_id fromid, 
 		send_id sendid, 
-		msg_subject msgsubject 
+		msg_subject msgsubject,
+		msg_unwrite msgunwrite 
 	FROM 
 		member m, 
 		messageList l 
 	WHERE 
 		m.uuid = l.send_id AND 
 		l.from_id = #{fromid}
+	ORDER BY 
+		msg_regdate desc
 	</select>
 	
 	<select id="clipread" parameterType="com.sm.domain.MessageVO" resultType="com.sm.domain.MessageVO">
@@ -113,6 +122,14 @@
 		l.msg_id = #{msgid};
 	</select>
 	
+	<update id="readed" parameterType="com.sm.domain.MessageVO">
+		UPDATE 
+			messageList 
+		SET 
+			msg_unwrite = 0 
+		WHERE 
+			msg_id = #{msgid}
+	</update>
 </mapper>
 
 

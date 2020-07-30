@@ -63,7 +63,7 @@ public class WeatherController {
 	public List<WeatherInfoVO> getWeatherAPI(int weatherlocalnx, int weatherlocalny, Model model){
 		
 		List<WeatherInfoVO> list = new ArrayList<WeatherInfoVO>();
-		Map<String, String> nowData = new HashMap<String, String>();
+		Map<String, Object> nowData = new HashMap<String, Object>();
 		
 		System.out.println("api 가져오나? (POST)");
 		System.out.println("x값:" + weatherlocalnx + " y값:" + weatherlocalny );
@@ -117,6 +117,77 @@ public class WeatherController {
 		
 		weatherLocalVO = weatherService.selectlocalInfoBylocaluid(localuid);
 		return weatherLocalVO;
+	}
+	
+	@GetMapping("/weatherModal")
+	public String getWeatherModal(Model model) {
+		
+		return "weather/weatherModal";
+	}
+	
+	
+	@ResponseBody
+	@PostMapping("/weatherModal")
+	public Map<String, Object> postWeatherModal(HttpSession httpSession){
+		
+		Map<String, Object> postMap = new HashMap<String, Object>();
+		List<WeatherInfoVO> postList = new ArrayList<WeatherInfoVO>();
+		int weatherlocaluid = 0;
+		
+		MemberVO memberVO = new MemberVO();
+		WeatherLocalVO weatherLocalVO = new WeatherLocalVO();
+		
+		if(httpSession != null) {
+			
+			memberVO = (MemberVO) httpSession.getAttribute("userInfo");  
+			
+			int uuid = memberVO.getUuid();
+			weatherlocaluid = weatherService.selectWeatherlocaluid(uuid);
+			
+		} else if(httpSession == null) {
+			weatherlocaluid = 1;
+		}
+		
+		weatherLocalVO = weatherService.selectlocalInfoBylocaluid(weatherlocaluid);
+		
+		int weatherlocalnx = weatherLocalVO.getLocalnx();
+		int weatherlocalny = weatherLocalVO.getLocalny();
+		String weatherlocalname = weatherLocalVO.getLocalname();
+		int weatherparent = weatherLocalVO.getLocalparent(); 
+		
+		try {
+			postList = weatherAPIservice.weatherData(weatherlocalnx, weatherlocalny);
+		
+			postMap = weatherAPIservice.sortNowData(postList);
+			
+			if(weatherparent != 0) { // 부모가 있을 경우
+				
+				WeatherLocalVO parentLocalVO = new WeatherLocalVO();
+				
+				parentLocalVO = weatherService.selectlocalInfoBylocaluid(weatherparent);
+				String parentName = parentLocalVO.getLocalname();
+				postMap.put("parentName", parentName);
+				
+			} else if (weatherparent == 0) {
+				postMap.put("parentName", null);
+			}
+			
+		} catch (Exception e) {
+			System.out.println("getAPI error" + e.getMessage());
+			e.printStackTrace();
+		}
+		
+		postMap.put("localname", weatherlocalname);
+		
+		/*
+		 *  POP
+		 * 	HUM
+		 *  VEC
+		 *  WSD
+		 *  
+		 */
+		
+		return postMap;
 	}
 	
 }
