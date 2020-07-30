@@ -42,18 +42,18 @@
               <div class="card-body p-0">
                 <ul class="nav nav-pills flex-column">
                   <li class="nav-item">
-                    <a th:href=@{/my/clip(sendid=${session.userInfo.uuid})} class="nav-link">
+                    <a th:href=@{/my/clipSend(sendid=${session.userInfo.uuid})} class="nav-link">
                       <i class="fas fa-inbox"></i> 보낸 쪽지함
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a th:href=@{/my/clipReceive(fromid=${session.userInfo.uuid})} class="nav-link">
                       <i class="far fa-envelope"></i> 받은 쪽지함
                        <span th:if="${cntMsg != null}" class="badge bg-primary float-right cntMsg" th:text="${cntMsg}"></span>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a th:href=@{/my/clipTrash(fromid=${session.userInfo.uuid},sendid=${session.userInfo.uuid})} class="nav-link">
                       <i class="fas fa-trash-alt"></i> 휴지통
                     </a>
                   </li>

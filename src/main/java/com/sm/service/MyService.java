@@ -55,5 +55,13 @@ public class MyService {
 	public int readed(MessageVO messageVO) {
 		return dao.readed(messageVO);
 	}
+	
+	public List<MessageVO> clipTrash(MessageVO messageVO) {
+		return dao.clipTrash(messageVO);
+	}
+	
+	public int gotoTrash(String [] msgid, String sendid) {
+		return dao.gotoTrash(msgid, sendid);
+	}
 }
 

@@ -114,7 +114,5 @@ public class WishplaceController {
 		
 		return "wish/mypagetotal";
 	}
-	
-	
-	
+
 }

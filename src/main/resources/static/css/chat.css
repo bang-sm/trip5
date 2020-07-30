@@ -477,7 +477,7 @@ Messages
   float: left;
   z-index: 100;
   border-top: 10px solid transparent;
-  border-left: 13px solid #fff;
+  border-left: 13px solid #FFD9FA;
   border-bottom: 10px solid transparent;
   border-right: none;
 }
@@ -491,7 +491,7 @@ Messages
   float: left;
   z-index: 99;
   border-top: 11px solid transparent;
-  border-left: 13px solid #dbe3e8;
+  border-left: 13px solid #FFD9FA;
   border-bottom: 11px solid transparent;
   border-right: none;
 }

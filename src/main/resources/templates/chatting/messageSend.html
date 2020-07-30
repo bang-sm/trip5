@@ -41,18 +41,18 @@
             <div class="card-body p-0">
               <ul class="nav nav-pills flex-column">
                 <li class="nav-item send">
-                  <a href="#" class="nav-link">
+                  <a th:href=@{/my/clipSend(sendid=${session.userInfo.uuid})} class="nav-link">
                     <i class="fas fa-inbox"></i> 보낸 쪽지함
                   </a>
                 </li>
                 <li class="nav-item receive">
-                  <a href="#" class="nav-link ">
+                  <a th:href=@{/my/clipReceive(fromid=${session.userInfo.uuid})} class="nav-link ">
                     <i class="far fa-envelope"></i> 받은 쪽지함
                     <span th:if="${cntMsg != null}" class="badge bg-primary float-right cntMsg" th:text="${cntMsg}"></span>
                   </a>
                 </li>
                 <li class="nav-item trash">
-                  <a href="#" class="nav-link ">
+                  <a th:href=@{/my/clipTrash(fromid=${session.userInfo.uuid},sendid=${session.userInfo.uuid})} class="nav-link ">
                     <i class="fas fa-trash-alt"></i> 휴지통
                   </a>
                 </li>
@@ -87,8 +87,7 @@
                   <tr th:each="list : ${list}">
                     <td>
                       <div class="icheck-primary">
-                        <input type="checkbox" value="" class="check1">
-                        <label for="check1"></label>
+                        <input type="checkbox" th:value="${list.msgid}" class="check1">
                       </div>
                     </td>
                     <td class="mailbox-name" th:text="${list.membernick}"></td>
@@ -107,7 +106,7 @@
                 <!-- Check all button -->
                 <button type="button" class="btn btn-default btn-sm checkbox-toggle" onclick="chkAll()"><i class="far fa-square"></i></button>
                 <div class="btn-group">
-                  <button type="button" class="btn btn-default btn-sm"><i class="far fa-trash-alt"></i></button>
+                  <button type="button" class="btn btn-default btn-sm" onclick="goToTrashSend()"><i class="far fa-trash-alt"></i></button>
                 </div>
                 <!-- /.btn-group -->
                 <div class="float-right">
