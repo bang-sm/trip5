@@ -1,4 +1,6 @@
-/*메인페이지 헤더 슬라이더 공지*/
+/*----------------------------------------------------------------------------------------*/
+/*---------------------------------		  슬라이드		--------------------------------------*/
+/*----------------------------------------------------------------------------------------*/
 .slideNotice {
 	background-color: #343a40;
 	color: white;
@@ -10,30 +12,63 @@
 	z-index: 2;
 }
 
-.sNoticeMsg{
+.sNoticeMsg {
 	margin: 0px 200px 0px 0px;
 	display: inline-block;
 }
 
-.nSlideInput {
+/*----------------------------------------------------------------------------------------*/
+/*-----------------------------------	        팝업          	--------------------------------------*/
+/*----------------------------------------------------------------------------------------*/
+
+.popup_layer {
+	border: 1px solid #222222;
+	font-size: 11px;
+}
+
+.popup_close_btn {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	border: 0;
+	background-color: transparent;
+	font-size: 1.5rem;
+	cursor: pointer;
+}
+
+.popup_layer p, .popup_layer div, .popup_layer img {
+	margin: 0;
+	padding: 0;
+}
+
+.popup_layer .popup_header{
+	margin: 10px;	
+}
+
+.popup_layer .popup_content{
+	margin: 10px;	
+}
+
+.popup_footer {
+	position: absolute;
+	bottom: 0;
+	left: 0;
 	width: 100%;
+	background: #333;
+	text-align: right;
 }
 
-
-.sNoticeBtn,.nPopUpBtn {
-	margin: 0px 20px 20px 27px;
+.popup_footer button {
+	border: 0;
+	background: #333;
+	color: #ccc;
+	padding: 10px;
+	letter-spacing: -1px;
+	cursor: pointer;
 }
 
-.updelBtn{
+.popup_footer span {
+	color: #c00;
 	display: inline-block;
-	margin: 5px 0px 5px 0px;
-}
-
-.sNoticecontent, .nPopUpcontent{
-	margin-top: 10px;
-}
-
-.textPopUpNotice{
-	width: 400px;
-	height: 300px;
+	margin-right: 7px;
 }

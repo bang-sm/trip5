@@ -33,7 +33,7 @@ public class AdminController {
 	}
 
 	// 어드민 공지관리 페이지
-	@GetMapping("/admin/notice")
+	@GetMapping("/admin/adminNotice")
 	public String dispAdminNotice(Model model) throws Exception {
 		
 		List<SlideNoticeVO> snContent = noticeService.sNoticeContent();
@@ -43,7 +43,7 @@ public class AdminController {
 		model.addAttribute("sNoticeContent",snContent);
 		model.addAttribute("pNoticeContent",pnContent);
 		
-		return "/admin/notice";
+		return "/admin/adminNotice";
 	}
 
 } // end controller

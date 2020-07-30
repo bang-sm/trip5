@@ -32,7 +32,8 @@
 		UPDATE
 			slideNotice
 		SET
-			snContent = ''
+			snContent = '',
+			snEnrollment ='N'
 		WHERE 
 			snId = #{snId};
 	</update>
@@ -106,7 +107,12 @@
 			popupNotice
 		SET
 			pnHeader = #{pnHeader},
-			pnContent = #{pnContent} 
+			pnContent = #{pnContent}, 
+			pnTop = #{pnTop},
+			pnLeft = #{pnLeft},
+			pnWidth = #{pnWidth},
+			pnHeight = #{pnHeight},
+			pnDate = #{pnDate}
 		WHERE 
 			pnId = #{pnId};
 	</update>
@@ -117,7 +123,8 @@
 			popupNotice
 		SET
 			pnHeader = '',
-			pnContent = ''
+			pnContent = '',
+			pnEnrollment ='N'
 		WHERE 
 			pnId = #{pnId};
 	</update>

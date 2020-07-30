@@ -93,6 +93,7 @@ p.quote{
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://crsten.github.io/datepickk/dist/datepickk.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 			var datepicker = new Datepickk({
@@ -148,15 +149,28 @@ p.quote{
 			
 			if($("#tempCheck").val() > 0){
 				
-				var result = confirm('임시저장된 글이있습니다 마이페이지로 이동하시겠습니까?');
+	/* 			var result = confirm('임시저장된 글이있습니다 마이페이지로 이동하시겠습니까?');
 				if(result){
 					location.href="/user/inform";
-				}
+				} */
+				swal({
+					title : "임시저장된 글이있습니다",
+					text : "마이페이지로 이동하시겠습니까?",
+					icon : "info",
+					closeOnClickOutside : false,
+					buttons :{
+						cancle : {
+							text : "새로운 일지 등록 진행하기",
+							value : false
+						},
+						confirm : {
+							text : "마이페이지로 이동",
+							value : true
+						}
+					}
+				});
 				
 			}
-			
-			
-			
 	})
 </script>
 </html>

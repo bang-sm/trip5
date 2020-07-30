@@ -51,4 +51,9 @@ public class MyService {
 	public MessageVO clipRead(MessageVO messageVO) {
 		return dao.clipRead(messageVO);
 	}
+	
+	public int readed(MessageVO messageVO) {
+		return dao.readed(messageVO);
+	}
 }
+

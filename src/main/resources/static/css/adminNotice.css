@@ -1,0 +1,33 @@
+
+.nSlideInput {
+	width: 100%;
+}
+
+.sNoticeBtn, .nPopUpBtn {
+	margin: 0px 20px 20px 27px;
+}
+
+.updelBtn {
+	display: inline-block;
+	margin: 5px 0px 5px 0px;
+}
+
+.sNoticecontent, .nPopUpcontent {
+	margin-top: 10px;
+}
+
+.textPopUpNotice {
+	width: 400px;
+	height: 300px;
+}
+
+/* 모델창 */
+.textPopUpNotice{
+	width: 100%;
+}
+
+.attribute input{
+	display: block;
+	width: 100%;
+}
+

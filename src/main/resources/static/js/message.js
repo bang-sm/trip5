@@ -80,6 +80,7 @@ function receiveMsg(){
                         "<label for='check1'></label>"+
                       "</div>"+
                     "</td>"+
+                    (data[i].msgunwrite == 0 ?"<td class='mailbox-star'><i class='fas fa-book-open'></i></td>": "<td class='mailbox-star'></td>")+
                     "<td class='mailbox-name'>"+data[i].membernick+"</td>"+
                     "<td class='mailbox-subject'><a href='/my/clipread?msgid="+data[i].msgid+"&sendid="+data[i].sendid+"&fromid="+data[i].fromid+"' class='alert-link' style='color:black'>"+data[i].msgsubject+"</a></td>"+
                     "<td class='mailbox-date'>"+data[i].msgregdate+"</td>"+

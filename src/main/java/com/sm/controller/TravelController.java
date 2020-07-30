@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sm.domain.MemberVO;
 import com.sm.domain.TravelInfoRootVO;
@@ -233,5 +236,16 @@ public class TravelController {
 		//1 : 삭제 2: 인서트 999: 로그인필요
 		
 		return status;
+	}
+	
+	//파일업로드
+	@ResponseBody
+	@PostMapping("/imgUpload")
+	public String imgUpload(@RequestParam("filename") MultipartFile mfile ) {
+		
+		
+		//travelService.imgUpload(mfile);
+		
+		return null;
 	}
 }

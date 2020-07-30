@@ -56,6 +56,9 @@ public class MyDAO {
 		return sqlsession.selectOne("mappers.myMapper.clipread", messageVO);
 	}
 	
+	public int readed(MessageVO messageVO) {
+		return sqlsession.update("mappers.myMapper.readed", messageVO);
+	}
 	
 	
 	
