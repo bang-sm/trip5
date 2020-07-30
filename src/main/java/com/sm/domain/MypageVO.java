@@ -11,6 +11,10 @@ public class MypageVO {
 	private int tsId;
 	private String membernick;
 	private String pName;
+	private int blackUuid;
+	private String tsReplyComment;
+	private String  replyRegdate;
+	private String tstitle;
 	
 	
 	

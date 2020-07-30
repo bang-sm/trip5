@@ -62,3 +62,15 @@
 .bookmark-table{
 	text-align: center !important;
 }
+.info-body{
+	height:400px;
+	overflow:scroll;
+}
+.register-body{
+	height:520px;
+	overflow:hidden;
+}
+
+#mypagelineChart{
+	margin:100px;
+}

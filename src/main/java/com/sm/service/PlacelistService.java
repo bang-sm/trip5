@@ -1,7 +1,10 @@
 package com.sm.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder.In;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,6 +73,21 @@ public class PlacelistService{
 		return dao.follower(uuid);
 	}
 	
+	public int followingcount(int uuid) throws Exception{
+		
+		List<Integer> fly =new ArrayList<Integer>();
+		fly = dao.followingcount(uuid);
+		
+		return fly.size();
+	}
+	
+	public int followingyoucount(int uuid) throws Exception{
+		List<Integer> flm = new ArrayList<Integer>();
+		flm = dao.followingyoucount(uuid);
+		
+		return flm.size();
+	}
+	
 	public HashMap<String, Object> mypagebookmark(int uuid) throws Exception{
 		return dao.mypagebookmark(uuid);
 	}
@@ -84,6 +102,49 @@ public class PlacelistService{
 	
 	public void followdel(int uuid, int followuuid) throws Exception{
 		dao.followdel(uuid,followuuid);
+	}
+	
+	public HashMap<String, Object> blacklist(int uuid) throws Exception{
+		System.out.println("service uuid : "+uuid);
+		HashMap<String, Object> mymap = new HashMap<>();
+		List<MypageVO> mypageVO = new ArrayList<MypageVO>();
+		mypageVO = dao.blacklistuuid(uuid);
+		System.out.println("크기 : "+mypageVO.size());
+		List<MypageVO> blacklist = new ArrayList<MypageVO>();
+		for(int i=0;i<mypageVO.size();i++) {
+			System.out.println("black uuid : "+ mypageVO.get(i).getBlackUuid());
+			MypageVO my =dao.blacklist(mypageVO.get(i).getBlackUuid());
+			System.out.println("my : "+my);
+			blacklist.add(my);
+		}
+		mymap.put("blacklist", blacklist);
+		return mymap;
+		
+	}
+	
+	public HashMap<String, Object> reply(int uuid) throws Exception{
+		System.out.println("service uuid : "+uuid);
+		HashMap<String, Object> mymap = new HashMap<>();
+		List<MypageVO> mypageVO = new ArrayList<MypageVO>();
+		mypageVO = dao.reply(uuid);
+		mymap.put("reply",mypageVO);
+		return mymap;
+		
+	}
+	
+	public void blacklistdel(int uuid,int black_uuid ) throws Exception{
+		dao.blacklistdel(uuid,black_uuid);
+	}
+	
+	public int blacklistcount(int uuid) throws Exception{
+		List<MypageVO> mypageVO = new ArrayList<MypageVO>();
+		mypageVO = dao.blacklistuuid(uuid);
+		
+		return mypageVO.size();
+	}
+	
+	public int mypageline(int first,int end, int uuid) throws Exception{
+		return dao.mypageline(first,end,uuid);
 	}
 	
 	
