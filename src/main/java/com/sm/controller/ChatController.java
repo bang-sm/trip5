@@ -73,6 +73,7 @@ public class ChatController {
         }
 	}
 	
+	//쪽지 알람
 	@MessageMapping("/chat.sendAlarm")
 	@SendTo("/topic/public")
 	public ChatMessage sendAlarm(@Payload ChatMessage chatMessage) {
@@ -81,7 +82,8 @@ public class ChatController {
 		return chatMessage;
 	}
 	
-	@GetMapping("/my/clip")
+	//보낸 메일함
+	@GetMapping("/my/clipSend")
 	public String message(MessageVO messageVO, Model model) throws ParseException {
 		List<MessageVO> list = myService.sendMessage(messageVO);
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -98,21 +100,65 @@ public class ChatController {
 		model.addAttribute("cntMsg", count);
 		model.addAttribute("list", list);
 		
-		return "/chatting/message";
+		return "/chatting/messageSend";
 	}
 	
+	// 받은 메일함
+	@GetMapping("/my/clipReceive")
+	public String clipReceive(MessageVO messageVO, Model model) throws ParseException	{
+		List<MessageVO> list = myService.receiveMessage(messageVO);
+		
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat format2 = new SimpleDateFormat("MM월dd일 HH:mm");
+		for(int i = 0; i < list.size(); i++) {
+			Date date = format1.parse(list.get(i).getMsgregdate());
+			list.get(i).setMsgregdate(format2.format(date));
+		}
+		
+		int count = myService.countMessage(messageVO);
+		
+		model.addAttribute("list", list);
+		model.addAttribute("cntMsg", count);
+		
+		return "/chatting/messageReceive";
+	}
+	
+	// 휴지통
+	@GetMapping("/my/clipTrash")
+	public String clipTrash(MessageVO messageVO, Model model) throws ParseException {
+		
+		List<MessageVO> list = myService.clipTrash(messageVO);
+		
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat format2 = new SimpleDateFormat("MM월dd일 HH:mm");
+		
+		for(int i = 0; i < list.size(); i++) {
+			Date date = format1.parse(list.get(i).getMsgregdate());
+			list.get(i).setMsgregdate(format2.format(date));
+		}
+		
+		int cnt = myService.countMessage(messageVO);
+		
+		model.addAttribute("list", list);
+		model.addAttribute("cntMsg", cnt);
+		
+		return "/chatting/messageTrash";
+	}
+	
+	// 쪽지 읽기
 	@GetMapping("/my/clipread")
-	public String messageRead(MessageVO messageVO, Model model) {
+	public String messageRead(MessageVO messageVO, String reader, Model model) {
 		int read = 0;
 		MessageVO msg= myService.clipRead(messageVO);
-		
+		System.out.println(reader + " <-- reader");
 		if(messageVO.getFromid() != 0) {
 			read = myService.readed(messageVO);
 		}
+		
 		int cnt = myService.countMessage(messageVO);
 		
 		model.addAttribute("msg", msg);
-		model.addAttribute("cntMsg",cnt);
+		model.addAttribute("cntMsg", cnt);
 		
 		return "/chatting/messageRead";
 	}
