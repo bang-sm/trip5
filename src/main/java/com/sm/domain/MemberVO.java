@@ -43,12 +43,6 @@ public class MemberVO {
 	private String kakaoOk;
 	private int blackuuid;
 	private int weatherlocaluid;
-	
-//	// 프로필
-//	private String prorgfilename;
-//	private String prsavefilename;
-//	private int prfilesize;
-//	private String prcreaid;
-//	private String prdelchk;
+	private String adminBlackList;
 	
 }
