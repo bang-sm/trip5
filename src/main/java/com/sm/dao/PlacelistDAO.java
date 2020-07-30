@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.sm.domain.MypageVO;
 import com.sm.domain.PlacelistVo;
 import com.sm.domain.TravelVO;
+import com.sm.domain.TravelViewVO;
 
 @Repository
 public class PlacelistDAO {

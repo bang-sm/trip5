@@ -241,6 +241,5 @@
 			uuid=#{uuid}
 	ORDER by tslike DESC ;
 	</select>
-	
 
 </mapper>
