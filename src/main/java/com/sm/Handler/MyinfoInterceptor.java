@@ -12,7 +12,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.sm.domain.MemberVO;
 import com.sm.domain.TravelViewVO;
-import com.sm.service.MyinfoService;
+import com.sm.service.PlacelistService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MyinfoInterceptor implements HandlerInterceptor{
 		
 	@Autowired
-	MyinfoService myinfoService;
+	PlacelistService service;
 	
 	private String saveDestination(HttpServletRequest request) {
 		String uri = request.getRequestURI();
@@ -68,8 +68,8 @@ public class MyinfoInterceptor implements HandlerInterceptor{
 			}
 			
 			tsid = Integer.parseInt(stringTokenizer.nextToken());
-			tstitle = myinfoService.selectTravelStoryByTsid(tsid).getTstitle();
-			int dbUuid = myinfoService.selectTravelStoryByTsid(tsid).getUuid();
+			tstitle = service.selectTravelStoryByTsid(tsid).getTstitle();
+			int dbUuid = service.selectTravelStoryByTsid(tsid).getUuid();
 			
 			if(dbUuid != uuid) {
 				travelViewVO.setUuid(uuid);
@@ -77,7 +77,7 @@ public class MyinfoInterceptor implements HandlerInterceptor{
 				travelViewVO.setTstitle(tstitle);
 				travelViewVO.setTsUrl(tsUrl);
 				
-				myinfoService.insertTravelView(travelViewVO, uuid);
+				service.insertTravelView(travelViewVO, uuid);
 			}
 		}
 		return true;

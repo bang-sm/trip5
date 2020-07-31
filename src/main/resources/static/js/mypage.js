@@ -32,7 +32,7 @@ $(document).ready(function() {
 	blacklist();
 	registchart();
 	reply();
-	
+	recently()
 	
 });
 
@@ -415,3 +415,27 @@ function reply(){
 			}
 		});
 	}
+
+function recently(){
+	$.ajax({
+		url: "/wish/rest/selectView", 
+		type : "POST",
+		data : {},
+		async :false,
+		success : function(data){
+			console.log("recently 성공");
+			console.log(data);
+			$('.recently-count').text(data.length+" 건");
+			result="";
+			for(i=0;i<data.length;i++){
+				result+='<tr>';
+				result+='<td class="col-one">'+data[i].viewDate+'</td>';
+				result+='<td class="col-two">'+data[i].tstitle+'</td>';
+			    result+='<td class="col-thr">'+data[i].membernick+'</td>';
+			    result+='</tr>';
+			}
+			var list =$('.recently-tbody');
+			list.html(result);
+		}
+	});
+}

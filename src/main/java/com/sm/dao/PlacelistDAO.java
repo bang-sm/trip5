@@ -3,6 +3,7 @@ package com.sm.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.sm.domain.MypageVO;
 import com.sm.domain.PlacelistVo;
 import com.sm.domain.TravelVO;
+import com.sm.domain.TravelViewVO;
 import com.sm.domain.travelmembernickVO;
 
 @Repository
@@ -267,4 +269,43 @@ public class PlacelistDAO {
 		return sql.selectList("mappers.placelistMapper.followingyoucheck",uuid);
 	}
 	
+	public int getBoardAllCount(int uuid) {
+		return sql.selectOne("mappers.placelistMapper.mypagelistcount",uuid);
+	}
+	
+	public List<MypageVO> boardList(Map<String, Integer> map){
+		return sql.selectList("mappers.placelistMapper.boardList",map);
+	}
+	
+	public void insertTravelView(TravelViewVO travelViewVO) {
+		sql.insert( "mappers.placelistMapper.insertTravelView", travelViewVO);
+	}
+	
+	// 3일 이내로 본 글 내역 SELECT
+	public List<TravelViewVO> selectTravelViewByUuid(int uuid){
+		return sql.selectList("mappers.placelistMapper.selectTravelViewByUuid", uuid);
+	}
+	
+	// 3일 이내로 본 글 수 SELECT
+	public int countTravelViewbyUuid(int uuid) {
+		return sql.selectOne("mappers.placelistMapper.countTravelViewbyUuid", uuid);
+	}
+	
+	// 이미 본 글이라면, datetime을 현재로 초기화
+	public void updateViewDateBytsid(Map<String, Integer> paramMap) {
+		sql.update("mappers.placelistMapper.updateViewDateBytsid", paramMap);
+	}
+	
+	// 7일 이상 열지 않은 데이터 삭제
+	public void deleteTravelViewAuto() {
+		sql.delete("mappers.placelistMapper.deleteTravelViewAuto");
+	}
+	
+	public TravelVO selectTravelStoryByTsid(int tsid) {
+		return sql.selectOne("mappers.placelistMapper.selectTravelStoryByUuid", tsid);
+	}
+	
+	public String selectmember(int uuid) {
+		return sql.selectOne("mappers.placelistMapper.selectmember",uuid);
+	}
 }

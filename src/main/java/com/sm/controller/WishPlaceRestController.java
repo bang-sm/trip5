@@ -1,5 +1,6 @@
 package com.sm.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sm.domain.MemberVO;
 import com.sm.domain.PlacelistVo;
+import com.sm.domain.TravelViewVO;
 import com.sm.service.PlacelistService;
 
 @RestController
@@ -276,4 +278,17 @@ public class WishPlaceRestController {
 		}
 		return arr;
 	}
+	
+	@PostMapping(value="/selectView")
+	public List<TravelViewVO> selectTravelView(HttpSession httpSession){
+		List<TravelViewVO> tvList = new ArrayList<TravelViewVO>();
+		MemberVO memberVO = new MemberVO();
+		
+		memberVO = (MemberVO) httpSession.getAttribute("userInfo");
+		int uuid = memberVO.getUuid();
+		
+		tvList = service.selectTravelView(uuid);
+		return tvList;
+	}
+	
 }
