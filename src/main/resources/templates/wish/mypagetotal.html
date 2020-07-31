@@ -349,7 +349,7 @@
 									<tr th:each="list : ${boardList}">
 										<td th:text="${list.tsid}" class="register-table"></td>
 										<td  class="register-table">
-											<a th:href="|/travel/regist?tsid=${list.tsid}|" th:text="${list.tstitle}"></a>
+											<a th:href="|/travel/travel_blog?tsid=${list.tsid}&uuid=${list.uuid}|" th:text="${list.tstitle}"></a>
 										</td>
 										<td th:text="${list.tsregdate}" class="register-table"></td>
 										<td th:text="${list.tsstartdate}" class="register-table"></td>

@@ -150,11 +150,10 @@ public class TravelController {
 			vo = (MemberVO) session.getAttribute("userInfo");
 			uuid = vo.getUuid();
 			travelService.registSave(travelVO, travelinfoVO, travelinfoRootVO, mfiles, uuid);
+			return "redirect:/mypage";
 		} else {
-
+			return "redirect:/index";
 		}
-
-		return "redirect:/user/inform";
 	}
 
 	// 댓글저장

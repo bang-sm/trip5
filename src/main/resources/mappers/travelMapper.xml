@@ -310,5 +310,14 @@
 		WHERE
 			photo_id=#{photoId}
 	</delete>
+	
+	<update id="tempComplete">
+		UPDATE
+			travel_story
+		SET 
+			tempsave='N' 
+		WHERE
+			tsid=#{tsid}
+	</update>
 
 </mapper>

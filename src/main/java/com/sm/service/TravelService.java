@@ -1,6 +1,7 @@
 package com.sm.service;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -184,6 +185,22 @@ public class TravelService {
 			System.out.println(fileList.get(i));
 			travelDAO.photo_insert(fileList.get(i));
 		}
+		List<TravelInfoVO> infoList=new ArrayList<>();
+		for (int i = 1; i < travelinfoVO.getList().size(); i++) {
+			infoList.add(travelinfoVO.getList().get(i));
+		}
+		
+		List<TravelInfoRootVO> rootList=new ArrayList<>();
+		if(travelinfoRootVO.getRootlist()!=null) {
+			for (int i = 0; i < travelinfoRootVO.getRootlist().size(); i++) {
+				rootList.add(travelinfoRootVO.getRootlist().get(i));
+			}
+		}
+		HashMap<String , Object> map=new HashMap<>();
+		map.put("infoList", infoList);
+		map.put("rootList", rootList);
+		int tsid=travelVO.getTsid();
+		travelDAO.finalSave(map,tsid);
 	}
 
 	// 일지 이미지 리스트

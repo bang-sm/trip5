@@ -27,9 +27,6 @@
 					<div class="col-lg-12">
 						<div class="feature-img">
 							<div class="imgbox">
-								<th:block th:if="${travel.photoList} == null">
-									<img class="img-fluid" src="https://placeimg.com/1200/400">
-								</th:block>
 								<th:block th:if="${travel.photoList} != null" th:each="img : ${travel.photoList}">
 									<div>
 										<img class="img-fluid" width="960"  th:src="|/resources/upload/${img.photoCustomName} |">
@@ -83,7 +80,7 @@
 				</div>
 				
 				<div class="comments-area dropdown" id="replyBox">
-					<h4 th:text="|${travel.replyList[0].count} 개의 등록된 댓글|" id="comment_count">코멘트 총 개수</h4>
+					<!-- <h4 th:text="|${travel.replyList[0].count} 개의 등록된 댓글|" id="comment_count">코멘트 총 개수</h4> -->
 					<div class="comment-list" th:each="reply : ${travel.replyList}">
 						<div class="single-comment justify-content-between d-flex">
 							<div class="user justify-content-between d-flex">

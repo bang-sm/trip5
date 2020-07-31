@@ -2,6 +2,12 @@
 
 $(document).ready(function() {
 	
+	$('form[name="travel_info"]').bind('submit',function(){  //form을 submit 하기 전에 이벤트
+	   $('.tsicomment').each(function(i,item){
+			$(item).val($(item).parent().find("#summernote").summernote('code'));
+		})
+	})
+	
 	//파일첨부 input 생성
 	$(".add_img").click(function(){
 		var file_input="";
