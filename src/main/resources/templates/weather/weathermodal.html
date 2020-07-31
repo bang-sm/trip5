@@ -4,7 +4,7 @@
 <div class="container-fluid" style="padding-top: 40px;">
   <div class="text-center">
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" hidden='hidden' id="weathermodalbutton">
       Launch demo modal
     </button>
   </div>
@@ -14,8 +14,9 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">날씨 확인하세요~</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
         </div>
 
         <div class="modal-body">
@@ -25,14 +26,20 @@
               <span id="location1"></span>
               <span id="location2"></span>
             </h1>
-            <h2 class="date">Sunday, January 1, 2017</h2>
-            <div class="weatherIcon">
+            <h2 class="date">
+              <span id="weathermonth"></span>
+              <span id="weatherday"></span>
+            </h2>
+            <div class="weatherIcon" id="weatherIcon">
               <div class="sunny">
                 <div class="inner"></div>
               </div>
             </div>
-            <p class="temp">72</p>
-            <p class="conditions">Sunny</p>
+            <p class="temp" id="temp">72</p>
+            <p class="conditions">
+              <div id="WSD"></div>
+              <div id="VEC"></div>
+            </p>
           </div>
 
         </div>
@@ -40,3 +47,5 @@
     </div>
   </div>
 </div>
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>

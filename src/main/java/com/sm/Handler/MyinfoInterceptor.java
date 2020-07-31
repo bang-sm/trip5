@@ -72,6 +72,7 @@ public class MyinfoInterceptor implements HandlerInterceptor{
 			int dbUuid = myinfoService.selectTravelStoryByTsid(tsid).getUuid();
 			
 			if(dbUuid != uuid) {
+				
 				travelViewVO.setUuid(uuid);
 				travelViewVO.setTsid(tsid);
 				travelViewVO.setTstitle(tstitle);
@@ -82,5 +83,4 @@ public class MyinfoInterceptor implements HandlerInterceptor{
 		}
 		return true;
 	}
-	
 }

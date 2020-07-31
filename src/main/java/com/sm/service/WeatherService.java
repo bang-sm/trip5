@@ -34,7 +34,6 @@ public class WeatherService {
 	}
 	
 	public int selectWeatherlocaluid(int uuid) {
-
 		System.out.println(uuid);
 		return weatherLocalDAO.selectWeatherlocaluid(uuid);
 	}
