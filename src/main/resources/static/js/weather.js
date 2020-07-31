@@ -38,24 +38,26 @@ $(document).ready(function(){
 
 	$("#first_local").change(function(){ // 첫번째 칸 선택시
 
-		$("#location2").empty();
-
-		var locationdiv = $("#location1");
+		$(".location2").empty();
+		refreshchart();
 
 		var localnx = $("#first_local > option:selected").attr("value1");
 		var localny = $("#first_local > option:selected").attr("value2");
 		var localuid = $("#first_local > option:selected").attr("value3");
 		var localname = $("#first_local > option:selected").attr("value4");
 		// alert("localnx = " + localnx + " localny = " + localny);
-
+		
+		var locationdiv = $(".location1");
+		locationdiv.html(localname);
+		
 		$("#parentuid").val(localuid);
 		$("#weatherlocalnx").val(localnx);
 		$("#weatherlocalny").val(localny);
 		getCategory(localuid);
 		getWeatherAPI(localnx, localny);
-
-		locationdiv.html(localname);
+		
 		finalLocation = localuid;
+		$("#0").click();
 
 	});
 
@@ -65,7 +67,8 @@ $(document).ready(function(){
 
 	$("#second_local").change(function(){
 
-		$("#second_local").removeAttr("disabled");
+		$(".second_local").removeAttr("disabled");
+		refreshchart();
 
 		var localnx = $("#second_local > option:selected").attr("value1");
 		var localny = $("#second_local > option:selected").attr("value2");
@@ -73,7 +76,7 @@ $(document).ready(function(){
 		var localuid = $("#second_local > option:selected").attr("value4");
 		// alert("localnx = " + localnx + " localny = " + localny);
 
-		var locationdiv = $("#location2");
+		var locationdiv = $(".location2");
 		locationdiv.html(localname);
 
 		$("#weatherlocalnx").val(localnx);
@@ -81,12 +84,15 @@ $(document).ready(function(){
 		getWeatherAPI(localnx, localny);
 
 		finalLocation = localuid;
+		$("#0").click();
+
 	});
 
 
 	$("#saveuid").click(function(){
 		saveDefaultLocal(finalLocation);
 	});
+
 
 });
 
@@ -367,8 +373,11 @@ function setTime(data){
 	} // end for
 
 	setWeatherArr(data, timeArr, dateArr);
-
+	setChartData(data);
+	$("#0").click();
 }
+
+
 
 function getfsctDate(data){
 
@@ -477,7 +486,7 @@ function saveDefaultLocal(finalLocation){
 		}); // end ajax
 
 	}
-	
+
 }
 
 function getDefaultLocal(){
@@ -511,7 +520,7 @@ function setDefaultWeather1(defaultlocaluid){
 	var localny = $("#first_local > option:selected").attr("value2");
 	var localname = $("#first_local > option:selected").attr("value4");
 
-	var locationdiv = $("#location1");
+	var locationdiv = $(".location1");
 
 	getWeatherAPI(localnx, localny);
 	locationdiv.html(localname);
@@ -525,7 +534,7 @@ function setDefaultWeather2(defaultlocaluid, parentuid){
 
 	$("#first_local > option[value3="+ parentuid +"]").attr("selected", "selected");
 	var localname1 = $("#first_local > option:selected").attr("value4");
-	var locationdiv1 = $("#location1");
+	var locationdiv1 = $(".location1");
 	
 	getCategory(parentuid);
 	locationdiv1.html(localname1);
@@ -537,7 +546,7 @@ function setDefaultWeather2(defaultlocaluid, parentuid){
 	var localname = $("#second_local > option:selected").attr("value3");
 	var localuid = $("#second_local > option:selected").attr("value4");
 
-	var locationdiv = $("#location2");
+	var locationdiv = $(".location2");
 	locationdiv.html(localname);
 
 	$("#weatherlocalnx").val(localnx);
@@ -587,6 +596,108 @@ function getDefaultLocalInfo(defaultlocaluid){
 		}); // end ajax
 	}
 } // end getDefaultLocalInfo()
+
+var popArr = []; // 강수확률 데이터 배열
+var humArr = []; // 습도 데이터 배열
+var rainArr = []; // 강수량 데이터 배열
+
+var timeArrny = []; // Y 축 데이터 배열
+// var timeStringArr; // Y 축 표출 데이터 배열
+ 
+function setChartData(data){
+
+	var tempTimeArr = [];
+	var tempDateArr = [];
+	var firstTime = data[0].fcstTime;
+	var firstDate = data[0].fcstDate;
+	var timeString = "";
+
+	for(var i = 0; i < data.length; i ++){
+	// for(var i = 0; i < 10; i ++){
+		if(firstTime != data[i].fcstTime){
+
+			tempTimeArr.push(data[i].fcstTime);
+			tempDateArr.push(data[i].fcstDate);
+			firstTime = data[i].fcstTime;
+		}
+
+		var category = data[i].category;
+
+		switch (category) {
+			
+			case "POP":
+				popArr.push(data[i].fcstValue);
+				break;
+			case "REH":
+				humArr.push(data[i].fcstValue);
+				break;
+			case "R06":
+				rainArr.push(data[i].fcstValue);
+				rainArr.push(data[i].fcstValue);
+				break;
+			
+			default:
+				break;
+		}
+
+	} //end for 
+	
+	var temp = tempDateArr[0];
+	var day = 0;
+	var time = "";
+
+	for(var i = 0; i < tempDateArr.length; i++){
+		
+		console.log("temp" + temp);
+		time = (tempTimeArr[i] / 100) + ":00" ; 
+
+		if(temp != tempDateArr[i]){
+			
+			day++;
+
+			console.log("day : " + day);
+			
+			console.log("time : " + time);
+
+			switch (day) {
+				case 1:
+					timeString += "내일 ";
+					timeString += time;
+					timeArrny.push(timeString);
+					timeString = "";
+					temp = tempDateArr[i];
+					break;
+				case 2:
+					timeString += "모레 ";
+					timeString += time;
+					timeArrny.push(timeString);
+					timeString = "";
+					temp = tempDateArr[i];
+					break;
+			
+				default:
+					break;
+			}
+
+		} else {
+
+			console.log("day0 : " + day);
+			// timeString += time.toString;
+			timeArrny.push(time);
+			// timeString = "";
+		}
+
+	}
+
+	console.log("tempDateArr : " + tempDateArr.length);
+	console.log("tempTimeArr : " + tempTimeArr.length);
+
+	console.log("popArr : " + popArr.length);
+	console.log("humArr : " + humArr.length);
+	console.log("rainArr : " + rainArr.length);
+
+	console.log("timeArr : " + timeArrny.length);
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // CHART JS ///////////////////////////////////// CHART JS ///////////////////////////////////
@@ -689,6 +800,8 @@ function getDefaultLocalInfo(defaultlocaluid){
 // 	}
 // };
 
+	
+
 var  gradientBarChartConfiguration = {
 	maintainAspectRatio: false,
 	legend: {
@@ -738,10 +851,8 @@ var  gradientBarChartConfiguration = {
 	}
 };
 
-// var chart_labels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-var chart_labels = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
-var chart_data = [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100];
-
+var chart_labels = timeArrny;
+var chart_data = humArr;
 
 var ctx = document.getElementById("chartBig1").getContext('2d');
 
@@ -758,9 +869,9 @@ var config = {
 	  display: false
 	},
 	data: {
-	  labels: ['USA', 'GER', 'AUS', 'UK', 'RO', 'BR'],
+	  labels: chart_labels,
 	  datasets: [{
-		label: "Countries",
+		label: "습도",
 		fill: true,
 		backgroundColor: gradientStroke,
 		hoverBackgroundColor: gradientStroke,
@@ -768,7 +879,7 @@ var config = {
 		borderWidth: 2,
 		borderDash: [],
 		borderDashOffset: 0.0,
-		data: [53, 20, 10, 80, 100, 45],
+		data: chart_data,
 	  }]
 	},
 	options: gradientBarChartConfiguration
@@ -780,24 +891,38 @@ $("#0").click(function() {
   var data = myChartData.config.data;
   data.datasets[0].data = chart_data;
   data.labels = chart_labels;
+  data.datasets[0].label = "습도(%)";
   myChartData.update();
+  $(".card-category").html("습도");
 });
 
 $("#1").click(function() {
-  var chart_data = [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120];
+  var chart_data = popArr;
   var data = myChartData.config.data;
   data.datasets[0].data = chart_data;
   data.labels = chart_labels;
+  data.datasets[0].label = "강수확률(%)";
   myChartData.update();
+  $(".card-category").html("강수확률");
+
 });
 
 $("#2").click(function() {
-  var chart_data = [60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 130];
+  var chart_data = rainArr;
   var data = myChartData.config.data;
   data.datasets[0].data = chart_data;
   data.labels = chart_labels;
+  data.datasets[0].label = "강수량(mm)";
   myChartData.update();
+  $(".card-category").html("강수량");
+
 });
 
 
+function refreshchart(){
+	popArr = []; // 강수확률 데이터 배열
+	humArr = []; // 습도 데이터 배열
+	rainArr = []; // 강수량 데이터 배열
+	timeArrny = []; // Y 축 데이터 배열	
+}
 

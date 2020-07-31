@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8">
+<title>관리자페이지</title>
+<th:block th:replace="common/commonHead"></th:block>
+<link rel="stylesheet" href="../css/dist/css/adminlte.min.css">
+<link rel="stylesheet" type="text/css" th:href="@{/css/slick.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/slick-theme.css}">
+
+<script src="../js/adminSidebar.js"></script>
+<script src="../js/adminMembers.js"></script>
+
+<!-- Google 아이콘 -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+
+<body class="sidebar-mini layout-fixed" style="height: auto;">
+	<!-- 공통 헤드 nav -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:include="common/header :: header_nav"></nav>
+	<div th:include="common/adminSidebar :: adminHeader_aside"></div>
+	<!-- //공통 헤드 nav -->
+	<div class="content-wrapper px-5" style="padding-top: 80px">
+		<div class="container">
+			<div class="board_div">
+
+				<h2 class="page-header">유저리스트</h2>
+				<br>
+				<h4 th:text="|total : ${memberList.count}|"></h4>
+				<div class="table-responsive">
+					<table class="table table-striped text-center">
+						<!-- table-hover -->
+						<thead>
+							<tr>
+								<th class="col-xs-1">NO</th>
+								<th class="col-xs-3">유저이메일(ID)</th>
+								<th class="col-xs-3">유저닉네임</th>
+								<th class="col-xs-1">kakaoOk</th>
+								<th class="col-xs-4">가입일자</th>
+								<th class="col-xs-1">블랙리스트</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="memberList" th:each="list : ${memberList.list}">
+								<td class="uuid" th:text="${list.uuid}"></td>
+								<td class="memberemail" th:text="${list.memberemail}"></td>
+								<td class="membernick" th:text="${list.membernick}"></td>
+								<td class="kakaoOk" th:text="${list.kakaoOk}"></td>
+								<td class="memberregdate" th:text="${list.memberregdate}"></td>
+								<td th:if="${list.adminBlackList == 'N'}" ><buttontype="button" class="btn-sm btn-block btn btn-outline-primary addBlackList" th:text="추가"></button></td>
+								<td th:unless="${list.adminBlackList == 'N'}"><button type="button" class="btn-sm btn-block btn btn-outline-danger removeBlackList" th:text="삭제"></button></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="text-center">
+						<span><a th:href="@{/admin/adminMembers(currentPage=1)}">처음</a></span>
+					
+						<!-- 현재 페이지가 1보다 클 경우 이전 href, 1보다 작은 경우 이전 text -->
+						<span th:if="${memberList.currentPage > 1}">
+						<a th:href="@{/admin/adminMembers(memberList.currentPage=(${memberList.currentPage}-1))}">이전</a></span> 
+						<span th:unless="${memberList.currentPage > 1}" th:text="이전"></span>
+
+						<!-- #number.sequence 인수로 지정한 2개의 수 범위에서 배열을 생성 -->
+						<th:block th:each="num : ${#numbers.sequence(memberList.startPageNum,memberList.lastPageNum)}">
+							<span th:if="${memberList.currentPage == num}" th:text="${'['+ num + ']'}"></span>
+							<a th:unless="${memberList.currentPage == num}" th:text="${'['+ num + ']'}" th:href="@{/admin/adminMembers(currentPage=${num})}"></a>
+						</th:block>
+
+						<!-- 현재 페이지가 마지막페이지와 같지 않을 경우 다음 href, 같을 경우 다음 text -->
+						<span th:if="${memberList.currentPage != memberList.lastPage}"><a th:href="@{/admin/adminMembers(currentPage=(${currentPage}+1))}">다음</a></span> 
+						<span th:unless="${memberList.currentPage != memberList.lastPage}" th:text="다음"></span> 
+						<span><a th:href="@{/admin/adminMembers(currentPage=${memberList.lastPage})}">마지막</a></span>
+					</div>
+				</div>
+				<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e957a3a75c171b18d05297414326bb8d&libraries=services"></script>
+				<script src="../js/wish.js"></script>
+				<script src="../js/slick.min.js"></script>
+				<script src="../js/placedash.js"></script>
+				<script src="../js/dist/js/bootstrap.bundle.min.js"></script>
+				<script src="../js/dist/js/adminlte.js"></script>
+				<script src="../js/dist/js/demo.js"></script>
+				<script src="../js/dist/js/pages/dashboard3.js"></script>
+</body>
+</html>

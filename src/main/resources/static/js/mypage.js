@@ -25,105 +25,248 @@ $(document).ready(function() {
 
 	});
 	
+	following();
+	follower();
+	bookmark();
+	like();
+	blacklist();
+	registchart();
+	reply();
+	recently()
+	
+});
+
+$(document).ready(function(){
+	  $("#myInput").on("keyup", function() {
+	    var value = $(this).val().toLowerCase();
+	    $(".follower-tbody tr").filter(function() {
+	      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+	    });
+	  });
+	});
+
+
+$(document).ready(function(){
+	$("#myInputfollowing").on("keyup", function() {
+		var value = $(this).val().toLowerCase();
+		$(".following-tbody tr").filter(function() {
+			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+		});
+	});
+});
+
+
+$(document).ready(function(){
+	$("#myInputbookmark").on("keyup", function() {
+		var value = $(this).val().toLowerCase();
+		$(".bookmark-tbody tr").filter(function() {
+			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+		});
+	});
+});
+
+$(document).ready(function(){
+	$("#myInputblacklist").on("keyup", function() {
+		var value = $(this).val().toLowerCase();
+		$(".blacklist-tbody tr").filter(function() {
+			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+		});
+	});
+});
+
+$(document).on('click','.follower-btn',function(){
+	var tr = $(this).parent().parent();
+	var followuuid = tr.children('.td-1').children('.follower-uuid').val();
+	console.log($(this));
+	var button =$(this);
 	$.ajax({
-		url: "/wish/rest/mypage/following", 
+		url: "/wish/rest/mypage/follow/ok", 
 		type : "POST",
-		data : {},
+		data : {
+			"follow_uuid" : followuuid
+		},
 		success : function(data){
 			console.log(data);
-			var followingme = data.followingme;
-			var followingyou = data.followingyou;
-			result="";
-			for(i=0;i<followingme.length;i++){
-				result+='<h4>요청 보냄</h4>';
-				result+='<li class="list-group-item">';
-				result += '<div class="image">';
-				result += '	<img src="../image/'+followingme[i].pname+'" class="img-circle img-circle-size" alt="User Image">';
-				result += '</div>';
-				result += '<div class="info">';
-				result += '	<span class="followname">'+followingme[i].membernick+'</span>';
-				result += '</div>';
-				result += '<div class="send">';
-				result +=  '<span class="send">요청을 보냈습니다</span>';
-				result += '</div>';
-				result += '	</li>';
-			}
-			var list =$('.followingme-list');
-			list.html(result);
-			
-			result="";
-			
-			for(i=0;i<followingyou.length;i++){
-				result+='<h4>요청 받음</h4>';
-				result+='<li class="list-group-item">';
-				result += '<div class="user-panel mt-3 pb-3 mb-3 d-flex">';
-				result += '<div class="image">';
-				result += '	<img src="../image/'+followingyou[i].pname+'" class="img-circle elevation-2" alt="User Image">';
-				result += '</div>';
-				result += '<div class="info">';
-				result += '	<h4 class="d-block">'+followingyou[i].membernick+'</h4>';
-				result += '</div>';
-				result += '<div class="send">';
-				result +=  '<button type="button" class="btn btn-primary">팔로우</button>';
-				result += '</div>';
-				result += '	</div>';
-				result += '	</li>';
-				
-				
-				
-			}
-				var list =$('.followingyou-list');
-				list.html(result);
+			$('.following-count').text(data+" 명");
+			toastr.success("팔로잉 하셨습니다.");
+			button.remove();
+			following();
 			
 		}
 	});
 	
+})
+
+
+$(document).on('click','.following-btn',function(){
+	var tr = $(this).parent().parent();
+	var name =tr.find('.d-block').text();
+	var del_uuid =tr.find('.following-uuid').val();
+	console.log(name);
+	swal({
+		title : name+"회원님",
+		text : "팔로잉 취소하시겠습니까?",
+		icon : "error",
+		closeOnClickOutside : false,
+		buttons :{
+			cancle : {
+				text : "취소",
+				value : false
+			},
+			confirm : {
+				text : "삭제",
+				value : true
+			}
+		}
+	})
+	.then((value) => {
+		if(value){
+			swal("취소하였습니다.");
+			$.ajax({
+				url: "/wish/rest/mypage/follow/del", 
+				type : "POST",
+				data : {
+					"follow_uuid" : del_uuid
+				},
+				success : function(data){
+					console.log("성공");
+					console.log(data);
+					console.log("취소");
+					$('.following-count').text(data+" 명");
+					tr.remove();
+					follower();
+				}
+			});
+		}else{
+		}
+		});
+})
+
+$(document).on('click','.blacklist-btn',function(){
+	var tr = $(this).parent().parent();
+	var name =tr.find('.d-block').text();
+	var del_uuid =tr.find('.following-uuid').val();
+	console.log(del_uuid);
+	swal({
+		title : name+"회원님",
+		text : "블랙리스트 취소하시겠습니까?",
+		icon : "info",
+		closeOnClickOutside : false,
+		buttons :{
+			cancle : {
+				text : "뒤로가기",
+				value : false
+			},
+			confirm : {
+				text : "네",
+				value : true
+			}
+		}
+	})
+	.then((value) => {
+		if(value){
+			swal("취소하였습니다.");
+			$.ajax({
+				url: "/wish/rest/mypage/blacklist/del", 
+				type : "POST",
+				data : {
+					"black_uuid" : del_uuid
+				},
+				success : function(data){
+					console.log("성공");
+					console.log(data);
+					$('.blacklist-count').text(data+" 명");
+					tr.remove();
+					blacklist();
+					
+				}
+			});
+		}else{
+		}
+		});
+})
+
+
+
+
+function following(){
+$.ajax({
+		url: "/wish/rest/mypage/following", 
+		type : "POST",
+		data : {},
+		async :false,
+		success : function(data){
+			console.log(data);
+			var following = data.following;
+			result="";
+			for(i=0;i<following.length;i++){
+				result+='<tr>';
+				result+='<td class="td-1"><input class="following-uuid"type="hidden" name="uuid" value="'+following[i].uuid+'"/>';
+				result+='<img src="../image/'+following[i].pname+'"class="user-img" alt="User Image"></td>';
+				result+='<td class="td-2"><div class="info"><span class="d-block">'+following[i].membernick+'</span></div></td>';
+			    result+='<td class="td-3"><button type="button" class="btn btn-outline-dark following-btn">팔로잉</button></td>';
+			    result+='</tr>';
+			}
+			var list =$('.following-tbody');
+			list.html(result);
+		}
+	});
+}
+
+function follower(){
 	$.ajax({
 		url: "/wish/rest/mypage/follower", 
 		type : "POST",
 		data : {},
+		async :false,
 		success : function(data){
 			console.log(data);
 			result ="";
 			var follower  = data.follower;
 			for(i=0;i<follower.length;i++){
 				result+='<tr>';
-				result+='<td><div class="user-panel mt-3 pb-3 mb-3 d-flex"><div class="image"><img src="../image/'+follower[i].pname+'"class="img-circle elevation-2" alt="User Image"></div></div></td>';
-				result+='<td><div class="info"><h4 class="d-block">'+follower[i].membernick+'</h4></div></td>';
-			    result+='<td></td>';
+				result+='<td class="td-1"><input class="follower-uuid"type="hidden" name="uuid" value="'+follower[i].uuid+'"/><img src="../image/'+follower[i].pname+'"class="user-img" alt="User Image"></td>';
+				result+='<td class="td-2"><div class="info"><span class="d-block">'+follower[i].membernick+'</span></div></td>';
+			   if(follower[i].status=='N' || follower[i].status==null){
+				   result+='<td class="td-3"><button type="button" class="btn btn-primary follower-btn">팔로우</button></td>';
+			   }
 			    result+='</tr>';
 			}
 			var list =$('.follower-tbody');
 			list.html(result);
 		}
 	});
+}
 	
-	
+function bookmark(){
 	$.ajax({
 		url: "/wish/rest/mypage/bookmark", 
 		type : "POST",
 		data : {},
+		async :false,
 		success : function(data){
 			console.log(data);
 			var bookmark = data.bookmark;
 			result="";
 			for(i=0;i<bookmark.length;i++){
 				result+='<tr>';
-				result+='<th scope="row">'+(i+1)+'</th>';
-				result+='<td>'+bookmark[i].tstitle+'</td>';
-				result+='<td>'+bookmark[i].tslike+'</td>';
-			    result+='<td>'+bookmark[i].tsregdate+'</td>';
+				result+='<td class="col-one">'+bookmark[i].tstitle+'</td>';
+				result+='<td class="col-two">'+bookmark[i].membernick+'</td>';
+			    result+='<td class="col-thr">'+bookmark[i].tsregdate+'</td>';
 			    result+='</tr>';
 			}
 			var list=$('.bookmark-tbody');
 			list.html(result);
 		}
 	});
-	
+}
+
+function like(){
 	$.ajax({
 		url: "/wish/rest/mypage/like", 
 		type : "POST",
 		data : {},
+		async :false,
 		success : function(data){
 			console.log(data);
 			$('.like-count').text(data.count);
@@ -131,7 +274,11 @@ $(document).ready(function() {
 			result="";
 			for(i=0;i<like.length;i++){
 				result+='<tr>';
-				result+='<th scope="row">'+(i+1)+'</th>';
+				if(i==0){
+					result+='<th scope="row">TOP</th>';
+				}else{
+					result+='<th scope="row">'+(i+1)+'</th>';
+				}
 				result+='<td>'+like[i].tstitle+'</td>';
 				result+='<td>'+like[i].tslike+'</td>';
 			    result+='<td>'+like[i].tsregdate+'</td>';
@@ -146,10 +293,149 @@ $(document).ready(function() {
 			
 		}
 	});
+}
+
+function blacklist(){
+	$.ajax({
+			url: "/wish/rest/mypage/blacklist", 
+			type : "POST",
+			data : {},
+			async :false,
+			success : function(data){
+				console.log(data);
+				var blacklist = data.blacklist;
+				result="";
+				for(i=0;i<blacklist.length;i++){
+					result+='<tr>';
+					result+='<td class="td-1"><input class="following-uuid"type="hidden" name="uuid" value="'+blacklist[i].uuid+'"/>';
+					result+='<img src="../image/'+blacklist[i].pname+'"class="user-img" alt="User Image"></td>';
+					result+='<td class="td-2"><div class="info"><span class="d-block">'+blacklist[i].membernick+'</span></div></td>';
+				    result+='<td class="td-3"><button type="button" class="btn btn-outline-dark blacklist-btn">봐준다</button></td>';
+				    result+='</tr>';
+				}
+				var list =$('.blacklist-tbody');
+				list.html(result);
+			}
+		});
+	}
+
+
+
+function registchart(){
+	var line_ctx = $('#mypagelineChart');
+	$.ajax({
+		url: "/wish/rest/registchart", 
+		type : "POST",
+		data : {},
+		success : function(data){
+		
+			var arr = new Array();
+			
+			for(i=0;i<data.length;i++){
+				arr[i] =data[i];
+			}
+			var linemax = arr[0];
+			for(i=0;i<arr.length-1;i++){
+				if(linemax < arr[i+1]){
+					linemax = arr[i+1];
+				}
+			}
+			var lineChartData = {
+					 labels: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+				        datasets: [{
+				            label: ['월별 현황 그래프'],
+				            data: arr,
+				            backgroundColor: [
+								'rgba(0, 0, 0, 0)'
+						],
+						borderColor: [
+								'rgba(255, 99, 132, 1)',
+								'rgba(54, 162, 235, 1)',
+								'rgba(255, 206, 86, 1)',
+								'rgba(75, 192, 192, 1)',
+								'rgba(153, 102, 255, 1)',
+								'rgba(255, 159, 64, 1)'
+						],
+						borderWidth: 2
+				        }]
+			};
+			var myDoughnutChart2 = new Chart(line_ctx, {
+				type: 'line',
+				data: lineChartData,
+				options: {
+					maintainAspectRatio: false,
+					responsive: false,
+					scales: {
+						xAxes: [{
+							ticks:{
+								fontColor : 'rgba(12, 13, 13, 1)',
+								fontSize : 14
+							},
+							gridLines:{
+								color: "rgba(87, 152, 23, 1)",
+								lineWidth: 0
+							}
+						}],
+						yAxes: [{
+							ticks: {
+								min: 0,
+								max: linemax,
+								stepSize : 1,
+								fontSize : 14,
+							}
+						}]
+					}
+				}
+			});
+		}});
 	
-
-});
-
+}
 
 
+function reply(){
+	$.ajax({
+			url: "/wish/rest/mypage/reply", 
+			type : "POST",
+			data : {},
+			async :false,
+			success : function(data){
+				console.log("reply 성공");
+				console.log(data);
+				var reply = data.reply;
+				result="";
+				for(i=0;i<reply.length;i++){
+					result+='<tr>';
+					result+='<td class="col-one">'+reply[i].tstitle+'</td>';
+					result+='<td class="col-two">'+reply[i].tsReplyComment+'</td>';
+				    result+='<td class="col-thr">'+reply[i].replyRegdate+'</td>';
+				    result+='</tr>';
+				}
+				var list =$('.reply-tbody');
+				list.html(result);
+			}
+		});
+	}
 
+function recently(){
+	$.ajax({
+		url: "/wish/rest/selectView", 
+		type : "POST",
+		data : {},
+		async :false,
+		success : function(data){
+			console.log("recently 성공");
+			console.log(data);
+			$('.recently-count').text(data.length+" 건");
+			result="";
+			for(i=0;i<data.length;i++){
+				result+='<tr>';
+				result+='<td class="col-one">'+data[i].viewDate+'</td>';
+				result+='<td class="col-two">'+data[i].tstitle+'</td>';
+			    result+='<td class="col-thr">'+data[i].membernick+'</td>';
+			    result+='</tr>';
+			}
+			var list =$('.recently-tbody');
+			list.html(result);
+		}
+	});
+}

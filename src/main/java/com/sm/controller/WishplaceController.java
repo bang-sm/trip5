@@ -2,6 +2,7 @@ package com.sm.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sm.domain.MemberVO;
 import com.sm.domain.MypageVO;
@@ -99,7 +101,7 @@ public class WishplaceController {
 	}
 	
 	@GetMapping("/mypage")
-	public String mypage(Model model,HttpSession session) throws Exception{
+	public String mypage(Model model,HttpSession session,@RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage) throws Exception{
 		MemberVO vo=vo=(MemberVO) session.getAttribute("userInfo");  
 		
 		logger.info("session : "+ vo);
@@ -110,11 +112,16 @@ public class WishplaceController {
 			logger.info("session 없음");
 			return "redirect:/index";
 		}
+		Map<String, Object> map = service.boardList(currentPage,uuid);
+        model.addAttribute("boardList", map.get("list"));
+        model.addAttribute("currentPage", map.get("currentPage"));
+        model.addAttribute("lastPage", map.get("lastPage"));
+        model.addAttribute("startPageNum", map.get("startPageNum"));
+        model.addAttribute("lastPageNum", map.get("lastPageNum"));
 		model.addAttribute("mypage",service.mypage(uuid));
 		
 		return "wish/mypagetotal";
 	}
 	
-	
-	
+
 }

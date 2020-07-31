@@ -56,7 +56,21 @@ public class MyDAO {
 		return sqlsession.selectOne("mappers.myMapper.clipread", messageVO);
 	}
 	
+	public int readed(MessageVO messageVO) {
+		return sqlsession.update("mappers.myMapper.readed", messageVO);
+	}
 	
+	public List<MessageVO> clipTrash(MessageVO messageVO){
+		return sqlsession.selectList("mappers.myMapper.clipTrash", messageVO);
+	}
 	
-	
+	public int gotoTrash(String [] msgid, String sendid) {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("messageid", msgid);
+		map.put("sendid", sendid);
+		
+		
+		return sqlsession.update("mappers.myMapper.gotoTrash", map);
+	}
 }

@@ -23,3 +23,72 @@
 .list-group-item::after{
 	clear:both;
 }
+.user-img {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	background-color: rgb(52, 180, 117);
+	margin: 12px 25px;
+	}
+.td-1{
+	width:25%;
+}
+.td-2{
+	width:50%;
+}
+.td-3{
+	width:25%;
+	padding:20px 0 0 0 !important;
+}
+.d-block{
+	    padding: 25px 0 0 2px;
+   		 font-size: 15px;
+}
+.col-one{
+	width:45%;
+	padding:10px !important;
+}
+.col-two{
+	width:30%;
+	padding:10px !important;
+}
+.thead-dark .col-thr{
+	padding:10px;
+}
+.col-thr{
+	width:25%;
+	padding-top:10px !important;
+}
+.bookmark-table{
+	text-align: center !important;
+}
+.info-body{
+	height:400px;
+	overflow:scroll;
+}
+.register-body{
+	height:520px;
+	overflow:hidden;
+}
+
+#mypagelineChart{
+	margin:100px;
+}
+td{
+	font-size: 15px;
+}
+
+@media screen and(min-width:1600px){
+	.sw-1 {width: 8.33%; }  /* 1칸 짜리 폭 */
+	.sw-2 {width: 16.66%; }  /* 2칸 짜리 폭 */
+	.sw-3 {width: 25%;}
+	.sw-4 {width: 33.33%;}
+	.sw-5 {width: 41.66%;}
+	.sw-6 {width: 50%;}
+	.sw-7 {width: 58.33%;}
+	.sw-8 {width: 66.66%;}
+	.sw-9 {width: 75%;}
+	.sw-10 {width: 83.33%;}
+	.sw-11 {width: 91.66%;}
+	.sw-12 {width: 100%;}
+}

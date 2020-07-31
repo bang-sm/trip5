@@ -58,7 +58,10 @@
 			member m, messageList l 
 		WHERE 
 			m.uuid = l.from_id AND 
-			l.send_id = #{sendid}
+			l.send_id = #{sendid} AND
+			l.msg_delsnt = 2
+		ORDER BY 
+			msg_regdate desc
 	</select>
 	
 	<select id="countMessage" parameterType="com.sm.domain.MessageVO" resultType="int">
@@ -69,10 +72,14 @@
 		WHERE
 		<choose>
 			<when test="fromid != 0">
-				from_id = #{fromid}
+				from_id = #{fromid} 
+				AND
+				msg_unwrite = 1
 			</when>
 			<otherwise>
 				from_id = #{sendid}
+				AND
+				msg_unwrite = 1
 			</otherwise>
 		</choose> 
 	</select>
@@ -85,13 +92,17 @@
 		msg_content msgcontent, 
 		from_id fromid, 
 		send_id sendid, 
-		msg_subject msgsubject 
+		msg_subject msgsubject,
+		msg_unwrite msgunwrite 
 	FROM 
 		member m, 
 		messageList l 
 	WHERE 
 		m.uuid = l.send_id AND 
-		l.from_id = #{fromid}
+		l.from_id = #{fromid} AND
+		l.msg_delrcv = 2
+	ORDER BY 
+		msg_regdate desc
 	</select>
 	
 	<select id="clipread" parameterType="com.sm.domain.MessageVO" resultType="com.sm.domain.MessageVO">
@@ -113,6 +124,56 @@
 		l.msg_id = #{msgid};
 	</select>
 	
+	<update id="readed" parameterType="com.sm.domain.MessageVO">
+		UPDATE 
+			messageList 
+		SET 
+			msg_unwrite = 0 
+		WHERE 
+			msg_id = #{msgid}
+	</update>
+	
+	<select id="clipTrash" parameterType="com.sm.domain.MessageVO" resultType="com.sm.domain.MessageVO">
+		SELECT
+			m.membernick membernick,
+			msg_id msgid,
+			msg_regdate msgregdate,
+			msg_content msgcontent,
+			from_id fromid,
+			send_id sendid,
+			msg_subject msgsubject,
+			msg_delsnt msgdelsnt,
+			msg_delrcv msgdelrcv
+		FROM
+			member m,
+			messageList l
+		WHERE
+			m.uuid = l.from_id AND
+			(from_id = #{fromid} OR send_id = #{sendid})
+			AND
+			(l.msg_delsnt = 1 OR l.msg_delrcv = 1)
+		ORDER BY
+			msg_regdate DESC
+	</select>
+	
+	<update id="gotoTrash" parameterType="Map">
+		UPDATE
+			messageList 
+		SET 
+		<choose>
+			<when test="sendid != null">
+			msg_delsnt = 1 
+			</when>
+			<otherwise>
+			msg_delrcv = 1
+			</otherwise>		
+		</choose>
+		WHERE msg_id IN (
+			<foreach collection='messageid' item="item" separator=",">
+				#{item}
+			</foreach>
+		)
+	</update>
 </mapper>
 
 

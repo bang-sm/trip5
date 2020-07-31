@@ -1,7 +1,6 @@
 package com.sm.domain;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,4 +21,7 @@ public class MessageVO {
 	private int sendid;
 	private String membernick;
 	private String othernick;
+	private int msgdelsnt;
+	private int msgdelrcv;
+	private int msgunwrite;
 }

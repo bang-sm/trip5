@@ -976,6 +976,8 @@ function wish_regist(){
 		return false;
 	}
 	$('#regist_form').submit();
+	toastr.success("등록이 되었습니다.");
+	
 
 }
 //클릭시 블로그 보기 , 글 수정 , 글 삭제 버튼으로 전환

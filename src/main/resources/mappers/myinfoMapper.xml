@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mappers.myinfoMapper">
+
+<insert id="insertTravelView" parameterType="com.sm.domain.TravelViewVO">
+	INSERT INTO 
+		travel_story_view (
+			uuid,
+			tsid,
+			tstitle,
+			tsUrl,
+			viewDate 
+		)
+	VALUES(
+			#{uuid},
+			#{tsid},
+			#{tstitle},
+			#{tsUrl},
+			now()
+		)
+	;
+	</insert>	
+	
+	<select id="selectTravelViewByUuid" resultType="com.sm.domain.TravelViewVO" parameterType="int">
+	
+	SELECT 
+		tsid , tsUrl , tstitle
+	FROM 
+		travel_story_view 
+	WHERE
+		uuid = #{uuid} 
+	AND 
+		date(viewDate) >= SUBDATE(NOW(),INTERVAL 3 DAY)
+	ORDER BY 
+		viewDate ASC
+	;
+	</select>
+	
+	<select id="countTravelViewbyUuid" resultType="int" parameterType="int">
+	SELECT 
+		COUNT(*)
+	FROM 
+		travel_story_view 
+	WHERE 
+		uuid = #{uuid} 
+	AND 
+		date(viewDate) >= SUBDATE(NOW(),INTERVAL 3 DAY)
+	;
+	</select>
+	
+	<update id="updateViewDateBytsid" parameterType="map">
+	UPDATE 
+		travel_story_view 
+	SET
+		viewDate = now()
+	WHERE
+		tsid = #{tsid}
+	AND 
+		uuid = #{uuid}
+	;
+	</update>
+	
+	<delete id="deleteTravelViewAuto">
+	DELETE FROM 
+		travel_story_view 
+	WHERE 
+		viewDate > SUBDATE(NOW(), INTERVAL 7 DAY)
+	;
+	</delete>
+	
+	<select id="selectTravelStoryByTsid" resultType="com.sm.domain.TravelVO" parameterType="int">
+	SELECT
+		tstitle
+	FROM 
+		travel_story 
+	WHERE
+		tsid = #{tsid}
+	;
+	</select>
+
+
+</mapper>
