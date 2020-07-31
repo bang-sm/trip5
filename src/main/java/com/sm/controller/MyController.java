@@ -66,4 +66,12 @@ public class MyController {
 		
 		System.out.println(sendid + "<-- sendid");
 	}
+	
+	@PostMapping("/gotoTrashRead")
+	public int gotoTrashRead(int msgid) {
+		int cnt = myService.gotoTrashRead(msgid);
+		
+		return cnt;
+	}
+	
 }

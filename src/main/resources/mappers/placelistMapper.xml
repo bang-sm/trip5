@@ -113,6 +113,7 @@
 	
 	</select>
 	
+	
 	<select id="area" parameterType="map" resultType="int">
 		SELECT 
 				count(*) 
@@ -231,7 +232,9 @@
 			travel_story
 	WHERE 
 			uuid=#{uuid}
-	ORDER by tslike DESC ;
+	ORDER BY 
+			tslike DESC
+	LIMIT 7 ;
 	</select>
 	
 	<insert id="followok" parameterType="map">
@@ -264,5 +267,152 @@
 	
 	</update> 
 	
+	<select id="blacklistuuid" parameterType="int" resultType="com.sm.domain.MypageVO">
+	SELECT
+			*
+	FROM
+			blackList
+	WHERE	
+			uuid=#{uuid};
+	
+	</select>
+	
+	<delete id ="blacklistdel" parameterType="map">
+	DELETE FROM
+				blackList
+	WHERE
+	     uuid=#{uuid} and blackUuid = #{black_uuid};
+	
+	</delete>
+	
+	<select id="mypageline" parameterType="map" resultType="int">
+		SELECT
+				count(tsid) 
+		FROM 
+				travel_story 
+		WHERE 
+				uuid = #{uuid} and (DATE(tsregdate) BETWEEN  #{firstdate} and #{enddate});
+	
+	
+	</select>
+	
+	<select id="reply" parameterType="int" resultType="com.sm.domain.MypageVO">
+	SELECT
+			tsr.ts_reply_comment ,tsr.reply_regdate ,ts.tstitle,ts.uuid
+	FROM
+			travel_story_reply tsr,travel_story ts
+	WHERE
+			tsr.uuid = #{uuid} and tsr.ts_id = ts.tsid;
+			
+	</select>
+	
+	<select id="mypagelistcount" parameterType="int" resultType="int">
+	select count(*) from travel_story  where uuid=#{uuid};
+	</select>
+	
+	
+	<select id="boardList" parameterType="map" resultType="com.sm.domain.MypageVO">
+        SELECT 
+              tsid        
+            , uuid     
+            , tstitle    
+            , tsregdate
+            ,tsstartdate
+            ,tsenddate
+        FROM 
+        	travel_story 
+    	WHERE
+    		uuid=#{uuid}
+ 
+        <!-- 다른 메서드 호출시 반영되지 않기위해 걸어놓은 조건문 -->
+        <if test="startRow neq lastPage"> 
+            ORDER BY tsid ASC
+            LIMIT #{startRow},#{rowPerPage}
+        </if>
+    </select>
 
+
+	<insert id="insertTravelView" parameterType="com.sm.domain.TravelViewVO">
+		INSERT INTO 
+			travel_story_view (
+				uuid,
+				tsid,
+				tstitle,
+				tsUrl,
+				viewDate 
+			)
+		VALUES(
+				#{uuid},
+				#{tsid},
+				#{tstitle},
+				#{tsUrl},
+				now()
+			);
+	</insert>	
+	
+	<select id="selectTravelViewByUuid" resultType="com.sm.domain.TravelViewVO" parameterType="int">
+		<!-- SELECT 
+			tsid , tsUrl , tstitle
+		FROM 
+			travel_story_view 
+		WHERE
+			uuid = #{uuid} --> 
+		SELECT 
+			tsv.tsid , tsv.tsUrl , tsv.tstitle,ts.uuid ,tsv.viewDate
+		FROM 
+			travel_story_view tsv,travel_story ts
+		WHERE
+			tsv.uuid = #{uuid} and tsv.tsid = ts.tsid	
+		AND 
+			date(viewDate) >= SUBDATE(NOW(),INTERVAL 3 DAY)
+		ORDER BY 
+			viewDate ASC
+		LIMIT 7;
+	</select>
+	
+	<select id="countTravelViewbyUuid" resultType="int" parameterType="int">
+		SELECT 
+			COUNT(*)
+		FROM 
+			travel_story_view 
+		WHERE 
+			uuid = #{uuid} 
+		AND 
+			date(viewDate) >= SUBDATE(NOW(),INTERVAL 3 DAY);
+	</select>
+	
+	<update id="updateViewDateBytsid" parameterType="map">
+		UPDATE 
+			travel_story_view 
+		SET
+			viewDate = now()
+		WHERE
+			tsid = #{tsid}
+		AND 
+			uuid = #{uuid};
+	</update>
+	
+	<delete id="deleteTravelViewAuto">
+		DELETE FROM 
+			travel_story_view 
+		WHERE 
+			viewDate > SUBDATE(NOW(), INTERVAL 7 DAY);
+	</delete>
+	
+	<select id="selectTravelStoryByTsid" resultType="com.sm.domain.TravelVO" parameterType="int">
+		SELECT
+			tstitle
+		FROM 
+			travel_story 
+		WHERE
+			tsid = #{tsid};
+	</select>
+	<select id="selectmember" resultType="String" parameterType="int">
+		SELECT
+			membernick
+		FROM 
+			member 
+		WHERE
+			uuid=#{uuid};
+	</select>
 </mapper>

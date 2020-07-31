@@ -1,12 +1,16 @@
 package com.sm.controller;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -132,20 +137,25 @@ public class TravelController {
 		model.addAttribute("travel", travelService.getTravelStory(tsid)); // 기본정보
 		model.addAttribute("travelInfo", travelService.getTravelInfo(tsid)); // 임시저장된 상세정보
 		model.addAttribute("travelRootInfo", travelService.getTravelRootInfo(tsid)); // 임시저장된 루트정보
+		model.addAttribute("travelImage", travelService.getTravelImage(tsid)); // 임시저장된 이미지
 		return "/travel/regist";
 	}
 
 	@PostMapping(value = "/registSave")
-	public String regist_get(TravelVO travelVO, @ModelAttribute TravelInfoVO travelinfoVO,
-			@ModelAttribute TravelInfoRootVO travelinfoRootVO, HttpSession session) throws Exception {
-		logger.info("regist_get");
-		// travelService.storyRegist(travelVO,travelinfoVO);
-
-		System.out.println(travelinfoVO);
-		System.out.println(travelinfoRootVO.getRootlist().get(0).getTsirootname());
-		System.out.println(travelinfoRootVO.getRootlist().get(1).getTsirootname());
-
-		return "redirect:/index";
+	public String regist_get(@ModelAttribute TravelVO travelVO, @ModelAttribute TravelInfoVO travelinfoVO,
+			@ModelAttribute TravelInfoRootVO travelinfoRootVO, HttpSession session,@RequestPart MultipartFile[] mfiles) throws Exception {
+		logger.info("registSave");
+		int uuid;
+		if (session.getAttribute("userInfo") != null) {
+			MemberVO vo = new MemberVO();
+			vo = (MemberVO) session.getAttribute("userInfo");
+			uuid = vo.getUuid();
+			travelService.registSave(travelVO,travelinfoVO,travelinfoRootVO,mfiles,uuid);
+		}else {
+			
+		}
+		
+		return "redirect:/user/inform";
 	}
 
 	//댓글저장
@@ -238,14 +248,13 @@ public class TravelController {
 		return status;
 	}
 	
-	//파일업로드
+	//이미지 삭제
 	@ResponseBody
-	@PostMapping("/imgUpload")
-	public String imgUpload(@RequestParam("filename") MultipartFile mfile ) {
+	@PostMapping(value = "/imageDelete")
+	public int imageDelete(int photoId,String customName) throws Exception {
 		
+		int status=travelService.imageDelete(photoId,customName);
 		
-		//travelService.imgUpload(mfile);
-		
-		return null;
+		return status;
 	}
 }

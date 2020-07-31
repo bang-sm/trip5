@@ -219,15 +219,13 @@ public class WeatherAPIservice {
 		
 		String nowDay = nowDate.substring(2);
 		String nowMonth = nowDate.substring(4, 6);
-		
 		nowData.put("nowDay", nowDay);
 		nowData.put("nowMonth", nowMonth);
 		
 		for (int i = 0; i < list.size(); i++) {
+			String category = list.get(i).getCategory();
 			
-			if(list.get(i).getFcstTime() == nowTime && list.get(i).getFcstDate() == nowDate) {
-				
-				String category = list.get(i).getCategory();
+			if(list.get(i).getFcstTime().equals(nowTime) && list.get(i).getFcstDate().equals(nowDate)) {
 				
 				switch (category) {
 				

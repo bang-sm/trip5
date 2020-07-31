@@ -1,7 +1,5 @@
 package com.sm.domain;
 
-import java.util.Date;
-
 import lombok.Data;
 
 @Data
@@ -17,4 +15,5 @@ public class TravelVO {
 	private String tsenddate; //여행마지막일
 	private String tempSave; //임시저장 여부용
 	private int datediff;  //날짜차이
+	private String photoId; //사진id
 }

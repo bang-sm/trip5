@@ -8,6 +8,7 @@
 <link rel="stylesheet" type="text/css" href="../css/travel_regist.css">
 <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
 <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 
 
 </head>
@@ -20,15 +21,17 @@
 			</div>
 		</span>
 		<ul id="progressbar">
-			<li th:each="travelInfo, numStat : ${travelInfo}">
-				<!-- <th:block th:text="${index.count}"> --> <!-- <input type="hidden" th:value="${travelInfo.tsiid}" th:attrappend="name=${'list['+numStat.count+'].tsiid'}"> -->
+			<li th:each="travelInfo, numStat : ${travelInfo}" th:data-navindex="${numStat.count}" class="progress_index">
+				
 			</li>
+			<li data-navindex="998" class="progress_index"></li>
+			<li data-navindex="999" class="progress_index"></li>
 		</ul>
 	</div>
 
-	<form class="steps" action="/travel/registSave" name="travel_info">
-
-		<fieldset th:each="travelInfo, numStat : ${travelInfo}">
+	<form class="steps" action="/travel/registSave" name="travel_info" enctype="multipart/form-data" method="POST">
+		<input type="hidden" th:value="${travel.tsid}" name="tsid">
+		<fieldset th:each="travelInfo, numStat : ${travelInfo}" th:data-index="${numStat.count}">
 			<th:block th:if="${numStat.count <= numStat.size}">
 				<input type="hidden" id="tsid" th:value="${travel.tsid}" th:attrappend="name=${'list['+numStat.count+'].tsid'}">
 				<input type="hidden" id="tsiid" th:value="${travelInfo.tsiid}" th:attrappend="name=${'list['+numStat.count+'].tsiid'}">
@@ -48,15 +51,13 @@
 					</textarea>
 
 				</div>
-				 <button type="button" class="btn btn-info add_img">사진업로드
-			    	<i class="fa fa-plus add_img"></i>
-			     </button>
+				  
 				<input th:if="${numStat.count} > 1" type="button" data-page="5" name="previous" class="previous action-button" value="이전" />
 				<input th:if="${numStat.count <= numStat.size}" type="button" data-page="1" name="next" class="next action-button" value="다음" />
 				<input type="button" class="action-button temp_save" value="임시저장" />
 			</th:block>
 		</fieldset>
-		<fieldset>
+		<fieldset data-index="998">
 			<input type="button" value="나의여행경로" class="add_place" />
 			<div id="sort_item">
 				<th:block th:if="${not #strings.isEmpty(travelRootInfo)}">
@@ -82,9 +83,29 @@
 			</div>
 			<input type="button" data-page="5" name="previous" class="previous action-button" value="이전" />
 			 <input type="button" class="action-button temp_save" value="임시저장" />
-			  <input id="submit" class="hs-button primary large action-button next" type="button" value="등록">
+			 <input type="button" data-page="1" name="next" class="next action-button" value="다음" />
+			 <!--  <input id="submit" class="hs-button primary large action-button next" type="button" value="등록"> -->
 		</fieldset>
-	</form>
+		<fieldset data-index="999">
+			<button type="button" class="btn btn-info add_img">사진추가
+		    	<i class="fa fa-plus"></i>
+		     </button>
+		     <div class="file_box">
+		     	<th:block th:if="${travelImage} != null ">
+		     		<div class="row_box" th:each="img : ${travelImage}">
+						<!-- <input type="file" name="mfiles" accept="image/*" style="width:80% !important ; display: none"/> -->
+						<input type="text" disabled="disabled" name="mfiles" th:value="${img.photoOriginalName}" style="width:80% !important ;display:inline-block ;"/>
+						<input type="hidden" name="photoId" th:value="#{img.photoId}" accept="image/*" style="width:80% !important ; display: inline-block;"/>
+						<button type="button" class="btn btn-info img_delete" th:value="${img.photoId}">삭제
+							<i class="fa fa-minus"></i>
+						</button>
+						<input type="hidden" th:value="${img.photoCustomName}" class="custom_name">
+						</div>
+		     	</th:block> 
+		     </div>
+		     <input id="submit" class="hs-button primary large action-button next" type="submit" value="작성완료">
+		</fieldset>
+		</form>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
@@ -94,6 +115,7 @@
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e957a3a75c171b18d05297414326bb8d&libraries=services"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="../js/travel.js"></script>
 </html>

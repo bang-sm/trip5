@@ -268,5 +268,47 @@
 		WHERE
 			uuid=#{uuid} AND tempsave ='Y';
 	</select>
+	
+	<insert id="photo_insert" parameterType="map">
+		INSERT INTO photo 
+		VALUES
+		(
+			<choose>
+				<when test="photo_id ==null">
+					photo_id,
+				</when>
+				<otherwise>
+					#{photoId},
+				</otherwise>
+			</choose>
+			#{photo_custom_name},
+			#{photo_original_name},
+			#{photo_path},
+			#{photo_file_size},
+			#{ts_id},
+			photo_main
+		)
+		ON DUPLICATE KEY UPDATE
+			photo_custom_name = values(photo_custom_name),
+			photo_original_name = values(photo_original_name),
+			photo_path = values(photo_path),
+			photo_file_size = values(photo_file_size),
+			ts_id = values(ts_id)
+	</insert>
+	
+	<select id="getTravelImage" resultType="com.sm.domain.PhotoVO">
+		SELECT
+			*
+		FROM
+			photo
+		WHERE 
+			ts_id=#{tsid}
+	</select>
+	
+	<delete id="imageDelete">
+		DELETE FROM photo
+		WHERE
+			photo_id=#{photoId}
+	</delete>
 
 </mapper>

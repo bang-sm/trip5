@@ -1,11 +1,15 @@
 $(function(){
 
-  
+	getWeatherajax();
+	$("#weathermodalbutton").click();
+	  
 });
 
-$("#modal").draggable({
-  handle: ".modal-header"
-});
+$("#myModal").draggable({
+	handle: ".modal-header"
+  });
+
+// $("#myModal").draggable();
 
 function getWeatherajax(){
 
@@ -18,17 +22,45 @@ function getWeatherajax(){
     },
     success: function(data){
 
-      var weatherMap = new Map();
+	console.log(data);
 
-      var pop = weatherMap.get("POP")*1;
+	  var weatherMap = new Map();
+	  weatherMap = data;
+
+      var pop = weatherMap.POP*1;
       console.log("pop : " + pop);
-      var sky = weatherMap.get("SKY")*1;
-      var 
-      
+      var sky = weatherMap.SKY + "";
+	  var hum = weatherMap.HUM + "";
+	  var pty = weatherMap.PTY + "";
+	  var wsd = weatherMap.WSD;
+	  var vec = weatherMap.VEC;
+	  var temp = weatherMap.TEMP;
+	  console.log("temp : " + temp);
 
-      
+	  var weathermonth = weatherMap.nowMonth + "";
+	  var weatherday = weatherMap.nowDay + "";
 
-    }
+	  var location = weatherMap.localname;
+	  var parantLocation = weatherMap.parentName;
+      
+		setSKY(sky, pty, $("#weatherIcon"));
+		setPOP(pop, $("#pop"));
+		setTEMP(temp, $("#temp"));
+		setWSD(wsd, $("#WSD"));
+		setVEC(vec, $("#VEC"));
+
+		$("")
+
+		if(parantLocation == null || parantLocation == ""){
+			$("#location1").html(location);
+		} else if (parantLocation != null || parantLocation != ""){
+			$("#location1").html(parantLocation);
+			$("#location2").html(location);
+		}
+
+    }, error : function(request,status,error){
+		alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	}
           
     }); 
 

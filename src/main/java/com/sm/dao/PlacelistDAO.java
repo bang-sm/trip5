@@ -3,6 +3,7 @@ package com.sm.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.sm.domain.MypageVO;
 import com.sm.domain.PlacelistVo;
 import com.sm.domain.TravelVO;
+import com.sm.domain.TravelViewVO;
 import com.sm.domain.travelmembernickVO;
 
 @Repository
@@ -89,6 +91,7 @@ public class PlacelistDAO {
 	}
 	
 	
+	
 	public int area(int area,int uuid) {
 		String [] areaname = {"서울%","경기%","강원%","인천%","충북%","충남%","세종%","대전%","광주%","전북%","전남%","경북%","경남%","대구%","울산%","부산%","제주%"};
 		
@@ -112,10 +115,15 @@ public class PlacelistDAO {
 		List<TravelVO> like = new ArrayList<TravelVO>();
 		like=sql.selectList("mappers.placelistMapper.mypagelike",uuid);
 		
+		List<MypageVO> mypageVO = new ArrayList<MypageVO>();
+		mypageVO = sql.selectList("mappers.placelistMapper.blacklistuuid",uuid);
+		
 		mymap.put("likecount", like.size());
 		mymap.put("bookmarkcount", bm.size());
 		mymap.put("followingcount", fly.size());
 		mymap.put("followercount", flm.size());
+		mymap.put("blacklistcount", mypageVO.size());
+		System.out.println("mypage : "+ mypageVO.size());
 		
 		return  mymap;
 	}
@@ -213,5 +221,91 @@ public class PlacelistDAO {
 	}
 	
 	
+	public List<MypageVO> blacklistuuid(int uuid) {
+		return sql.selectList("mappers.placelistMapper.blacklistuuid",uuid);
+	}
+	public MypageVO blacklist(int uuid){
+		return sql.selectOne("mappers.placelistMapper.following",uuid);
+	}
 	
+	public List<MypageVO> reply(int uuid){
+		return sql.selectList("mappers.placelistMapper.reply",uuid);
+	}
+	
+	
+	
+	
+	
+	
+	public void blacklistdel(int uuid, int black_uuid) {
+		HashMap<String, Object> mymap = new HashMap<>();
+		mymap.put("uuid", uuid);
+		mymap.put("black_uuid", black_uuid);
+		sql.delete("mappers.placelistMapper.blacklistdel",mymap);
+	}
+	public int mypageline(int first,int end, int uuid) {
+		String enddate;
+		String firstdate = "2020-0"+Integer.toString(first)+"-01";
+		if(end == 13) {
+			enddate = "2020-0"+Integer.toString(end-1)+"-31";
+		}else {
+			enddate = "2020-0"+Integer.toString(end)+"-01";
+		}
+		System.out.println(firstdate);
+		System.out.println(enddate);
+		HashMap<String, Object> fmap = new HashMap<>();
+		fmap.put("firstdate", firstdate);
+		fmap.put("enddate", enddate);
+		fmap.put("uuid", uuid);
+		return sql.selectOne("mappers.placelistMapper.mypageline",fmap);
+	}
+	
+	
+	public List<Integer> followingcount(int uuid) {
+		return sql.selectList("mappers.placelistMapper.followermecheck",uuid);
+	}
+	
+	public List<Integer>  followingyoucount(int uuid){
+		return sql.selectList("mappers.placelistMapper.followingyoucheck",uuid);
+	}
+	
+	public int getBoardAllCount(int uuid) {
+		return sql.selectOne("mappers.placelistMapper.mypagelistcount",uuid);
+	}
+	
+	public List<MypageVO> boardList(Map<String, Integer> map){
+		return sql.selectList("mappers.placelistMapper.boardList",map);
+	}
+	
+	public void insertTravelView(TravelViewVO travelViewVO) {
+		sql.insert( "mappers.placelistMapper.insertTravelView", travelViewVO);
+	}
+	
+	// 3일 이내로 본 글 내역 SELECT
+	public List<TravelViewVO> selectTravelViewByUuid(int uuid){
+		return sql.selectList("mappers.placelistMapper.selectTravelViewByUuid", uuid);
+	}
+	
+	// 3일 이내로 본 글 수 SELECT
+	public int countTravelViewbyUuid(int uuid) {
+		return sql.selectOne("mappers.placelistMapper.countTravelViewbyUuid", uuid);
+	}
+	
+	// 이미 본 글이라면, datetime을 현재로 초기화
+	public void updateViewDateBytsid(Map<String, Integer> paramMap) {
+		sql.update("mappers.placelistMapper.updateViewDateBytsid", paramMap);
+	}
+	
+	// 7일 이상 열지 않은 데이터 삭제
+	public void deleteTravelViewAuto() {
+		sql.delete("mappers.placelistMapper.deleteTravelViewAuto");
+	}
+	
+	public TravelVO selectTravelStoryByTsid(int tsid) {
+		return sql.selectOne("mappers.placelistMapper.selectTravelStoryByTsid", tsid);
+	}
+	
+	public String selectmember(int uuid) {
+		return sql.selectOne("mappers.placelistMapper.selectmember",uuid);
+	}
 }

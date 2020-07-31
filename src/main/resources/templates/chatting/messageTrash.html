@@ -52,7 +52,7 @@
                   </a>
                 </li>
                 <li class="nav-item trash">
-                  <a th:href=@{/my/clipTrash(fromid=${session.userInfo.uuid},sendid=${session.userInfo.uuid})} class="nav-link ">
+                  <a href="#" class="nav-link ">
                     <i class="fas fa-trash-alt"></i> 휴지통
                   </a>
                 </li>
@@ -69,12 +69,7 @@
 
               <div class="card-tools">
                 <div class="input-group input-group-sm">
-                  <input type="text" class="form-control" placeholder="제목 검색...">
-                  <div class="input-group-append">
-                    <div class="btn btn-primary">
-                      <i class="fas fa-search"></i>
-                    </div>
-                  </div>
+                  <input type="text" id="searchClip" class="form-control" placeholder="제목 검색...">
                 </div>
               </div>
               <!-- /.card-tools -->
@@ -82,7 +77,7 @@
             <!-- /.card-header -->
             <div class="card-body p-0">
               <div class="table-responsive mailbox-messages">
-                <table class="table table-hover table-striped">
+                <table class="searchTable table table-hover table-striped">
                   <tbody class="tb-cl">
                   <tr th:if="${(list.msgdelsnt == 1 && list.sendid == session.userInfo.uuid) || (list.msgdelrcv == 1 && list.fromid == session.userInfo.uuid)}" th:each="list : ${list}">
                     <td>
@@ -91,9 +86,10 @@
                         <label for="check1"></label>
                       </div>
                     </td>
-                    <td th:if="${list.msgunwrite == 0}" class='mailbox-star'><i class='fas fa-book-open'></i></td><td class='mailbox-star'></td>
-                    <td th:if="${list.msgunwrite != 0}" class='mailbox-star'></td><td class='mailbox-star'></td>
-                    <td class="mailbox-name" th:text="${list.membernick}"></td>
+                    <td th:if="${list.msgdelsnt == 1 && list.sendid == session.userInfo.uuid}" class='mailbox-star'><span class="badge badge-secondary">보낸 메일</span></td>
+                    <td th:unless="${list.msgdelsnt == 1 && list.sendid == session.userInfo.uuid}" class='mailbox-star'><span class="badge badge-primary">받은 메일</span></td>
+                    <td th:if="${list.msgdelrcv == 1 && list.fromid == session.userInfo.uuid}" class="mailbox-name" th:text="${list.othernick}"></td>
+                    <td th:unless="${list.msgdelrcv == 1 && list.fromid == session.userInfo.uuid}" class="mailbox-name" th:text="${list.membernick}"></td>
                     <td class="mailbox-subject"><a th:href=@{/my/clipread(msgid=${list.msgid},sendid=${list.sendid})} class='alert-link' style='color:black'><span th:text="${list.msgsubject}"></span></a></td>
                     <td class="mailbox-date" th:text="${list.msgregdate}"></td> 
                   </tr>
@@ -109,7 +105,7 @@
                 <!-- Check all button -->
                 <button type="button" class="btn btn-default btn-sm checkbox-toggle" onclick="chkAll()"><i class="far fa-square"></i></button>
                 <div class="btn-group">
-                  <button type="button" class="btn btn-default btn-sm" ><i class="far fa-trash-alt"></i></button>
+                  <button type="button" class="btn btn-default btn-sm">영구 삭제</button>
                 </div>
                 <!-- /.btn-group -->
                 <div class="float-right">

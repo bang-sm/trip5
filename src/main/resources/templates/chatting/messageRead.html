@@ -14,6 +14,7 @@
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:include="common/header :: header_nav"></nav>
 	<div th:include="common/Sidebar :: header_aside"></div>
 	<div class="content-wrapper" style="min-height: 1157.69px; margin-top: 50px">
+	<input type="hidden" id="messageId" th:value="${msg.msgid}"/>
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
@@ -53,7 +54,7 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a th:href=@{/my/clipTrash(fromid=${session.userInfo.uuid},sendid=${session.userInfo.uuid})} class="nav-link">
+                    <a th:href=@{/my/clipTrash(fromid=${session.userInfo.uuid})} class="nav-link">
                       <i class="fas fa-trash-alt"></i> 휴지통
                     </a>
                   </li>
@@ -73,8 +74,8 @@
             <div class="card-body p-0">
               <div class="mailbox-read-info">
                 <h5 th:text="${msg.msgsubject}" style="margin-bottom:5px"></h5>
-                <h6 th:if="${session.userInfo.uuid == msg.sendid}  " th:text="|To - ${msg.membernick}|"></h6>
-                <h6 th:if ="${session.userInfo.uuid != msg.sendid}" th:text="|From - ${msg.othernick}|"></h6>
+                <h6 th:if="${session.userInfo.uuid == msg.sendid} " th:text="|To - ${msg.membernick}|"></h6>
+                <h6 th:if="${session.userInfo.uuid != msg.sendid}" th:text="|From - ${msg.othernick}|"></h6>
                   <span class="mailbox-read-time" th:text="${msg.msgregdate}"></span>
               </div>
               <!-- /.mailbox-read-info -->
@@ -84,11 +85,12 @@
               <!-- /.mailbox-read-message -->
             </div>
             <div class="card-footer">
-              <div class="float-right">
-                <button type="button" class="btn btn-default"><i class="fas fa-reply"></i> 이전 쪽지</button>
-                <button type="button" class="btn btn-default"><i class="fas fa-share"></i> 다음 쪽지</button>
+              <div th:if="${(msg.msgdelrcv == 2 && msg.msgdelsnt == 2) || (msg.msgdelrcv == 1 && msg.sendid == session.userInfo.uuid) || (msg.msgdelsnt == 1 && msg.fromid == session.userInfo.uuid)}" class="float-right">
+                <button type="button" class="btn btn-default" onclick="prevClip()"><i class="fas fa-reply"></i> 이전 쪽지</button>
+                <button type="button" class="btn btn-default" onclick="nextClip()"><i class="fas fa-share"></i> 다음 쪽지</button>
               </div>
-              <button type="button" class="btn btn-default"><i class="far fa-trash-alt"></i> 삭제 하기</button>
+              <button th:if="${(msg.msgdelsnt == 1 && msg.sendid == session.userInfo.uuid) || (msg.msgdelrcv == 1 && msg.fromid == session.userInfo.uuid)}" type="button" class="btn btn-default" onclick=""><i class="far fa-trash-alt"></i> 영구 삭제</button>
+              <button th:if="${(msg.msgdelrcv == 2 && msg.msgdelsnt == 2) || (msg.msgdelrcv == 1 && msg.sendid == session.userInfo.uuid) || (msg.msgdelsnt == 1 && msg.fromid == session.userInfo.uuid)}" type="button" class="btn btn-default" onclick="gotoTrash()"><i class="far fa-trash-alt"></i> 삭제</button>
             </div>
             <!-- /.card-footer -->
           </div>
