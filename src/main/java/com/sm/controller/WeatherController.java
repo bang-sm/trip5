@@ -140,11 +140,15 @@ public class WeatherController {
 		if(httpSession != null) {
 			
 			memberVO = (MemberVO) httpSession.getAttribute("userInfo");  
+		}
+		
+		if(memberVO != null) {
+			
 			
 			int uuid = memberVO.getUuid();
 			weatherlocaluid = weatherService.selectWeatherlocaluid(uuid);
 			
-		} else if(httpSession == null) {
+		} else if(memberVO == null) {
 			weatherlocaluid = 1;
 		}
 		
