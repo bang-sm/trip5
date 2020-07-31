@@ -74,4 +74,13 @@ public class MyController {
 		return cnt;
 	}
 	
+	@PostMapping("/prevClip")
+	public MessageVO prevClip(MessageVO messageVO) {
+		return myService.prevClip(messageVO);
+	}
+	
+	@PostMapping("/nextClip")
+	public MessageVO nextClip(MessageVO messageVO) {
+		return myService.nextClip(messageVO);
+	}
 }

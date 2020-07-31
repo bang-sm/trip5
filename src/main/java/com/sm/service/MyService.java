@@ -96,5 +96,13 @@ public class MyService {
 		
 		return cnt;
 	}
+	
+	public MessageVO prevClip(MessageVO messageVO) {
+		return dao.prevClip(messageVO);
+	}
+	
+	public MessageVO nextClip(MessageVO messageVO) {
+		return dao.nextClip(messageVO);
+	}
 }
 
