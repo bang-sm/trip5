@@ -139,7 +139,7 @@ $(document).ready(function(){
 		type : "POST",
 		data : {},
 		success : function(data){
-		
+			console.log(data);
 			var arr = new Array();
 			
 			for(i=0;i<data.length;i++){

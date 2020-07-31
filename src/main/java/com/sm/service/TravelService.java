@@ -1,15 +1,19 @@
 package com.sm.service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.sm.Utils.FileUtils;
 import com.sm.dao.TravelDAO;
-import com.sm.domain.MemberVO;
+import com.sm.domain.PhotoVO;
 import com.sm.domain.TravelInfoRootVO;
 import com.sm.domain.TravelInfoVO;
 import com.sm.domain.TravelReplyVO;
@@ -20,6 +24,10 @@ public class TravelService {
 
 	@Autowired
 	TravelDAO travelDAO;
+	@Autowired
+	FileUtils fileUtils;
+	@Autowired
+	HttpServletRequest request;
 
 	// 일지 등록
 	public void storyRegist(TravelVO travelVO, TravelInfoVO travelinfoVO) {
@@ -166,6 +174,47 @@ public class TravelService {
 
 	public int tempTravelCheck(int uuid) {
 		return travelDAO.tempTravelCheck(uuid);
+	}
+
+	// 일지저장
+	public void registSave(TravelVO travelVO, TravelInfoVO travelinfoVO, TravelInfoRootVO travelinfoRootVO,
+			MultipartFile[] mfiles, int uuid) throws Exception {
+
+		List<Map<String, Object>> fileList = fileUtils.parseFileInfo(travelVO, mfiles);
+
+		for (int i = 0; i < fileList.size(); i++) {
+			System.out.println(fileList.get(i));
+			travelDAO.photo_insert(fileList.get(i));
+		}
+	}
+
+	// 일지 이미지 리스트
+	public List<PhotoVO> getTravelImage(String tsid) {
+		return travelDAO.getTravelImage(tsid);
+	}
+
+	// 이미지삭제
+	public int imageDelete(int photoId, String customName) {
+		String root_path = request.getSession().getServletContext().getRealPath("/");  
+        String attach_path = "resources/upload/";
+		travelDAO.imageDelete(photoId);
+		int status;
+		File file = new File(root_path+attach_path+customName);
+		
+		if (file.exists()) {
+			if (file.delete()) {
+				System.out.println("파일삭제 성공");
+				status=1;
+			} else {
+				System.out.println("파일삭제 실패");
+				status=2;
+			}
+		} else {
+			System.out.println("파일이 존재하지 않습니다.");
+			status=999;
+		}
+
+		return status;
 	}
 
 }

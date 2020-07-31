@@ -25,6 +25,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
@@ -46,6 +47,71 @@ public class MemberService implements UserDetailsService{
 	
 	@Autowired
 	private JavaMailSender mailSender;
+	
+	// 블랙리스트 추가
+	public void addBlackList(String uuid, String msgBlackList) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("uuid", Integer.parseInt(uuid));
+		map.put("msgBlackList", msgBlackList);
+		memberDAO.addBlackList(map);
+	}
+	
+	// 관리자 유저 페이징
+    public ModelMap memberList(int currentPage) {
+    	ModelMap modelMap = new ModelMap();
+    	
+    	
+        // 페이지에 보여줄 행의 개수 ROW_PER_PAGE = 10으로 고정
+        final int ROWPERPAGE = 15; 
+        
+        // 페이지에 보여줄 첫번째 페이지 번호는 1로 초기화
+        int startPageNum = 1;
+        
+        // 처음 보여줄 마지막 페이지 번호는 10
+        int lastPageNum = ROWPERPAGE;
+        
+        // 현재 페이지가 ROW_PER_PAGE/2 보다 클 경우
+        if(currentPage > (ROWPERPAGE/2)) {
+            // 보여지는 페이지 첫번째 페이지 번호는 현재페이지 - ((마지막 페이지 번호/2) -1 )
+            // ex 현재 페이지가 6이라면 첫번째 페이지번호는 2
+            startPageNum = currentPage - ((lastPageNum/2)-1);
+            // 보여지는 마지막 페이지 번호는 현재 페이지 번호 + 현재 페이지 번호 - 1 
+            lastPageNum += (startPageNum-1);
+        }
+        
+        // Map Data Type 객체 참조 변수 map 선언
+        // HashMap() 생성자 메서드로 새로운 객체를 생성, 생성된 객체의 주소값을 객체 참조 변수에 할당
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        // 한 페이지에 보여지는 첫번째 행은 (현재페이지 - 1) * 10
+        int startRow = (currentPage - 1)*ROWPERPAGE;
+        // 값을 map에 던져줌
+        map.put("startRow", startRow);
+        map.put("rowPerPage", ROWPERPAGE);
+        
+        // DB 행의 총 개수를 구하는 getBoardAllCount() 메서드를 호출하여 double Date Type의 boardCount 변수에 대입
+        double count = memberDAO.userCnt();
+        
+        // 마지막 페이지번호를 구하기 위해 총 개수 / 페이지당 보여지는 행의 개수 -> 올림 처리 -> lastPage 변수에 대입
+        int lastPage = (int)(Math.ceil(count/ROWPERPAGE));
+        
+        // 현재 페이지가 (마지막 페이지-4) 보다 같거나 클 경우
+        if(currentPage >= (lastPage-4)) {
+            // 마지막 페이지 번호는 lastPage
+            lastPageNum = lastPage;
+        }
+        
+        int countMembers = memberDAO.userCnt();
+        
+        modelMap.put("list", memberDAO.memberList(map));
+	    modelMap.put("currentPage", currentPage);
+	    modelMap.put("lastPage", lastPage);
+	    modelMap.put("startPageNum", startPageNum);
+	    modelMap.put("lastPageNum", lastPageNum);
+	    modelMap.put("count", countMembers);
+        
+        return modelMap;
+    }
+	
 	
 	// 회원가입 시, 유효성 체크
     public Map<String, String> validateHandling(Errors errors) {

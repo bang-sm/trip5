@@ -1,5 +1,6 @@
 package com.sm.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sm.domain.MemberVO;
 import com.sm.domain.PlacelistVo;
+import com.sm.domain.TravelViewVO;
 import com.sm.service.PlacelistService;
 
 @RestController
@@ -186,7 +188,7 @@ public class WishPlaceRestController {
 	}
 
 	@PostMapping("/mypage/follow/ok")
-	public void followok(int follow_uuid, HttpSession session) throws Exception {
+	public int followok(int follow_uuid, HttpSession session) throws Exception {
 		MemberVO vo = vo = (MemberVO) session.getAttribute("userInfo");
 		logger.info("session : " + vo);
 		int uuid = 0;
@@ -197,11 +199,13 @@ public class WishPlaceRestController {
 		}
 
 		service.followok(uuid, follow_uuid);
+		
+		return service.followingyoucount(uuid);
 	}
 
 	
 	@PostMapping("/mypage/follow/del")
-	public void followdel(int follow_uuid, HttpSession session) throws Exception {
+	public int followdel(int follow_uuid, HttpSession session) throws Exception {
 		MemberVO vo = vo = (MemberVO) session.getAttribute("userInfo");
 		logger.info("session : " + vo);
 		int uuid = 0;
@@ -212,6 +216,79 @@ public class WishPlaceRestController {
 		}
 
 		service.followdel(uuid, follow_uuid);
+		return service.followingyoucount(uuid);
+	}
+	
+	@PostMapping("/mypage/blacklist")
+	public HashMap<String, Object> blacklist(HttpSession session) throws Exception {
+		MemberVO vo = vo = (MemberVO) session.getAttribute("userInfo");
+		logger.info("session : " + vo);
+		int uuid = 0;
+		try {
+			uuid = vo.getUuid();
+		} catch (NullPointerException e) {
+			logger.info("session 없음");
+		}
+		
+		System.out.println("session 값 : " + uuid);
+		return service.blacklist(uuid);
+	}
+	
+	@PostMapping("/mypage/reply")
+	public HashMap<String, Object> reply(HttpSession session) throws Exception {
+		MemberVO vo = vo = (MemberVO) session.getAttribute("userInfo");
+		logger.info("session : " + vo);
+		int uuid = 0;
+		try {
+			uuid = vo.getUuid();
+		} catch (NullPointerException e) {
+			logger.info("session 없음");
+		}
+		
+		System.out.println("session 값 : " + uuid);
+		return service.reply(uuid);
+	}
+	
+	@PostMapping("/mypage/blacklist/del")
+	public int blacklistdel(int black_uuid,HttpSession session) throws Exception {
+		MemberVO vo = vo = (MemberVO) session.getAttribute("userInfo");
+		logger.info("session : " + vo);
+		int uuid = 0;
+		try {
+			uuid = vo.getUuid();
+		} catch (NullPointerException e) {
+			logger.info("session 없음");
+		}
+		
+		System.out.println("session 값 : " + uuid);
+		service.blacklistdel(uuid,black_uuid);
+		
+		return service.blacklistcount(uuid);
 	}
 	 
+	@PostMapping(value = "/registchart")
+	public int[] mypageline(HttpSession session) throws Exception {
+		MemberVO vo = vo = (MemberVO) session.getAttribute("userInfo");
+		int uuid = vo.getUuid();
+		logger.info("uuid 값 은 : " + uuid);
+		int[] arr = new int[12];
+		PlacelistVo plvo = new PlacelistVo();
+		for (int i = 1; i <= arr.length; i++) {
+			arr[i - 1] = service.mypageline(i, i + 1, uuid);
+		}
+		return arr;
+	}
+	
+	@PostMapping(value="/selectView")
+	public List<TravelViewVO> selectTravelView(HttpSession httpSession){
+		List<TravelViewVO> tvList = new ArrayList<TravelViewVO>();
+		MemberVO memberVO = new MemberVO();
+		
+		memberVO = (MemberVO) httpSession.getAttribute("userInfo");
+		int uuid = memberVO.getUuid();
+		
+		tvList = service.selectTravelView(uuid);
+		return tvList;
+	}
+	
 }
