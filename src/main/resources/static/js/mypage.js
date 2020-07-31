@@ -275,13 +275,13 @@ function like(){
 			for(i=0;i<like.length;i++){
 				result+='<tr>';
 				if(i==0){
-					result+='<th scope="row">TOP</th>';
+					result+='<th scope="row" class="col-like-one">TOP</th>';
 				}else{
-					result+='<th scope="row">'+(i+1)+'</th>';
+					result+='<th scope="row" class="col-like-one">'+(i+1)+'</th>';
 				}
-				result+='<td>'+like[i].tstitle+'</td>';
-				result+='<td>'+like[i].tslike+'</td>';
-			    result+='<td>'+like[i].tsregdate+'</td>';
+				result+='<td class="col-like-two">'+like[i].tstitle+'</td>';
+				result+='<td class="col-like-thr">'+like[i].tslike+'</td>';
+			    result+='<td class="col-like-for">'+like[i].tsregdate+'</td>';
 			    result+='</tr>';
 				if(i==4){
 					break;

@@ -302,7 +302,7 @@ public class PlacelistDAO {
 	}
 	
 	public TravelVO selectTravelStoryByTsid(int tsid) {
-		return sql.selectOne("mappers.placelistMapper.selectTravelStoryByUuid", tsid);
+		return sql.selectOne("mappers.placelistMapper.selectTravelStoryByTsid", tsid);
 	}
 	
 	public String selectmember(int uuid) {

@@ -232,7 +232,9 @@
 			travel_story
 	WHERE 
 			uuid=#{uuid}
-	ORDER by tslike DESC ;
+	ORDER BY 
+			tslike DESC
+	LIMIT 7 ;
 	</select>
 	
 	<insert id="followok" parameterType="map">
@@ -365,7 +367,7 @@
 			date(viewDate) >= SUBDATE(NOW(),INTERVAL 3 DAY)
 		ORDER BY 
 			viewDate ASC
-		LIMIT 5;
+		LIMIT 7;
 	</select>
 	
 	<select id="countTravelViewbyUuid" resultType="int" parameterType="int">
