@@ -9,10 +9,10 @@ public class PhotoVO {
 	
 	private int photoId;
 	private String photoCustomName;
-	private String photoOrigianlName;
+	private String photoOriginalName;
 	private String phothPath;
 	private String photoFileSize;
-	private int tsiId;
+	private int tsId;
 	private String photoMain;
 	
 }

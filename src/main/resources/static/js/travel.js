@@ -2,32 +2,69 @@
 
 $(document).ready(function() {
 	
-	//이미지 업로드
+	//파일첨부 input 생성
 	$(".add_img").click(function(){
+		var file_input="";
+		file_input+='<div class="row_box">';
+		file_input+='<input type="file" name="mfiles" accept="image/*" style="width:80% !important ; display: inline-block;"/>';
+		file_input+='<input type="hidden" name="photoId" accept="image/*" style="width:80% !important ; display: inline-block;"/>';
+		file_input+='<button type="button" class="btn btn-info img_delete">삭제';
+		file_input+='<i class="fa fa-minus"></i>';
+		file_input+='</button>';
+		file_input+='</div>';
+		$(".file_box").append(file_input);
+	});
+	
+	//파일첨부 삭제버튼
+	$(document).on('click','.img_delete',function(){
+		var imgbox=$(this).parent()
+		
 		$.ajax({
-			url:"file_upload",
-			type: "POST",
-			data: formData,
-			enctype: 'multipart/form-data',
-			processData : false,
-			contentType : false,
-			cache: false,
-	        
-	        success: function (file_model) {
-				// success process
-				$('#file_origin').val(file_model.originalFileName);
+			type : "post",
+			url : "/travel/imageDelete",
+			data : {
+				"photoId" : $(this).val(),
+				"customName" : $(this).next().val()
+			},
+			error: function(xhr, status, error){
+	        	toastr.success("실패하였습니다");
 	        },
-
-	        error: function () {
-				 // error process
-				swal({
-					title : "File Upload",
-					text : "파일 업로드에 실패하였습니다. <br/> 관리자에게 문의해주세요.",
-					type : "error"
-				});
+	        success : function(data){
+	        	if(data==1){
+	        		toastr.success("삭제되었습니다");
+	        		$(imgbox).remove();
+	        	}else if(data==2){
+	        		$(imgbox).remove();
+	        		toastr.success("실패하였습니다");
+	        	}else{
+	        		toastr.success("해당파일이 존재하지않습니다.");
+	        		$(imgbox).remove();
+	        	}
 	        }
 		});
-	})
+	});
+	
+	//프로그레스 nav 이동
+	$(".progress_index").click(function(){
+		var index=$(this).attr("data-navindex");
+		console.log(index);
+		
+		$('fieldset').each(function(i,item){
+			//console.log($(item).attr('data-index'));
+			var filedsetIndex=$(item).attr('data-index');
+			if(index==filedsetIndex){
+				console.log(filedsetIndex);
+				$(item).css('display','block');
+				$(item).css('transform','scale(1)');
+				$(item).css('opacity','1');
+			}else{
+				$(item).css('display','none');
+				$(item).css('opacity','0');
+				$(item).css('left','0');
+			}
+			
+		});
+	});
 	
 	//일지 댓글 등록
 	$(".reply_submit").click(function(){

@@ -154,7 +154,7 @@ p.quote{
 					location.href="/user/inform";
 				} */
 				swal({
-					title : "임시저장된 글이있습니다",
+					title : "임시저장된 일지가 있습니다",
 					text : "마이페이지로 이동하시겠습니까?",
 					icon : "info",
 					closeOnClickOutside : false,
@@ -162,11 +162,16 @@ p.quote{
 						cancle : {
 							text : "새로운 일지 등록 진행하기",
 							value : false
+							
 						},
 						confirm : {
 							text : "마이페이지로 이동",
 							value : true
 						}
+					}
+				}).then((result) => {
+					if(result){
+						location.href="/user/inform";
 					}
 				});
 				

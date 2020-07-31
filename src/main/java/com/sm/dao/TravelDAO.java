@@ -3,12 +3,14 @@ package com.sm.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sm.domain.PhotoVO;
 import com.sm.domain.TravelInfoRootVO;
 import com.sm.domain.TravelInfoVO;
 import com.sm.domain.TravelReplyVO;
@@ -183,5 +185,21 @@ public class TravelDAO {
 	public int tempTravelCheck(int uuid) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("mappers.travelMapper.tempTravelCheck",uuid);
+	}
+	
+	//이미지업로드
+	public void photo_insert(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		sqlSession.insert("mappers.travelMapper.photo_insert",map);
+	}
+	
+	//이미지리스트
+	public List<PhotoVO> getTravelImage(String tsid) {
+		return sqlSession.selectList("mappers.travelMapper.getTravelImage",tsid);
+	}
+
+	//이미지삭제
+	public void imageDelete(int photoId) {
+		sqlSession.delete("mappers.travelMapper.imageDelete",photoId);
 	}
 }
