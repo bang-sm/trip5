@@ -70,18 +70,11 @@
 		FROM 
 			messageList 
 		WHERE
-		<choose>
-			<when test="fromid != 0">
-				from_id = #{fromid} 
-				AND
-				msg_unwrite = 1
-			</when>
-			<otherwise>
-				from_id = #{sendid}
-				AND
-				msg_unwrite = 1
-			</otherwise>
-		</choose> 
+			from_id = #{fromid} 
+			AND
+			msg_unwrite = 1
+			AND
+			msg_delrcv = 2
 	</select>
 	
 	<select id="receive" parameterType="com.sm.domain.MessageVO" resultType="com.sm.domain.MessageVO">
@@ -114,14 +107,16 @@
 		from_id fromid, 
 		send_id sendid, 
 		msg_subject msgsubject, 
-		t.membernick othernick
+		t.membernick othernick,
+		l.msg_delrcv msgdelrcv,
+		l.msg_delsnt msgdelsnt
 	FROM 
 		member m, 
 		messageList l,
 		(SELECT membernick FROM member WHERE uuid = #{sendid}) t
 	WHERE 
 		m.uuid = l.from_id AND
-		l.msg_id = #{msgid};
+		l.msg_id = #{msgid}
 	</select>
 	
 	<update id="readed" parameterType="com.sm.domain.MessageVO">
@@ -132,6 +127,15 @@
 		WHERE 
 			msg_id = #{msgid}
 	</update>
+	
+	<select id="selectNick" parameterType="int" resultType="string">
+		SELECT 
+			membernick
+		FROM
+			member
+		WHERE
+			uuid = #{uuid}
+	</select>
 	
 	<select id="clipTrash" parameterType="com.sm.domain.MessageVO" resultType="com.sm.domain.MessageVO">
 		SELECT
@@ -148,8 +152,7 @@
 			member m,
 			messageList l
 		WHERE
-			m.uuid = l.from_id AND
-			(from_id = #{fromid} OR send_id = #{sendid})
+			m.uuid = l.from_id 
 			AND
 			(l.msg_delsnt = 1 OR l.msg_delrcv = 1)
 		ORDER BY
@@ -173,6 +176,37 @@
 				#{item}
 			</foreach>
 		)
+	</update>
+	
+	<select id="selectByMsgid" parameterType="int" resultType="com.sm.domain.MessageVO">
+		SELECT 
+			msg_id msgid, 
+			msg_regdate msgregdate, 
+			msg_content msgcontent, 
+			from_id fromid, 
+			send_id sendid, 
+			msg_subject msgsubject, 
+			msg_delrcv msgdelrcv,
+			msg_delsnt msgdelsnt
+		FROM 
+			messageList 
+		WHERE 
+			msg_id = #{msgid}
+	</select>
+	
+	<update id="gotoTrashRead" parameterType="com.sm.domain.MessageVO">
+		UPDATE 
+			messageList 
+		SET
+		<choose>
+			<when test="sendid != 0">
+				msg_delsnt = 1 
+			</when>
+			<otherwise>
+				msg_delrcv = 1
+			</otherwise>
+		</choose>
+		WHERE msg_id = #{msgid}
 	</update>
 </mapper>
 
