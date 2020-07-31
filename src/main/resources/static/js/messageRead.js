@@ -12,3 +12,11 @@ function gotoTrash(){
 		}
 	});
 }
+
+function prevClip(){
+	
+}
+
+function nextClip(){
+	
+}
