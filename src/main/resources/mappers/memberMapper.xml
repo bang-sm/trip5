@@ -93,7 +93,7 @@
 		LIMIT #{startRow},#{rowPerPage};
 	</select>
 
-	<!-- 회원 페이징 -->
+	<!-- 회원 페이징 정보 출력-->
 	<update id="addBlackList" parameterType="Map">
 		UPDATE
 			member
@@ -107,9 +107,17 @@
 			set
 				adminBlackList ='N'
 		</when>
-			
 	</choose>		
 		WHERE uuid = ${uuid};
 	</update>
+	
+	<!-- 카카오로그인,TRIP5 로그인 count -->
+	<select id="userType" resultType="Map">
+		SELECT 
+			COUNT(CASE WHEN kakaoOk='Y' THEN 1 END) AS kakao,
+			COUNT(CASE WHEN kakaoOk='N' THEN 1 END) As trip5
+		FROM 
+			member;
+	</select>
 
 </mapper>

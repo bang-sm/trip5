@@ -48,6 +48,18 @@ public class MemberService implements UserDetailsService{
 	@Autowired
 	private JavaMailSender mailSender;
 	
+	
+	////////////////////////////////////////////////////////////////////////////////
+	// 관리자 페이지
+	////////////////////////////////////////////////////////////////////////////////
+	// 회원가입한 유저 타입
+	public ModelMap userTpye() {
+		ModelMap modelMap = new ModelMap();
+		System.out.println(memberDAO.userType());
+		modelMap.put("userType", memberDAO.userType());
+		return modelMap;
+	}
+	
 	// 블랙리스트 추가
 	public void addBlackList(String uuid, String msgBlackList) {
 		Map<String, Object> map = new HashMap<>();
@@ -113,7 +125,15 @@ public class MemberService implements UserDetailsService{
     }
 	
 	
+    
+    
+    
+    
+    
+    
+    ////////////////////////////////////////////////////////////////////////
 	// 회원가입 시, 유효성 체크
+    ///////////////////////////////////////////////////////////////////////
     public Map<String, String> validateHandling(Errors errors) {
         Map<String, String> validatorResult = new HashMap<>();
 
@@ -197,7 +217,9 @@ public class MemberService implements UserDetailsService{
 		return "redirect:/user/login";
     }
     
+    /////////////////////////////////////////////////////////////////////////
     //로그인 할때 타는 서비스
+    /////////////////////////////////////////////////////////////////////////
 	@Override
 	public UserDetails loadUserByUsername(String memberemail) throws UsernameNotFoundException {
 		//System.out.println("넘어온 아이디 "+ memberemail);
@@ -212,7 +234,6 @@ public class MemberService implements UserDetailsService{
 			HttpSession session=request.getSession(true);
 			session.setAttribute("userInfo", user);
 			session.setMaxInactiveInterval(60*60);
-//			System.out.println(user+"/////////////////////////////////////////////////////////////////////////////");
 		}
 		
 		/*

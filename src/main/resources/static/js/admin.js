@@ -1,27 +1,35 @@
 $(document).ready(function() {
-/*	$.ajax({
-		url : "/admin/ajax/userCnt",
-		type : "POST",
-		success : function(data) {
-			$(".idCheckMsg").text("");
-			
-			var ctx = document.getElementById('myChart').getContext('2d'); 
-			var chart = new Chart(ctx, { // 챠트 종류를 선택 
-				type: 'line', 
+
+	var data = [ $(".kakaoLogin").text(), $(".trip5Login").text() ];
+	console.log(data);
+
+	// 가운데가 빈 원형 차트
+	userType = {
+		datasets : [ {
+			backgroundColor : [ 'yellow', 'green' ],
+			data : data
+		} ],
+		// 라벨의 이름이 툴팁처럼 마우스가 근처에 오면 나타남
+		labels : [ 'kakao', 'trip5' ]
+	};
+
+	var ctx2 = document.getElementById("myPieChart");
+	var myDoughnutChart = new Chart(ctx2, {
+		type : 'pie',
+		data : userType,
+		options : {
+			maintainAspectRatio : false,
+			showDatasetLabels : true,
+			legend : {
+				display : true,
+				position : 'bottom',
+				labels : {
+					fontFamily : "myriadpro-regular",
+					boxWidth : 15,
+					boxHeight : 2
+				}
 				
-				// 챠트를 그릴 데이타 
-				data: { labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-				datasets: [{ label: '회원가입 추세',
-					backgroundColor: 'transparent', 
-					borderColor: 'red', 
-					data: data
-				}] 
-			}, 
-			// 옵션 
-			options: {} 
-			});
-			
-		} // end function
-	}); // ajax 끝
-	*/
+			}
+		}
+	});
 })

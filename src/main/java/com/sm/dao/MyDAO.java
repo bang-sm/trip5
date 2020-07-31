@@ -70,7 +70,18 @@ public class MyDAO {
 		map.put("messageid", msgid);
 		map.put("sendid", sendid);
 		
-		
 		return sqlsession.update("mappers.myMapper.gotoTrash", map);
+	}
+	
+	public String selectNick(int uuid) {
+		return sqlsession.selectOne("mappers.myMapper.selectNick", uuid);
+	}
+	
+	public MessageVO selectByMsgid(int msgid) {
+		return sqlsession.selectOne("mappers.myMapper.selectByMsgid", msgid);
+	}
+	
+	public int gotoTrashRead(MessageVO messageVO) {
+		return sqlsession.update("mappers.myMapper.gotoTrashRead", messageVO);
 	}
 }
