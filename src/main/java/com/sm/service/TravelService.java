@@ -51,12 +51,10 @@ public class TravelService {
 
 	/**
 	 * @author smbang 일지작성을 위해서 tsid,uuid 값을 통해 해당 일지의 정보를 받아온다.
+	 * @param uuid 
 	 */
-	public TravelVO getTravelStory(String tsid) {
-		// MemberVO memberVO = new MemberVO();
-		// memberVO = (MemberVO) session.getAttribute("userInfo");
-
-		return travelDAO.getTravelStory(tsid, 7);
+	public TravelVO getTravelStory(String tsid, int uuid) {
+		return travelDAO.getTravelStory(tsid, uuid);
 	}
 
 	/**
@@ -67,7 +65,7 @@ public class TravelService {
 		return travelDAO.getTravelInfo(tsid);
 	}
 
-	public List<TravelInfoRootVO> getTravelRootInfo(String tsid) {
+	public List<TravelInfoRootVO> getTravelRootInfo(String tsid, int uuid) {
 		// TODO Auto-generated method stub
 		return travelDAO.getTravelRootInfo(tsid);
 	}
@@ -189,7 +187,7 @@ public class TravelService {
 	}
 
 	// 일지 이미지 리스트
-	public List<PhotoVO> getTravelImage(String tsid) {
+	public List<PhotoVO> getTravelImage(String tsid, int uuid) {
 		return travelDAO.getTravelImage(tsid);
 	}
 

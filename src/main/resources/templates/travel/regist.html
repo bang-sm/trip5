@@ -28,8 +28,9 @@
 			<li data-navindex="999" class="progress_index"></li>
 		</ul>
 	</div>
-
+	
 	<form class="steps" action="/travel/registSave" name="travel_info" enctype="multipart/form-data" method="POST">
+		
 		<input type="hidden" th:value="${travel.tsid}" name="tsid">
 		<fieldset th:each="travelInfo, numStat : ${travelInfo}" th:data-index="${numStat.count}">
 			<th:block th:if="${numStat.count <= numStat.size}">

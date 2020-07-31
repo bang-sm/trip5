@@ -223,7 +223,7 @@ $(document).ready(function() {
         	"tsid" : $("#tsid").val()
         },
         error: function(xhr, status, error){
-            alert("데이터를 가져오지못했습니다..");
+            console.log("데이터를 가져오지못했습니다..");
         },
         success : function(data){
         	summernote_print(data);

@@ -93,7 +93,6 @@ public class TravelDAO {
 		HashMap<String , Object> map=new HashMap<>();
 		map.put("infoList", infoList);
 		map.put("rootList", rootList);
-		
 		sqlSession.insert("mappers.travelMapper.tempSaveTravleRoot",map);
 		sqlSession.insert("mappers.travelMapper.tempSaveTravelInfo",map);
 	}
@@ -118,11 +117,14 @@ public class TravelDAO {
 		travelStory=sqlSession.selectOne("mappers.travelMapper.getTravelStory",param);
 		List<TravelReplyVO> replyList=new ArrayList<TravelReplyVO>();
 		replyList=sqlSession.selectList("mappers.travelMapper.getTravelReply",param);
+		List<PhotoVO> photoList=new ArrayList<PhotoVO>();
+		photoList=sqlSession.selectList("mappers.travelMapper.getTravelImage",param);
 		
 		HashMap<String , Object> map=new HashMap<>();
 		map.put("infoList", infoList);
 		map.put("travelStory", travelStory);
 		map.put("replyList", replyList);
+		map.put("photoList", photoList);
 		
 		return map;
 	}

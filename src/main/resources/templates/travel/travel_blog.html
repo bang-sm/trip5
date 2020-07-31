@@ -7,6 +7,14 @@
 <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/css/travelblog.css}">
 <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="/css/slick-theme.css">
+<style>
+.slick-prev:before, .slick-next:before{
+	color:black;
+	font-size:35px;
+}
+</style>
 </head>
 
 <body>
@@ -18,7 +26,16 @@
 				<div class="single-post row">
 					<div class="col-lg-12">
 						<div class="feature-img">
-							<img class="img-fluid" src="https://placeimg.com/1200/400">
+							<div class="imgbox">
+								<th:block th:if="${travel.photoList} == null">
+									<img class="img-fluid" src="https://placeimg.com/1200/400">
+								</th:block>
+								<th:block th:if="${travel.photoList} != null" th:each="img : ${travel.photoList}">
+									<div>
+										<img class="img-fluid" width="960"  th:src="|/resources/upload/${img.photoCustomName} |">
+									</div>
+								</th:block>
+							</div>
 							<div class="banner_content text-center">
 								<h2 th:text="${travel.travelStory.tstitle}"></h2>
 								<input type="hidden" th:value="${travel.travelStory.uuid}" id="ts_uuid">
@@ -116,5 +133,20 @@
 	</th:block>
 	
 </body>
+<script type="text/javascript" src="../js/slick.js"></script>
 <script type="text/javascript" src="../js/travel.js"></script>
+<script type="text/javascript">
+	$('.imgbox').slick({
+		slidesToShow: 3,
+		responsive: [{
+			breakpoint: 960, 
+			settings: {slidesToShow:2 }
+		},
+		{
+			breakpoint: 768,
+			settings: {slidesToShow:1} 
+		}]
+
+	});
+</script>
 </html>
