@@ -44,41 +44,46 @@ public class MyinfoInterceptor implements HandlerInterceptor{
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		
 		String query = request.getQueryString();
-		StringTokenizer stringTokenizer = new StringTokenizer(query, "=&");
 		
-		HttpSession httpSession = request.getSession();
-		TravelViewVO travelViewVO = new TravelViewVO();
-		MemberVO memberVO = new MemberVO();
-		
-		memberVO = (MemberVO) httpSession.getAttribute("userInfo");
-
-		if(memberVO != null) { // 로그인 되어 있을 때!! 
+		if(query != null) {
 			
-			int uuid = memberVO.getUuid();
-			String tsUrl = saveDestination(request);
-			String tstitle = "";
-			int tsid = 0;
+			StringTokenizer stringTokenizer = new StringTokenizer(query, "=&");
 			
-			while (stringTokenizer.hasMoreTokens()) {
-				String data = stringTokenizer.nextToken();
-				if(data.equals("tsid")) {
-					break;
+			HttpSession httpSession = request.getSession();
+			TravelViewVO travelViewVO = new TravelViewVO();
+			MemberVO memberVO = new MemberVO();
+			
+			memberVO = (MemberVO) httpSession.getAttribute("userInfo");
+			
+			if(memberVO != null) { // 로그인 되어 있을 때!! 
+				
+				int uuid = memberVO.getUuid();
+				String tsUrl = saveDestination(request);
+				String tstitle = "";
+				int tsid = 0;
+				
+				while (stringTokenizer.hasMoreTokens()) {
+					String data = stringTokenizer.nextToken();
+					if(data.equals("tsid")) {
+						break;
+					}
 				}
-			}
-			
-			tsid = Integer.parseInt(stringTokenizer.nextToken());
-			tstitle = service.selectTravelStoryByTsid(tsid).getTstitle();
-			int dbUuid = service.selectTravelStoryByTsid(tsid).getUuid();
-			
-			if(dbUuid != uuid) {
 				
-				travelViewVO.setUuid(uuid);
-				travelViewVO.setTsid(tsid);
-				travelViewVO.setTstitle(tstitle);
-				travelViewVO.setTsUrl(tsUrl);
+				tsid = Integer.parseInt(stringTokenizer.nextToken());
+				tstitle = service.selectTravelStoryByTsid(tsid).getTstitle();
+				int dbUuid = service.selectTravelStoryByTsid(tsid).getUuid();
 				
-				service.insertTravelView(travelViewVO, uuid);
+				if(dbUuid != uuid) {
+					
+					travelViewVO.setUuid(uuid);
+					travelViewVO.setTsid(tsid);
+					travelViewVO.setTstitle(tstitle);
+					travelViewVO.setTsUrl(tsUrl);
+					
+					service.insertTravelView(travelViewVO, uuid);
+				}
 			}
 		}
 		return true;
