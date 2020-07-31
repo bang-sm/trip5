@@ -41,7 +41,6 @@ public class MemberVO {
 	private String accountstatus;
 	private String sessionlog;
 	private String kakaoOk;
-	private int blackuuid;
 	private int weatherlocaluid;
 	private String adminBlackList;
 	
