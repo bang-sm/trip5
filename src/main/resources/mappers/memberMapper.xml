@@ -80,5 +80,36 @@
 			count(*)
 		from
 			member
-	</select>	
+	</select>
+
+	<!-- 회원 페이징 -->
+	<select id="memberList" parameterType="Map" resultType="com.sm.domain.MemberVO">
+		SELECT 
+			*
+		FROM 
+			member
+		ORDER BY
+			uuid ASC
+		LIMIT #{startRow},#{rowPerPage};
+	</select>
+
+	<!-- 회원 페이징 -->
+	<update id="addBlackList" parameterType="Map">
+		UPDATE
+			member
+ 	<choose>
+	    <when test="msgBlackList.equals('추가')">	
+			set
+				adminBlackList ='Y'
+		</when>
+		
+		<when test="msgBlackList.equals('삭제')">
+			set
+				adminBlackList ='N'
+		</when>
+			
+	</choose>		
+		WHERE uuid = ${uuid};
+	</update>
+
 </mapper>

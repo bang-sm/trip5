@@ -1,5 +1,8 @@
 package com.sm.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -13,7 +16,22 @@ public class MemberDAO {
 	SqlSession sql;
 	
 	String namespace = "mappers.memberMapper";
+	
+	// 회원 수
+	public int userCnt() {
+		return sql.selectOne(namespace + ".userCnt");
+	}
 
+	// 회원 페이징 정보
+	public List<MemberVO> memberList(Map<String, Integer> map) {
+		return sql.selectList(namespace + ".memberList", map);
+	}
+	
+	// 회원 블랙리스트 추가
+	public void addBlackList(Map<String, Object> map) {
+		sql.update(namespace + ".addBlackList", map);
+	}
+	
 	// 회원가입
 	public void join(MemberVO memberVO) {
 		sql.insert(namespace + ".signup",memberVO);
@@ -22,11 +40,6 @@ public class MemberDAO {
 	// 회원가입
 	public void kakaoJoin(MemberVO memberVO) {
 		sql.insert(namespace + ".kakaoSignup",memberVO);
-	}
-	
-	// 회원 수
-	public void userCnt() {
-		sql.selectOne(namespace + ".userCnt");
 	}
 
 	// kakaoOk 변경
@@ -48,5 +61,5 @@ public class MemberDAO {
 	public int uuidCheck(String memberemail) throws Exception{
 		return sql.selectOne(namespace + ".uuidCheck",memberemail);
 	}
-	
+
 }

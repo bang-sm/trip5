@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,41 +57,13 @@ public class MyController {
 		return uuid;
 	}
 	
-	// 보낸 쪽지함
-	@PostMapping("/message")
-	public List<MessageVO> message(MessageVO messageVO) throws ParseException {
-		List<MessageVO> list = myService.sendMessage(messageVO);
-		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		SimpleDateFormat format2 = new SimpleDateFormat("MM월dd일 HH:mm");
-		for(int i = 0; i < list.size(); i++) {
-			Date date = format1.parse(list.get(i).getMsgregdate());
-			list.get(i).setMsgregdate(format2.format(date));
-		}
+	@PostMapping("/gototrash")
+	public void delete(HttpServletRequest request) {
+		String [] msgid = request.getParameterValues("msgid");
+		String sendid = request.getParameter("sendid");
 		
-		return list;
+		myService.gotoTrash(msgid, sendid);
+		
+		System.out.println(sendid + "<-- sendid");
 	}
-	
-	// 받은 쪽지 개수 구하기
-	@PostMapping("/cntMsg")
-	public int cntMsg(MessageVO messageVO) {
-		
-		int cnt = myService.countMessage(messageVO);
-		
-		return cnt;
-	}
-	
-	@PostMapping("/receive")
-	public List<MessageVO> receiveMsg(MessageVO messageVO) throws ParseException{
-		List<MessageVO> list = myService.receiveMessage(messageVO);
-		
-		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		SimpleDateFormat format2 = new SimpleDateFormat("MM월dd일 HH:mm");
-		for(int i = 0; i < list.size(); i++) {
-			Date date = format1.parse(list.get(i).getMsgregdate());
-			list.get(i).setMsgregdate(format2.format(date));
-		}
-		
-		return list;
-	}
-	
 }
