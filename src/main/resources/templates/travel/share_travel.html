@@ -1,11 +1,9 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
 <title>일지 블로그</title>
 <meta charset="utf-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 <link
 	href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"
@@ -16,54 +14,41 @@
 <link
 	href="https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap"
 	rel="stylesheet">
-
-<link rel="stylesheet"
-	href="/css/andrea/css/open-iconic-bootstrap.min.css">
+<link rel="stylesheet" href="/css/andrea/css/open-iconic-bootstrap.min.css">
 <link rel="stylesheet" href="/css/andrea/css/animate.css">
 <link rel="stylesheet" href="/css/andrea/css/owl.carousel.min.css">
 <link rel="stylesheet" href="/css/andrea/css/owl.theme.default.min.css">
 <link rel="stylesheet" href="/css/andrea/css/magnific-popup.css">
 <link rel="stylesheet" href="/css/andrea/css/aos.css">
-<link rel="stylesheet" href="/css/andrea/css/ionicons.min.css">
 <link rel="stylesheet" href="/css/andrea/css/flaticon.css">
 <link rel="stylesheet" href="/css/andrea/css/icomoon.css">
 <link rel="stylesheet" href="/css/andrea/css/style.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
 </head>
 <body>
-
 	<div id="colorlib-page">
 		<a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
 		<aside id="colorlib-aside" role="complementary" class="js-fullheight">
 			<nav id="colorlib-main-menu" role="navigation">
 				<ul>
-					<li class="colorlib-active"><a href="index.html">Home</a></li>
-					<li><a href="fashion.html">마이페이지</a></li>
-					<li><a href="travel.html">날씨</a></li>
-					<li><a href="about.html">채팅방</a></li>
-				</ul>
-				<ul style="margin-top: 50px">
-					<aside class="single_sidebar_widget author_widget">
-						<img class="author_img rounded-circle" src="img/blog/author.png"
-							alt="">
-						<h4>Charlie Barber</h4>
-						<p>Senior blog writer</p>
-						<div class="social_icon">
-							<a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i
-								class="fa fa-twitter"></i></a> <a href="#"><i
-								class="fa fa-github"></i></a> <a href="#"><i
-								class="fa fa-behance"></i></a>
-						</div>
-						<p>Boot camps have its supporters andit sdetractors. Some
-							people do not understand why you should have to spend money on
-							boot camp when you can get. Boot camps have itssuppor ters andits
-							detractors.</p>
-						<div class="br"></div>
-					</aside>
+					<li class="colorlib-active"><a href="/index">Home</a></li>
 				</ul>
 			</nav>
-
-			<div class="colorlib-footer"></div>
+			<aside style="text-align: center;margin-top:70px">
+				<img class="author_img rounded-circle" src=http://placehold.it/250x250 alt="프로필">
+				<h4 style="margin-top: 35px">닉네임</h4>
+				<p>한마디 소개글</p>
+				<div class="social_icon">
+				    <button type="button" class="btn btn-info" id="follow">팔로우
+				    	<i id="follow_st" class=""></i>
+				    </button>
+				</div>
+			</aside>
 		</aside>
+
+		
 		<!-- END COLORLIB-ASIDE -->
 		<div id="colorlib-main">
 			<section class="ftco-section ftco-no-pt ftco-no-pb">
@@ -72,26 +57,30 @@
 						<div class="col-xl-8 py-5 px-md-5">
 							<div class="row pt-md-4">
 								<div class="col-md-12">
-									<div class="blog-entry ftco-animate d-md-flex">
-										<a href="single.html" class="img img-2"
-											style="background-image: url(images/image_1.jpg);"></a>
-										<div class="text text-2 pl-md-4">
+									<div class="blog-entry ftco-animate d-md-flex" th:each="list : ${data.mainList}">
+										<input type="hidden" th:value=${list.uuid} id="ts_uuid">
+										<a class="img img-2" th:href="|/travel/travel_blog?uuid=${list.uuid}&tsid=${list.tsid}|">
+											<img class="author_img rounded-circle" 
+											th:if="${list.photoMain} != null"
+											th:src="|/resources/upload/${list.photoMain} |" width="150" height="150">
+										</a>
+										<div class="text text-2 pl-md-4" style="margin: 20px;">
 											<h3 class="mb-2">
-												<a href="single.html">A Loving Heart is the Truest
-													Wisdom</a>
+												<a th:href="|/travel/travel_blog?uuid=${list.uuid}&tsid=${list.tsid}|" th:text="${list.tstitle}"></a>
 											</h3>
 											<div class="meta-wrap">
 												<p class="meta">
-													<span> <i class="icon-calendar mr-2"></i>등록날짜넣을곳
-													</span> <span> <i class="icon-eye mr-2"></i>북마크수
-													</span> <span> <i class="icon-thumbs-up mr-2"></i>개수 표시
+													<span> 
+														<i class="icon-calendar mr-2" th:text="| ${list.tsregdate}|"></i>
+													</span> 
+													<span> 
+														<i class="icon-eye mr-2" th:text="| ${list.bookmark}|"></i>
+													</span> 
+													<span> 
+														<i class="icon-thumbs-up mr-2" th:text="| ${list.tslike}|"></i>
 													</span>
 												</p>
 											</div>
-											<p>
-												<a href="#" class="btn-custom">자세히보기<span
-													class="ion-ios-arrow-forward"></span></a>
-											</p>
 										</div>
 									</div>
 								</div>
@@ -117,87 +106,50 @@
 						<div class="col-xl-4 sidebar ftco-animate bg-light pt-5">
 							<div class="sidebar-box ftco-animate">
 								<h3 class="sidebar-heading">TOP3 Like</h3>
-								<div class="block-21 mb-4 d-flex">
-									<a class="blog-img mr-4"
-										style="background-image: url(images/image_1.jpg);"></a>
+								<div class="block-21 mb-4 d-flex" th:each="top : ${data.top3}">
+									<a class="blog-img mr-4">
+										<img class="author_img rounded-circle"
+										th:if="${top.photoMain} !=null"
+										 th:src="|/resources/upload/${top.photoMain}" width="70" height="70">
+									</a>
 									<div class="text">
 										<h3 class="heading">
-											<a href="#">Even the all-powerful Pointing has no control</a>
+											<a href="#" th:text="${top.tstitle}"></a>
 										</h3>
 										<div class="meta">
 											<div>
-												<a href="#"><span class="icon-calendar"></span> June 28,
-													2019</a>
+												<span class="icon-calendar"></span>
+												<i th:text="${top.tsregdate}"></i>
 											</div>
 											<div>
-												<a href="#"><span class="icon-person"></span> Dave Lewis</a>
+												<span class="icon-eye"></span>
+												<i th:text="${top.bookmark}"></i>
 											</div>
 											<div>
-												<a href="#"><span class="icon-chat"></span> 19</a>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="block-21 mb-4 d-flex">
-									<a class="blog-img mr-4"
-										style="background-image: url(images/image_2.jpg);"></a>
-									<div class="text">
-										<h3 class="heading">
-											<a href="#">Even the all-powerful Pointing has no control</a>
-										</h3>
-										<div class="meta">
-											<div>
-												<a href="#"><span class="icon-calendar"></span> June 28,
-													2019</a>
-											</div>
-											<div>
-												<a href="#"><span class="icon-person"></span> Dave Lewis</a>
-											</div>
-											<div>
-												<a href="#"><span class="icon-chat"></span> 19</a>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="block-21 mb-4 d-flex">
-									<a class="blog-img mr-4"
-										style="background-image: url(images/image_3.jpg);"></a>
-									<div class="text">
-										<h3 class="heading">
-											<a href="#">Even the all-powerful Pointing has no control</a>
-										</h3>
-										<div class="meta">
-											<div>
-												<a href="#"><span class="icon-calendar"></span> June 28,
-													2019</a>
-											</div>
-											<div>
-												<a href="#"><span class="icon-person"></span> Dave Lewis</a>
-											</div>
-											<div>
-												<a href="#"><span class="icon-chat"></span> 19</a>
+												<span class="icon-thumbs-up"></span>
+												<i th:text="${top.tslike}"></i>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 							<div class="sidebar-box ftco-animate">
-								<h3 class="sidebar-heading">Categories</h3>
+								<h3 class="sidebar-heading">닉네임님의 통계</h3>
 								<ul class="categories">
-									<li><a href="#">Fashion <span>(6)</span></a></li>
-									<li><a href="#">Technology <span>(8)</span></a></li>
-									<li><a href="#">Travel <span>(2)</span></a></li>
-									<li><a href="#">Food <span>(2)</span></a></li>
-									<li><a href="#">Photography <span>(7)</span></a></li>
+									<li>팔로우 <span class="badge badge-danger" th:text="|+ ${data.MyFollow}|"></span></li>
+									<li>총 좋아요 <span class="badge badge-danger" th:text="|+ ${data.MyTotalLike}|"></span></li>
+									<li>일지 갯수 <span class="badge badge-danger" th:text="|+ ${data.MyTravelCount}|"></span></li>
 								</ul>
 							</div>
 
 							<div class="sidebar-box ftco-animate">
 								<h3 class="sidebar-heading">HahsTag</h3>
 								<ul class="tagcloud">
-									<a href="#" class="tag-cloud-link">animals</a>
-									<a href="#" class="tag-cloud-link">human</a>
-									<a href="#" class="tag-cloud-link">people</a>
+									<a href="#" class="tag-cloud-link">하려고</a>
+									<a href="#" class="tag-cloud-link">했지만</a>
+									<a href="#" class="tag-cloud-link">안했</a>
+									<a href="#" class="tag-cloud-link">습</a>
+									<a href="#" class="tag-cloud-link">니다</a>
 								</ul>
 							</div>
 
@@ -217,23 +169,18 @@
 							</div>
 
 							<div class="sidebar-box ftco-animate">
-								<h3 class="sidebar-heading">Archives</h3>
+								<h3 class="sidebar-heading">작성 년도</h3>
 								<ul class="categories">
-									<li><a href="#">Decob14 2018 <span>(10)</span></a></li>
-									<li><a href="#">September 2018 <span>(6)</span></a></li>
-									<li><a href="#">August 2018 <span>(8)</span></a></li>
-									<li><a href="#">July 2018 <span>(2)</span></a></li>
-									<li><a href="#">June 2018 <span>(7)</span></a></li>
-									<li><a href="#">May 2018 <span>(5)</span></a></li>
+									<li><a href="#">2020<span>(10)</span></a></li>
+									<li><a href="#">2019<span>(6)</span></a></li>
+									<li><a href="#">2018<span>(8)</span></a></li>
+									<li><a href="#">2017<span>(2)</span></a></li>
+									<li><a href="#">2016<span>(7)</span></a></li>
+									<li><a href="#">2015<span>(5)</span></a></li>
 								</ul>
 							</div>
-
-
 							<div class="sidebar-box ftco-animate">
-								<h3 class="sidebar-heading">Paragraph</h3>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-									Ducimus itaque, autem necessitatibus voluptate quod mollitia
-									delectus aut.</p>
+								<h3 class="sidebar-heading">Trip5</h3>
 							</div>
 						</div>
 						<!-- END COL -->
@@ -244,6 +191,7 @@
 		<!-- END COLORLIB-MAIN -->
 	</div>
 	<!-- END COLORLIB-PAGE -->
+	
 
 	<script src="/js/andrea/js/jquery.min.js"></script>
 	<script src="/js/andrea/js/jquery-migrate-3.0.1.min.js"></script>
@@ -258,5 +206,8 @@
 	<script src="/js/andrea/js/jquery.animateNumber.min.js"></script>
 	<script src="/js/andrea/js/scrollax.min.js"></script>
 	<script src="/js/andrea/js/main.js"></script>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<script type="text/javascript" src="../js/travel.js"></script>
+	
 </body>
 </html>

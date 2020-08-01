@@ -211,4 +211,30 @@ public class TravelDAO {
 		sqlSession.update("mappers.travelMapper.tempComplete",tsid);
 		
 	}
+	//일지 대표사진과 리스트
+	public List<TravelVO> getMyTravelList(int uuid) {
+		return sqlSession.selectList("mappers.travelMapper.getMyTravelList",uuid);
+	}
+	
+	//나의 일지 top3
+	public List<TravelVO> getMyTravelTop3(int uuid) {
+		return sqlSession.selectList("mappers.travelMapper.getMyTravelTop3",uuid);
+	}
+
+	//유저찾기
+	public int findUser(int uuid) {
+		sqlSession.selectOne("mappers.travelMapper.findUser",uuid);
+		return sqlSession.selectOne("mappers.travelMapper.findUser",uuid);
+	}
+
+	//나의 팔로우 좋아요 일지 카운트
+	public int getMyFollow(int uuid) {
+		return sqlSession.selectOne("mappers.travelMapper.getMyFollow",uuid);
+	}
+	public int getMyTotalLike(int uuid) {
+		return sqlSession.selectOne("mappers.travelMapper.getMyTotalLike",uuid);
+	}
+	public int getMyTravelCount(int uuid) {
+		return sqlSession.selectOne("mappers.travelMapper.getMyTravelCount",uuid);
+	}
 }
