@@ -26,8 +26,9 @@
 
 				<h2 class="page-header">유저리스트</h2>
 				<br>
-				<h4 th:text="|total : ${memberList.count}|"></h4>
+				<h4 th:text="|총 가입자 : ${memberList.count}명|"></h4>
 				<div class="table-responsive">
+					<input class="form-control" id="myInput" type="text" placeholder="Search.."> <br>
 					<table class="table table-striped text-center">
 						<!-- table-hover -->
 						<thead>
@@ -40,7 +41,7 @@
 								<th class="col-xs-1">블랙리스트</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="myTable">
 							<tr class="memberList" th:each="list : ${memberList.list}">
 								<td class="uuid" th:text="${list.uuid}"></td>
 								<td class="memberemail" th:text="${list.memberemail}"></td>
@@ -80,5 +81,6 @@
 				<script src="../js/dist/js/adminlte.js"></script>
 				<script src="../js/dist/js/demo.js"></script>
 				<script src="../js/dist/js/pages/dashboard3.js"></script>
+				
 </body>
 </html>

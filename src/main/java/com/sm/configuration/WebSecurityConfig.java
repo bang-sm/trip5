@@ -57,7 +57,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				"/image/**", 
 				"/js/**", 
 				"/console/**", 
-				"/favicon.ico/**"
+				"/favicon.ico/**",
+				"/adminNotice/ajax/**"
 				)
 			.permitAll()
 			.anyRequest()

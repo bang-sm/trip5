@@ -66,4 +66,21 @@ public class MyController {
 		
 		System.out.println(sendid + "<-- sendid");
 	}
+	
+	@PostMapping("/gotoTrashRead")
+	public int gotoTrashRead(int msgid) {
+		int cnt = myService.gotoTrashRead(msgid);
+		
+		return cnt;
+	}
+	
+	@PostMapping("/prevClip")
+	public MessageVO prevClip(MessageVO messageVO) {
+		return myService.prevClip(messageVO);
+	}
+	
+	@PostMapping("/nextClip")
+	public MessageVO nextClip(MessageVO messageVO) {
+		return myService.nextClip(messageVO);
+	}
 }

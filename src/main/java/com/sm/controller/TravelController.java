@@ -1,16 +1,11 @@
 package com.sm.controller;
 
-import java.io.File;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,21 +55,30 @@ public class TravelController {
 
 		return "/travel/travel_blog";
 	}
+	
+	// 유저를 기준으로 일지 표출
+	@GetMapping(value = "/share_travel")
+	public String share_travel() {
+		logger.info("share_travel");
+
+		return "/travel/share_travel";
+	}
+
 
 	@GetMapping(value = "/intro_date")
-	public String intro_date(HttpSession session,Model model) {
+	public String intro_date(HttpSession session, Model model) {
 		logger.info("intro_date");
 		int count;
 		if (session.getAttribute("userInfo") != null) {
 			MemberVO vo = new MemberVO();
 			vo = (MemberVO) session.getAttribute("userInfo");
-			int uuid=vo.getUuid();
-			count=travelService.tempTravelCheck(uuid);
-		}else {
-			count=0;
+			int uuid = vo.getUuid();
+			count = travelService.tempTravelCheck(uuid);
+		} else {
+			count = 0;
 		}
-		model.addAttribute("count",count);
-		
+		model.addAttribute("count", count);
+
 		return "/travel/intro_date";
 	}
 
@@ -125,47 +128,51 @@ public class TravelController {
 	 * @author smbang 일지 디테일 등록할 화면 맵핑
 	 */
 	@GetMapping(value = "/regist")
-	public String regist_get(Model model, String tsid) {
+	public String regist_get(Model model, String tsid, HttpSession session) {
 		logger.info("regist_get");
-
-		tsid = "84";
-
-		// 일지 id값없이 접근하면 홈으로 돌려보낸다.
-		if (tsid == "" || tsid == null) {
+		logger.info(tsid + "========================================");
+		int uuid;
+		if (session.getAttribute("userInfo") != null) {
+			if (tsid == "" || tsid != null) {
+				MemberVO vo = new MemberVO();
+				vo = (MemberVO) session.getAttribute("userInfo");
+				uuid = vo.getUuid();
+				model.addAttribute("travel", travelService.getTravelStory(tsid, uuid)); // 기본정보
+				model.addAttribute("travelInfo", travelService.getTravelInfo(tsid)); // 임시저장된 상세정보
+				model.addAttribute("travelRootInfo", travelService.getTravelRootInfo(tsid, uuid)); // 임시저장된 루트정보
+				model.addAttribute("travelImage", travelService.getTravelImage(tsid, uuid)); // 임시저장된 이미지
+			}
+		} else {
 			return "redirect:/index";
 		}
-		model.addAttribute("travel", travelService.getTravelStory(tsid)); // 기본정보
-		model.addAttribute("travelInfo", travelService.getTravelInfo(tsid)); // 임시저장된 상세정보
-		model.addAttribute("travelRootInfo", travelService.getTravelRootInfo(tsid)); // 임시저장된 루트정보
-		model.addAttribute("travelImage", travelService.getTravelImage(tsid)); // 임시저장된 이미지
 		return "/travel/regist";
 	}
 
 	@PostMapping(value = "/registSave")
 	public String regist_get(@ModelAttribute TravelVO travelVO, @ModelAttribute TravelInfoVO travelinfoVO,
-			@ModelAttribute TravelInfoRootVO travelinfoRootVO, HttpSession session,@RequestPart MultipartFile[] mfiles) throws Exception {
+			@ModelAttribute TravelInfoRootVO travelinfoRootVO, HttpSession session, @RequestPart MultipartFile[] mfiles)
+			throws Exception {
 		logger.info("registSave");
 		int uuid;
 		if (session.getAttribute("userInfo") != null) {
 			MemberVO vo = new MemberVO();
 			vo = (MemberVO) session.getAttribute("userInfo");
 			uuid = vo.getUuid();
-			travelService.registSave(travelVO,travelinfoVO,travelinfoRootVO,mfiles,uuid);
-		}else {
-			
+			travelService.registSave(travelVO, travelinfoVO, travelinfoRootVO, mfiles, uuid);
+			return "redirect:/mypage";
+		} else {
+			return "redirect:/index";
 		}
-		
-		return "redirect:/user/inform";
 	}
 
-	//댓글저장
+	// 댓글저장
 	@ResponseBody
 	@PostMapping(value = "/travel_reply_save")
 	public List<TravelReplyVO> travel_reply_save(@ModelAttribute TravelReplyVO travelReplyVO) throws Exception {
 		logger.info("travel_reply_save");
 		int uuid;
-		List<TravelReplyVO> list=new ArrayList<TravelReplyVO>();
-		
+		List<TravelReplyVO> list = new ArrayList<TravelReplyVO>();
+
 		HashMap<String, Object> param = new HashMap<>();
 		if (session.getAttribute("userInfo") != null) {
 			MemberVO vo = new MemberVO();
@@ -173,88 +180,91 @@ public class TravelController {
 			uuid = vo.getUuid();
 			param.put("uuid", uuid);
 			param.put("reply", travelReplyVO);
-			//댓글 insert
+			// 댓글 insert
 			travelService.travel_reply_save(param);
-			//댓글리스트목록가져오기
-			list=travelService.travel_reply_list(travelReplyVO.getTsId());
+			// 댓글리스트목록가져오기
+			list = travelService.travel_reply_list(travelReplyVO.getTsId());
 		} else {
 			return null;
 		}
 		return list;
 	}
-	
-	//댓글삭제
+
+	// 댓글삭제
 	@ResponseBody
 	@PostMapping(value = "/travel_reply_delete")
-	public int travel_reply_delete(int uuid,int ts_reply_id,HttpSession session) throws Exception {
-		
+	public int travel_reply_delete(int uuid, int ts_reply_id, HttpSession session) throws Exception {
+
 		if (session.getAttribute("userInfo") != null) {
 			MemberVO vo = new MemberVO();
 			vo = (MemberVO) session.getAttribute("userInfo");
-			
-			if(vo.getUuid()==uuid) {
-				travelService.travel_reply_delete(uuid,ts_reply_id);
+
+			if (vo.getUuid() == uuid) {
+				travelService.travel_reply_delete(uuid, ts_reply_id);
 			}
 		} else {
 			return 0;
 		}
-		
+
 		return 1;
 	}
-	//좋아요
+
+	// 좋아요
 	@ResponseBody
 	@PostMapping(value = "/travel_like")
 	public int travel_like(int tsid) throws Exception {
-		
+
 		travelService.travel_like(tsid);
-		int like=travelService.likeCount(tsid);
-		
+		int like = travelService.likeCount(tsid);
+
 		return like;
 	}
-	//북마크
+
+	// 북마크
 	@ResponseBody
 	@PostMapping(value = "/bookmark")
-	public int bookmark(int tsid,HttpSession session) throws Exception {
-		
+	public int bookmark(int tsid, HttpSession session) throws Exception {
+
 		int status;
-		
+
 		if (session.getAttribute("userInfo") != null) {
 			MemberVO vo = new MemberVO();
 			vo = (MemberVO) session.getAttribute("userInfo");
-			int uuid=vo.getUuid();
-			status=travelService.bookmark(tsid,uuid);
-		}else {
-			status=999;
+			int uuid = vo.getUuid();
+			status = travelService.bookmark(tsid, uuid);
+		} else {
+			status = 999;
 		}
-		//1 : 삭제 2: 인서트 999: 로그인필요
-		
+		// 1 : 삭제 2: 인서트 999: 로그인필요
+
 		return status;
 	}
-	//팔로우
+
+	// 팔로우
 	@ResponseBody
 	@PostMapping(value = "/follow")
-	public int follow(int followId,HttpSession session) throws Exception {
+	public int follow(int followId, HttpSession session) throws Exception {
 		int status;
 		if (session.getAttribute("userInfo") != null) {
 			MemberVO vo = new MemberVO();
 			vo = (MemberVO) session.getAttribute("userInfo");
-			int uuid=vo.getUuid();
-			status=travelService.follow(followId,uuid);
-		}else {
-			status=999;
+			int uuid = vo.getUuid();
+			status = travelService.follow(followId, uuid);
+		} else {
+			status = 999;
 		}
-		//1 : 삭제 2: 인서트 999: 로그인필요
-		
+		// 1 : 삭제 2: 인서트 999: 로그인필요
+
 		return status;
 	}
-	
-	//이미지 삭제
+
+	// 이미지 삭제
 	@ResponseBody
 	@PostMapping(value = "/imageDelete")
-	public int imageDelete(int photoId,String customName) throws Exception {
-		
-		int status=travelService.imageDelete(photoId,customName);
-		
+	public int imageDelete(int photoId, String customName) throws Exception {
+
+		int status = travelService.imageDelete(photoId, customName);
+
 		return status;
 	}
 }

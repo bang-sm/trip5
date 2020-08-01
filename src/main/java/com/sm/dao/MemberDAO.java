@@ -27,10 +27,6 @@ public class MemberDAO {
 		return sql.selectList(namespace + ".memberList", map);
 	}
 	
-	// 회원 블랙리스트 추가
-	public void addBlackList(Map<String, Object> map) {
-		sql.update(namespace + ".addBlackList", map);
-	}
 	
 	// 회원가입
 	public void join(MemberVO memberVO) {
@@ -62,4 +58,15 @@ public class MemberDAO {
 		return sql.selectOne(namespace + ".uuidCheck",memberemail);
 	}
 
+	// ADMIN
+	//////////////////////////////////////////////////////////////////////
+	// 회원 블랙리스트 추가
+	//////////////////////////////////////////////////////////////////////
+	public void addBlackList(Map<String, Object> map) {
+		sql.update(namespace + ".addBlackList", map);
+	}
+
+	public List<Object> userType() {
+		return sql.selectList(namespace + ".userType");
+	}
 }

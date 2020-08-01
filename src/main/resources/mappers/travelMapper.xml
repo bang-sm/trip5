@@ -56,7 +56,7 @@
 	<insert id="travel_firstSave" useGeneratedKeys="true" keyProperty="tsid"  parameterType="com.sm.domain.TravelVO">
 		INSERT INTO travel_story VALUES(
 			tsid,
-			7,
+			#{uuid},
 			#{tstitle},
 			tslike,
 			now(),
@@ -148,9 +148,9 @@
 			<foreach collection="rootList" item="type" separator=",">
 			(
 				#{type.tsid},
-				#{type.tsirootname},
-				#{type.tsirootorder},
-				#{type.tsirootvehicle}
+				#{type.tsirootname,jdbcType=VARCHAR},
+				#{type.tsirootorder,jdbcType=INTEGER},
+				#{type.tsirootvehicle,jdbcType=VARCHAR}
 			)
 			</foreach>
 			ON DUPLICATE KEY UPDATE
@@ -310,5 +310,14 @@
 		WHERE
 			photo_id=#{photoId}
 	</delete>
+	
+	<update id="tempComplete">
+		UPDATE
+			travel_story
+		SET 
+			tempsave='N' 
+		WHERE
+			tsid=#{tsid}
+	</update>
 
 </mapper>
