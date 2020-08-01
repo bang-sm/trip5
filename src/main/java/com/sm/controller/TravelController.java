@@ -58,9 +58,14 @@ public class TravelController {
 	
 	// 유저를 기준으로 일지 표출
 	@GetMapping(value = "/share_travel")
-	public String share_travel() {
+	public String share_travel(int uuid,Model model) {
 		logger.info("share_travel");
-
+		
+		if(travelService.findUser(uuid)==false) {
+			return "/error/notUser";
+		}
+		model.addAttribute("data",travelService.share_travel(uuid));
+		
 		return "/travel/share_travel";
 	}
 
@@ -89,6 +94,10 @@ public class TravelController {
 	@PostMapping("/travel_firstSave")
 	public void travel_firstSave(@ModelAttribute TravelVO travelVO) {
 		logger.info("travel_firstSave");
+		
+		MemberVO memberVO = new MemberVO();
+		memberVO = (MemberVO) session.getAttribute("userInfo");
+		travelVO.setUuid(memberVO.getUuid());
 		travelService.travel_firstSave(travelVO);
 	}
 

@@ -319,5 +319,73 @@
 		WHERE
 			tsid=#{tsid}
 	</update>
+	
+	<select id="getMyTravelList" resultType="com.sm.domain.TravelVO">
+		SELECT
+			tsid,
+			tstitle,
+			tsregdate,
+			tslike,
+			uuid,
+			(SELECT count(*) FROM bookmark WHERE ts_id=a.tsid ) AS bookmark,
+			(SELECT photo_custom_name FROM photo WHERE ts_id=a.tsid AND photo_main ='Y') AS photo_main
+		FROM 
+			travel_story a
+		WHERE 
+			uuid=#{uuid}  AND tempsave ='N'
+		ORDER BY 
+			tsregdate DESC;
+	</select>
+	
+	<select id="getMyTravelTop3" resultType="com.sm.domain.TravelVO">
+		SELECT
+			tsid,
+			tstitle,
+			tsregdate,
+			tslike,
+			uuid,
+			(SELECT count(*) FROM bookmark WHERE ts_id=a.tsid ) AS bookmark,
+			(SELECT photo_custom_name FROM photo WHERE ts_id=a.tsid AND photo_main ='Y') AS photo_main
+		FROM 
+			travel_story a
+		WHERE 
+			uuid =#{uuid} AND tempsave ='N'
+		ORDER BY tslike 
+		LIMIT 3;
+	</select>
+	
+	<select id="findUser" resultType="int">
+		SELECT
+			count(*)
+		FROM
+			member
+		WHERE
+			uuid=#{uuid}
+	</select>
+	
+	<select id="getMyFollow" resultType="int">
+		SELECT 
+			count(*)
+		FROM 
+			follow 
+		WHERE 
+			follow_uuid =#{uuid}; 
+	</select>
+	<select id="getMyTotalLike" resultType="int">
+		SELECT 
+			sum(tslike) AS totalLike 
+		FROM 
+			travel_story
+		WHERE 
+			uuid=#{uuid};
+	</select>
+	<select id="getMyTravelCount" resultType="int">
+		SELECT
+			count(*) 
+	 	FROM 
+	 		travel_story
+ 		WHERE 
+ 			uuid =#{uuid} AND tempsave = 'N';
+	</select>
 
 </mapper>

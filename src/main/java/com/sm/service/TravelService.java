@@ -43,10 +43,6 @@ public class TravelService {
 	 *         임시저장하고 키를 미리 받아 리턴시킨다.
 	 */
 	public void travel_firstSave(TravelVO travelVO) {
-		// MemberVO memberVO = new MemberVO();
-		// memberVO = (MemberVO) session.getAttribute("userInfo");
-		// travelVO.setUuid(memberVO.getUuid());
-
 		travelDAO.travel_firstSave(travelVO);
 	}
 
@@ -230,6 +226,31 @@ public class TravelService {
 		}
 
 		return status;
+	}
+
+	//공유 일지 화면 데이터
+	public HashMap<String, Object> share_travel(int uuid) {
+		HashMap<String, Object> param=new HashMap<>();
+		
+		param.put("mainList", travelDAO.getMyTravelList(uuid));
+		param.put("top3",travelDAO.getMyTravelTop3(uuid));
+		param.put("MyFollow",travelDAO.getMyFollow(uuid));
+		param.put("MyTotalLike",travelDAO.getMyTotalLike(uuid));
+		param.put("MyTravelCount",travelDAO.getMyTravelCount(uuid));
+		
+		
+		return param;
+	}
+
+	public boolean findUser(int uuid) {
+		
+		int count=travelDAO.findUser(uuid);
+		
+		if(count==0) {
+			return false;
+		}else {
+			return true;
+		}
 	}
 
 }
