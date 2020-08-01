@@ -125,26 +125,24 @@ public class WeatherController {
 		return "weather/weatherModal";
 	}
 	
-	
 	@ResponseBody
 	@PostMapping("/weatherModal")
 	public Map<String, Object> postWeatherModal(HttpSession httpSession){
 		
 		Map<String, Object> postMap = new HashMap<String, Object>();
 		List<WeatherInfoVO> postList = new ArrayList<WeatherInfoVO>();
-		int weatherlocaluid = 0;
+		int weatherlocaluid = 1;
 		
 		MemberVO memberVO = new MemberVO();
 		WeatherLocalVO weatherLocalVO = new WeatherLocalVO();
 		
 		if(httpSession != null) {
-			
 			memberVO = (MemberVO) httpSession.getAttribute("userInfo");  
+		} else {
+			weatherlocaluid = 1;
 		}
 		
 		if(memberVO != null) {
-			
-			
 			int uuid = memberVO.getUuid();
 			weatherlocaluid = weatherService.selectWeatherlocaluid(uuid);
 			
