@@ -16,6 +16,6 @@ public class MyinfoConfig implements WebMvcConfigurer{
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(myinfoInterceptor)
-			.addPathPatterns("/travel/**");
+			.addPathPatterns("/travel/travel_blog/**");
 	}
 }

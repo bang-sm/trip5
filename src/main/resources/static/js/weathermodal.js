@@ -5,9 +5,7 @@ $(function(){
 	  
 });
 
-$("#myModal").draggable({
-	handle: ".modal-header"
-  });
+$(".weather-wrapper").draggable();
 
 // $("#myModal").draggable();
 
@@ -29,27 +27,19 @@ function getWeatherajax(){
 
       var pop = weatherMap.POP*1;
       console.log("pop : " + pop);
-      var sky = weatherMap.SKY + "";
-	  var hum = weatherMap.HUM + "";
-	  var pty = weatherMap.PTY + "";
-	  var wsd = weatherMap.WSD;
-	  var vec = weatherMap.VEC;
+      var sky = weatherMap.SKY*1;
+	  var pty = weatherMap.PTY*1;
 	  var temp = weatherMap.TEMP;
 	  console.log("temp : " + temp);
-
-	  var weathermonth = weatherMap.nowMonth + "";
-	  var weatherday = weatherMap.nowDay + "";
 
 	  var location = weatherMap.localname;
 	  var parantLocation = weatherMap.parentName;
       
-		setSKY(sky, pty, $("#weatherIcon"));
-		setPOP(pop, $("#pop"));
 		setTEMP(temp, $("#temp"));
-		setWSD(wsd, $("#WSD"));
-		setVEC(vec, $("#VEC"));
-
-		$("")
+		setSKY(sky, pty, $("#weathericon"));
+		if(sky == 3 || sky == 4){
+			$(".cloud:after").css('animation' , "");
+		}
 
 		if(parantLocation == null || parantLocation == ""){
 			$("#location1").html(location);
@@ -68,13 +58,62 @@ function getWeatherajax(){
 
 function setSKY(SKY, PTY, location){
 
-	var sunny = "../image/weather/sunny.svg";
-	var sun_cloud = "../image/weather/sun_cloud.svg";
-	var cloudy = "../image/weather/cloudy.svg";
-	var rainy = "../image/weather/rainy.svg";
-	var snowy = "../image/weather/snowy.svg";
+	var sunny = "weather-icon sun";
+	var rainy = "weather-icon cloud";
 
 	var skyimg;
+
+	switch(PTY){
+		
+		case 0:
+
+			switch(SKY){
+				case 1:
+					skyimg = sunny;
+				break;
+
+				case 3:
+				case 4:
+					skyimg = rainy;
+				break;
+			}
+
+		break;
+
+		case 1:
+		case 2:
+			skyimg = rainy;
+		break;
+
+	}
+	location.attr("class", skyimg);
+}
+
+function setTEMP(TEMP, location){
+
+	var inputTEMP = String(TEMP);
+	var tempText ="";
+
+	tempText += inputTEMP;
+	tempText += "<sup>o</sup>C";
+
+	location.html(tempText);
+}
+
+function modalMinize(SKY, PTY){
+
+	// location
+	var weathericon = $("#weathericon");
+	var weathercard = $(".weather-card");
+
+	var skyimg = "";
+
+	var cloudy = "<i class='fas fa-cloud'></i>";
+	var sunny = "<i class='fas fa-sun'></i>";
+	var rainy = "<i class='fas fa-cloud-showers-heavy'></i>";
+	var snowy = "<i class='fas fa-snowflake'></i>";
+	var maximize = "<i class='far fa-window-maximize'></i>";
+
 
 	switch(PTY){
 		case 0:
@@ -84,7 +123,7 @@ function setSKY(SKY, PTY, location){
 					skyimg = sunny;
 				break;
 				case 3:
-					skyimg = sun_cloud;
+					skyimg = cloudy;
 				break;
 				case 4:
 					skyimg = cloudy;
@@ -101,84 +140,6 @@ function setSKY(SKY, PTY, location){
 
 	}
 	location.attr("src", skyimg);
-}
-
-function setTEMP(TEMP, location){
-
-	var inputTEMP = String(TEMP);
-	var tempText ="";
-
-	tempText += inputTEMP;
-	tempText += "<sup>o</sup>C";
-
-	location.html(tempText);
-}
-
-function setPOP(POP, location){
-	var inputPOP = "";
-	inputPOP += "<img src='../image/weather/icon-umberella.png' alt=''>";
-	inputPOP += "&nbsp;";
-	inputPOP += String (POP) + "%";
-
-	location.html(inputPOP);
-}
-
-function setWSD(WSD, location){
-	var inputWSD = "";
-	inputWSD += "<img src='../image/weather/icon-wind.png' alt=''>";
-	inputWSD += String(WSD) + "km/h";
-
-	location.html(inputWSD);
-}
-
-function setVEC(VEC, location){
-	var inputVEC = "";
-	var result = parseInt(VEC/ 22.5);
-
-	inputVEC += "<img src='../image/weather/icon-compass.png' alt=''>";
-
-	switch(result){
-		case 0:
-		case 15:
-			inputVEC += "N";
-		break;
-
-		case 1:
-		case 2:
-			inputVEC += "NE";
-		break;
-
-		case 3:
-		case 4:
-			inputVEC += "E";
-		break;
-
-		case 5:
-		case 6:
-			inputVEC += "SE";
-		break;
-
-		case 7:
-		case 8:
-			inputVEC += "S";
-		break;
-
-		case 9:
-		case 10:
-			inputVEC += "SW";
-		break;
-
-		case 11:
-		case 12:
-			inputVEC += "W";
-		break;
-
-		case 13:
-		case 14:
-			inputVEC += "NW";
-		break;
-
-	}
-
-	location.html(inputVEC);
+	
+	
 }
