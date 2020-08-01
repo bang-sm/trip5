@@ -55,6 +55,15 @@ public class TravelController {
 
 		return "/travel/travel_blog";
 	}
+	
+	// 유저를 기준으로 일지 표출
+	@GetMapping(value = "/share_travel")
+	public String share_travel() {
+		logger.info("share_travel");
+
+		return "/travel/share_travel";
+	}
+
 
 	@GetMapping(value = "/intro_date")
 	public String intro_date(HttpSession session, Model model) {
