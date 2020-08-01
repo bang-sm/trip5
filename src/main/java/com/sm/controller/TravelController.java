@@ -92,13 +92,15 @@ public class TravelController {
 	 */
 	@ResponseBody
 	@PostMapping("/travel_firstSave")
-	public void travel_firstSave(@ModelAttribute TravelVO travelVO) {
+	public int travel_firstSave(@ModelAttribute TravelVO travelVO) {
 		logger.info("travel_firstSave");
 		
 		MemberVO memberVO = new MemberVO();
 		memberVO = (MemberVO) session.getAttribute("userInfo");
 		travelVO.setUuid(memberVO.getUuid());
 		travelService.travel_firstSave(travelVO);
+		
+		return travelVO.getUuid();
 	}
 
 	/**
