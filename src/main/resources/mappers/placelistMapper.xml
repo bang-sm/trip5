@@ -366,7 +366,7 @@
 		AND 
 			date(viewDate) >= SUBDATE(NOW(),INTERVAL 3 DAY)
 		ORDER BY 
-			viewDate ASC
+			viewDate DESC
 		LIMIT 7;
 	</select>
 	
