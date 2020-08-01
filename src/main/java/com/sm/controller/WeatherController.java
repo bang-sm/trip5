@@ -33,26 +33,17 @@ public class WeatherController {
 	
 	@GetMapping("/weather")
 	public String callWeatherAPI(Model model) throws Exception {
-//		System.out.println(weatherAPIservice.weatherData(60, 126));
 		
 		List<WeatherLocalVO> list = new ArrayList<WeatherLocalVO>();
 		
 		list = weatherService.selectParentweather();
-		
-//		for (int i = 0; i < list.size(); i++) {
-//			System.out.println(list.get(i).getLocalname());
-//		}
-		
-//		System.out.println(weatherService.selectParentweather().toString());
 		model.addAttribute("list", list);
-		System.out.println("컨트롤러 GET 들어오나?");
 		return "weather/weather";
 	}
 	
 	@ResponseBody
 	@PostMapping("/depth2")
 	public List<WeatherLocalVO> getLowLocal(int weatherparentuid) throws Exception {
-		System.out.println("컨트롤러 POST 들어오나?");
 		System.out.println(weatherparentuid);
 		System.out.println(weatherService.weatherLocalName(weatherparentuid));
 		return weatherService.weatherLocalName(weatherparentuid);
@@ -64,13 +55,11 @@ public class WeatherController {
 		
 		List<WeatherInfoVO> list = new ArrayList<WeatherInfoVO>();
 		Map<String, Object> nowData = new HashMap<String, Object>();
-		
 		System.out.println("api 가져오나? (POST)");
 		System.out.println("x값:" + weatherlocalnx + " y값:" + weatherlocalny );
 		
 		try {
-			
-			list = weatherAPIservice.weatherData(weatherlocalnx, weatherlocalnx);
+			list = weatherAPIservice.weatherData(weatherlocalnx, weatherlocalny);
 			nowData = weatherAPIservice.sortNowData(list);
 			
 			model.addAttribute("nowData", nowData);
@@ -87,9 +76,7 @@ public class WeatherController {
 	@ResponseBody
 	@PostMapping("/updateuid")
 	public String updateWeatherlocaluid(HttpSession httpSession, int weatherlocaluid) {
-		
 		weatherService.updateWeatherlocaluid(httpSession, weatherlocaluid);
-		
 		return "OK";
 	}
 	
@@ -101,10 +88,11 @@ public class WeatherController {
 		MemberVO memberVO = new MemberVO();
 		
 		if(httpSession != null) {
-			
-			memberVO = (MemberVO) httpSession.getAttribute("userInfo");  
-			int uuid = memberVO.getUuid();
-			result = weatherService.selectWeatherlocaluid(uuid);
+			memberVO = (MemberVO) httpSession.getAttribute("userInfo");
+			if(memberVO != null) {
+				int uuid = memberVO.getUuid();
+				result = weatherService.selectWeatherlocaluid(uuid);
+			}
 		}
 		return result;
 	}
@@ -114,7 +102,6 @@ public class WeatherController {
 	public WeatherLocalVO selectlocalInfoBylocaluid(int localuid) {
 		
 		WeatherLocalVO weatherLocalVO = new WeatherLocalVO();
-		
 		weatherLocalVO = weatherService.selectlocalInfoBylocaluid(localuid);
 		return weatherLocalVO;
 	}
@@ -138,17 +125,18 @@ public class WeatherController {
 		
 		if(httpSession != null) {
 			memberVO = (MemberVO) httpSession.getAttribute("userInfo");  
-		} else {
-			weatherlocaluid = 1;
-		}
-		
-		if(memberVO != null) {
-			int uuid = memberVO.getUuid();
-			weatherlocaluid = weatherService.selectWeatherlocaluid(uuid);
 			
-		} else if(memberVO == null) {
-			weatherlocaluid = 1;
-		}
+			if(memberVO != null) {
+				
+				int uuid = memberVO.getUuid();
+				weatherlocaluid = weatherService.selectWeatherlocaluid(uuid);
+				
+				if(weatherlocaluid == 0) {
+					
+					weatherlocaluid = 1;
+				}
+			} 
+		} 
 		
 		weatherLocalVO = weatherService.selectlocalInfoBylocaluid(weatherlocaluid);
 		
@@ -186,7 +174,6 @@ public class WeatherController {
 		 * 	HUM
 		 *  VEC
 		 *  WSD
-		 *  
 		 */
 		
 		return postMap;

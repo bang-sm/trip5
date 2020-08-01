@@ -27,16 +27,19 @@ function getWeatherajax(){
 
       var pop = weatherMap.POP*1;
       console.log("pop : " + pop);
-      var sky = weatherMap.SKY + "";
-	  var pty = weatherMap.PTY + "";
+      var sky = weatherMap.SKY*1;
+	  var pty = weatherMap.PTY*1;
 	  var temp = weatherMap.TEMP;
 	  console.log("temp : " + temp);
-
 
 	  var location = weatherMap.localname;
 	  var parantLocation = weatherMap.parentName;
       
 		setTEMP(temp, $("#temp"));
+		setSKY(sky, pty, $("#weathericon"));
+		if(sky == 3 || sky == 4){
+			$(".cloud:after").css('animation' , "");
+		}
 
 		if(parantLocation == null || parantLocation == ""){
 			$("#location1").html(location);
@@ -55,9 +58,8 @@ function getWeatherajax(){
 
 function setSKY(SKY, PTY, location){
 
-	var sunny = "";
-	var cloudy = "";
-	var rainy = "";
+	var sunny = "weather-icon sun";
+	var rainy = "weather-icon cloud";
 
 	var skyimg;
 
@@ -72,7 +74,7 @@ function setSKY(SKY, PTY, location){
 
 				case 3:
 				case 4:
-					skyimg = cloudy;
+					skyimg = rainy;
 				break;
 			}
 
@@ -84,7 +86,7 @@ function setSKY(SKY, PTY, location){
 		break;
 
 	}
-	location.attr("src", skyimg);
+	location.attr("class", skyimg);
 }
 
 function setTEMP(TEMP, location){
@@ -96,4 +98,48 @@ function setTEMP(TEMP, location){
 	tempText += "<sup>o</sup>C";
 
 	location.html(tempText);
+}
+
+function modalMinize(SKY, PTY){
+
+	// location
+	var weathericon = $("#weathericon");
+	var weathercard = $(".weather-card");
+
+	var skyimg = "";
+
+	var cloudy = "<i class='fas fa-cloud'></i>";
+	var sunny = "<i class='fas fa-sun'></i>";
+	var rainy = "<i class='fas fa-cloud-showers-heavy'></i>";
+	var snowy = "<i class='fas fa-snowflake'></i>";
+	var maximize = "<i class='far fa-window-maximize'></i>";
+
+
+	switch(PTY){
+		case 0:
+
+			switch(SKY){
+				case 1:
+					skyimg = sunny;
+				break;
+				case 3:
+					skyimg = cloudy;
+				break;
+				case 4:
+					skyimg = cloudy;
+				break;
+			}
+
+		break;
+		case 1:
+			skyimg = rainy;
+		break;
+		case 2:
+			skyimg = snowy;
+		break;
+
+	}
+	location.attr("src", skyimg);
+	
+	
 }

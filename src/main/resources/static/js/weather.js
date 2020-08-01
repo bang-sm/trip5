@@ -498,7 +498,7 @@ function getDefaultLocal(){
 			success: function(data){
 				// Session 에 uuid 없으면, 
 
-				if(data == 0){
+				if(data == 0 || data == null){
 					defaultlocaluid = 0; // default: 서울
 				} else {
 					
@@ -799,8 +799,6 @@ function setChartData(data){
 // 	  }]
 // 	}
 // };
-
-	
 
 var  gradientBarChartConfiguration = {
 	maintainAspectRatio: false,

@@ -1,13 +1,15 @@
 <link rel="stylesheet" href="../css/weathermodal.css">
 
 <div class="weather-wrapper" >
-  <div class="weather-card sunny" >
+  <!-- <div class="weather-card sunny" >
       <div class="weather-icon sun" ></div>
       <h1>26º</h1>
       <p>Madrid</p>
-  </div>
-  <div class="weather-card rain">
-      <div class="weather-icon cloud"></div>
+  </div> -->
+  <div class="weather-card">
+      <button id="weather-button" class="btn btn-default"><i class="far fa-window-minimize"></i></button>
+      <div id="weatherMinIcon" hidden="hidden"></div>
+      <div id="weathericon" class="weather-icon cloud"></div>
       <h1 id="temp"></h1>
       <p>
         <span id="location1"></span>
