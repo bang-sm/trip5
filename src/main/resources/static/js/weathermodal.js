@@ -1,13 +1,18 @@
 $(function(){
-
 	getWeatherajax();
-	$("#weathermodalbutton").click();
-	  
+	
 });
 
 $(".weather-wrapper").draggable();
 
-// $("#myModal").draggable();
+	$("#weather-button").click( function(){
+		modalMinimize();
+	});
+	
+	$("#maxIcon").click(function(){
+		modalMaximize();
+	});
+
 
 function getWeatherajax(){
 
@@ -100,46 +105,22 @@ function setTEMP(TEMP, location){
 	location.html(tempText);
 }
 
-function modalMinize(SKY, PTY){
+function modalMinimize(){
 
-	// location
-	var weathericon = $("#weathericon");
+	var hiddenbox = $("#hiddenbox");
 	var weathercard = $(".weather-card");
 
-	var skyimg = "";
+	hiddenbox.attr("hidden", "hidden");
+	weathercard.css("height", "30px");
+	$("#maxIcon").removeAttr("hidden");
+}
 
-	var cloudy = "<i class='fas fa-cloud'></i>";
-	var sunny = "<i class='fas fa-sun'></i>";
-	var rainy = "<i class='fas fa-cloud-showers-heavy'></i>";
-	var snowy = "<i class='fas fa-snowflake'></i>";
-	var maximize = "<i class='far fa-window-maximize'></i>";
+function modalMaximize(){
 
+	var hiddenbox = $("#hiddenbox");
+	var weathercard = $(".weather-card");
 
-	switch(PTY){
-		case 0:
-
-			switch(SKY){
-				case 1:
-					skyimg = sunny;
-				break;
-				case 3:
-					skyimg = cloudy;
-				break;
-				case 4:
-					skyimg = cloudy;
-				break;
-			}
-
-		break;
-		case 1:
-			skyimg = rainy;
-		break;
-		case 2:
-			skyimg = snowy;
-		break;
-
-	}
-	location.attr("src", skyimg);
-	
-	
+	weathercard.css("height", "270px");
+	hiddenbox.removeAttr("hidden");
+	$("#maxIcon").attr("hidden", "hidden");
 }

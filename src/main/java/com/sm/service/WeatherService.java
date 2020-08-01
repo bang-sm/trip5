@@ -27,7 +27,6 @@ public class WeatherService {
 		
 		 return list;
 	}
-
 	
 	public List<WeatherLocalVO> selectParentweather(){
 		return weatherLocalDAO.selectParentWeather();
