@@ -208,6 +208,67 @@
 		</choose>
 		WHERE msg_id = #{msgid}
 	</update>
+	
+	<select id="prevClip" parameterType="com.sm.domain.MessageVO" resultType="com.sm.domain.MessageVO">
+		SELECT 
+			m.membernick membernick, 
+			msg_id msgid, 
+			msg_regdate msgregdate, 
+			msg_content msgcontent, 
+			from_id fromid, 
+			send_id sendid, 
+			msg_subject msgsubject 
+		FROM 
+			member m, messageList l 
+		WHERE
+		<choose>
+			<when test="fromid != 0">			
+			<![CDATA[
+			m.uuid = l.from_id AND
+			msg_id IN (SELECT max(msg_id) FROM messageList WHERE msg_id < #{msgid} AND from_id =#{fromid} AND msg_delrcv =2)
+			]]>
+			</when>
+			<otherwise>
+			<![CDATA[
+			m.uuid = l.send_id AND
+			msg_id IN (SELECT max(msg_id) FROM messageList WHERE msg_id < #{msgid} AND send_id =#{sendid} AND msg_delsnt =2)
+			]]>
+			</otherwise>
+		</choose>
+		ORDER BY 
+			msg_regdate DESC;
+	</select>
+	
+	<select id="nextClip" parameterType="com.sm.domain.MessageVO" resultType="com.sm.domain.MessageVO">
+		SELECT 
+			m.membernick membernick, 
+			msg_id msgid, 
+			msg_regdate msgregdate, 
+			msg_content msgcontent, 
+			from_id fromid, 
+			send_id sendid, 
+			msg_subject msgsubject 
+		FROM 
+			member m, messageList l 
+		WHERE
+		<choose>
+			<when test="fromid != 0">			
+			<![CDATA[
+			m.uuid = l.from_id AND
+			msg_id IN (SELECT min(msg_id) FROM messageList WHERE msg_id > #{msgid} AND from_id =#{fromid} AND msg_delrcv =2)
+			]]>
+			</when>
+			<otherwise>
+			<![CDATA[
+			m.uuid = l.send_id AND
+			msg_id IN (SELECT min(msg_id) FROM messageList WHERE msg_id > #{msgid} AND send_id =#{sendid} AND msg_delsnt =2)
+			]]>
+			</otherwise>
+		</choose>
+		ORDER BY 
+			msg_regdate DESC;
+	</select>
+	
 </mapper>
 
 

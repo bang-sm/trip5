@@ -2,6 +2,12 @@
 
 $(document).ready(function() {
 	
+	$('form[name="travel_info"]').bind('submit',function(){  //form을 submit 하기 전에 이벤트
+	   $('.tsicomment').each(function(i,item){
+			$(item).val($(item).parent().find("#summernote").summernote('code'));
+		})
+	})
+	
 	//파일첨부 input 생성
 	$(".add_img").click(function(){
 		var file_input="";
@@ -223,7 +229,7 @@ $(document).ready(function() {
         	"tsid" : $("#tsid").val()
         },
         error: function(xhr, status, error){
-            alert("데이터를 가져오지못했습니다..");
+            console.log("데이터를 가져오지못했습니다..");
         },
         success : function(data){
         	summernote_print(data);

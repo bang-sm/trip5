@@ -84,4 +84,12 @@ public class MyDAO {
 	public int gotoTrashRead(MessageVO messageVO) {
 		return sqlsession.update("mappers.myMapper.gotoTrashRead", messageVO);
 	}
+	
+	public MessageVO prevClip(MessageVO messageVO) {
+		return sqlsession.selectOne("mappers.myMapper.prevClip", messageVO);
+	}
+	
+	public MessageVO nextClip(MessageVO messageVO) {
+		return sqlsession.selectOne("mappers.myMapper.nextClip", messageVO);
+	}
 }
