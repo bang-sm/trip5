@@ -92,7 +92,7 @@
                 <button type="button" class="btn btn-default" onclick="nextClip()"><i class="fas fa-share"></i> 다음 쪽지</button>
               </div>
               <button th:if="${(msg.msgdelsnt == 1 && msg.sendid == session.userInfo.uuid) || (msg.msgdelrcv == 1 && msg.fromid == session.userInfo.uuid)}" type="button" class="btn btn-default" onclick=""><i class="far fa-trash-alt"></i> 영구 삭제</button>
-              <button th:if="${(msg.msgdelrcv == 2 && msg.msgdelsnt == 2) || (msg.msgdelrcv == 1 && msg.sendid == session.userInfo.uuid) || (msg.msgdelsnt == 1 && msg.fromid == session.userInfo.uuid)}" type="button" class="btn btn-default" onclick="gotoTrash()"><i class="far fa-trash-alt"></i> 삭제</button>
+              <button th:if="${(msg.msgdelrcv == 2 && msg.msgdelsnt == 2) || (msg.msgdelrcv == 1 && msg.sendid == session.userInfo.uuid && msg.msgdelsnt != 1) || (msg.msgdelsnt == 1 && msg.fromid == session.userInfo.uuid && msg.msgdelrcv != 1)}" type="button" class="btn btn-default" onclick="gotoTrash()"><i class="far fa-trash-alt"></i> 삭제</button>
             </div>
             <!-- /.card-footer -->
           </div>

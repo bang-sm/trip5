@@ -83,4 +83,12 @@ public class MyController {
 	public MessageVO nextClip(MessageVO messageVO) {
 		return myService.nextClip(messageVO);
 	}
+	
+	@PostMapping("/deleteOk")
+	public int deleteOk(HttpServletRequest request) {
+		String[] msgid = request.getParameterValues("msgid");
+		
+		return myService.selectByDelete(msgid);
+	}
 }
+

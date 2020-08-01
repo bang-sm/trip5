@@ -120,6 +120,7 @@ function onMessageReceived(payload) {
     	lastOne = false;
     	inUser.push(message.participant[message.participant.length-1]) // 메세지 센더 이슈?
     	for(i = 0; i<message.participant.length; i++){
+    		nicker = message.participant[i];
     		if(!$("li[data-name='"+message.participant[i]+"']").length){
     		$(".contacts").append("<li data-toggle='tab' data-target='#inbox-message-2' data-name='"+message.participant[i]+"'>"+
     				"<img alt='' class='img-circle medium-image' src='../image/user.jpg' style='vertical-align: baseline'>"+
@@ -129,7 +130,7 @@ function onMessageReceived(payload) {
     				"</div>"+
     				"<div class='contacts-add'>"+
     				($("#userSessionId").val() != message.participant[i] ? "<button type='button' class='btn btn-outline-secondary btn-sm sendMsgOther' data-backdrop='static' data-toggle='modal' data-target='#exampleModal' style='border:none' onclick='sendToOther()' data-nick='" + message.participant[i] + "'><i class='far fa-envelope' style='font-size:1.05rem'></i></button>"+
-        					"<button type='button' class='btn btn-outline-secondary btn-sm othersMsg' style='border:none' onclick='blackList()' data-email='" + message.participant[i] + "'><i class='fas fa-comment-slash'></i></button>" : '') +
+        					"<button type='button' class='btn btn-outline-secondary btn-sm othersMsg' onclick='blackList(nicker)' style='border:none' data-email='" + message.participant[i] + "'><i class='fas fa-comment-slash'></i></button>" : '') +
     				"</div>"+
     		"</li>")
     		}
@@ -176,6 +177,7 @@ function onMessageReceived(payload) {
     		}
     		
     		if(blackUser){
+    			nicker = message.sender
     			$(".chat-body").append(
     					"<div class='message info'>"+
     					"<img alt='' class='img-circle medium-image' src='../image/user.jpg'>"+
@@ -186,7 +188,7 @@ function onMessageReceived(payload) {
     					+ message.sender +
     					"</a>" +
     					"<div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>"
-    					+"<button class='dropdown-item' onclick='blackList()' data-email='" + message.sender + "'>차단하기</button>"+
+    					+"<button class='dropdown-item' onclick='blackList(nicker)' data-email='" + message.sender + "'>차단하기</button>"+
     					"<button class='dropdown-item' data-backdrop='static' data-toggle='modal' data-target='#exampleModal' onclick='sendMsg()' data-uuid='"+message.uuid+"'>쪽지보내기</button>" +
     					"</div>" 
     					+ "</div>" + "</h4>"+
@@ -233,10 +235,10 @@ function loadPage(){
 	});
 }
 
-function blackList(){
-	if(confirm("차단하시겠습니까?")){
+function blackList(nicker){
+	if(confirm("차단하겠습니까?")){
 		// 내 uuid 와 상대방 nickname request
-		data = "uuid="+$("#userSessionuuid").val() + "&membernick="+nick
+		data = "uuid="+$("#userSessionuuid").val() + "&membernick="+nicker
 		console.log(data);
 		$.ajax({
 			url : "/my/black",

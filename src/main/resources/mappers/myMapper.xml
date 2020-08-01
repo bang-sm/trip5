@@ -20,7 +20,7 @@
 	
 	<select id="selectBlackList" parameterType="int" resultType="com.sm.domain.MemberVO">
 		SELECT 
-			black_uuid as blackuuid
+			blackUuid as blackuuid
 		FROM
 			blackList 
 		WHERE
@@ -31,7 +31,7 @@
 		DELETE FROM 
 			blackList 
 		WHERE 
-			black_uuid = #{otheruid}
+			blackUuid = #{otheruid}
 	</delete>
 	
 	<insert id="sendToMsg" parameterType="com.sm.domain.MessageVO">
@@ -269,6 +269,41 @@
 			msg_regdate DESC;
 	</select>
 	
+	<select id="selectByDelete" parameterType="map" resultType="com.sm.domain.MessageVO">
+		SELECT 
+			msg_id msgid, 
+			msg_regdate msgregdate, 
+			msg_content msgcontent, 
+			from_id fromid, 
+			send_id sendid, 
+			msg_subject msgsubject,
+			msg_delsnt msgdelsnt,
+			msg_delrcv msgdelrcv
+		FROM 
+			messageList
+		WHERE 
+			msg_id IN(
+				<foreach collection="msgid" item="item" separator=",">
+					#{item}
+				</foreach>
+			)
+	</select>
+	
+	<update id="deleteOk" parameterType="com.sm.domain.MessageVO">
+		UPDATE
+			messageList
+		SET 
+			<choose>
+				<when test="sendid != 0">
+					msg_delsnt = 0
+				</when>
+				<otherwise>
+					msg_delrcv = 0
+				</otherwise>
+			</choose>
+		WHERE 
+			msg_id = #{msgid}
+	</update>
 </mapper>
 
 

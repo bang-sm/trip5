@@ -69,3 +69,38 @@ function goToTrashReceive(){
 		 });
 	 } 
 }
+
+function deleteOk(){
+	
+	var params = "";
+	
+	 $('.check1:checked').each(function() {
+		 params += "msgid="+$(this).val()+"&";
+	 });
+	 
+	 params = params.substring(0, params.length-1);
+	 console.log("parmas = "  + params);
+	 
+	 $.ajax({
+		url: "/my/deleteOk",
+		type: "POST",
+		cache: false,
+		data: params,
+		success: function(data, status){
+			if(status == "success"){
+				alert('성공했으여');
+			}
+		}
+	 });
+	 
+}
+
+
+
+
+
+
+
+
+
+

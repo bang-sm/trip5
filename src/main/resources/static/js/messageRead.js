@@ -1,16 +1,18 @@
 function gotoTrash(){
-	$.ajax({
-		url: "/my/gotoTrashRead",
-		type: 'POST',
-		cache: false,
-		data: "msgid="+$("#messageId").val(),
-		success: function(data, status){
-			if(status == "success"){
-				alert('삭제되었습니다.')
-				location.href = "/my/clipSend?sendid="+$("#userUuid").val();
+	if(confirm('정말로 삭제하시겠습니까?')){
+		$.ajax({
+			url: "/my/gotoTrashRead",
+			type: 'POST',
+			cache: false,
+			data: "msgid="+$("#messageId").val(),
+			success: function(data, status){
+				if(status == "success"){
+					alert('삭제되었습니다.')
+					location.href = "/my/clipSend?sendid="+$("#userUuid").val();
+				}
 			}
-		}
-	});
+		});
+	}
 }
 
 function prevClip(){
@@ -50,7 +52,6 @@ function prevClip(){
 }
 
 function nextClip(){
-	console.log($("#typeClip").val());
 	
 	if($("#typeClip").val() == 'send'){
 		$.ajax({
