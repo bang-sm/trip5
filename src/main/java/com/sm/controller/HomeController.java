@@ -20,7 +20,7 @@ public class HomeController {
 	public String index(Model model) {
 		logger.debug("index 페이지입니다");
 		
-		service.mainTravleList();
+		model.addAttribute("list",service.mainTravleList());
 		
 		
 		return "index";

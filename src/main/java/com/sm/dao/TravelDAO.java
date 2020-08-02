@@ -240,4 +240,8 @@ public class TravelDAO {
 	public int getMyTravelCount(int uuid) {
 		return sqlSession.selectOne("mappers.travelMapper.getMyTravelCount",uuid);
 	}
+
+	public List<TravelVO> mainTravleList() {
+		return sqlSession.selectList("mappers.travelMapper.mainTravleList");
+	}
 }
