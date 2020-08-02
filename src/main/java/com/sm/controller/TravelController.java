@@ -111,7 +111,6 @@ public class TravelController {
 	public String travel_temp_save(@ModelAttribute TravelInfoVO travelInfoVO,
 			@ModelAttribute TravelInfoRootVO travelInfoRootVO) {
 		logger.info("travel_temp_save");
-
 		travelService.tempSave(travelInfoVO, travelInfoRootVO);
 
 		return "다녀왔습니다";

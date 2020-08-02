@@ -308,7 +308,6 @@ $(document).ready(function() {
 		$(this).parent().remove();
 		var order=eval($(this).parent().find("h2").attr("data-step-id")-1);
 		$(".root_delete").parent().each(function(i,item){
-				alert(i);
 			 $(item).find("#stepcount").attr("data-step-id",i+1);
 			 $(item).find(".rootname").attr("name","rootlist["+i+"].tsirootname");
 			 $(item).find(".tsid").attr("name","rootlist["+i+"].tsid");

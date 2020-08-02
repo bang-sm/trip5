@@ -39,9 +39,12 @@ public class FileUtils {
         if(!target.exists()) target.mkdirs();
         
         for(int i=0; i<file.length; i++) {
- 
+       
             String orgFileName = file[i].getOriginalFilename();
-            String orgFileExtension = orgFileName.substring(orgFileName.lastIndexOf("."));
+            String orgFileExtension="";
+            if(orgFileName.lastIndexOf(".")==-1) {
+            	continue;
+            }
             String saveFileName = UUID.randomUUID().toString().replaceAll("-", "") + orgFileExtension;
             Long saveFileSize = file[i].getSize();
             

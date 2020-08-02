@@ -30,9 +30,7 @@
 						<div class="feature-img">
 							<div class="imgbox">
 								<th:block th:if="${travel.photoList} != null" th:each="img : ${travel.photoList}">
-									<div>
-										<img class="img-fluid" width="960"  th:src="|/resources/upload/${img.photoCustomName} |">
-									</div>
+									<img th:src="|/resources/upload/${img.photoCustomName} |" width="350" height="300">
 								</th:block>
 							</div>
 							<div class="banner_content text-center">
