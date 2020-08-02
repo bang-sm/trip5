@@ -117,12 +117,15 @@ public class TravelDAO {
 		replyList = sqlSession.selectList("mappers.travelMapper.getTravelReply", param);
 		List<PhotoVO> photoList = new ArrayList<PhotoVO>();
 		photoList = sqlSession.selectList("mappers.travelMapper.getTravelImage", param);
+		List<TravelInfoRootVO> rootList = new ArrayList<TravelInfoRootVO>();
+		rootList = sqlSession.selectList("mappers.travelMapper.getTravelRootList", param);
 
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("infoList", infoList);
 		map.put("travelStory", travelStory);
 		map.put("replyList", replyList);
 		map.put("photoList", photoList);
+		map.put("rootList", rootList);
 
 		return map;
 	}

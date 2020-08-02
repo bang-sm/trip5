@@ -32,7 +32,6 @@ public class FileUtils {
         String attach_path = "resources/upload/";
     	 
         int ts_id = travelVO.getTsid(); //일지아이디
-        String photo_id=travelVO.getPhotoId();
         System.out.println(ts_id+ " =========================");
         List<Map<String, Object>> fileList = new ArrayList<Map<String, Object>>();
  
@@ -58,7 +57,6 @@ public class FileUtils {
             
             Map<String, Object> fileInfo = new HashMap<String, Object>();
             
-            fileInfo.put("photo_id", orgFileName);
             fileInfo.put("photo_path", orgFileName);
             fileInfo.put("ts_id", ts_id);
             fileInfo.put("photo_original_name", orgFileName);

@@ -100,7 +100,7 @@ public class TravelController {
 		travelVO.setUuid(memberVO.getUuid());
 		travelService.travel_firstSave(travelVO);
 		
-		return travelVO.getUuid();
+		return travelVO.getTsid();
 	}
 
 	/**

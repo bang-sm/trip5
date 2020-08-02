@@ -387,5 +387,17 @@
  		WHERE 
  			uuid =#{uuid} AND tempsave = 'N';
 	</select>
+	
+	<select id="getTravelRootList" resultType="com.sm.domain.TravelInfoRootVO">
+		SELECT
+			* 
+		FROM 
+			tsi_root 
+		WHERE
+			tsid = #{tsid}
+		ORDER BY
+			tsirootorder 
+		;
+	</select>
 
 </mapper>
