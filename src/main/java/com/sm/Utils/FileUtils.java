@@ -32,7 +32,6 @@ public class FileUtils {
         String attach_path = "resources/upload/";
     	 
         int ts_id = travelVO.getTsid(); //일지아이디
-        String photo_id=travelVO.getPhotoId();
         System.out.println(ts_id+ " =========================");
         List<Map<String, Object>> fileList = new ArrayList<Map<String, Object>>();
  
@@ -40,9 +39,12 @@ public class FileUtils {
         if(!target.exists()) target.mkdirs();
         
         for(int i=0; i<file.length; i++) {
- 
+       
             String orgFileName = file[i].getOriginalFilename();
-            String orgFileExtension = orgFileName.substring(orgFileName.lastIndexOf("."));
+            String orgFileExtension="";
+            if(orgFileName.lastIndexOf(".")==-1) {
+            	continue;
+            }
             String saveFileName = UUID.randomUUID().toString().replaceAll("-", "") + orgFileExtension;
             Long saveFileSize = file[i].getSize();
             
@@ -58,7 +60,6 @@ public class FileUtils {
             
             Map<String, Object> fileInfo = new HashMap<String, Object>();
             
-            fileInfo.put("photo_id", orgFileName);
             fileInfo.put("photo_path", orgFileName);
             fileInfo.put("ts_id", ts_id);
             fileInfo.put("photo_original_name", orgFileName);

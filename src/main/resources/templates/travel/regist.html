@@ -15,7 +15,7 @@
 <body translate="no" style="background-color: rgba(0, 0, 0, 0)">
 	<div class="info">
 		<h1 th:text="${travel.tstitle}">나의 여행일지</h1>
-		<span> <i class="fa fa-home"></i> <a href="/index">홈으로 돌아가기</a>
+		<span> <i class="fa fa-home"></i> <a href="/">홈으로 돌아가기</a>
 			<div class="spoilers">
 				<span th:text="${travel.tsstartdate}"></span> - <span th:text="${travel.tsenddate}"></span>
 			</div>
@@ -28,8 +28,9 @@
 			<li data-navindex="999" class="progress_index"></li>
 		</ul>
 	</div>
-
+	
 	<form class="steps" action="/travel/registSave" name="travel_info" enctype="multipart/form-data" method="POST">
+		
 		<input type="hidden" th:value="${travel.tsid}" name="tsid">
 		<fieldset th:each="travelInfo, numStat : ${travelInfo}" th:data-index="${numStat.count}">
 			<th:block th:if="${numStat.count <= numStat.size}">

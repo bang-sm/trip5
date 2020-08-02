@@ -1,6 +1,7 @@
 package com.sm.service;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,21 +43,15 @@ public class TravelService {
 	 *         임시저장하고 키를 미리 받아 리턴시킨다.
 	 */
 	public void travel_firstSave(TravelVO travelVO) {
-		// MemberVO memberVO = new MemberVO();
-		// memberVO = (MemberVO) session.getAttribute("userInfo");
-		// travelVO.setUuid(memberVO.getUuid());
-
 		travelDAO.travel_firstSave(travelVO);
 	}
 
 	/**
 	 * @author smbang 일지작성을 위해서 tsid,uuid 값을 통해 해당 일지의 정보를 받아온다.
+	 * @param uuid 
 	 */
-	public TravelVO getTravelStory(String tsid) {
-		// MemberVO memberVO = new MemberVO();
-		// memberVO = (MemberVO) session.getAttribute("userInfo");
-
-		return travelDAO.getTravelStory(tsid, 7);
+	public TravelVO getTravelStory(String tsid, int uuid) {
+		return travelDAO.getTravelStory(tsid, uuid);
 	}
 
 	/**
@@ -67,7 +62,7 @@ public class TravelService {
 		return travelDAO.getTravelInfo(tsid);
 	}
 
-	public List<TravelInfoRootVO> getTravelRootInfo(String tsid) {
+	public List<TravelInfoRootVO> getTravelRootInfo(String tsid, int uuid) {
 		// TODO Auto-generated method stub
 		return travelDAO.getTravelRootInfo(tsid);
 	}
@@ -186,10 +181,26 @@ public class TravelService {
 			System.out.println(fileList.get(i));
 			travelDAO.photo_insert(fileList.get(i));
 		}
+		List<TravelInfoVO> infoList=new ArrayList<>();
+		for (int i = 1; i < travelinfoVO.getList().size(); i++) {
+			infoList.add(travelinfoVO.getList().get(i));
+		}
+		
+		List<TravelInfoRootVO> rootList=new ArrayList<>();
+		if(travelinfoRootVO.getRootlist()!=null) {
+			for (int i = 0; i < travelinfoRootVO.getRootlist().size(); i++) {
+				rootList.add(travelinfoRootVO.getRootlist().get(i));
+			}
+		}
+		HashMap<String , Object> map=new HashMap<>();
+		map.put("infoList", infoList);
+		map.put("rootList", rootList);
+		int tsid=travelVO.getTsid();
+		travelDAO.finalSave(map,tsid);
 	}
 
 	// 일지 이미지 리스트
-	public List<PhotoVO> getTravelImage(String tsid) {
+	public List<PhotoVO> getTravelImage(String tsid, int uuid) {
 		return travelDAO.getTravelImage(tsid);
 	}
 
@@ -215,6 +226,36 @@ public class TravelService {
 		}
 
 		return status;
+	}
+
+	//공유 일지 화면 데이터
+	public HashMap<String, Object> share_travel(int uuid) {
+		HashMap<String, Object> param=new HashMap<>();
+		
+		param.put("mainList", travelDAO.getMyTravelList(uuid));
+		param.put("top3",travelDAO.getMyTravelTop3(uuid));
+		param.put("MyFollow",travelDAO.getMyFollow(uuid));
+		param.put("MyTotalLike",travelDAO.getMyTotalLike(uuid));
+		param.put("MyTravelCount",travelDAO.getMyTravelCount(uuid));
+		
+		
+		return param;
+	}
+
+	public boolean findUser(int uuid) {
+		
+		int count=travelDAO.findUser(uuid);
+		
+		if(count==0) {
+			return false;
+		}else {
+			return true;
+		}
+	}
+
+	//메인에서 표출된 일지 리스트
+	public List<TravelVO> mainTravleList() {
+		return travelDAO.mainTravleList();
 	}
 
 }

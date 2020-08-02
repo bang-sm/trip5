@@ -74,4 +74,21 @@ public class MyController {
 		return cnt;
 	}
 	
+	@PostMapping("/prevClip")
+	public MessageVO prevClip(MessageVO messageVO) {
+		return myService.prevClip(messageVO);
+	}
+	
+	@PostMapping("/nextClip")
+	public MessageVO nextClip(MessageVO messageVO) {
+		return myService.nextClip(messageVO);
+	}
+	
+	@PostMapping("/deleteOk")
+	public int deleteOk(HttpServletRequest request) {
+		String[] msgid = request.getParameterValues("msgid");
+		
+		return myService.selectByDelete(msgid);
+	}
 }
+

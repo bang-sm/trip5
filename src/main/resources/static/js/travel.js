@@ -2,6 +2,12 @@
 
 $(document).ready(function() {
 	
+	$('form[name="travel_info"]').bind('submit',function(){  //form을 submit 하기 전에 이벤트
+	   $('.tsicomment').each(function(i,item){
+			$(item).val($(item).parent().find("#summernote").summernote('code'));
+		})
+	})
+	
 	//파일첨부 input 생성
 	$(".add_img").click(function(){
 		var file_input="";
@@ -66,6 +72,16 @@ $(document).ready(function() {
 		});
 	});
 	
+	//팝업 경로 보여주기
+	$(".travel_root_view").click(function(){
+		$("#root_popup").show();
+	})
+	
+	//팝업 경로 닫기
+	$(".popup_close").click(function(){
+		$("#root_popup").hide();
+	})
+	
 	//일지 댓글 등록
 	$(".reply_submit").click(function(){
 		$.ajax({
@@ -128,7 +144,7 @@ $(document).ready(function() {
 	        	toastr.success("실패하였습니다");
 	        },
 	        success : function(data){
-	        	toastr.success(data);
+	        	toastr.success("추천 감사합니다");
 	        	$("#likeNum").text(data);
 	        }
 		});
@@ -223,7 +239,7 @@ $(document).ready(function() {
         	"tsid" : $("#tsid").val()
         },
         error: function(xhr, status, error){
-            alert("데이터를 가져오지못했습니다..");
+            console.log("데이터를 가져오지못했습니다..");
         },
         success : function(data){
         	summernote_print(data);
@@ -292,7 +308,6 @@ $(document).ready(function() {
 		$(this).parent().remove();
 		var order=eval($(this).parent().find("h2").attr("data-step-id")-1);
 		$(".root_delete").parent().each(function(i,item){
-				alert(i);
 			 $(item).find("#stepcount").attr("data-step-id",i+1);
 			 $(item).find(".rootname").attr("name","rootlist["+i+"].tsirootname");
 			 $(item).find(".tsid").attr("name","rootlist["+i+"].tsid");

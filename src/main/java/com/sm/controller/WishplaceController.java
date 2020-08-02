@@ -1,6 +1,5 @@
 package com.sm.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sm.domain.MemberVO;
-import com.sm.domain.MypageVO;
 import com.sm.domain.PlacelistVo;
 import com.sm.service.PlacelistService;
 
@@ -44,7 +42,7 @@ public class WishplaceController {
 			return "redirect:/user/login";
 		}
 		List<PlacelistVo> list = service.show(uuid);
-		logger.info("date : "+ list.get(0).getPlaceregdate());
+		//logger.info("date : "+ list.get(0).getPlaceregdate());
 		model.addAttribute("place", service.show(uuid));
 		
 		

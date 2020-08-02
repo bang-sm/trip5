@@ -142,8 +142,6 @@ public class WeatherAPIservice {
 		inputUrl+=localnx+"";
 		inputUrl+="&ny=";
 		inputUrl+=localny+"";
-
-//		System.out.println(inputUrl.toString());
 		
 	    try {
 	    	response = restTemplate.getForEntity(inputUrl, String.class);
@@ -175,28 +173,19 @@ public class WeatherAPIservice {
 	        	category = String.valueOf(item.get("category"));
 	        	fcstValue = Double.parseDouble(String.valueOf(item.get("fcstValue")));
 	        	
-//	        	System.out.println(fcstDate + "dgfsdgsdf");
 	        	WeatherInfoVO infoVO = new WeatherInfoVO();
 	        	
 	        	infoVO.setFcstDate(fcstDate);
 	        	infoVO.setFcstTime(fcstTime);
 	        	infoVO.setCategory(category);
 	        	infoVO.setFcstValue(fcstValue);
-	        	
-//	        	System.out.println(infoVO.getFcstDate()  +" ///////getFcstDate");
-
-//	        	System.out.println(infoVO.toString());
 	        	list.add(infoVO);
-//	        	System.out.println(list);
-//				System.out.println(" list.add(listCnt, infoVO) 후");
 				
 				// 초기화
 				fcstDate = null;
 				fcstTime = null;
 				category = null;
 				fcstValue = 0.0;
-	        	
-//				System.out.println(infoVO.getFcstDate());
 	        	
 	        } // end for
 

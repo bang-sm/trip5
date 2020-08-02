@@ -82,7 +82,7 @@
                   <tr th:if="${(list.msgdelsnt == 1 && list.sendid == session.userInfo.uuid) || (list.msgdelrcv == 1 && list.fromid == session.userInfo.uuid)}" th:each="list : ${list}">
                     <td>
                       <div class="icheck-primary">
-                        <input type="checkbox" value="" class="check1">
+                        <input type="checkbox" th:value="${list.msgid}" class="check1">
                         <label for="check1"></label>
                       </div>
                     </td>
@@ -105,7 +105,7 @@
                 <!-- Check all button -->
                 <button type="button" class="btn btn-default btn-sm checkbox-toggle" onclick="chkAll()"><i class="far fa-square"></i></button>
                 <div class="btn-group">
-                  <button type="button" class="btn btn-default btn-sm">영구 삭제</button>
+                  <button type="button" class="btn btn-default btn-sm" onclick="deleteOk()">영구 삭제</button>
                 </div>
                 <!-- /.btn-group -->
                 <div class="float-right">

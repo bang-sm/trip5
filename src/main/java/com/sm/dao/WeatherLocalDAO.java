@@ -35,7 +35,6 @@ public class WeatherLocalDAO {
 		return sqlSession.selectOne("mappers.weatherlocalMapper.selectWeatherlocaluid", uuid);
 	}
 
-
 	public void updateWeatherlocaluid(Map<String, Integer> localmap) {
 		sqlSession.update("mappers.weatherlocalMapper.updateWeatherlocaluid", localmap);
 	}
