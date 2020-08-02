@@ -58,7 +58,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				"/js/**", 
 				"/console/**", 
 				"/favicon.ico/**",
-				"/adminNotice/ajax/**"
+				"/adminNotice/ajax/**",
+				"/weather/**"
 				)
 			.permitAll()
 			.anyRequest()
@@ -154,7 +155,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception{
         // static 디렉터리의 하위 파일 목록은 인증 무시 ( = 항상통과 )
-        web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**","/chatting/**","/ws/**");
+        web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**","/chatting/**","/ws/**" , "/weather/**");
     }
     
     

@@ -27,7 +27,6 @@ public class WeatherService {
 		
 		 return list;
 	}
-
 	
 	public List<WeatherLocalVO> selectParentweather(){
 		return weatherLocalDAO.selectParentWeather();
@@ -47,7 +46,6 @@ public class WeatherService {
 		memberVO = (MemberVO) httpSession.getAttribute("userInfo");
 		
 		localmap.put("uuid", memberVO.getUuid());
-//		localmap.put("uuid", 4);
 		localmap.put("weatherlocaluid", weatherlocaluid);
 		
 		weatherLocalDAO.updateWeatherlocaluid(localmap);

@@ -104,5 +104,30 @@ public class MyService {
 	public MessageVO nextClip(MessageVO messageVO) {
 		return dao.nextClip(messageVO);
 	}
+	
+	public int selectByDelete(String [] msgid) {
+		List<MessageVO> list = dao.selectByDelete(msgid);
+		MemberVO mem = (MemberVO) session.getAttribute("userInfo");
+		int cnt = 0;
+		
+		for(int i =0; i<list.size(); i++) {
+			if(list.get(i).getSendid() == mem.getUuid()) {
+				// 보낸메일 삭제한 것
+				cnt = dao.deleteOk(list.get(i));
+			} else {
+				// 받은메일 삭제한 것
+				list.get(i).setSendid(0);
+				cnt = dao.deleteOk(list.get(i));
+			}
+		}
+		
+		return cnt;
+	}
 }
+
+
+
+
+
+
 

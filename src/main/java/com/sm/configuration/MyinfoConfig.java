@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.sm.Handler.MyinfoInterceptor;
 
-
+@Configuration
 public class MyinfoConfig implements WebMvcConfigurer{
 
 	@Autowired
@@ -16,6 +16,6 @@ public class MyinfoConfig implements WebMvcConfigurer{
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(myinfoInterceptor)
-			.addPathPatterns("/travel/**");
+			.addPathPatterns("/travel/travel_blog/**");
 	}
 }

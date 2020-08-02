@@ -401,7 +401,7 @@
 	
 	<select id="selectTravelStoryByTsid" resultType="com.sm.domain.TravelVO" parameterType="int">
 		SELECT
-			tstitle
+			tstitle , uuid
 		FROM 
 			travel_story 
 		WHERE

@@ -1,51 +1,28 @@
 <link rel="stylesheet" href="../css/weathermodal.css">
 
-
-<div class="container-fluid" style="padding-top: 40px;">
-  <div class="text-center">
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" hidden='hidden' id="weathermodalbutton">
-      Launch demo modal
-    </button>
-  </div>
-
-  <!-- Modal -->
-  <div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel">날씨 확인하세요~</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span></button>
-        </div>
-
-        <div class="modal-body">
-
-          <div id="current" class="wrapper">
-            <h1 class="location">
-              <span id="location1"></span>
-              <span id="location2"></span>
-            </h1>
-            <h2 class="date">
-              <span id="weathermonth"></span>
-              <span id="weatherday"></span>
-            </h2>
-            <div class="weatherIcon" id="weatherIcon">
-              <div class="sunny">
-                <div class="inner"></div>
-              </div>
-            </div>
-            <p class="temp" id="temp">72</p>
-            <p class="conditions">
-              <div id="WSD"></div>
-              <div id="VEC"></div>
-            </p>
-          </div>
-
-        </div>
-      </div>
+<div class="weather-wrapper" >
+  <!-- <div class="weather-card sunny" >
+      <div class="weather-icon sun" ></div>
+      <h1>26º</h1>
+      <p>Madrid</p>
+  </div> -->
+  <div class="weather-card">
+    <button id="maxIcon" hidden="hidden" class="btn btn-default"><i class="far fa-window-maximize"></i></button>
+    <div id="hiddenbox">
+      <button id="weather-button" class="btn btn-default"><i class="far fa-window-minimize"></i></button>
+      <div id="weathericon" class="weather-icon cloud"></div>
+      <h1 id="temp"></h1>
+      <p>
+        <span id="location1"></span>
+        <span id="location2"></span>
+      </p>
     </div>
   </div>
 </div>
 <script src="//code.jquery.com/jquery-1.12.4.js"></script>
 <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+<!-- Link to my website -->
+<!-- <a id="ajerez" href="http://www.ajerez.es/en/" target="_blank"><img src="https://i.imgur.com/AI4BS2I.png"/></a> -->
+
