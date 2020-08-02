@@ -94,11 +94,11 @@
 	 transform: rotate(30deg);
 	 animation: rain 800ms ease-in-out infinite alternate;
 }
-#weather-button {
+#weather-button, #maxIcon {
 	background-color: white;
 }
 
-#weather-button i {
+#weather-button i , #maxIcon i{
 	color: #b8b8b8;
 }
 

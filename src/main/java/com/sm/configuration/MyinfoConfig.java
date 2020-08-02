@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.sm.Handler.MyinfoInterceptor;
 
-
+@Configuration
 public class MyinfoConfig implements WebMvcConfigurer{
 
 	@Autowired

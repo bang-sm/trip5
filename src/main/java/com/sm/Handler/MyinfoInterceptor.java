@@ -74,6 +74,8 @@ public class MyinfoInterceptor implements HandlerInterceptor{
 				tsid = Integer.parseInt(stringTokenizer.nextToken());
 				tstitle = service.selectTravelStoryByTsid(tsid).getTstitle();
 				int dbUuid = service.selectTravelStoryByTsid(tsid).getUuid();
+				System.out.println("dbUuid : " + dbUuid);
+				System.out.println("uuid : " + uuid);
 				
 				if(dbUuid != uuid) {
 					
