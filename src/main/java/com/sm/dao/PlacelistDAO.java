@@ -148,17 +148,24 @@ public class PlacelistDAO {
 	public HashMap<String, Object> follower(int uuid){
 		HashMap<String, Object> mymap = new HashMap<>();
 		HashMap<String, Object> myst = new HashMap<>();
-		myst.put("uuid", uuid);
+		myst.put("follow_uuid", uuid);
 		List<MypageVO> follower = new ArrayList<MypageVO>();
 		List<Integer> fly =new ArrayList<Integer>();
 		fly = sql.selectList("mappers.placelistMapper.followermecheck",uuid);
+		System.out.println("fly size : "+fly.size());
 		for(int i =0;i<fly.size();i++) {
 			try {
 				MypageVO mypageVO = sql.selectOne("mappers.placelistMapper.following",fly.get(i));
-				myst.put("follow_uuid", fly.get(i));
-				mypageVO.setStatus(sql.selectOne("mappers.placelistMapper.status",myst));
-				myst.remove("follow_uuid");
+				System.out.println("mypageVO membernick:"+mypageVO.getMembernick());
+				System.out.println("mypageVO uuid:"+mypageVO.getUuid());
+				System.out.println("mypageVO p_name:"+mypageVO.getPName());
+				System.out.println("follow_uuid : "+ fly.get(i));
+				myst.put("uuid", fly.get(i));
+				String status = sql.selectOne("mappers.placelistMapper.status",myst);
+				System.out.println("status : "+ status);
+				mypageVO.setStatus(status);
 				follower.add(mypageVO);
+				myst.remove("uuid");
 			}catch(IndexOutOfBoundsException e) {
 				System.out.println("꺼억");
 			}

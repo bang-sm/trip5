@@ -114,3 +114,17 @@ td{
 	.col-sw-11 {max-width: 91.66% !important;}
 	.col-sw-12 {max-width: 100% !important;}
 }
+
+.paging-button{
+    float: right;
+}
+.left-button{
+	cursor:pointer;
+}
+.right-button{
+	margin-left: 10px;
+	cursor: pointer;
+}
+.leftright{
+	margin: 10px 0;
+}
