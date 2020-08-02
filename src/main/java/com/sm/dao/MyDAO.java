@@ -103,4 +103,8 @@ public class MyDAO {
 	public int deleteOk(MessageVO messageVO) {
 		return sqlsession.update("mappers.myMapper.deleteOk", messageVO);
 	}
+	
+	public int deleteForClip(MessageVO messageVO) {
+		return sqlsession.delete("mappers.myMapper.deleteForClip" ,messageVO);
+	}
 }
