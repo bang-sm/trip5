@@ -78,21 +78,23 @@ public class TravelDAO {
 	public void tempSave(TravelInfoVO travelInfoVO, TravelInfoRootVO travelInfoRootVO) {
 
 		List<TravelInfoVO> infoList = new ArrayList<>();
+		List<TravelInfoRootVO> rootList = new ArrayList<>();
+		HashMap<String, Object> map = new HashMap<>();
+		
+		
 		for (int i = 1; i < travelInfoVO.getList().size(); i++) {
 			infoList.add(travelInfoVO.getList().get(i));
 		}
-
-		List<TravelInfoRootVO> rootList = new ArrayList<>();
+		map.put("infoList", infoList);
+		sqlSession.insert("mappers.travelMapper.tempSaveTravelInfo", map);
+		
 		if (travelInfoRootVO.getRootlist() != null) {
 			for (int i = 0; i < travelInfoRootVO.getRootlist().size(); i++) {
 				rootList.add(travelInfoRootVO.getRootlist().get(i));
 			}
+			map.put("rootList", rootList);
+			sqlSession.insert("mappers.travelMapper.tempSaveTravleRoot", map);
 		}
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("infoList", infoList);
-		map.put("rootList", rootList);
-		sqlSession.insert("mappers.travelMapper.tempSaveTravleRoot", map);
-		sqlSession.insert("mappers.travelMapper.tempSaveTravelInfo", map);
 	}
 
 	// 루트삭제

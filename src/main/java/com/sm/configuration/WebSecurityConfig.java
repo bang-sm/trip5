@@ -59,7 +59,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				"/console/**", 
 				"/favicon.ico/**",
 				"/adminNotice/ajax/**",
-				"/weather/**"
+				"/weather/**",
+				"/travel/travel_blog",
+				"/travel/share_travel",
+				"/index"
 				)
 			.permitAll()
 			.anyRequest()
@@ -67,14 +70,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         	.formLogin()
         	.loginPage("/user/login")  //로그인페이지
-        	.defaultSuccessUrl("/index") // 성공했을때 이동되는 페이지
+        	.defaultSuccessUrl("/") // 성공했을때 이동되는 페이지
         	.usernameParameter("memberid")	//로그인시 파라미터로 "id", "password"를 받습니다
         	.passwordParameter("password")
         	.permitAll()
         .and()
 	        .logout()
 	        .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-	        .logoutSuccessUrl("/index")		// 성공했을때 이동되는 페이지
+	        .logoutSuccessUrl("/")		// 성공했을때 이동되는 페이지
 	        .invalidateHttpSession(true) 	//세션초기화
 	    .and()
 	    	//403예외
@@ -155,7 +158,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception{
         // static 디렉터리의 하위 파일 목록은 인증 무시 ( = 항상통과 )
-        web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**","/chatting/**","/ws/**" , "/weather/**");
+        web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**","/chatting/**","/ws/**" , "/weather/**","/resources/**");
     }
     
     
