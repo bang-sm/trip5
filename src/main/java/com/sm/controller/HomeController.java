@@ -16,12 +16,11 @@ public class HomeController {
 	@Autowired
 	private TravelService service;
 	
-	@GetMapping(value = "/index")
+	@GetMapping(value = "/")
 	public String index(Model model) {
 		logger.debug("index 페이지입니다");
 		
 		model.addAttribute("list",service.mainTravleList());
-		
 		
 		return "index";
 	}
