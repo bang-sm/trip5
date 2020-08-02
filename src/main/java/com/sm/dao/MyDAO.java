@@ -92,4 +92,15 @@ public class MyDAO {
 	public MessageVO nextClip(MessageVO messageVO) {
 		return sqlsession.selectOne("mappers.myMapper.nextClip", messageVO);
 	}
+	
+	public List<MessageVO> selectByDelete(String [] msgid){
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("msgid", msgid);
+		return sqlsession.selectList("mappers.myMapper.selectByDelete", map);
+	}
+	
+	public int deleteOk(MessageVO messageVO) {
+		return sqlsession.update("mappers.myMapper.deleteOk", messageVO);
+	}
 }
