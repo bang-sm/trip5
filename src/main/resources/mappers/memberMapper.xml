@@ -147,4 +147,32 @@
 			visitdate = '${visitdate}';
 	</select>
 
+	<!-- 일일접속자 Count-->
+	<select id="adminUserCount" resultType="Map">
+		SELECT 
+			COUNT(CASE WHEN kakaoOk ='Y' THEN 1 END) AS KAKAO, 
+			COUNT(CASE WHEN kakaoOk ='N' THEN 1 END) AS TRIP5
+		FROM visitmembers;
+	</select>
+
+	<!-- 월별 가입자 Count-->
+	<select id="adminUserSignUp" resultType="Map">
+
+		SELECT 
+			CONCAT(m, '월') AS `월별`, cnt
+		FROM (
+		    SELECT 
+		    	MONTH(memberregdate) AS m, COUNT(*) AS cnt
+		    FROM 
+		    	member
+		    WHERE
+		    	memberregdate &gt;= '2020-01-01' 
+		    AND 
+		    	memberregdate &lt; '2021-01-01'
+		    GROUP BY 
+		    	MONTH(memberregdate)
+		) adminUserSignUp;
+	
+	</select>
+
 </mapper>

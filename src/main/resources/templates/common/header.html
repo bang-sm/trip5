@@ -25,7 +25,7 @@
 				<li class="nav-item"><a id='clip' th:if="${session.userInfo != null}" class="nav-link" th:href=@{/my/clipSend(sendid=${session.userInfo.uuid})}><i class="far fa-envelope-open"></i></a></li>
 				<li class="nav-item"><a class="nav-link" th:href="@{/chatting/chat}">채팅</a></li>
 				<li class="nav-item"><a class="nav-link" th:href="@{/weather/weather}">날씨</a></li>
-				<li class="nav-item active"><span class="nav-link" sec:authorize="isAuthenticated()" th:text="${session.userInfo.membernick}"></span></li>
+				<!-- <li class="nav-item active"><span class="nav-link" sec:authorize="isAuthenticated()" th:text="${session.userInfo.membernick}"></span></li> -->
 				
 				<li class="nav-item active" th:if="${session.userInfo} != null">
 					<span class="nav-link" sec:authorize="isAuthenticated()" th:text="${session.userInfo.membernick}">

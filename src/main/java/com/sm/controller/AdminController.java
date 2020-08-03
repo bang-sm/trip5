@@ -2,6 +2,7 @@ package com.sm.controller;
 
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,11 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sm.domain.PopUpNoticeVO;
 import com.sm.domain.SlideNoticeVO;
-import com.sm.domain.VisitmembersVO;
 import com.sm.service.MemberService;
 import com.sm.service.NoticeService;
 
@@ -68,6 +70,24 @@ public class AdminController {
 		model.addAttribute("pNoticeContent",pnContent);
 		
 		return "/admin/adminNotice";
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////AjAX//////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
+	//메인(통계) 일일 접속자 DATA 페이지
+	@ResponseBody
+	@PostMapping("/admin/ajax/adminUserCount")
+	public int[] ajaxUserCount() {
+		return memberService.adminUserCount();
+	}
+
+	//메인(통계) 월별 가입자 DATA 페이지
+	@ResponseBody
+	@PostMapping("/admin/ajax/adminUserSignUp")
+	public int[] adminUserSignUp() {
+		System.out.println("월별 가입자 수 ");
+		return memberService.adminUserSignUp();
 	}
 
 } // end controller

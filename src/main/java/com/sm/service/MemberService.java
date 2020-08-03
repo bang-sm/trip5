@@ -55,6 +55,28 @@ public class MemberService implements UserDetailsService {
 	////////////////////////////////////////////////////////////////////////////////
 	// 관리자 페이지
 	////////////////////////////////////////////////////////////////////////////////
+	// 일일접속자 Count
+	public int[] adminUserCount() {
+		 System.out.println(Integer.parseInt((memberDAO.adminUserCount().get("KAKAO")+"")));
+		 int[] adminUserCount = new int[] {
+				 Integer.parseInt((memberDAO.adminUserCount().get("KAKAO")+"")),
+				 Integer.parseInt((memberDAO.adminUserCount().get("TRIP5")+""))
+		 };
+		return adminUserCount;
+	}
+
+	public int[] adminUserSignUp() {
+		System.out.println(memberDAO.adminUserSignUp()  + "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+		List<Map<String, Object>> data = memberDAO.adminUserSignUp();
+		int[] adminUserSignup = new int[data.size()];
+		for (int i = 0; i < data.size(); i++) {
+			adminUserSignup[i] = Integer.parseInt(data.get(i).get("cnt")+"");
+		}
+		System.out.println(adminUserSignup);
+		return adminUserSignup;
+	}
+	
+
 	// 회원가입한 유저 타입
 	public ModelMap userTpye() {
 		ModelMap modelMap = new ModelMap();
