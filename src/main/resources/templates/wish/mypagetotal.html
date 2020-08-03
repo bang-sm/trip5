@@ -20,6 +20,7 @@
 			<div class="container-fluid">
 				<div class="row mb-2">
 					<div class="col-sm-6">
+					
 						<h1 class="m-0 text-dark">My Page</h1>
 					</div>
 					<!-- /.col -->
@@ -338,6 +339,16 @@
 							</div>
 							<!-- /.card-header -->
 							<div class="card-body">
+							<div class="paging-button">
+									<input type='hidden' name="currentPage"/>
+									<input type='hidden' name="lastPage"/>
+									<div class="paging-view"><span class="pagingnow"></span></div>
+									<div class="leftright">
+									<span class="left-button"><i class="fas fa-angle-left"></i></span>
+									<span class="right-button"><i class="fas fa-angle-right"></i></span>
+									</div>
+								</div>
+								
 								<table border="1" style="width: 100%">
 									<tr class="text-center">
 										<th style="width: 5%">NO</th>
@@ -346,35 +357,11 @@
 										<th style="width: 17%">출발날짜</th>
 										<th style="width: 17%">도착날짜</th>
 									</tr>
-									<tr th:each="list : ${boardList}">
-										<td th:text="${list.tsid}" class="register-table"></td>
-										<td  class="register-table">
-											<a th:href="|/travel/travel_blog?tsid=${list.tsid}&uuid=${list.uuid}|" th:text="${list.tstitle}"></a>
-										</td>
-										<td th:text="${list.tsregdate}" class="register-table"></td>
-										<td th:text="${list.tsstartdate}" class="register-table"></td>
-										<td th:text="${list.tsenddate}" class="register-table"></td>
-									</tr>
+									<tbody class="register-tbody">
+									</tbody>
 								</table>
 								<br />
-								<div class="text-center">
-									<span><a th:href="@{/mypage(currentPage=1)}">처음</a></span>
-
-									<!-- 현재 페이지가 1보다 클 경우 이전 href, 1보다 작은 경우 이전 text -->
-									<span th:if="${currentPage > 1}"><a th:href="@{/mypage(currentPage=(${currentPage}-1))}">이전</a></span>
-									 <span th:unless="${currentPage > 1}" th:text="이전"></span>
-
-									<!-- #number.sequence 인수로 지정한 2개의 수 범위에서 배열을 생성 -->
-									<th:block th:each="num : ${#numbers.sequence(startPageNum,lastPageNum)}">
-										<span th:if="${currentPage == num}" th:text="${'['+ num + ']'}"></span>
-										<a th:unless="${currentPage == num}" th:text="${'['+ num + ']'}" th:href="@{/mypage(currentPage=${num})}"></a>
-									</th:block>
-
-									<!-- 현재 페이지가 마지막페이지와 같지 않을 경우 다음 href, 같을 경우 다음 text -->
-									<span th:if="${currentPage != lastPage}"><a th:href="@{/mypage(currentPage=(${currentPage}+1))}">다음</a></span>
-									 <span th:unless="${currentPage != lastPage}" th:text="다음"></span>
-									  <span><a th:href="@{/mypage(currentPage=${lastPage})}">마지막</a></span>
-								</div>
+								
 							</div>
 							<!-- /.card-footer -->
 						</div>

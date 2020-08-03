@@ -78,21 +78,23 @@ public class TravelDAO {
 	public void tempSave(TravelInfoVO travelInfoVO, TravelInfoRootVO travelInfoRootVO) {
 
 		List<TravelInfoVO> infoList = new ArrayList<>();
+		List<TravelInfoRootVO> rootList = new ArrayList<>();
+		HashMap<String, Object> map = new HashMap<>();
+		
+		
 		for (int i = 1; i < travelInfoVO.getList().size(); i++) {
 			infoList.add(travelInfoVO.getList().get(i));
 		}
-
-		List<TravelInfoRootVO> rootList = new ArrayList<>();
+		map.put("infoList", infoList);
+		sqlSession.insert("mappers.travelMapper.tempSaveTravelInfo", map);
+		
 		if (travelInfoRootVO.getRootlist() != null) {
 			for (int i = 0; i < travelInfoRootVO.getRootlist().size(); i++) {
 				rootList.add(travelInfoRootVO.getRootlist().get(i));
 			}
+			map.put("rootList", rootList);
+			sqlSession.insert("mappers.travelMapper.tempSaveTravleRoot", map);
 		}
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("infoList", infoList);
-		map.put("rootList", rootList);
-		sqlSession.insert("mappers.travelMapper.tempSaveTravleRoot", map);
-		sqlSession.insert("mappers.travelMapper.tempSaveTravelInfo", map);
 	}
 
 	// 루트삭제
@@ -117,12 +119,15 @@ public class TravelDAO {
 		replyList = sqlSession.selectList("mappers.travelMapper.getTravelReply", param);
 		List<PhotoVO> photoList = new ArrayList<PhotoVO>();
 		photoList = sqlSession.selectList("mappers.travelMapper.getTravelImage", param);
+		List<TravelInfoRootVO> rootList = new ArrayList<TravelInfoRootVO>();
+		rootList = sqlSession.selectList("mappers.travelMapper.getTravelRootList", param);
 
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("infoList", infoList);
 		map.put("travelStory", travelStory);
 		map.put("replyList", replyList);
 		map.put("photoList", photoList);
+		map.put("rootList", rootList);
 
 		return map;
 	}
@@ -236,5 +241,9 @@ public class TravelDAO {
 	}
 	public int getMyTravelCount(int uuid) {
 		return sqlSession.selectOne("mappers.travelMapper.getMyTravelCount",uuid);
+	}
+
+	public List<TravelVO> mainTravleList() {
+		return sqlSession.selectList("mappers.travelMapper.mainTravleList");
 	}
 }

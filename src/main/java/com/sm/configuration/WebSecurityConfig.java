@@ -59,7 +59,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				"/console/**", 
 				"/favicon.ico/**",
 				"/adminNotice/ajax/**",
-				"/weather/**"
+				"/weather/**",
+				"/travel/travel_blog",
+				"/travel/share_travel",
+				"/index"
 				)
 			.permitAll()
 			.anyRequest()
@@ -67,14 +70,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         	.formLogin()
         	.loginPage("/user/login")  //로그인페이지
-        	.defaultSuccessUrl("/index") // 성공했을때 이동되는 페이지
+        	.defaultSuccessUrl("/") // 성공했을때 이동되는 페이지
         	.usernameParameter("memberid")	//로그인시 파라미터로 "id", "password"를 받습니다
         	.passwordParameter("password")
         	.permitAll()
         .and()
 	        .logout()
 	        .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-	        .logoutSuccessUrl("/index")		// 성공했을때 이동되는 페이지
+	        .logoutSuccessUrl("/")		// 성공했을때 이동되는 페이지
 	        .invalidateHttpSession(true) 	//세션초기화
 	    .and()
 	    	//403예외
@@ -106,7 +109,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			 .userDetailsService(memberService)
              .tokenRepository(tokenRepository()); // username, 토큰, 시리즈를 조합한 토큰 정보를 DB에 저장(rememberMe 쿠키랑 일치하는 지 확인하기 위함)
 			;
-       
+        
         http.sessionManagement()
         	.invalidSessionUrl("/user/sessionExpire")
         	//유효하지 않은 세션으로 접근했을때 어디로 보낼것인지 URL을 설정하는 기능.
@@ -115,7 +118,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         	.maxSessionsPreventsLogin(true) // 중복로그인시 이전 로그인했던 세션 만료.
         	.expiredUrl("/user/sessionExpire")	// 중복 로그인시 타는 url
          	;
-        									  
+        		//							  
 	}
 	
     // tokenRepository의 구현체
@@ -155,7 +158,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception{
         // static 디렉터리의 하위 파일 목록은 인증 무시 ( = 항상통과 )
-        web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**","/chatting/**","/ws/**" , "/weather/**");
+        web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**","/chatting/**","/ws/**" , "/weather/**","/resources/**");
     }
     
     

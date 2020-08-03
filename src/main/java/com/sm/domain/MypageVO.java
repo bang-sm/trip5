@@ -1,8 +1,11 @@
 package com.sm.domain;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Setter
+@Getter
 public class MypageVO {
 	
 	private int uuid;

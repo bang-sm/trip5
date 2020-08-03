@@ -33,7 +33,7 @@ $(document).ready(function() {
 	registchart();
 	reply();
 	recently()
-	
+	register(1);
 });
 
 $(document).ready(function(){
@@ -439,3 +439,71 @@ function recently(){
 		}
 	});
 }
+
+var count =1;
+$(document).on('click','.left-button',function(){
+	//현재 몇 페이지 ?
+	var now_currentPage= $('input[name=currentPage]').val();
+	console.log("current :"+now_currentPage)
+	
+	//1페이지일때 왼쪽클릭시 페이지 없는 창 등장
+	
+	if(now_currentPage==1){
+		toastr.error("첫번째 페이지 입니다");
+		return;
+	}
+	var prev_currentPage = Number(now_currentPage)-count;
+	register(prev_currentPage);
+	
+})
+
+
+$(document).on('click','.right-button',function(){
+	var now_currentPage= $('input[name=currentPage]').val();
+	var now_lastPage= $('input[name=lastPage]').val();
+	
+	if(now_currentPage==now_lastPage){
+		toastr.error("마지막 페이지 입니다");
+		return;
+	}
+	var next_currentPage=Number(now_currentPage)+count;
+	console.log(next_currentPage);
+	register(next_currentPage)
+	
+})
+function register(page){
+	$.ajax({
+		url: "/wish/rest/mypage/register", 
+		type : "POST",
+		data : {
+			"currentPage" : page
+		},
+		async :false,
+		success : function(data){
+			console.log(data);
+			result="";
+			var boardList = data.boardList;
+			
+			for(i=0;i<boardList.length;i++){
+				result+='<tr>';
+				result+='<td  class="register-table">'+boardList[i].tsid+'</td>';
+				result+='<td  class="register-table">';
+				result+='<a href="/travel/travel_blog?tsid='+boardList[i].tsid+'&uuid='+boardList[i].uuid+'" >'+boardList[i].tstitle+'</a>';
+				result+='</td>';
+				result+='<td  class="register-table">'+boardList[i].tsregdate+'</td>';
+				result+='<td  class="register-table">'+boardList[i].tsstartdate+'</td>';
+				result+='<td  class="register-table">'+boardList[i].tsenddate+'</td>';
+				result+='</tr>';
+			}
+			var list =$('.register-tbody');
+			list.html(result);
+			$('input[name=currentPage]').val(data.currentPage);
+			$('input[name=lastPage]').val(data.lastPage);
+			$('.pagingnow').text("("+data.currentPage+"/"+data.lastPage+")");
+		}
+		
+		
+	});
+}
+
+

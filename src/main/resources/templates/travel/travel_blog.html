@@ -9,6 +9,8 @@
 <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="/css/slick-theme.css">
+<link href='//fonts.googleapis.com/css?family=Roboto:200,400,600' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="/css/travel_root_popup.css">
 <style>
 .slick-prev:before, .slick-next:before{
 	color:black;
@@ -28,27 +30,36 @@
 						<div class="feature-img">
 							<div class="imgbox">
 								<th:block th:if="${travel.photoList} != null" th:each="img : ${travel.photoList}">
-									<div>
-										<img class="img-fluid" width="960"  th:src="|/resources/upload/${img.photoCustomName} |">
-									</div>
+									<img th:src="|/resources/upload/${img.photoCustomName} |" width="350" height="300">
 								</th:block>
 							</div>
 							<div class="banner_content text-center">
 								<h2 th:text="${travel.travelStory.tstitle}"></h2>
 								<input type="hidden" th:value="${travel.travelStory.uuid}" id="ts_uuid">
-								<a href="#" class="btn theme_btn" th:text="|#${travel.travelStory.tshashtagone}|"></a>
-								<a href="#" class="btn theme_btn" th:text="|#${travel.travelStory.tshashtagone}|"></a>
-								<a href="#" class="btn theme_btn" th:text="|#${travel.travelStory.tshashtagone}|"></a>
-								<a href="#" class="btn theme_btn" th:text="|#${travel.travelStory.tshashtagone}|"></a>
+								<div style="font-size:35px">
+									<span th:text="|${travel.travelStory.tsstartdate} - |"></span>
+									<span th:text="${travel.travelStory.tsenddate}"></span>
+								</div>
+								<div style="float: left;">
+									<img src="../image/travel_car.png" style="display: inherit;">
+									<a th:href="|/travel/share_travel?uuid=${travel.travelStory.uuid}|">
+										<button class="btn btn-danger" style="margin-top:20px">글쓴이 블로그</button>
+									</a>
+								</div>
+								<ul class="text-right navbar-nav mr-auto">
+									
+									<li>
+										<img src="../image/travel_car.png">
+									</li>
+									<li class="nav-item" style="margin-top:20px">
+										<button class="travel_root_view btn btn-danger">여행경로보기</button>
+									</li>
+								</ul>
 							</div>
 						</div>
 					</div>
 					<div class="col-lg-12  col-md-12">
 						<div class="blog_info text-right">
-							<div class="post_tag">
-								<span th:text="|${travel.travelStory.tsstartdate} - |"></span>
-								<span href="#" th:text="${travel.travelStory.tsenddate}"></span>
-							</div>
 							<ul class="navbar-nav mr-auto">
 								<li class="nav-item">
 								    <button type="button" class="btn btn-link" id="tslike">
@@ -128,6 +139,26 @@
 	<th:block th:if="${session.userInfo != null}">
 			<input type="hidden" th:value="${session.userInfo.uuid}" id="myKey">
 	</th:block>
+	<div id="root_popup" class="layer_popup history-tl-container" style="display: none">
+		<div style="text-align: right">
+			<button class="btn popup_close"><i class="fa fa-times"></i></button>
+		</div>
+		<ul class="tl">
+		  	<li class="tl-item" ng-repeat="item in retailer_history" th:each="root :${travel.rootList}">
+				  <div class="timestamp" th:switch="${root.tsirootvehicle}">
+				  		<i class="fa fa-walking" style="font-size:45px" th:case="WALK"></i>
+				  		<i class="fa fa-car" style="font-size:45px" th:case="CAR"></i>
+				  		<i class="fa fa-bus" style="font-size:45px" th:case="BUS"></i>
+				  		<i class="fa fa-bicycle" style="font-size:45px" th:case="BIKE"></i>
+				  		<i class="fa fa-plane" style="font-size:45px" th:case="AIRPLANE"></i>
+				  		<i class="fa fa-train" style="font-size:45px" th:case="TRAIN"></i>
+				  		<i class="fa fa-flag" style="font-size:45px" th:case="ARRIVE"></i>
+				  </div>
+				  <div class="item-title" th:text="${root.tsirootname}">
+				  </div>
+			</li>
+	  	</ul>
+	</div>
 	
 </body>
 <script type="text/javascript" src="../js/slick.js"></script>

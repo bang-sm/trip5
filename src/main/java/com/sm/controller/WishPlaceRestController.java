@@ -3,6 +3,7 @@ package com.sm.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -289,6 +290,27 @@ public class WishPlaceRestController {
 		
 		tvList = service.selectTravelView(uuid);
 		return tvList;
+	}
+	
+	@PostMapping("/mypage/register")
+	public HashMap<String,Object> mypage(HttpSession session,int currentPage) throws Exception{
+		MemberVO vo=vo=(MemberVO) session.getAttribute("userInfo");  
+		
+		logger.info("session : "+ vo);
+		int uuid=0;
+		try {
+			uuid=vo.getUuid();
+		}catch(NullPointerException e) {
+			logger.info("session 없음");
+		}
+		HashMap<String,Object> remap =  new HashMap<String, Object>();
+		Map<String, Object> map = service.boardList(currentPage,uuid);
+		remap.put("boardList", map.get("list"));
+		remap.put("currentPage", map.get("currentPage"));
+		remap.put("lastPage", map.get("lastPage"));
+		remap.put("startPageNum", map.get("startPageNum"));
+		remap.put("lastPageNum", map.get("lastPageNum"));
+		return remap;
 	}
 	
 }

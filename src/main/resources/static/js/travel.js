@@ -72,6 +72,16 @@ $(document).ready(function() {
 		});
 	});
 	
+	//팝업 경로 보여주기
+	$(".travel_root_view").click(function(){
+		$("#root_popup").show();
+	})
+	
+	//팝업 경로 닫기
+	$(".popup_close").click(function(){
+		$("#root_popup").hide();
+	})
+	
 	//일지 댓글 등록
 	$(".reply_submit").click(function(){
 		$.ajax({
@@ -134,7 +144,7 @@ $(document).ready(function() {
 	        	toastr.success("실패하였습니다");
 	        },
 	        success : function(data){
-	        	toastr.success(data);
+	        	toastr.success("추천 감사합니다");
 	        	$("#likeNum").text(data);
 	        }
 		});
@@ -298,7 +308,6 @@ $(document).ready(function() {
 		$(this).parent().remove();
 		var order=eval($(this).parent().find("h2").attr("data-step-id")-1);
 		$(".root_delete").parent().each(function(i,item){
-				alert(i);
 			 $(item).find("#stepcount").attr("data-step-id",i+1);
 			 $(item).find(".rootname").attr("name","rootlist["+i+"].tsirootname");
 			 $(item).find(".tsid").attr("name","rootlist["+i+"].tsid");

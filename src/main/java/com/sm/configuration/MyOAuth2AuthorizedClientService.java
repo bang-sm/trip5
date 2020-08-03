@@ -1,8 +1,14 @@
 package com.sm.configuration;
 
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -16,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import com.sm.dao.MemberDAO;
 import com.sm.domain.MemberVO;
+import com.sm.domain.VisitmembersVO;
 
 @Service
 public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientService {
@@ -25,9 +32,12 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 
 	@Autowired
 	MemberDAO memberDAO;
-	
+
 	@Autowired
 	HttpServletResponse response;
+
+	@Autowired
+	HttpServletRequest request;
 
 	@Override
 	public void saveAuthorizedClient(OAuth2AuthorizedClient oAuth2AuthorizedClient, Authentication authentication) {
@@ -66,35 +76,103 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 
 			// 카카오회원가입 안되있을 때 밀어넣기
 			try {
-				if(memberDAO.idCheck(principalName).equals(null))
+				if (memberDAO.idCheck(principalName).equals(null))
 					memberDAO.kakaoJoin(memberVo);
-				
+
 			} catch (Exception e) {
 				memberDAO.kakaoJoin(memberVo);
 			}
-			
-			
+
 			// uuid 값 넣기
 			int uuid = memberDAO.uuidCheck(principalName);
 			System.out.println(uuid);
-			
+
 			memberVo.setUuid(uuid);
-			
+
 			// 로그인 세션 저장
 			session.setAttribute("userInfo", memberVo);
 			session.setMaxInactiveInterval(60 * 60);
+
+			///////////////////////////////////////////////////////////////////////////////////
+			// 방문자수
+			///////////////////////////////////////////////////////////////////////////////////
+			String ip = null;
+			ip = request.getHeader("X-Forwarded-For");
+
+			if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+				ip = request.getHeader("Proxy-Client-IP");
+			}
+			if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+				ip = request.getHeader("WL-Proxy-Client-IP");
+			}
+			if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+				ip = request.getHeader("HTTP_CLIENT_IP");
+			}
+			if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+				ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+			}
+			if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+				ip = request.getHeader("X-Real-IP");
+			}
+			if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+				ip = request.getHeader("X-RealIP");
+			}
+			if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+				ip = request.getHeader("REMOTE_ADDR");
+			}
+			if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+				ip = request.getRemoteAddr();
+			}
+
+			// 아이피 가져오기
+			System.out.println(ip + "아이피입니다.");
+			
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			Date currentTime = new Date(); // 로그인한 날짜
+			String current = format.format(currentTime);
+			
+			Map<String, Object> map = new HashMap<>(); // sql문에 필요
+			map.put("uuid", uuid);
+			map.put("ipaddr", ip);
+			map.put("kakaoOk", "Y");
+			map.put("visitdate", current);
+			
+			VisitmembersVO visitmembersVO = memberDAO.insertCondition(map);
+			if (visitmembersVO == null) {
+				System.out.println(visitmembersVO);
+				memberDAO.insertUserCount(map); // 방문기록이 없었으면 insert
+			} else {
+				
+				String visitDate = visitmembersVO.getVisitdate(); // db에 저장된 로그인 정보
+
+				Date date1; // 전에 방문했던 날짜
+				Date date2; // 방금 로그인한 날짜
+				try {
+					date1 = format.parse(visitDate); // 전에 방문했던 날짜
+					date2 = format.parse(current); // 방금 로그인한 날짜
+
+					// 비교
+					// 전에 방문했던 날짜보다 방금 로그인한 날짜가 크면 1출력
+					int result = date2.compareTo(date1);
+
+					if (result == 1) {
+						memberDAO.insertUserCount(map); // 방문기록이 없거나 날짜가 다르면 insert
+					} // end inner if
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			} // end if
 		} catch (Exception e) {
-            response.setContentType("text/html; charset=UTF-8");
-            PrintWriter out;
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out;
 			try {
 				out = response.getWriter();
 				out.println("<script>window.location.href = '/user/logout';</script>");
 				out.flush();
 			} catch (Exception er) {
-				
+
 			}
 		}
-
 	} // end Oauth2 시큐리티 다른 Client 로그인 탈때 중간에 나오는 거치는 곳
 
 	@Override
@@ -106,7 +184,7 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 
 	@Override
 	public void removeAuthorizedClient(String clientRegistrationId, String principalName) {
-    
+
 	}
-	
+
 }

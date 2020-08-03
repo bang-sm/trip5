@@ -253,4 +253,9 @@ public class TravelService {
 		}
 	}
 
+	//메인에서 표출된 일지 리스트
+	public List<TravelVO> mainTravleList() {
+		return travelDAO.mainTravleList();
+	}
+
 }
