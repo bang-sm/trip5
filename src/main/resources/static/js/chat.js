@@ -146,6 +146,7 @@ function onMessageReceived(payload) {
     } else if (message.type === 'ALARM'){
     	if(message.sender == $("#userSessionId").val()){
     		$("#clip").html("<i class='far fa-envelope-open'></i><span style='margin-left:5px' id='count' class='badge badge-danger'>N</span>");
+    		$(".navbar-toggler").html("<span class='navbar-toggler-icon'></span><span class='badge badge-danger navbar-badge' style='position: absolute; top: 4px;'>!</span>");
     	}
     } else {
     	getdate();

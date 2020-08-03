@@ -13,7 +13,7 @@ td {
 	font-weight: bold;
 }
 /*----------------------------------------------------------------------  */
-/* ÇÁ·ÎÇÊ  */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  */
 /*----------------------------------------------------------------------  */
 .profileLeft, .nickname {
 	border-left: 1px solid #f4f6f9;
@@ -55,7 +55,6 @@ td {
 	height: 100px;
 	border: 1px solid black;
 	border-radius: 50%;
-	background-image: url("../image/profile.jpg");
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
 	border: 1px solid #f4f6f9;
@@ -73,7 +72,7 @@ td {
 	width: 25%;
 }
 /*------------------------------------------------------------*/
-/* 					ÇÁ·ÎÇÊ »çÁø 				 */
+/* 					ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 				 */
 /*------------------------------------------------------------*/
 .filebox label{
 	padding: 5px 10px;
@@ -87,7 +86,7 @@ td {
 	color: black;
 }
 
-.filebox input[type="file"] { /* ÆÄÀÏ ÇÊµå ¼û±â±â */
+.filebox input[type="file"] { 
 	position: absolute;
 	width: 1px;
 	height: 1px;
