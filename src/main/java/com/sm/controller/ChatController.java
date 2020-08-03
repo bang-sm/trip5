@@ -96,7 +96,10 @@ public class ChatController {
 		messageVO.setFromid(messageVO.getSendid());
 		
 		int count = myService.countMessage(messageVO);
-		
+
+		if (list.size() == 0) {
+			list = null;
+		}
 		model.addAttribute("cntMsg", count);
 		model.addAttribute("list", list);
 		
@@ -113,6 +116,10 @@ public class ChatController {
 		for(int i = 0; i < list.size(); i++) {
 			Date date = format1.parse(list.get(i).getMsgregdate());
 			list.get(i).setMsgregdate(format2.format(date));
+		}
+		
+		if (list.size() == 0) {
+			list = null;
 		}
 		
 		int count = myService.countMessage(messageVO);
@@ -138,7 +145,6 @@ public class ChatController {
 		}
 		
 		int cnt = myService.countMessage(messageVO);
-		
 		model.addAttribute("list", list);
 		model.addAttribute("cntMsg", cnt);
 		

@@ -53,7 +53,7 @@
                   </a>
                 </li>
                 <li class="nav-item trash">
-                  <a th:href=@{/my/clipTrash(fromid=${session.userInfo.uuid},sendid=${list[0].sendid})} class="nav-link ">
+                  <a th:href=@{/my/clipTrash(fromid=${session.userInfo.uuid})} class="nav-link ">
                     <i class="fas fa-trash-alt"></i> 휴지통
                   </a>
                 </li>
@@ -80,7 +80,7 @@
               <div class="table-responsive mailbox-messages">
                 <table class="searchTable table table-hover table-striped">
                   <tbody class="tb-cl">
-                  <tr th:each="list : ${list}">
+                  <tr th:if="${list != null}" th:each="list : ${list}">
                     <td>
                       <div class="icheck-primary">
                         <input type="checkbox" th:value="${list.msgid}" class="check1">
@@ -91,6 +91,9 @@
                     <td class="mailbox-name" th:text="${list.membernick}"></td>
                     <td class="mailbox-subject"><a th:href=@{/my/clipread(msgid=${list.msgid},fromid=${list.fromid},sendid=${list.sendid})} class='alert-link' style='color:black'><span th:text="${list.msgsubject}"></span></a></td>
                     <td class="mailbox-date" th:text="${list.msgregdate}"></td>
+                  </tr>
+                  <tr th:unless="${list != null}">
+                  <td><h2>쪽지가 없습니다!</h2></td>
                   </tr>
                   </tbody>
                 </table>
