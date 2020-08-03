@@ -77,8 +77,19 @@ public class MemberDAO {
 		sql.insert(namespace + ".insertUserCount", map);
 	}
 	
-	// uid 일일접속자 정보
+	// 가입자 타입 정보
 	public VisitmembersVO insertCondition(Map<String, Object> map) {
 		return sql.selectOne(namespace + ".insertCondition", map);
+	}
+
+	// uid 일일접속자 정보
+	public Map<String, Object> adminUserCount() {
+		System.out.println(sql.selectOne(namespace + ".adminUserCount") + " ddididi");
+		return sql.selectOne(namespace + ".adminUserCount");
+	}
+
+	// 월별 가입자 정보
+	public  List<Map<String, Object>> adminUserSignUp() {
+		return sql.selectList(namespace + ".adminUserSignUp");
 	}
 }

@@ -13,6 +13,7 @@ import com.sm.domain.MypageVO;
 import com.sm.domain.PlacelistVo;
 import com.sm.domain.TravelVO;
 import com.sm.domain.TravelViewVO;
+import com.sm.domain.travelmembernickVO;
 
 import lombok.AllArgsConstructor;
 
@@ -32,46 +33,130 @@ public class PlacelistService{
 	}
 	
 	public void bookmark(int bookmark,int placeid) throws Exception{
-		dao.bookmark(bookmark,placeid);
+		HashMap<String, Integer> hmap = new HashMap<>();
+		hmap.put("bookmark", bookmark);
+		hmap.put("placeid", placeid);
+		dao.bookmark(hmap);
 	}
 	
 	public void checkbox(int placecheck,int placeid) throws Exception{
-		dao.checkbox(placecheck,placeid);
+		HashMap<String, Integer> cmap = new HashMap<>();
+		cmap.put("placecheck", placecheck);
+		cmap.put("placeid", placeid);
+		dao.checkbox(cmap);
 	}
 	
 	public List<PlacelistVo> goplace(int placecheck,int uuid) throws Exception{
-		return dao.goplace(placecheck,uuid);
+		HashMap<String, Integer> gmap = new HashMap<>();
+		gmap.put("placecheck", placecheck);
+		gmap.put("uuid", uuid);
+		return dao.goplace(gmap);
 	}
 	
 	public int barchart(int placecategory,int placecheck,int uuid) throws Exception{
-		return dao.barchart(placecategory,placecheck,uuid);
+		HashMap<String, Integer> bmap = new HashMap<>();
+		bmap.put("placecategory", placecategory);
+		bmap.put("placecheck", placecheck);
+		bmap.put("uuid", uuid);
+		return dao.barchart(bmap);
 	}
 	
 	public void delete(int placeid) throws Exception{
 		dao.delete(placeid);
 	}
 	public int  chartcount(int category,int uuid) throws Exception{
-		return dao.chartcount(category,uuid);
+		HashMap<String, Integer> fmap = new HashMap<>();
+		fmap.put("placecategory", category);
+		fmap.put("uuid", uuid);
+		return dao.chartcount(fmap);
 	}
 	
 	public int linechart(int first,int end, int uuid) throws Exception{
-		return dao.linechart(first,end,uuid);
+		String enddate;
+		String firstdate = "2020-0"+Integer.toString(first)+"-01";
+		if(end == 13) {
+			enddate = "2020-0"+Integer.toString(end-1)+"-31";
+		}else {
+			enddate = "2020-0"+Integer.toString(end)+"-01";
+		}
+		System.out.println(firstdate);
+		System.out.println(enddate);
+		HashMap<String, Object> fmap = new HashMap<>();
+		fmap.put("firstdate", firstdate);
+		fmap.put("enddate", enddate);
+		fmap.put("uuid", uuid);
+		return dao.linechart(fmap);
 	}
 	
 	public int area(int area, int uuid) throws Exception{
-		return dao.area(area,uuid);
+		String [] areaname = {"서울%","경기%","강원%","인천%","충북%","충남%","세종%","대전%","광주%","전북%","전남%","경북%","경남%","대구%","울산%","부산%","제주%"};
+		HashMap<String, Object> fmap = new HashMap<>();
+		fmap.put("areaname", areaname[area]);
+		fmap.put("uuid", uuid);
+		return dao.area(fmap);
 	}
 	
 	public HashMap<String, Object> mypage(int uuid) throws Exception{
-		return dao.mypage(uuid);
+		HashMap<String, Object> mymap = new HashMap<>();
+		List<Integer> flm =new ArrayList<Integer>();
+		flm =dao.followingmecheck(uuid);
+		List<Integer> fly =new ArrayList<Integer>();
+		fly= dao.followingyoucount(uuid);
+		List<Integer> bm =new ArrayList<Integer>();
+		bm =dao.mypagebm(uuid);
+		List<TravelVO> like = new ArrayList<TravelVO>();
+		like=dao.mypagelike(uuid);
+		
+		List<MypageVO> mypageVO = new ArrayList<MypageVO>();
+		mypageVO= dao.blacklistuuid(uuid);
+		mymap.put("likecount", like.size());
+		mymap.put("bookmarkcount", bm.size());
+		mymap.put("followingcount", fly.size());
+		mymap.put("followercount", flm.size());
+		mymap.put("blacklistcount", mypageVO.size());
+		return  mymap;
 	}
 	
 	public HashMap<String, Object> following(int uuid) throws Exception{
-		return dao.following(uuid);
+		HashMap<String, Object> mymap = new HashMap<>();
+		List<Integer> fly =new ArrayList<Integer>();
+		fly=dao.followingyoucount(uuid);
+		List<MypageVO> following = new ArrayList<MypageVO>();
+		for(int i =0;i<fly.size();i++) {
+			try {
+				MypageVO mypageVO = dao.blacklist(fly.get(i));
+				following.add(mypageVO);
+			}catch(IndexOutOfBoundsException e) {
+				System.out.println("꺼억");
+			}
+		}
+		mymap.put("following", following);
+		return mymap;
 	}
 	
 	public HashMap<String, Object> follower(int uuid) throws Exception{
-		return dao.follower(uuid);
+		HashMap<String, Object> mymap = new HashMap<>();
+		HashMap<String, Object> myst = new HashMap<>();
+		myst.put("follow_uuid", uuid);
+		List<MypageVO> follower = new ArrayList<MypageVO>();
+		List<Integer> fly =new ArrayList<Integer>();
+		fly= dao.followingcount(uuid);
+		
+		for(int i =0;i<fly.size();i++) {
+			try {
+				MypageVO mypageVO = dao.blacklist(fly.get(i));
+				myst.put("uuid", fly.get(i));
+				String status = dao.status(myst);
+				System.out.println("status : "+ status);
+				mypageVO.setStatus(status);
+				follower.add(mypageVO);
+				myst.remove("uuid");
+			}catch(IndexOutOfBoundsException e) {
+				System.out.println("꺼억");
+			}
+		}
+		mymap.put("follower", follower);
+		return mymap;
 	}
 	
 	public int followingcount(int uuid) throws Exception{
@@ -90,19 +175,50 @@ public class PlacelistService{
 	}
 	
 	public HashMap<String, Object> mypagebookmark(int uuid) throws Exception{
-		return dao.mypagebookmark(uuid);
+		HashMap<String, Object> mymap = new HashMap<>();
+		//먼저 uuid 로 게시글 목록가지고 오기
+		
+		List<Integer> bm =new ArrayList<Integer>();
+		bm =dao.mypagebm(uuid);
+		List<travelmembernickVO> bookmark = new ArrayList<travelmembernickVO>();
+		
+		for(int i=0;i<bm.size();i++) {
+			try {
+				travelmembernickVO travelmembernickVO = dao.mypagetravelstory(bm.get(i));
+				bookmark.add(travelmembernickVO);
+			}catch(IndexOutOfBoundsException e) {
+				System.out.println("꺼억");
+			}
+		}
+		mymap.put("bookmark",bookmark);
+		return mymap;
 	}
 	
 	public HashMap<String, Object> mypagelike(int uuid) throws Exception{
-		return dao.mypagelike(uuid);
+		HashMap<String, Object> mymap = new HashMap<>();
+		List<TravelVO> like = new ArrayList<TravelVO>();
+		like= dao.mypagelike(uuid);
+		int count=0;
+		for(int i=0;i<like.size();i++) {
+			count+=like.get(i).getTslike();
+		}
+		mymap.put("count", count);
+		mymap.put("like", like);
+		return mymap;
 	}
 	
 	public void followok(int uuid, int followuuid) throws Exception{
-		dao.followok(uuid,followuuid);
+		HashMap<String, Object> mymap = new HashMap<>();
+		mymap.put("follow_uuid", followuuid);
+		mymap.put("uuid", uuid);
+		dao.followok(mymap);
 	}
 	
 	public void followdel(int uuid, int followuuid) throws Exception{
-		dao.followdel(uuid,followuuid);
+		HashMap<String, Object> mymap = new HashMap<>();
+		mymap.put("follow_uuid", followuuid);
+		mymap.put("uuid", uuid);
+		dao.followdel(mymap);
 	}
 	
 	public HashMap<String, Object> blacklist(int uuid) throws Exception{
@@ -134,7 +250,10 @@ public class PlacelistService{
 	}
 	
 	public void blacklistdel(int uuid,int black_uuid ) throws Exception{
-		dao.blacklistdel(uuid,black_uuid);
+		HashMap<String, Object> mymap = new HashMap<>();
+		mymap.put("uuid", uuid);
+		mymap.put("black_uuid", black_uuid);
+		dao.blacklistdel(mymap);
 	}
 	
 	public int blacklistcount(int uuid) throws Exception{
@@ -145,7 +264,20 @@ public class PlacelistService{
 	}
 	
 	public int mypageline(int first,int end, int uuid) throws Exception{
-		return dao.mypageline(first,end,uuid);
+		String enddate;
+		String firstdate = "2020-0"+Integer.toString(first)+"-01";
+		if(end == 13) {
+			enddate = "2020-0"+Integer.toString(end-1)+"-31";
+		}else {
+			enddate = "2020-0"+Integer.toString(end)+"-01";
+		}
+		System.out.println(firstdate);
+		System.out.println(enddate);
+		HashMap<String, Object> fmap = new HashMap<>();
+		fmap.put("firstdate", firstdate);
+		fmap.put("enddate", enddate);
+		fmap.put("uuid", uuid);
+		return dao.mypageline(fmap);
 	}
 	
 	
