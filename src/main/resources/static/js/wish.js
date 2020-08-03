@@ -171,14 +171,7 @@ $("#exampleModal").on('shown.bs.modal', function(){
 			
 			$('input[name=placejuso]').val(juso[i].innerHTML);
 			$('input[name=placename]').val(name[i].innerHTML);
-			$('.alarm-name').text(name[i].innerHTML);
-			$('.alarm').css("display","block");
-			setTimeout(function() {
-				$('.alarm').css("display","none");
-				}, 1000);
-			$('.btn_check_place').removeClass('btn-outline-danger');
-			$('.btn_check_place').addClass('btn-danger');
-			
+			toastr.success(areaname+"을 등록 하셨습니다.");
 		}   
 	   }
    }
@@ -210,13 +203,7 @@ $("#exampleModal").on('shown.bs.modal', function(){
 		el.className = 'item';
 		// 음식점 클릭시 해당 가게 이름 현재 맛집으로 설정
 		el.addEventListener('click',function(){
-			$('.alarm-name').text(places.place_name);
-			$('.alarm').css("display","block");
-			setTimeout(function() {
-				$('.alarm').css("display","none");
-				}, 1000);
-			$('.btn_check_place').removeClass('btn-outline-danger');
-			$('.btn_check_place').addClass('btn-danger');
+			toastr.success(places.place_name+"을 등록 하셨습니다.");
 			$('input[name=placename]').val(places.place_name);
 			$('input[name=placejuso]').val(places.address_name);
 		});
@@ -412,8 +399,8 @@ function naversearch(){
 			for(i=0;i<10;i++){
 				result_nav+="<div class='search_nav shadow p-3 mb-5 bg-white rounded'>"+data.items[i].title+"</div>";
 				result_for+="<div class='search_for shadow-lg p-3 mb-5 bg-white rounded'><a href='"+data.items[i].link+"' target='_blank'>";
-				result_for+="<h2>"+data.items[i].title+"</h2>";
-				result_for+="<p>"+data.items[i].description +"</p>";
+				result_for+="<h2 class='blogheader'>"+data.items[i].title+"</h2>";
+				result_for+="<p class='blogslide'>"+data.items[i].description +"</p>";
 				result_for+="<div> 볼로그 작성일 :"+data.items[i].postdate+"</div></a>";
 				result_for+="<input type='hidden' name='hidden_link' value='"+data.items[i].link+"'/>"
 				result_for+="<div ><img class='star' src='../image/star_off.png'/></div></div>";
@@ -454,18 +441,16 @@ function naversearch(){
 								$('.btn_check_blog').addClass('btn-info');
 								$('input[name=bloglink]').val(hidden);
 								btn_check=1;
-								$('.alarm-blog').css("display","block");
-								setTimeout(function() {
-									$('.alarm-blog').css("display","none");
-									}, 1000);
+								toastr.success("블로그를 등록 하셨습니다.");
 							}else{
-								alert("블로그 등록은 한개밖에 할수 없습니다. 등록을 해제해주세요!");
+								toastr.error("블로그 등록은 한개밖에 할수 없습니다. 등록을 해제해주세요!");
 							}
 						}else{
 							$(this).attr('src','../image/star_off.png');	
 							$('.btn_check_blog').removeClass('btn-info');
 							$('.btn_check_blog').addClass('btn-outline-info');
 							$('input[name=bloglink]').val("");
+							toastr.error("블로그를 취소 하셨습니다.");
 							btn_check=0;
 						}
 					
@@ -975,10 +960,28 @@ function wish_regist(){
 		alert("아이콘을 선택해주세요");
 		return false;
 	}
-	$('#regist_form').submit();
-	toastr.success("등록이 되었습니다.");
-	
-
+	swal({
+		title : "등록",
+		text : "입력한 정보를 등록하시겠습니까??",
+		icon : "info",
+		closeOnClickOutside : false,
+		buttons :{
+			cancle : {
+				text : "취소",
+				value : false
+			},
+			confirm : {
+				text : "등록",
+				value : true
+			}
+		}
+	})
+	.then((value) => {
+		if(value){
+			$('#regist_form').submit();
+		}else{
+		}
+	})
 }
 //클릭시 블로그 보기 , 글 수정 , 글 삭제 버튼으로 전환
 $(document).on('click','.media-body',function(){
@@ -993,8 +996,8 @@ $(document).on('click','.media-body',function(){
 		opacity:"0",
 	},1000,
 	function(){
-		$(this).children('.title').css('fontSize','0');
-		$(this).children('.summary').css('fontSize','0');
+		$(this).find('.title').attr('style','font-size:0px !important');
+		$(this).find('.summary').attr('style','font-size:0px !important');
 		friend.children('.media_look').css('display','block');
 		friend.children('.media_update').css('display','block');
 		friend.children('.media_delete').css('display','block');
@@ -1028,7 +1031,7 @@ $(document).on('click','.media_delete',function(){
 $(document).on('click','.media_cancel',function(){
 	var pop = $(this).parents('.media');
 	$(this).parents('.media').children('.media-body').children('.title').css('fontSize','16px');
-	pop.children('.summary').css('fontSize','12px');
+	pop.find('.summary').css('fontSize','12px');
 	pop.children('.media_look').css("display","none");
 	pop.children('.media_update').css("display","none");
 	pop.children('.media_delete').css("display","none");

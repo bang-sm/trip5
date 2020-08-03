@@ -69,7 +69,7 @@ public class WishPlaceRestController {
 	public void delete(int placeid) throws Exception {
 		System.out.println("딜리트 맵핑");
 		System.out.println(placeid);
-		// service.delete(placeid);
+		service.delete(placeid);
 	}
 
 	@PostMapping(value = "/count")
