@@ -18,31 +18,35 @@
 			<h2>프로필 수정</h2>
 			<div>TRIP5 대표 프로필과 별병을 수정 하실 수 있습니다.</div>
 		</div>
-		<table class="myInfo">
-			<tr class="profile center">
-				<td class="profileLeft width_pl">프로필 사진</td>
-				<td class="profileRight width_pr">
-					<div class="form-group" id="file-list">
-						<div class="photo"></div>
-						<div class="filebox" style="padding: 0px;">
-							<label for="photo">업로드</label> 
-							<input type="file" id="photo">
+		<!-- 회원정보 변경  form -->
+		<form action="/user/chageImg" method="post"
+			<table class="myInfo">
+				<tr class="profile center">
+					<td class="profileLeft width_pl">프로필 사진</td>
+					<td class="profileRight width_pr">
+						<div class="form-group" id="file-list">
+							<div class="photo">
+								<img id="img" class="rounded-circle" width="100" height="100" />
+							</div>
+							<div class="filebox" style="padding: 0px;">
+								<label for="photo">업로드</label> <input type="file" id="photo" placeholder="사진파일">
+							</div>
+							<a class="deletePhoto">삭제</a>
 						</div>
-						<a class="deletePhoto">삭제</a>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td class="nickname">별명</td>
-				<td class="nickInput">
-					<input th:value="${session.userInfo.membernick}">
-				</td>
-			</tr>
-		</table>
-		<div class="text-center">
-			<div class="change">적용</div>
-			<div class="cancel">삭제</div>
-		</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="nickname">별명</td>
+					<td class="nickInput">
+						<input th:value="${session.userInfo.membernick}">
+					</td>
+				</tr>
+			</table>
+			<div class="text-center">
+				<div class="change">적용</div>
+				<div class="cancel">삭제</div>
+			</div>
+		</form>
 	</div>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e957a3a75c171b18d05297414326bb8d&libraries=services"></script>
 	<script src="../js/wish.js"></script>

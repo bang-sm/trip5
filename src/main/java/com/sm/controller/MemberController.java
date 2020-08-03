@@ -102,9 +102,24 @@ public class MemberController {
 
 		return "/user/inform";
 	}
+	
+	/////////////////////////////////////////////////////////////////
+	// 프로필 사진 변경
+	/////////////////////////////////////////////////////////////////
+	@PostMapping("/user/chageImg")
+	public String chageImg(HttpSession session, Model model) {
+		
+		return null;
+	}
 
 	
+	
+	
+	
+	
+	//--------------------------------------------------------------------------
 	// 인증번호 -------------------------------------------------------------------
+	//--------------------------------------------------------------------------
 	@ResponseBody
 	@PostMapping("/user/authEmail.do")
 	public String sendEmailAction(String email)
