@@ -30,7 +30,7 @@
 	<delete id="deleteBlackList" parameterType="int">
 		DELETE FROM 
 			blackList 
-		WHERE 
+		WHERE blackUuid = #{otheruid}
 	</delete>
 	
 	<insert id="sendToMsg" parameterType="com.sm.domain.MessageVO">

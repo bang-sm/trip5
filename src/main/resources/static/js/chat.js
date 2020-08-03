@@ -251,7 +251,7 @@ function blackList(nicker){
 					alert("차단되었습니다.");
 					$("div.dropdown-menu button[data-email="+nick+"]").text("차단해제");
 					$("button[data-email="+nick+"]").removeAttr("onclick");
-					$("button[data-email="+nick+"]").attr("onclick", "disBlackList()");
+					$("button[data-email="+nick+"]").attr("onclick", "disBlackList(nicker)");
 					
 					loadPage();
 				}
@@ -262,10 +262,10 @@ function blackList(nicker){
 	}
 }
 
-function disBlackList(){
+function disBlackList(nicker){
 	if(confirm("차단을 푸시겠습니까?")){
 		// 내 uuid 와 상대방 nickname request
-		data = "&membernick="+nick
+		data = "&membernick="+nicker
 		console.log(data);
 		$.ajax({
 			url : "/my/disblack",
@@ -277,7 +277,7 @@ function disBlackList(){
 					alert("차단해제 되었습니다.");
 					$("div.dropdown-menu button[data-email="+nick+"]").text("차단하기");
 					$("button[data-email="+nick+"]").removeAttr("onclick");
-					$("button[data-email="+nick+"]").attr("onclick", "blackList()");
+					$("button[data-email="+nick+"]").attr("onclick", "blackList(nicker)");
 					
 					loadPage();
 				}
