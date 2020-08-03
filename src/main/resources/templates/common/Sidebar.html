@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="css/dist/css/adminlte.min.css">
+<link rel="stylesheet" href="css/sidebarheader.css">
 <th:block th:replace="common/commonHead"></th:block>
 </head>
 <body class="sidebar-mini layout-fixed" style="height: auto;">
@@ -13,7 +14,7 @@
 		<aside class="main-sidebar sidebar-dark-primary elevation-4 button-sidebar">
 			<!-- Brand Logo -->
 				<!-- <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> -->
-				<span class="brand-text font-weight-light mypage-title">MY PAGE</span>
+				<a th:href="@{/}" class="nav-link"><span class="brand-text font-weight-light mypage-title">TRIP5</span></a>
 			<span class="side-pushmenu"><i class="fa fa-list-ul side-button"></i></span>
 			<!-- Sidebar -->
 			<div class="sidebar">
@@ -81,26 +82,12 @@
 										<p>...</p>
 									</a></li>
 							</ul></li>
-						<li class="nav-item has-treeview"><a href="#" class="nav-link active">
+						<li class="nav-item has-treeview"><a th:href="@{/mypage}" class="nav-link active">
 								<i class="nav-icon fa fa-address-card"></i>
 								<p>
 									나의 일지 <i class="right fas fa-angle-left"></i>
 								</p>
 							</a>
-							<ul class="nav nav-treeview">
-								<li class="nav-item"><a href="#" class="nav-link">
-										<i class="far fa-circle nav-icon"></i>
-										<p>목록</p>
-									</a></li>
-								<li class="nav-item"><a href="#" class="nav-link">
-										<i class="far fa-circle nav-icon"></i>
-										<p>북마크</p>
-									</a></li>
-								<li class="nav-item"><a href="#" class="nav-link">
-										<i class="far fa-circle nav-icon"></i>
-										<p>좋아요</p>
-									</a></li>
-							</ul></li>
 				</nav>
 				<!-- /.sidebar-menu -->
 			</div>
