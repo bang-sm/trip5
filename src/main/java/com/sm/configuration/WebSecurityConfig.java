@@ -103,13 +103,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()
 			.csrf().ignoringAntMatchers("/adminNotice/ajax/**")	
 		.and()
+			.csrf().ignoringAntMatchers("/admin/ajax/**")	
+		.and()
 			.oauth2Login()	// Oauth2 로그인
 		.and()
 			.rememberMe()
 			 .userDetailsService(memberService)
              .tokenRepository(tokenRepository()); // username, 토큰, 시리즈를 조합한 토큰 정보를 DB에 저장(rememberMe 쿠키랑 일치하는 지 확인하기 위함)
 			;
-       
+        
         http.sessionManagement()
         	.invalidSessionUrl("/user/sessionExpire")
         	//유효하지 않은 세션으로 접근했을때 어디로 보낼것인지 URL을 설정하는 기능.
@@ -118,7 +120,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         	.maxSessionsPreventsLogin(true) // 중복로그인시 이전 로그인했던 세션 만료.
         	.expiredUrl("/user/sessionExpire")	// 중복 로그인시 타는 url
          	;
-        									  
+        		//							  
 	}
 	
     // tokenRepository의 구현체

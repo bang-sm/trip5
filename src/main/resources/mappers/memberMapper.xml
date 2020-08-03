@@ -120,4 +120,59 @@
 			member;
 	</select>
 
+	<!-- ///////////////////////////////////////////////////////// -->
+	<!-- 방문자 수 -->
+	<!-- ///////////////////////////////////////////////////////// -->
+	
+	<!-- 가입 타입별 일일 접속자 통계 -->
+	<insert id="insertUserCount" parameterType="MAP">
+		INSERT INTO 
+			`visitmembers`(uuid, visitdate, ipaddr, kakaoOk)
+		VALUES 
+			(${uuid}, curdate(), '${ipaddr}', '${kakaoOk}');
+	</insert>
+	
+	<!-- 일일접속자 insert 조건 -->
+	<select id="insertCondition" parameterType="Map" resultType="com.sm.domain.VisitmembersVO">
+		SELECT
+			ifnull(uuid, 0) as uuid,
+			ifnull(visitdate, '0') as visitdate,
+			ifnull(ipaddr, '0') as ipaddr,
+			ifnull(kakaoOk, '0') as kakaoOk
+		FROM 
+			visitmembers
+		WHERE
+			uuid = ${uuid}
+		AND
+			visitdate = '${visitdate}';
+	</select>
+
+	<!-- 일일접속자 Count-->
+	<select id="adminUserCount" resultType="Map">
+		SELECT 
+			COUNT(CASE WHEN kakaoOk ='Y' THEN 1 END) AS KAKAO, 
+			COUNT(CASE WHEN kakaoOk ='N' THEN 1 END) AS TRIP5
+		FROM visitmembers;
+	</select>
+
+	<!-- 월별 가입자 Count-->
+	<select id="adminUserSignUp" resultType="Map">
+
+		SELECT 
+			CONCAT(m, '월') AS `월별`, cnt
+		FROM (
+		    SELECT 
+		    	MONTH(memberregdate) AS m, COUNT(*) AS cnt
+		    FROM 
+		    	member
+		    WHERE
+		    	memberregdate &gt;= '2020-01-01' 
+		    AND 
+		    	memberregdate &lt; '2021-01-01'
+		    GROUP BY 
+		    	MONTH(memberregdate)
+		) adminUserSignUp;
+	
+	</select>
+
 </mapper>
