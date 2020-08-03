@@ -8,7 +8,17 @@ $(window).resize(function(){
 	if(width < 1000){
 		$('body').addClass('sidebar-collapse');
 	}
+	
+	if(width > 992){
+		$('.pushmenu').css("display","none");
+		$('.side-pushmenu').css("display","none");
+	}else{
+		$('.pushmenu').css("display","block");
+		$('.side-pushmenu').css("display","block");
+	}
 }).resize();
+
+
 
 $('.pushmenu').click(function(){
 	console.log("click");	

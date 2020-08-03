@@ -499,7 +499,12 @@ function register(page){
 			list.html(result);
 			$('input[name=currentPage]').val(data.currentPage);
 			$('input[name=lastPage]').val(data.lastPage);
-			$('.pagingnow').text("("+data.currentPage+"/"+data.lastPage+")");
+			var end = Number(data.lastPage);
+			if(end == 0 ){
+				$('.pagingnow').text("(0/"+data.lastPage+")");
+			}else{
+				$('.pagingnow').text("("+data.currentPage+"/"+data.lastPage+")");
+			}
 		}
 		
 		
