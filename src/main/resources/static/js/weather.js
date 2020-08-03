@@ -474,8 +474,11 @@ function saveDefaultLocal(finalLocation){
 				"weatherlocaluid" : finalLocation
 			},
 			success: function(data){
+				console.log(data);
 				if(data == "OK"){
 					toastr.success("등록되었습니다"); 
+				} else if (data == "FALSE"){
+					toastr.error("로그인이 필요합니다.");
 				}
 				
 			},
@@ -912,7 +915,7 @@ $("#2").click(function() {
   data.labels = chart_labels;
   data.datasets[0].label = "강수량(mm)";
   myChartData.update();
-  $(".card-category").html("강수량");
+  $(".card-category").html("예상 강수량");
 
 });
 

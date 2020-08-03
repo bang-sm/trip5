@@ -36,16 +36,14 @@ function getWeatherajax(){
 	  var pty = weatherMap.PTY*1;
 	  var temp = weatherMap.TEMP;
 	  console.log("temp : " + temp);
-
+	  console.log("pty : " + pty);
+	  console.log(typeof(pty));
 	  var location = weatherMap.localname;
 	  var parantLocation = weatherMap.parentName;
       
 		setTEMP(temp, $("#temp"));
 		setSKY(sky, pty, $("#weathericon"));
-		if(sky == 3 || sky == 4){
-			$(".cloud:after").css('animation' , "");
-		}
-
+		
 		if(parantLocation == null || parantLocation == ""){
 			$("#location1").html(location);
 		} else if (parantLocation != null || parantLocation != ""){
@@ -64,7 +62,8 @@ function getWeatherajax(){
 function setSKY(SKY, PTY, location){
 
 	var sunny = "weather-icon sun";
-	var rainy = "weather-icon cloud";
+	var rainy = "weather-icon rainy";
+	var cloud = "weather-icon cloud";
 
 	var skyimg;
 
@@ -79,7 +78,7 @@ function setSKY(SKY, PTY, location){
 
 				case 3:
 				case 4:
-					skyimg = rainy;
+					skyimg = cloud;
 				break;
 			}
 
@@ -120,7 +119,7 @@ function modalMaximize(){
 	var hiddenbox = $("#hiddenbox");
 	var weathercard = $(".weather-card");
 
-	weathercard.css("height", "270px");
+	weathercard.css("height", "180px");
 	hiddenbox.removeAttr("hidden");
 	$("#maxIcon").attr("hidden", "hidden");
 }

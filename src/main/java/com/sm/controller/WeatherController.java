@@ -77,8 +77,17 @@ public class WeatherController {
 	@ResponseBody
 	@PostMapping("/updateuid")
 	public String updateWeatherlocaluid(HttpSession httpSession, int weatherlocaluid) {
-		weatherService.updateWeatherlocaluid(httpSession, weatherlocaluid);
-		return "OK";
+		
+		String returnString = "FALSE";
+		int check = 0;
+		
+		check = weatherService.updateWeatherlocaluid(httpSession, weatherlocaluid);
+		
+		if(check == 1) {
+			returnString = "OK";
+		}
+		
+		return returnString;
 	}
 	
 	
