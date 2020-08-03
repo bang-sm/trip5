@@ -37,18 +37,25 @@ public class WeatherService {
 		return weatherLocalDAO.selectWeatherlocaluid(uuid);
 	}
 	
-	public void updateWeatherlocaluid(HttpSession httpSession ,int weatherlocaluid) {
+	public int updateWeatherlocaluid(HttpSession httpSession ,int weatherlocaluid) {
 		
 		Map<String, Integer> localmap = new HashMap<String, Integer>();
 		
 		MemberVO memberVO = new MemberVO();
+		int check = 0;
 
 		memberVO = (MemberVO) httpSession.getAttribute("userInfo");
 		
-		localmap.put("uuid", memberVO.getUuid());
-		localmap.put("weatherlocaluid", weatherlocaluid);
+		if(memberVO != null) {
+			
+			localmap.put("uuid", memberVO.getUuid());
+			localmap.put("weatherlocaluid", weatherlocaluid);
+			
+			weatherLocalDAO.updateWeatherlocaluid(localmap);
+			check = 1;
+		}
 		
-		weatherLocalDAO.updateWeatherlocaluid(localmap);
+		return check;
 	}
 	
 	public WeatherLocalVO selectlocalInfoBylocaluid(int localuid) {
