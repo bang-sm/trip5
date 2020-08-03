@@ -20,6 +20,4 @@ public class MypageVO {
 	private String tsenddate;
 	private String tsregdate;
 	
-	
-	
 }

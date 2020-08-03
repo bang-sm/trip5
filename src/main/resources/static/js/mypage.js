@@ -430,7 +430,7 @@ function recently(){
 			for(i=0;i<data.length;i++){
 				result+='<tr>';
 				result+='<td class="col-one">'+data[i].viewDate+'</td>';
-				result+='<td class="col-two">'+data[i].tstitle+'</td>';
+				result+='<td class="col-two"><a href='+ data[i].tsUrl+'>' +data[i].tstitle + '</a></td>';
 			    result+='<td class="col-thr">'+data[i].membernick+'</td>';
 			    result+='</tr>';
 			}

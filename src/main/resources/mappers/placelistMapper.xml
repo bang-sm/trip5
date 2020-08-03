@@ -360,7 +360,7 @@
 		SELECT 
 			tsv.tsid , tsv.tsUrl , tsv.tstitle,ts.uuid ,tsv.viewDate
 		FROM 
-			travel_story_view tsv,travel_story ts
+			travel_story_view tsv, travel_story ts
 		WHERE
 			tsv.uuid = #{uuid} and tsv.tsid = ts.tsid	
 		AND 
