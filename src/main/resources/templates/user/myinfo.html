@@ -33,7 +33,7 @@
 					</div>
 				</div>
 
-				<div class="card previous--card"  data-url="../chatting/message">
+				<div class="card previous--card" data-url="/my/clipSend?sendid=">
 					<div class="card__image">
 						<img src="../image/Message.jpg" alt="" />
 					</div>
@@ -54,12 +54,14 @@
 				<div class="info current--info">
 					<h1 class="text name">My Info</h1>
 					<h4 class="text location">개인정보 관리</h4>
-					<p class="text description"><span th:text="${session.userInfo.membernick}"></span>님 반갑습니다~</p>
+					<p class="text description">
+						<span th:text="${session.userInfo.membernick}"></span>님 반갑습니다~
+					</p>
 				</div>
 
 				<div class="info next--info">
 					<h1 class="text name">Trip log</h1>
-					<h4 class="text location">여행일지 관리 </h4>
+					<h4 class="text location">여행일지 관리</h4>
 					<p class="text description">나만의 여행일지 관리할 수 있어요!</p>
 				</div>
 

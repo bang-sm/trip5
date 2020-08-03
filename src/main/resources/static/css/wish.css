@@ -861,3 +861,15 @@ a:hover { color: black; text-decoration: none;} */
 .two-modal{
 	margin-top:60px;
 }
+
+.btn-checkend{
+	width: 74px;
+    padding: 2px;
+}
+.eximg{
+	width:100%;
+}
+.naverex{
+	width:100%;
+	height:auto;
+}

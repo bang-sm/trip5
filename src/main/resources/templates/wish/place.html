@@ -224,7 +224,9 @@
 										<img th:src="@{../image/icon/search.png}" class="naversearch" onclick="naversearch()" />
 									</div>
 								</div>
-								<div class="navercardslide_for"></div>
+								<div class="navercardslide_for">
+									<div class="eximg">	<img class="naverex" th:src="@{../image/icon/ex.gif}"/></div>
+								</div>
 								<div class="navercardslide_nav"></div>
 							</div>
 						</div>
@@ -239,7 +241,7 @@
 							<input type="hidden" name="uuid" th:value="${session.userInfo.uuid}" />
 						</th:block>
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">나가기</button>
-						<button type="button" class="btn-primary btn-lg" data-toggle="modal" data-target="#CheckModal" onclick="statuscheck()">완료</button>
+						<button type="button" class="btn-primary btn-lg btn-checkend" data-toggle="modal" data-target="#CheckModal" onclick="statuscheck()">완료</button>
 
 					</div>
 				</div>
