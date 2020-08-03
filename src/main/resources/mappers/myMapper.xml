@@ -31,7 +31,6 @@
 		DELETE FROM 
 			blackList 
 		WHERE 
-			blackUuid = #{otheruid}
 	</delete>
 	
 	<insert id="sendToMsg" parameterType="com.sm.domain.MessageVO">
@@ -304,6 +303,13 @@
 		WHERE 
 			msg_id = #{msgid}
 	</update>
+	
+	<delete id="deleteForClip" parameterType="com.sm.domain.MessageVO"> 
+		DELETE FROM 
+			messageList 
+		WHERE 
+			msg_id = #{msgid};
+	</delete>
 </mapper>
 
 

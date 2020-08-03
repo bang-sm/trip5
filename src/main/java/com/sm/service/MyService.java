@@ -112,12 +112,22 @@ public class MyService {
 		
 		for(int i =0; i<list.size(); i++) {
 			if(list.get(i).getSendid() == mem.getUuid()) {
-				// 보낸메일 삭제한 것
-				cnt = dao.deleteOk(list.get(i));
+				if(list.get(i).getMsgdelrcv() == 0) {
+					// 그냥 db에서 삭제
+					cnt = dao.deleteForClip(list.get(i));
+				} else {
+					// 보낸메일 삭제한 것
+					cnt = dao.deleteOk(list.get(i));
+				}
 			} else {
-				// 받은메일 삭제한 것
-				list.get(i).setSendid(0);
-				cnt = dao.deleteOk(list.get(i));
+				if(list.get(i).getMsgdelsnt() == 0) {
+					// 그냥 db에서 삭제!
+					cnt = dao.deleteForClip(list.get(i));
+				} else {
+					// 받은메일 삭제한 것
+					list.get(i).setSendid(0);
+					cnt = dao.deleteOk(list.get(i));
+				}
 			}
 		}
 		

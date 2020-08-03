@@ -87,3 +87,23 @@ function nextClip(){
 			});
 	}
 }
+
+function deleteForever(){
+	var params = "msgid="+$("#messageId").val();
+	
+	 $.ajax({
+		url: "/my/deleteOk",
+		type: "POST",
+		cache: false,
+		data: params,
+		success: function(data, status){
+			if(status == "success"){
+				alert('성공했으여');
+				location.href = "/my/clipSend?sendid="+$("#userUuid").val();
+			}
+		}
+	 });
+
+}
+
+
