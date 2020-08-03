@@ -384,4 +384,8 @@ public void insertTravelView(TravelViewVO travelViewVO, int uuid) {
 		return dao.selectTravelStoryByTsid(tsid);
 	}
 	
+	
+	public int registercount(int uuid) {
+		return dao.registercount(uuid);
+	}
 }

@@ -94,7 +94,6 @@
 }
 
 #mypagelineChart{
-	margin-top: 150px
 }
 td{
 	font-size: 15px;
@@ -129,3 +128,7 @@ td{
 	margin: 10px 0;
 }
 
+.mypagelinechart{
+	width:750px;
+	height:400px;
+}

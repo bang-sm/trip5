@@ -22,7 +22,7 @@ public class MypageVO {
 	private String tsstartdate;
 	private String tsenddate;
 	private String tsregdate;
-	
+	private String tempsave;
 	
 	
 }

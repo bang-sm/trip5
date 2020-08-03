@@ -157,4 +157,8 @@ public class PlacelistDAO {
 	public String selectmember(int uuid) {
 		return sql.selectOne("mappers.placelistMapper.selectmember",uuid);
 	}
+	
+	public int registercount(int uuid) {
+		return sql.selectOne("mappers.placelistMapper.registercount", uuid);
+	}
 }
