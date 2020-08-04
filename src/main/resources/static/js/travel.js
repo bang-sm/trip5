@@ -25,7 +25,7 @@ $(document).ready(function() {
     			},
     			success : function(data,status){
     				if(status == "success"){
-    					alert("쪽지를 보냈습니다!");
+    					toastr.success('쪽지를 전송했습니다!');
     					$("#msg_content").val(''),
     					$("#msg_subject").val('')
     				}

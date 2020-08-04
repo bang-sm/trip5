@@ -38,14 +38,29 @@ document.addEventListener("keypress", function(e) {
 	}
 });
 
-function connect(event) {
-	console.log('connect//////');
-
-    var socket = new SockJS('/ws');
-    stompClient = Stomp.over(socket);
-    console.log(socket);
-    
-    stompClient.connect({}, onConnected, onError);
+function connect(event) { 
+	console.log($("#adminBlackList").val() + 'zzzzzzzzzz')
+	if($("#adminBlackList").val() == "N"){
+		var socket = new SockJS('/ws');
+		stompClient = Stomp.over(socket);
+		console.log(socket);
+		
+		stompClient.connect({}, onConnected, onError);
+	} else {
+		swal("차단된 유저는 채팅방에 입장할 수 없습니다.", {
+			  buttons: {
+			    확인: true,
+			  },
+			})
+			.then((value) => {
+			  switch (value) {
+			 
+			    case "확인":
+			    location.href="/";
+			    break;
+			  }
+			});
+	}
 //    event.preventDefault();
 }
 
@@ -323,7 +338,7 @@ function blackList(){
 			data : data,
 			success : function(data, status){
 				if(status == "success"){
-					alert("차단되었습니다.");
+					toastr.success('차단 되었습니다');
 					$("div.dropdown-menu button[data-email="+nick+"]").html("<i class='fas fa-comment-slash'></i>차단해제");
 					$("button[data-email="+nick+"]").removeAttr("onclick");
 					$("button[data-email="+nick+"]").attr("onclick", "disBlackList()");
@@ -349,7 +364,7 @@ function disBlackList(){
 			data : data,
 			success : function(data, status){
 				if(status == "success"){
-					alert("차단해제 되었습니다.");
+					toastr.success('차단해제 되었습니다');
 					$("div.dropdown-menu button[data-email="+nick+"]").html("차단하기");
 					$("button[data-email="+nick+"]").removeAttr("onclick");
 					$("button[data-email="+nick+"]").attr("onclick", "blackList()");
@@ -400,7 +415,7 @@ function sendToMsg(){
 			},
 			success : function(data,status){
 				if(status == "success"){
-					alert("쪽지를 보냈습니다!");
+					toastr.success('쪽지를 전송했습니다');
 					sendAlarm();
 					$("#message-text").val(''),
 					$("#message-subject").val(''),

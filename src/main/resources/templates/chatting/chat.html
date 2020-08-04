@@ -16,6 +16,8 @@
 	<input type="hidden" id="sessionId" value="">
 	<input th:if="${session.userInfo != null}" type="hidden" id="userSessionId" th:value="${session.userInfo.membernick}">
 	<input th:if="${session.userInfo != null}" type="hidden" id="userSessionuuid" th:value="${session.userInfo.uuid}">
+	<input th:if="${session.userInfo != null}" type="hidden" id="adminBlackList" th:value="${adminBlack}">
+	
 	<div class="chat_container">
 		<div class="panel messages-panel">
 			<div class="contacts-list">
@@ -85,9 +87,7 @@
 			</div>
 		</div>
 	</div>
-
-
-
+	<script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
