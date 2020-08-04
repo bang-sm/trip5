@@ -90,5 +90,13 @@ public class MyController {
 		
 		return myService.selectByDelete(msgid);
 	}
+	
+	@PostMapping("/gotoBlog")
+	public int gotoBlog(MemberVO memberVO) {
+		MemberVO mem = myService.selectUuid(memberVO);
+		
+		int uuid = mem.getUuid();
+		return uuid;
+	}
 }
 

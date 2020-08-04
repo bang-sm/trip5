@@ -135,7 +135,8 @@ function onMessageReceived(payload) {
 									"</svg>"+
 									"<div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>"
 									+"<button class='dropdown-item' onclick='blackList()' data-email='" + message.participant[i] + "'><i class='fas fa-comment-slash'></i>차단하기</button>"+
-									"<button class='dropdown-item' data-backdrop='static' data-toggle='modal' data-target='#exampleModal' onclick='sendMsg()''><i class='far fa-envelope' style='font-size:1.05rem'></i>쪽지보내기</button>" +
+									"<button class='dropdown-item' data-backdrop='static' data-toggle='modal' data-target='#exampleModal' onclick='sendMsg()'><i class='far fa-envelope' style='font-size:1.05rem'></i>쪽지보내기</button>" +
+									"<button class='dropdown-item' data-backdrop='static' data-toggle='modal' data-target='#exampleModal' onclick='gotoBlog()'><i class='fab fa-blogger' style='font-size:1.05rem'></i>블로그 보기</button>" +
 									"</div>"  
 									: '') +
 									"</div>"+
@@ -391,6 +392,20 @@ function sendToMsg(){
 			}
 		})
 	}
+}
+
+function gotoBlog(){
+	$.ajax({
+		url:"/my/gotoBlog",
+		type:"POST",
+		cache : false,
+		data : "membernick="+nick,
+		success:function(data,status){
+			if(status == "success"){
+				location.href = "/travel/share_travel?uuid="+data;
+			}
+		}
+	})
 }
 
 /*
