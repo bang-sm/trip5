@@ -17,6 +17,7 @@ function fnMove(seq) {
 // 버튼 선택
 $(document).on('click', '.listbutton', function(){
 	buttonNum = $(this).val();
+	listMaxLength = 8;
 	getTravelList(buttonNum, listMaxLength);
 });
 
@@ -43,7 +44,6 @@ function getTravelList(buttonNum, listMaxLength){
 			listMaxLength = data.length;
 		}
 
-		console.log("list 안 : " + listMaxLength);
 		for(var i = 0; i < listMaxLength; i++){
 			htmlString += "<div class='col-lg-3 col-md-4 col-sm-6 ap'>";
 			htmlString += "<div class='h_gallery_item'>";
@@ -52,14 +52,14 @@ function getTravelList(buttonNum, listMaxLength){
 			} else {
 				htmlString += "<img src='/resources/upload/trip.jpg' width='210' height='300'>";
 			}
-			
+
 			htmlString += "<div class='hover'>";
 			htmlString += "<a href='/travel/travel_blog?uuid="+ data[i].uuid +"&amp;tsid="+ data[i].tsid +"'>";
 			htmlString += "<h4>"+ data[i].tstitle +"</h4>";
 			htmlString += "</a>";
 			htmlString += "<a class='light' href='/travel/travel_blog?uuid="+ data[i].uuid +"&amp;tsid="+ data[i].tsid +"'>";
 			htmlString += "<i class='fa fa-heart' style='font-size: 17px'> "+ data[i].tslike+" </i>";
-			htmlString += "<i class='fa fa-bookmark' style='font-size: 17px'> "+ data[i].bookmark+" </i>";
+			htmlString += "<i class='fa fa-bookmark' style='font-size: 17px;padding-left: 20px'> "+ data[i].bookmark+" </i>";
 			htmlString += "</a></div></div></div>";
 		}
 

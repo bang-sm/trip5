@@ -26,7 +26,7 @@ public class HomeController {
 	public String index(Model model) {
 		logger.debug("index 페이지입니다");
 
-		model.addAttribute("list", service.mainTravleList(0));
+		model.addAttribute("list", service.mainTravleList(1));
 
 		return "index";
 	}
@@ -34,7 +34,7 @@ public class HomeController {
 	@GetMapping(value = "/")
 	public String root(Model model) {
 		logger.debug("root");
-		model.addAttribute("list", service.mainTravleList(0));
+		model.addAttribute("list", service.mainTravleList(1));
 		return "index";
 	}
 	

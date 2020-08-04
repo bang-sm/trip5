@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.sm.domain.ChatMessage;
+import com.sm.domain.MemberVO;
 import com.sm.domain.MessageVO;
 import com.sm.service.MyService;
 
@@ -36,8 +37,12 @@ public class ChatController {
 	// 채팅 페이지
 	@GetMapping(value = "/chatting/chat")
 	public String chatTest(HttpSession session, Model model) {
-
+		MemberVO mem = (MemberVO) session.getAttribute("userInfo");
+		String adminBlack = myService.selectAdminBlackList(mem.getUuid());
+		
+		System.out.println(adminBlack + " 컨트롤러 단에서 블랙리스트 관련");
 		model.addAttribute("uuid", session.getAttribute("userInfo"));
+		model.addAttribute("adminBlack", adminBlack);
 		return "chatting/chat";
 	}
 	
@@ -92,6 +97,8 @@ public class ChatController {
 			Date date = format1.parse(list.get(i).getMsgregdate());
 			list.get(i).setMsgregdate(format2.format(date));
 		}
+		
+		
 		
 		messageVO.setFromid(messageVO.getSendid());
 		

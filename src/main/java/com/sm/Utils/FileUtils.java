@@ -79,8 +79,9 @@ public class FileUtils {
     }
     
     
-	public List<Map<String, Object>> parseUserInfo(MemberVO memberVO, MultipartFile file) throws Exception {
-
+	public List<Map<String, Object>> parseUserInfo(MemberVO memberVO, MultipartFile file,String isImgCheck) throws Exception {
+		System.out.println("-dfadsfhadsjbfkjasdb       " + isImgCheck);
+		
 		String root_path = request.getSession().getServletContext().getRealPath("/");
 		String attach_path = "resources/upload/userProfile";
 
@@ -94,10 +95,19 @@ public class FileUtils {
 
 		String orgFileName = file.getOriginalFilename();
 		String orgFileExtension;
-		// file.getOriginalFilename()
 		
-		// 
-		if (orgFileName.lastIndexOf(".") == -1) {
+		// 그냥 적용만 눌렀을 때 기본 사진 유지 시키기 위함
+		if(orgFileName.trim().equals("") && !isImgCheck.equals("1")) {
+			// 아무것도 없을 때
+			Map<String, Object> fileInfo = new HashMap<String, Object>();
+			fileInfo.put("photoPath", memberVO.getPhotoCustomName());
+			fileInfo.put("mbUuid", mbUuid);
+			fileInfo.put("photoOriginalName", "");
+			fileInfo.put("photoCustomName", memberVO.getPhotoCustomName());
+			fileInfo.put("photoFileSize", "");
+			fileList.add(fileInfo);
+			return fileList;
+		} else if(orgFileName.lastIndexOf(".") == -1 || isImgCheck.equals("1")) {
 			// 아무것도 없을 때
 			Map<String, Object> fileInfo = new HashMap<String, Object>();
 			fileInfo.put("photoPath", "profile.jpg");
@@ -111,6 +121,7 @@ public class FileUtils {
 			orgFileExtension = orgFileName.substring(orgFileName.lastIndexOf("."));
 		}
 		
+			
 		String saveFileName = UUID.randomUUID().toString().replaceAll("-", "") + orgFileExtension;
 		Long saveFileSize = file.getSize();
 

@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import com.sm.dao.MemberDAO;
 import com.sm.domain.MemberVO;
 import com.sm.domain.VisitmembersVO;
+import com.sm.service.MemberService;
 
 @Service
 public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientService {
@@ -41,10 +42,9 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 
 	@Override
 	public void saveAuthorizedClient(OAuth2AuthorizedClient oAuth2AuthorizedClient, Authentication authentication) {
-		System.out.println("인식좀 되라 ...제발ㅇ아아아아ㅏ앙");
 		try {
 
-//			String providerType = oAuth2AuthorizedClient.getClientRegistration().getRegistrationId();
+//		String providerType = oAuth2AuthorizedClient.getClientRegistration().getRegistrationId();
 			OAuth2AccessToken accessToken = oAuth2AuthorizedClient.getAccessToken();
 //		System.out.println(providerType + "////////////////////////providerType//////////////////////////////////");
 //		System.out.println(accessToken + "/////////////////////////accessToken/////////////////////////////////");
@@ -86,9 +86,10 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 			// uuid 값 넣기
 			int uuid = memberDAO.uuidCheck(principalName);
 			System.out.println(uuid);
-
-			memberVo.setUuid(uuid);
-
+			
+			// 되어있다면
+			memberVo = memberDAO.getUserById(memberemail);
+		
 			// 로그인 세션 저장
 			session.setAttribute("userInfo", memberVo);
 			session.setMaxInactiveInterval(60 * 60);

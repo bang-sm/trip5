@@ -93,6 +93,11 @@ public class MemberDAO {
 		return sql.selectList(namespace + ".adminUserSignUp");
 	}
 	
+	// 비밀번호 변경
+	public void updateNewPass(Map<String, Object> paramMap) {
+		sql.update(namespace + ".updateNewPass", paramMap);
+	}
+	
 	//////////////////////////////////////////////////////////////////////
 	// MYINFORM
 	//////////////////////////////////////////////////////////////////////
@@ -101,9 +106,22 @@ public class MemberDAO {
 		sql.update(namespace + ".profileImg", map);
 	}
 
+	public void myinfoNickChange(Map<String, Object> map) {
+		sql.update(namespace + ".myinfoNickChange", map);
+	}
+
 	// 사용자 프로필 이미지
 	public  String imgPath(int uuid) {
-		System.out.println(sql.selectOne(namespace + ".imgPath",uuid)+" 서비스 단입니다.");
 		return sql.selectOne(namespace + ".imgPath",uuid);
+	}
+
+	// 사용자 프로필 이미지 삭제
+	public  void deletUserImg(int uuid) {
+		sql.update(namespace + ".deletUserImg",uuid);
+	}
+	
+	// 사용자 닉네임
+	public  String userNickName(int uuid) {
+		return sql.selectOne(namespace + ".userNickName",uuid);
 	}
 }

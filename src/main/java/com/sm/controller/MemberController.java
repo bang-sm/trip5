@@ -104,11 +104,15 @@ public class MemberController {
 		
 		MemberVO memberVO = new MemberVO();
 		memberVO = (MemberVO) session.getAttribute("userInfo");
+		
+		// 사진 경로
 		String imgPath = memberService.imgPath(memberVO);
 		System.out.println(imgPath);
+		memberVO.setPhotoCustomName(imgPath);
+		memberVO.setMembernick(memberService.userNickName(memberVO.getUuid()));
 		
-		model.addAttribute("member", session.getAttribute("userInfo"));
-		model.addAttribute("imgPath", imgPath);
+		session.setAttribute("userInfo", memberVO);
+		model.addAttribute("userInfo", memberVO);
 		
 		return "/user/inform";
 	}
@@ -117,20 +121,40 @@ public class MemberController {
 	@GetMapping("/user/changepass")
 	public String changePass(HttpSession httpSession, Model model) {
 		
-		
+		model.addAttribute("member", httpSession.getAttribute("userInfo"));
 		
 		return "/user/changepass";
+	}
+	
+	@ResponseBody
+	@PostMapping("/user/passparam")
+	public void postchangePass(HttpSession session, String newPass) {
+		
+		System.out.println("newpass : " + newPass);
+		
+		int uuid = 0;
+		MemberVO memberVO = new MemberVO();
+		memberVO = (MemberVO) session.getAttribute("userInfo");
+		
+		uuid = memberVO.getUuid();
+		System.out.println("pass uuid : " + uuid);
+		memberService.updateNewPass(uuid, newPass);
 	}
 	
 	/////////////////////////////////////////////////////////////////
 	// 프로필 변경
 	/////////////////////////////////////////////////////////////////
 	@PostMapping("/myinfo/infoChange")
-	public String chageImg(@RequestPart MultipartFile mfiles, HttpSession session, Model model) throws Exception {
+	public String chageImg(@RequestPart MultipartFile mfiles, 
+			HttpSession session, Model model, String isImgCheck
+			,String membernick) throws Exception {
+		
 		if (session.getAttribute("userInfo") != null) {
 			MemberVO memberVO = new MemberVO();
 			memberVO = (MemberVO) session.getAttribute("userInfo");
-			memberService.myinfoChange(mfiles, memberVO);
+			
+			
+			memberService.myinfoChange(mfiles, memberVO, membernick, isImgCheck);
 			return "redirect:/user/inform";
 		} else {
 			return "redirect:/user/logout";	// 세션없으면 로그아웃
@@ -148,5 +172,7 @@ public class MemberController {
 		
 		return authNum;
 	}
+	
+	
 
 } // end controller

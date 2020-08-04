@@ -66,7 +66,6 @@ $(document).on(
 				// 배열 저장
 				};
 			} else { // 값이 없을 때
-				console.log("???")
 				snId.push(-1);
 				cnt = -2;
 				var data = {
@@ -106,10 +105,10 @@ $(document).on(
 		"click",
 		".nPopUpInput",
 		function() {
+			
+			// 팝업 공지 순서대로 가
 			pnId = $(this).parents(".nPopUpcontent").children('.pNoticeUid')
 					.text()
-
-			console.log(pnId);
 
 			$.ajax({
 				url : "/adminNotice/ajax/pNoticeData",
@@ -165,6 +164,9 @@ $(document).on(
 		"click",
 		".pNoticeDelete",
 		function() {
+			// 하루동안 보지 않기 쿠키
+			console.log(document.cookie.split(';'));
+			
 			$(this).parents(".nPopUpcontent").children('.nPopUpInput').val("")
 			$(this).parents(".nPopUpcontent").children('.nPopUpCheck').prop(
 					"checked", false);

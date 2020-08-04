@@ -107,4 +107,8 @@ public class MyDAO {
 	public int deleteForClip(MessageVO messageVO) {
 		return sqlsession.delete("mappers.myMapper.deleteForClip" ,messageVO);
 	}
+	
+	public MemberVO selectAdminBlackList(int uuid) {
+		return sqlsession.selectOne("mappers.myMapper.selectAdminBlackList", uuid); 
+	}
 }

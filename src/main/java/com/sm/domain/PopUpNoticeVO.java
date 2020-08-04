@@ -19,6 +19,7 @@ public class PopUpNoticeVO {
 	private String pnWidth;
 	private String pnHeight;
 	private String pnDate;
+	private String pnCnt;
 	
 	public PopUpNoticeVO(int pnId, String pnHeader, String pnContent, String pnTop,
 			String pnLeft, String pnWidth,
