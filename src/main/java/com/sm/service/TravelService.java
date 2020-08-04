@@ -253,9 +253,24 @@ public class TravelService {
 		}
 	}
 
+	// 메인 - 정세헌 건드림 
 	//메인에서 표출된 일지 리스트
-	public List<TravelVO> mainTravleList() {
-		return travelDAO.mainTravleList();
+	public List<TravelVO> mainTravleList(int buttonNum) {
+		
+		List<TravelVO> returnDAO = new ArrayList<TravelVO>();
+		
+		switch (buttonNum) {
+		case 0:
+			returnDAO = travelDAO.mainTravleList();
+			break;
+		case 1:
+			returnDAO = travelDAO.selectmaintravelListOrderbyTslike();
+			break;
+		case 2:
+			returnDAO = travelDAO.selectmaintravelListOrderbyTsView();
+			break;
+		}
+		return returnDAO;
 	}
 
 }

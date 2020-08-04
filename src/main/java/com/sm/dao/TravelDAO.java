@@ -243,7 +243,19 @@ public class TravelDAO {
 		return sqlSession.selectOne("mappers.travelMapper.getMyTravelCount",uuid);
 	}
 
+	// 정세헌 건드림 - 메인
 	public List<TravelVO> mainTravleList() {
 		return sqlSession.selectList("mappers.travelMapper.mainTravleList");
 	}
+	
+	public List<TravelVO> selectmaintravelListOrderbyTslike() {
+//		return sqlSession.selectList("mappers.travelMapper.selectmaintravelListOrderbyTslike");
+		return sqlSession.selectList("mappers.weatherlocalMapper.selectmaintravelListOrderbyTslike");
+	}
+	
+	public List<TravelVO> selectmaintravelListOrderbyTsView() {
+//		return sqlSession.selectList("mappers.travelMapper.selectmaintravelListOrderbyTsView");
+		return sqlSession.selectList("mappers.weatherlocalMapper.selectmaintravelListOrderbyTsView"); //  수정 후 삭제
+	}
+	
 }
