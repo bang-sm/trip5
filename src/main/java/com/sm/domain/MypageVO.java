@@ -1,6 +1,5 @@
 package com.sm.domain;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,7 +21,7 @@ public class MypageVO {
 	private String tsstartdate;
 	private String tsenddate;
 	private String tsregdate;
-	
+	private String tempsave;
 	
 	
 }

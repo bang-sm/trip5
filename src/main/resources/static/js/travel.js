@@ -8,6 +8,32 @@ $(document).ready(function() {
 		})
 	})
 	
+	// 쪽지 보내기
+	$("#messange_send").click(function(){
+    	if($("#msg_subject").val().trim().length == 0){
+    		toastr.error("제목은 반드시 입력하셔야 합니다!");
+    	} else {
+    		$.ajax({
+    			url : "/my/sendMsg",
+    			type : "POST",
+    			cache : false,
+    			data : {
+    				"msgcontent" : $("#msg_content").val(),
+    				"fromid" : $("#ts_uuid").val(),
+    				"sendid" : $("#userSessionuuid").val(),
+    				"msgsubject" : $("#msg_subject").val()
+    			},
+    			success : function(data,status){
+    				if(status == "success"){
+    					alert("쪽지를 보냈습니다!");
+    					$("#msg_content").val(''),
+    					$("#msg_subject").val('')
+    				}
+    			}
+    		})
+    	}
+    });
+	
 	//파일첨부 input 생성
 	$(".add_img").click(function(){
 		var file_input="";
@@ -84,6 +110,10 @@ $(document).ready(function() {
 	
 	//일지 댓글 등록
 	$(".reply_submit").click(function(){
+		if($("#comment_val").val()==""){
+			toastr.error("내용이 없습니다");
+			return;
+		}
 		$.ajax({
 	        type : 'post',
 	        url : '/travel/travel_reply_save',
@@ -92,8 +122,8 @@ $(document).ready(function() {
 	        	toastr.success("실패하였습니다");
 	        },
 	        success : function(data){
-	        	if(null){
-	        		toastr.error("실패하였습니다.");
+	        	if(data==""){
+	        		toastr.error("로그인이 필요합니다.");
 	        	}else{
 	        		toastr.success("등록되었습니다");
 	        		$("#replyBox").empty();
@@ -126,8 +156,8 @@ $(document).ready(function() {
 						replyList+='</div>';
 						replyList+='</div>';
 						$("#replyBox").append(replyList);
+						$("#comment_val").val("");
 					}
-	        		$("#comment_count").html(data.length+" 개의 댓글");
 	        	}
 	        },
 	    });
@@ -173,7 +203,7 @@ $(document).ready(function() {
 	        	}else if(data==999){
 	        		toastr.error("로그인이 필요합니다.");
 	        	}else{
-	        		toastr.error("잘못된요청입니다");
+	        		toastr.error("로그인이 필요합니다!");
 	        	}
 	        }
 		});
@@ -200,7 +230,7 @@ $(document).ready(function() {
 	        	}else if(data==999){
 	        		toastr.error("로그인이 필요합니다.");
 	        	}else{
-	        		toastr.error("잘못된요청입니다");
+	        		toastr.error("로그인이 필요합니다!");
 	        	}
 	        }
 		});
@@ -505,6 +535,7 @@ $(document).ready(function() {
             easing: 'easeInOutExpo'
         });
     });
+    
 });
 jQuery(document).ready(function() {
     jQuery("#edit-submitted-acquisition-amount-1,#edit-submitted-acquisition-amount-2,#edit-submitted-cultivation-amount-1,#edit-submitted-cultivation-amount-2,#edit-submitted-cultivation-amount-3,#edit-submitted-cultivation-amount-4,#edit-submitted-retention-amount-1,#edit-submitted-retention-amount-2,#edit-submitted-constituent-base-total-constituents").keyup(function() {

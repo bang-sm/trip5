@@ -8,10 +8,11 @@
 <link rel="stylesheet" type="text/css" th:href="@{/css/slick.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/css/slick-theme.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/css/inform.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/sidebarheader.css}">
 <script src="../js/inform.js"></script>
 </head>
 <body class="sidebar-mini layout-fixed" style="height: auto;">
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:include="common/header :: header_nav"></nav>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:include="common/sidebar_header :: sidebar_header_nav"></nav>
 	<div th:include="common/Sidebar :: header_aside"></div>
 	<div class="content-wrapper px-5" style="padding-top: 80px">
 		<div class="header">
@@ -32,21 +33,19 @@
 							<label for="photo">업로드</label> 
 							<input type="file" id="photo" name="mfiles" accept="image/gif, image/jpeg, image/png" placeholder="사진파일">
 						</div>
-						<a class="deletePhoto">삭제</a>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td class="nickname">별명</td>
-				<td class="nickInput">
-					<input th:value="${session.userInfo.membernick}">
-				</td>
-			</tr>
-		</table>
-		<div class="text-center">
-			<button class="change" type="submit">적용</button>
-			<button class="cancel">삭제</button>
-		</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="nickname">별명</td>
+					<td class="nickInput">
+						<input th:value="${session.userInfo.membernick}">
+					</td>
+				</tr>
+			</table>
+			<div class="text-center">
+				<div class="change">적용</div>
+				<div class="cancel">삭제</div>
+			</div>
 		</form>
 	</div>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e957a3a75c171b18d05297414326bb8d&libraries=services"></script>

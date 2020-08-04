@@ -28,6 +28,7 @@
 
 </head>
 <body>
+	<input th:if="${session.userInfo != null}" type="hidden" id="userSessionuuid" th:value="${session.userInfo.uuid}">
 	<div id="colorlib-page">
 		<a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
 		<aside id="colorlib-aside" role="complementary" class="js-fullheight">
@@ -160,10 +161,9 @@
 								<p class="mb-4">간단한 리뷰또는 궁금한점을 쪽지로 보내보세요</p>
 								<form class="subscribe-form">
 									<div class="form-group">
-										<input type="text" class="letter_comment form-control"
-											placeholder="쪽지 내용 작성"> <input type="button"
-											id="messange_send" value="전송"
-											class="mt-2 btn btn-white submit">
+										<input type="text" id="msg_subject" class="letter_comment form-control" placeholder="쪽지 제목 작성"> 
+										<input type="text" id="msg_content" class="letter_comment form-control" placeholder="쪽지 내용 작성"> 
+										<input type="button" id="messange_send" value="전송" class="mt-2 btn btn-white submit">
 									</div>
 								</form>
 							</div>
@@ -192,7 +192,8 @@
 	</div>
 	<!-- END COLORLIB-PAGE -->
 	
-
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 	<script src="/js/andrea/js/jquery.min.js"></script>
 	<script src="/js/andrea/js/jquery-migrate-3.0.1.min.js"></script>
 	<script src="/js/andrea/js/popper.min.js"></script>
@@ -208,6 +209,5 @@
 	<script src="/js/andrea/js/main.js"></script>
 	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 	<script type="text/javascript" src="../js/travel.js"></script>
-	
 </body>
 </html>

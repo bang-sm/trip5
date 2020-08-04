@@ -4,7 +4,7 @@
 }
 .pushmenu{
 	display:none;
-	font-size:25p;
+	font-size:25px;
 }
 .mypage-title{
 	color:white;
@@ -13,7 +13,7 @@
 .side-pushmenu{
 	font-size:25px;
 	position:absolute;
-	top:60px;
+	top:10px;
 	right:13px;
 	color:white;
 	display:none;
@@ -22,7 +22,7 @@
 @media(max-width:992px) {
 	.pushmenu{
 	display:block;
-	font-size:25p;
+	font-size:25px;
 }
 }
 

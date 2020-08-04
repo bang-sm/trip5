@@ -35,11 +35,11 @@ $(document)
 											msg += 'data-t="' + data[i].pnTop + '" '; 
 											msg += 'data-l="' + data[i].pnLeft + '" ';
 											msg += 'data-w="' + data[i].pnWidth + '" '; 
-											msg += 'data-h="' + data[i].pnHeight + '" ';
+											msg += 'data-h="' +  + '" ';
 											msg += 'class="popup_layer">';
 											msg += '<button class="popup_close_btn"> &times; </button>';
 											msg += '<div class = "popup_header"> 제목 : '	+ data[i].pnHeader + '</div><hr>'
-											msg += '<div class = "popup_content">' + data[i].pnContent + '</div>'
+											msg += '<div class = "popup_content">' + data[i].pnContent + '<img src="/resources/notice/08_event.png" width='+data[i].pnWidth+'/></div>'
 											msg += '	<div class="popup_footer">';
 											msg += '	<button class="close_with_cookie_btn" data-expired="1">';
 											msg += '	<span>ⓧ</span>하루동안 이창을 열지 않음';
