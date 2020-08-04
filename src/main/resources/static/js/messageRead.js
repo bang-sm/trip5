@@ -98,7 +98,7 @@ function deleteForever(){
 		data: params,
 		success: function(data, status){
 			if(status == "success"){
-				alert('성공했으여');
+				alert('삭제했습니다!');
 				location.href = "/my/clipSend?sendid="+$("#userUuid").val();
 			}
 		}

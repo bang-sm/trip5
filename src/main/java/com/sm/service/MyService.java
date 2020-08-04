@@ -30,7 +30,11 @@ public class MyService {
 	}
 	
 	public List<MemberVO> selectBlackList(int uuid) {
-		return dao.selectBlack(uuid);
+		if(dao.selectBlack(uuid).size() == 0) {
+			return null;
+		} else {
+			return dao.selectBlack(uuid);
+		}
 	}
 	
 	public int deleteBlackList(int otheruid) {

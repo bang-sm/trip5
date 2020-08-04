@@ -80,7 +80,7 @@
               <div class="table-responsive mailbox-messages">
                 <table class="searchTable table table-hover table-striped">
                   <tbody class="tb-cl">
-                  <tr th:if="${list != null}" th:each="list : ${list}">
+                  <tr th:if="${list != null && ((memList != null && memList[0].blackuuid != list.sendid) || memList == null)}" th:each="list : ${list}">
                     <td>
                       <div class="icheck-primary">
                         <input type="checkbox" th:value="${list.msgid}" class="check1">
@@ -130,6 +130,7 @@
     </section>
     <!-- /.content -->
   </div>
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e957a3a75c171b18d05297414326bb8d&libraries=services"></script>
 	<script src="../js/wish.js"></script>
 	<script src="../js/slick.min.js"></script>
