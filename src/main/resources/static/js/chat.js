@@ -120,20 +120,78 @@ function onMessageReceived(payload) {
     	lastOne = false;
     	inUser.push(message.participant[message.participant.length-1]) // 메세지 센더 이슈?
     	for(i = 0; i<message.participant.length; i++){
-    		nicker = message.participant[i];
-    		if(!$("li[data-name='"+message.participant[i]+"']").length){
-    		$(".contacts").append("<li data-toggle='tab' data-target='#inbox-message-2' data-name='"+message.participant[i]+"'>"+
-    				"<img alt='' class='img-circle medium-image' src='../image/user.jpg' style='vertical-align: baseline'>"+
-    				"<div class='vcentered info-combo'>"+
-    				"<h3 class='no-margin-bottom name'>"+message.participant[i]+"</h3>"+
-    				"<h5>...</h5>"+
-    				"</div>"+
-    				"<div class='contacts-add'>"+
-    				($("#userSessionId").val() != message.participant[i] ? "<button type='button' class='btn btn-outline-secondary btn-sm sendMsgOther' data-backdrop='static' data-toggle='modal' data-target='#exampleModal' style='border:none' onclick='sendToOther()' data-nick='" + message.participant[i] + "'><i class='far fa-envelope' style='font-size:1.05rem'></i></button>"+
-        					"<button type='button' class='btn btn-outline-secondary btn-sm othersMsg' onclick='blackList(nicker)' style='border:none' data-email='" + message.participant[i] + "'><i class='fas fa-comment-slash'></i></button>" : '') +
-    				"</div>"+
-    		"</li>")
+    		if(blackListv.length == 0){
+    			if(!$("li[data-name='"+message.participant[i]+"']").length){
+					$(".contacts").append("<li data-toggle='tab' data-target='#inbox-message-2' data-name='"+message.participant[i]+"'>"+
+							"<img alt='' class='img-circle medium-image' src='../image/user.jpg' style='vertical-align: baseline'>"+
+							"<div class='vcentered info-combo'>"+
+							"<h3 class='no-margin-bottom name'>"+message.participant[i]+"</h3>"+
+							"<h5>...</h5>"+
+							"</div>"+
+							"<div class='contacts-add'>"+
+							($("#userSessionId").val() != message.participant[i] ? 
+									"<svg class='othersMsg' width='1em' height='1em' viewBox='0 0 16 16' class='bi bi-three-dots-vertical' fill='currentColor' xmlns='http://www.w3.org/2000/svg' id='dropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' data-email='" + message.participant[i] + "' style='float:right'>"+
+									"<path fill-rule='evenodd' d='M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z'/>"+
+									"</svg>"+
+									"<div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>"
+									+"<button class='dropdown-item' onclick='blackList()' data-email='" + message.participant[i] + "'><i class='fas fa-comment-slash'></i>차단하기</button>"+
+									"<button class='dropdown-item' data-backdrop='static' data-toggle='modal' data-target='#exampleModal' onclick='sendMsg()'><i class='far fa-envelope' style='font-size:1.05rem'></i>쪽지보내기</button>" +
+									"<button class='dropdown-item' data-backdrop='static' data-toggle='modal' data-target='#exampleModal' onclick='gotoBlog()'><i class='fab fa-blogger' style='font-size:1.05rem'></i>블로그 보기</button>" +
+									"</div>"  
+									: '') +
+									"</div>"+
+					"</li>")
+				}
+    		} else {
+    			for(j = 0; j<blackListv.length; j++){
+        			if(message.participant[i] == blackListv[j].membernick){
+        				if(!$("li[data-name='"+message.participant[i]+"']").length){
+        					$(".contacts").append("<li data-toggle='tab' data-target='#inbox-message-2' data-name='"+message.participant[i]+"'>"+
+        							"<img alt='' class='img-circle medium-image' src='../image/user.jpg' style='vertical-align: baseline'>"+
+        							"<div class='vcentered info-combo'>"+
+        							"<h3 class='no-margin-bottom name'>"+message.participant[i]+"</h3>"+
+        							"<h5>...</h5>"+
+        							"</div>"+
+        							"<div class='contacts-add'>"+
+        							($("#userSessionId").val() != message.participant[i] ? 
+        									"<svg class='othersMsg' width='1em' height='1em' viewBox='0 0 16 16' class='bi bi-three-dots-vertical' fill='currentColor' xmlns='http://www.w3.org/2000/svg' id='dropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' data-email='" + message.participant[i] + "' style='float:right'>"+
+        									"<path fill-rule='evenodd' d='M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z'/>"+
+        									"</svg>"+
+        									"<div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>"
+        									+"<button class='dropdown-item' onclick='disBlackList()' data-email='" + message.participant[i] + "'><i class='fas fa-comment-slash'></i>차단해제</button>"+
+        									"<button class='dropdown-item' data-backdrop='static' data-toggle='modal' data-target='#exampleModal' onclick='sendMsg()''><i class='far fa-envelope' style='font-size:1.05rem'></i>쪽지보내기</button>" +
+        									"<button class='dropdown-item' data-backdrop='static' data-toggle='modal' data-target='#exampleModal' onclick='gotoBlog()'><i class='fab fa-blogger' style='font-size:1.05rem'></i>블로그 보기</button>" +
+        									"</div>"  
+        									: '') +
+        									"</div>"+
+        					"</li>")
+        				}
+        			} else{
+        				if(!$("li[data-name='"+message.participant[i]+"']").length){
+        					$(".contacts").append("<li data-toggle='tab' data-target='#inbox-message-2' data-name='"+message.participant[i]+"'>"+
+        							"<img alt='' class='img-circle medium-image' src='../image/user.jpg' style='vertical-align: baseline'>"+
+        							"<div class='vcentered info-combo'>"+
+        							"<h3 class='no-margin-bottom name'>"+message.participant[i]+"</h3>"+
+        							"<h5>...</h5>"+
+        							"</div>"+
+        							"<div class='contacts-add'>"+
+        							($("#userSessionId").val() != message.participant[i] ? 
+        									"<svg class='othersMsg' width='1em' height='1em' viewBox='0 0 16 16' class='bi bi-three-dots-vertical' fill='currentColor' xmlns='http://www.w3.org/2000/svg' id='dropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' data-email='" + message.participant[i] + "' style='float:right'>"+
+        									"<path fill-rule='evenodd' d='M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z'/>"+
+        									"</svg>"+
+        									"<div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>"
+        									+"<button class='dropdown-item' onclick='blackList()' data-email='" + message.participant[i] + "'><i class='fas fa-comment-slash'></i>차단하기</button>"+
+        									"<button class='dropdown-item' data-backdrop='static' data-toggle='modal' data-target='#exampleModal' onclick='sendMsg()''><i class='far fa-envelope' style='font-size:1.05rem'></i>쪽지보내기</button>" +
+        									"<button class='dropdown-item' data-backdrop='static' data-toggle='modal' data-target='#exampleModal' onclick='gotoBlog()'><i class='fab fa-blogger' style='font-size:1.05rem'></i>블로그 보기</button>" +
+        									"</div>"  
+        									: '') +
+        									"</div>"+
+        					"</li>")
+        				}
+        			}
+        		}
     		}
+    		
     	}
     } else if (message.type === 'LEAVE') {
     	inUser.splice(inUser.indexOf(message.sender),1);
@@ -178,7 +236,6 @@ function onMessageReceived(payload) {
     		}
     		
     		if(blackUser){
-    			nicker = message.sender
     			$(".chat-body").append(
     					"<div class='message info'>"+
     					"<img alt='' class='img-circle medium-image' src='../image/user.jpg'>"+
@@ -189,7 +246,7 @@ function onMessageReceived(payload) {
     					+ message.sender +
     					"</a>" +
     					"<div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>"
-    					+"<button class='dropdown-item' onclick='blackList(nicker)' data-email='" + message.sender + "'>차단하기</button>"+
+    					+"<button class='dropdown-item' onclick='blackList()' data-email='" + message.sender + "'>차단하기</button>"+
     					"<button class='dropdown-item' data-backdrop='static' data-toggle='modal' data-target='#exampleModal' onclick='sendMsg()' data-uuid='"+message.uuid+"'>쪽지보내기</button>" +
     					"</div>" 
     					+ "</div>" + "</h4>"+
@@ -216,6 +273,8 @@ function onMessageReceived(payload) {
 $(document).on('click',".othersMsg" ,function(){
 	nick = $(this).attr('data-email');
 	otherUUid = $(this).attr('data-uuid');
+	
+	console.log(nick + "///nick 클릭시")
 });
 
 function loadPage(){
@@ -236,10 +295,10 @@ function loadPage(){
 	});
 }
 
-function blackList(nicker){
+function blackList(){
 	if(confirm("차단하겠습니까?")){
 		// 내 uuid 와 상대방 nickname request
-		data = "uuid="+$("#userSessionuuid").val() + "&membernick="+nicker
+		data = "uuid="+$("#userSessionuuid").val() + "&membernick="+nick
 		console.log(data);
 		$.ajax({
 			url : "/my/black",
@@ -249,9 +308,9 @@ function blackList(nicker){
 			success : function(data, status){
 				if(status == "success"){
 					alert("차단되었습니다.");
-					$("div.dropdown-menu button[data-email="+nick+"]").text("차단해제");
+					$("div.dropdown-menu button[data-email="+nick+"]").html("<i class='fas fa-comment-slash'></i>차단해제");
 					$("button[data-email="+nick+"]").removeAttr("onclick");
-					$("button[data-email="+nick+"]").attr("onclick", "disBlackList(nicker)");
+					$("button[data-email="+nick+"]").attr("onclick", "disBlackList()");
 					
 					loadPage();
 				}
@@ -262,10 +321,10 @@ function blackList(nicker){
 	}
 }
 
-function disBlackList(nicker){
+function disBlackList(){
 	if(confirm("차단을 푸시겠습니까?")){
 		// 내 uuid 와 상대방 nickname request
-		data = "&membernick="+nicker
+		data = "&membernick="+nick
 		console.log(data);
 		$.ajax({
 			url : "/my/disblack",
@@ -275,9 +334,9 @@ function disBlackList(nicker){
 			success : function(data, status){
 				if(status == "success"){
 					alert("차단해제 되었습니다.");
-					$("div.dropdown-menu button[data-email="+nick+"]").text("차단하기");
+					$("div.dropdown-menu button[data-email="+nick+"]").html("차단하기");
 					$("button[data-email="+nick+"]").removeAttr("onclick");
-					$("button[data-email="+nick+"]").attr("onclick", "blackList(nicker)");
+					$("button[data-email="+nick+"]").attr("onclick", "blackList()");
 					
 					loadPage();
 				}
@@ -293,7 +352,6 @@ function sendMsg(){
 }
 
 function sendToOther(){
-	nick = $(".sendMsgOther").attr('data-nick');
 	console.log(nick + "///// 이것은 nick이다")
 	$.ajax({
 		url: "/my/sendOther",
@@ -338,7 +396,23 @@ function sendToMsg(){
 	}
 }
 
+function gotoBlog(){
+	$.ajax({
+		url:"/my/gotoBlog",
+		type:"POST",
+		cache : false,
+		data : "membernick="+nick,
+		success:function(data,status){
+			if(status == "success"){
+				location.href = "/travel/share_travel?uuid="+data;
+			}
+		}
+	})
+}
+
 /*
+ * stopm 와 socketjs 를 사용하지 않은 단순 websocket버전 채팅 ( 이전 버전 )
+ * 
 $(document).ready(function(){
 	loadPage();
 	chatConn();
