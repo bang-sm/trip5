@@ -38,7 +38,7 @@ document.addEventListener("keypress", function(e) {
 	}
 });
 
-function connect(event) {
+function connect(event) { 
 	console.log($("#adminBlackList").val() + 'zzzzzzzzzz')
 	if($("#adminBlackList").val() == "N"){
 		var socket = new SockJS('/ws');
