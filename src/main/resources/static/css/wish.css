@@ -284,6 +284,8 @@ input[type=checkbox]{
 }
 .modal-dialog{
 	height:800px;
+	margin-top:100px;
+	overflow-y: initial !important;
 }
 .map_result{
 	display:inline-block;
@@ -326,6 +328,9 @@ a:hover { color: black; text-decoration: none;} */
 	width:300px;
 	height:100px;
 	margin:0 30px 0 30px;
+		text-overflow: ellipsis;
+	overflow:hidden;
+	white-space : nowrap;
 }
 .star{
 	z-index:999;
@@ -872,11 +877,4 @@ a:hover { color: black; text-decoration: none;} */
 	width:100%;
 	height:auto;
 }
-.reply-comment{
-	text-overflow: ellipsis;
-	overflow:hidden;
-	white-space : nowrap;
-}
-.reply-table{
-	table-layout:fixed
-}
+

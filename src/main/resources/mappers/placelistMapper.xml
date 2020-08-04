@@ -156,11 +156,11 @@
 	
 	<select id="following" parameterType="int" resultType="com.sm.domain.MypageVO">
 	SELECT 
-			b.membernick ,b.uuid,mp.p_name
+			b.membernick ,b.uuid,m.photoPath 
 	FROM 
-			member b ,member_profile mp
+			member b ,member m
 	WHERE	
-			 b.uuid = mp.uuid and b.uuid=#{uuid};
+			 b.uuid = m.uuid and b.uuid=#{uuid};
 	</select>
 	
 	<select id="status" parameterType="map" resultType="String">
