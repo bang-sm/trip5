@@ -100,10 +100,16 @@ public class MemberController {
 
 	// 내 개인정보 페이지
 	@GetMapping("/user/inform")
-	public String dispMyInform(HttpSession session, Model model) {
-
+	public String dispMyInform(HttpSession session, Model model) throws Exception {
+		
+		MemberVO memberVO = new MemberVO();
+		memberVO = (MemberVO) session.getAttribute("userInfo");
+		String imgPath = memberService.imgPath(memberVO);
+		System.out.println(imgPath);
+		
 		model.addAttribute("member", session.getAttribute("userInfo"));
-
+		model.addAttribute("imgPath", imgPath);
+		
 		return "/user/inform";
 	}
 	
@@ -117,7 +123,7 @@ public class MemberController {
 	}
 	
 	/////////////////////////////////////////////////////////////////
-	// 프로필 사진 변경
+	// 프로필 변경
 	/////////////////////////////////////////////////////////////////
 	@PostMapping("/myinfo/infoChange")
 	public String chageImg(@RequestPart MultipartFile mfiles, HttpSession session, Model model) throws Exception {
