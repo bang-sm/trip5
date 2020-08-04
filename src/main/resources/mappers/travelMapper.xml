@@ -286,14 +286,15 @@
 			#{photo_path},
 			#{photo_file_size},
 			#{ts_id},
-			photo_main
+			#{photoMain}
 		)
 		ON DUPLICATE KEY UPDATE
 			photo_custom_name = values(photo_custom_name),
 			photo_original_name = values(photo_original_name),
 			photo_path = values(photo_path),
 			photo_file_size = values(photo_file_size),
-			ts_id = values(ts_id)
+			ts_id = values(ts_id),
+			photo_main=values(photoMain)
 	</insert>
 	
 	<select id="getTravelImage" resultType="com.sm.domain.PhotoVO">
