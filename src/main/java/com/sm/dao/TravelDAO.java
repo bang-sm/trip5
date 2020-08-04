@@ -248,7 +248,6 @@ public class TravelDAO {
 		return sqlSession.selectOne("mappers.travelMapper.getMyTravelCount",uuid);
 	}
 
-	// 정세헌 건드림 - 메인
 	public List<TravelVO> mainTravleList() {
 		return sqlSession.selectList("mappers.travelMapper.mainTravleList");
 	}

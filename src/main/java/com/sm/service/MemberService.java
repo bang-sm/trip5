@@ -15,6 +15,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -384,5 +385,19 @@ public class MemberService implements UserDetailsService {
 		}
 
 		return dice + "";
+	}
+	
+	// 비밀번호 변경
+	public void updateNewPass(int uuid, String newPass) {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		// 비밀번호 암호화
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String result = "";
+		result = passwordEncoder.encode(newPass);
+		
+		paramMap.put("uuid", uuid);
+		paramMap.put("memberpass", result);
+		
+		memberDAO.updateNewPass(paramMap);
 	}
 }
