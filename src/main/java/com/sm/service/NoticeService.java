@@ -76,7 +76,7 @@ public class NoticeService {
 		return pnContent;
 	} // end slideNotice
 	
-	// 특정 pnid 슬라이드 공지 내용 수정
+	// 특정 pnid 팝업 공지 내용 수정
 	public void pNoticeUpdate(int pnId, String pnHeader, String pnContent,
 			String pnTop, String pnLeft, String pnWidth, String pnHeight, String pnDate) throws Exception {
 		
