@@ -415,5 +415,19 @@
 			tempsave ='N'
 		ORDER BY tsregdate DESC
 	</select>
+	
+	<select id="getUserInfo" resultType="com.sm.domain.MemberVO">
+		SELECT 
+			uuid,
+			membernick, 
+			photoCustomName,
+			photoPath,
+			photoOriginalName
+		FROM
+			member
+		WHERE
+			uuid=#{uuid}	
+		 ;
+	</select>
 
 </mapper>
