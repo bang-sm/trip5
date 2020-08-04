@@ -30,7 +30,7 @@ $(document)
 									msg = ''; // 초기화
 									for (var i = 0; i < data.length; i++) {
 										if(data[i].pnEnrollment == 'Y'){
-											msg += '<div data-popup_id="popup'+ data[i].pnId +'" '; 
+											msg += '<div data-popup_id="popup'+ data[i].pnCnt +'" '; 
 											msg += 'data-open_to= "' + data[i].pnDate + '" '; 
 											msg += 'data-t="' + data[i].pnTop + '" '; 
 											msg += 'data-l="' + data[i].pnLeft + '" ';

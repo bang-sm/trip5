@@ -111,6 +111,7 @@ public class MemberController {
 		memberVO.setPhotoCustomName(imgPath);
 		memberVO.setMembernick(memberService.userNickName(memberVO.getUuid()));
 		
+		session.setAttribute("userInfo", memberVO);
 		model.addAttribute("userInfo", memberVO);
 		
 		return "/user/inform";

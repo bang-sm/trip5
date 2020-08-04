@@ -80,7 +80,9 @@
 			snEnrollment = 'Y' 
 	</select>
 	
+	<!-- ///////////////////////////////////////////////////////// -->
 	<!-- ////////////////////////////팝업////////////////////////// -->
+	<!-- ///////////////////////////////////////////////////////// -->
 	<!-- 팝업 공지 출력 -->
 	<select id="pNoticeContent"
 		resultType="com.sm.domain.PopUpNoticeVO">
@@ -90,7 +92,7 @@
 			popupNotice
 	</select>
 
-	<!-- 특정 pnid 슬라이드 공지 내용 -->
+	<!-- 특정 pnid 팝업 공지 내용 -->
 	<select id="pNoticeData" parameterType="int"
 		resultType="com.sm.domain.PopUpNoticeVO">
 		SELECT 
@@ -106,13 +108,15 @@
 		UPDATE
 			popupNotice
 		SET
+			pnId = #{pnId},
 			pnHeader = #{pnHeader},
 			pnContent = #{pnContent}, 
 			pnTop = #{pnTop},
 			pnLeft = #{pnLeft},
 			pnWidth = #{pnWidth},
 			pnHeight = #{pnHeight},
-			pnDate = #{pnDate}
+			pnDate = #{pnDate},
+			pnCnt = pnCnt+3
 		WHERE 
 			pnId = #{pnId};
 	</update>
@@ -142,7 +146,7 @@
 		UPDATE 
 			popupNotice
 		SET
-			pnEnrollment = 'Y' 
+			pnEnrollment = 'Y'
 		WHERE 
 			pnId IN
 		<foreach collection="pnId" item="pnId" index="i"
