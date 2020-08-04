@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.sm.domain.ChatMessage;
+import com.sm.domain.MemberVO;
 import com.sm.domain.MessageVO;
 import com.sm.service.MyService;
 
@@ -93,6 +94,8 @@ public class ChatController {
 			list.get(i).setMsgregdate(format2.format(date));
 		}
 		
+		
+		
 		messageVO.setFromid(messageVO.getSendid());
 		
 		int count = myService.countMessage(messageVO);
@@ -110,6 +113,7 @@ public class ChatController {
 	@GetMapping("/my/clipReceive")
 	public String clipReceive(MessageVO messageVO, Model model) throws ParseException	{
 		List<MessageVO> list = myService.receiveMessage(messageVO);
+		List<MemberVO> memList = myService.selectBlackList(messageVO.getFromid());
 		
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		SimpleDateFormat format2 = new SimpleDateFormat("MM월dd일 HH:mm");
@@ -124,6 +128,7 @@ public class ChatController {
 		
 		int count = myService.countMessage(messageVO);
 		
+		model.addAttribute("memList", memList);
 		model.addAttribute("list", list);
 		model.addAttribute("cntMsg", count);
 		

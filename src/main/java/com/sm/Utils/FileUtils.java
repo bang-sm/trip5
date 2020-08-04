@@ -40,7 +40,12 @@ public class FileUtils {
         if(!target.exists()) target.mkdirs();
         
         for(int i=0; i<file.length; i++) {
-       
+        	String photoMain="";
+        	if(i==0) {
+        		photoMain="Y";
+        	}else {
+        		photoMain="N";
+        	}
             String orgFileName = file[i].getOriginalFilename();
             String orgFileExtension="";
             if(orgFileName.lastIndexOf(".")==-1) {
@@ -61,6 +66,7 @@ public class FileUtils {
             
             Map<String, Object> fileInfo = new HashMap<String, Object>();
             
+            fileInfo.put("photoMain", photoMain);
             fileInfo.put("photo_path", orgFileName);
             fileInfo.put("ts_id", ts_id);
             fileInfo.put("photo_original_name", orgFileName);

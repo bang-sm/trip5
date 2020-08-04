@@ -34,7 +34,7 @@ function goToTrashSend(){
 		data : params,
 		success: function(data, status){
 			if(status == "success"){
-				alert('삭제되었습니다!');
+				alert('삭제하였습니다')
 				location.reload();
 			}
 		}
@@ -62,7 +62,7 @@ function goToTrashReceive(){
 			 data : params,
 			 success: function(data, status){
 				 if(status == "success"){
-					 alert('삭제되었습니다!');
+					 alert('삭제하였습니다')
 					 location.reload();
 				 }
 			 }
@@ -88,7 +88,8 @@ function deleteOk(){
 		data: params,
 		success: function(data, status){
 			if(status == "success"){
-				alert('성공했으여');
+				alert('삭제하였습니다')
+				location.reload();
 			}
 		}
 	 });
