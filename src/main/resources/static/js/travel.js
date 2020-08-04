@@ -26,7 +26,6 @@ $(document).ready(function() {
     			success : function(data,status){
     				if(status == "success"){
     					alert("쪽지를 보냈습니다!");
-//    					sendAlarm();
     					$("#msg_content").val(''),
     					$("#msg_subject").val('')
     				}
