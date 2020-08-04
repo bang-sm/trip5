@@ -1,5 +1,7 @@
 package com.sm.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -244,6 +246,9 @@ public class PlacelistService{
 		HashMap<String, Object> mymap = new HashMap<>();
 		List<MypageVO> mypageVO = new ArrayList<MypageVO>();
 		mypageVO = dao.reply(uuid);
+		for(int i=0;i<mypageVO.size();i++) {
+			mypageVO.get(i).setReplyRegdate(mypageVO.get(i).getReplyRegdate().substring(0,10));
+		}
 		mymap.put("reply",mypageVO);
 		return mymap;
 		

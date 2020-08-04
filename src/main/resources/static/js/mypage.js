@@ -30,7 +30,6 @@ $(document).ready(function() {
 	bookmark();
 	like();
 	blacklist();
-	registchart();
 	reply();
 	recently()
 	register(1);
@@ -250,9 +249,9 @@ function bookmark(){
 			result="";
 			for(i=0;i<bookmark.length;i++){
 				result+='<tr>';
-				result+='<td class="col-one"><a href="/travel/travel_blog?uuid='+bookmark[i].uuid+'&tsid='+bookmark[i].tsid+'">'+bookmark[i].tstitle+'</a></td>';
-				result+='<td class="col-two">'+bookmark[i].membernick+'</td>';
-			    result+='<td class="col-thr">'+bookmark[i].tsregdate+'</td>';
+				result+='<td class="col-one-bookmark"><a href="/travel/travel_blog?uuid='+bookmark[i].uuid+'&tsid='+bookmark[i].tsid+'">'+bookmark[i].tstitle+'</a></td>';
+				result+='<td class="col-two-bookmark">'+bookmark[i].membernick+'</td>';
+			    result+='<td class="col-thr-bookmark">'+bookmark[i].tsregdate+'</td>';
 			    result+='</tr>';
 			}
 			var list=$('.bookmark-tbody');
@@ -321,75 +320,6 @@ function blacklist(){
 
 
 
-function registchart(){
-	var line_ctx = $('#mypagelineChart');
-	$.ajax({
-		url: "/wish/rest/registchart", 
-		type : "POST",
-		data : {},
-		success : function(data){
-		
-			var arr = new Array();
-			
-			for(i=0;i<data.length;i++){
-				arr[i] =data[i];
-			}
-			var linemax = arr[0];
-			for(i=0;i<arr.length-1;i++){
-				if(linemax < arr[i+1]){
-					linemax = arr[i+1];
-				}
-			}
-			var lineChartData = {
-					 labels: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-				        datasets: [{
-				            label: ['월별 현황 그래프'],
-				            data: arr,
-				            backgroundColor: [
-								'rgba(0, 0, 0, 0)'
-						],
-						borderColor: [
-								'rgba(255, 99, 132, 1)',
-								'rgba(54, 162, 235, 1)',
-								'rgba(255, 206, 86, 1)',
-								'rgba(75, 192, 192, 1)',
-								'rgba(153, 102, 255, 1)',
-								'rgba(255, 159, 64, 1)'
-						],
-						borderWidth: 2
-				        }]
-			};
-			var myDoughnutChart2 = new Chart(line_ctx, {
-				type: 'line',
-				data: lineChartData,
-				options: {
-					maintainAspectRatio: false,
-					responsive: false,
-					scales: {
-						xAxes: [{
-							ticks:{
-								fontColor : 'rgba(12, 13, 13, 1)',
-								fontSize : 14
-							},
-							gridLines:{
-								color: "rgba(87, 152, 23, 1)",
-								lineWidth: 0
-							}
-						}],
-						yAxes: [{
-							ticks: {
-								min: 0,
-								max: linemax,
-								stepSize : 1,
-								fontSize : 14,
-							}
-						}]
-					}
-				}
-			});
-		}});
-	
-}
 
 
 function reply(){
@@ -406,7 +336,7 @@ function reply(){
 				for(i=0;i<reply.length;i++){
 					result+='<tr>';
 					result+='<td class="col-one"><a href="/travel/travel_blog?tsid='+reply[i].tsid+'&uuid='+reply[i].uuid+'">'+reply[i].tstitle+'</a></td>';
-					result+='<td class="col-two">'+reply[i].tsReplyComment+'</td>';
+					result+='<td class="col-two reply-comment">'+reply[i].tsReplyComment+'</td>';
 				    result+='<td class="col-thr">'+reply[i].replyRegdate+'</td>';
 				    result+='</tr>';
 				}
@@ -486,7 +416,6 @@ function register(page){
 			
 			for(i=0;i<boardList.length;i++){
 				result+='<tr>';
-				result+='<td  class="register-table">'+boardList[i].tsid+'</td>';
 				result+='<td  class="register-table">';
 				result+='<a href="/travel/travel_blog?tsid='+boardList[i].tsid+'&uuid='+boardList[i].uuid+'" >'+boardList[i].tstitle+'</a>';
 				result+='</td>';
