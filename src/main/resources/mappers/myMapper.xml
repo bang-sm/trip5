@@ -20,11 +20,14 @@
 	
 	<select id="selectBlackList" parameterType="int" resultType="com.sm.domain.MemberVO">
 		SELECT 
-			blackUuid as blackuuid
+			b.blackUuid as blackuuid,
+			m.membernick membernick
 		FROM
-			blackList 
+			blackList b,
+			member m
 		WHERE
-			uuid = #{uuid} 
+			b.blackuuid = m.uuid AND 
+			b.uuid = #{uuid} 
 	</select>
 	
 	<delete id="deleteBlackList" parameterType="int">
