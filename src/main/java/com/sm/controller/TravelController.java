@@ -195,7 +195,7 @@ public class TravelController {
 			// 댓글리스트목록가져오기
 			list = travelService.travel_reply_list(travelReplyVO.getTsId());
 		} else {
-			return null;
+			list=null;
 		}
 		return list;
 	}
