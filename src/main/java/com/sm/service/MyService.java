@@ -30,7 +30,11 @@ public class MyService {
 	}
 	
 	public List<MemberVO> selectBlackList(int uuid) {
-		return dao.selectBlack(uuid);
+		if(dao.selectBlack(uuid).size() == 0) {
+			return null;
+		} else {
+			return dao.selectBlack(uuid);
+		}
 	}
 	
 	public int deleteBlackList(int otheruid) {
@@ -132,6 +136,17 @@ public class MyService {
 		}
 		
 		return cnt;
+	}
+	
+	public String selectAdminBlackList(int uuid) {
+		MemberVO mem = dao.selectAdminBlackList(uuid);
+		
+		System.out.println(mem.getAdminBlackList() + "블랙리스트 ?? 서비스 단에서 ㅋ");
+		if(mem.getAdminBlackList().equals("Y")) {
+			return "Y";
+		} else {
+			return "N";
+		}
 	}
 }
 

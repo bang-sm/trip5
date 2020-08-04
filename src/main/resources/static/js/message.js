@@ -34,8 +34,20 @@ function goToTrashSend(){
 		data : params,
 		success: function(data, status){
 			if(status == "success"){
-				alert('삭제되었습니다!');
-				location.reload();
+				swal("삭제를 성공했습니다!", {
+					  buttons: {
+					    확인: true,
+					  },
+					})
+					.then((value) => {
+					  switch (value) {
+					 
+					    case "확인":
+					    location.reload();
+					    break;
+					  }
+					});
+//				location.reload();
 			}
 		}
 	 });
@@ -62,14 +74,24 @@ function goToTrashReceive(){
 			 data : params,
 			 success: function(data, status){
 				 if(status == "success"){
-					 alert('삭제되었습니다!');
-					 location.reload();
-				 }
-			 }
-		 });
-	 } 
+						swal("삭제를 성공했습니다!", {
+							  buttons: {
+							    확인: true,
+							  },
+							})
+							.then((value) => {
+							  switch (value) {
+							 
+							    case "확인":
+							    location.reload();
+							    break;
+							  }
+							});
+					}
+		 }
+	 }); 
 }
-
+}
 function deleteOk(){
 	
 	var params = "";
@@ -88,11 +110,22 @@ function deleteOk(){
 		data: params,
 		success: function(data, status){
 			if(status == "success"){
-				alert('성공했으여');
+				swal("삭제를 성공했습니다!", {
+					  buttons: {
+					    확인: true,
+					  },
+					})
+					.then((value) => {
+					  switch (value) {
+					 
+					    case "확인":
+					    location.reload();
+					    break;
+					  }
+					});
 			}
 		}
 	 });
-	 
 }
 
 

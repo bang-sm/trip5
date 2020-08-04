@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sm.domain.MemberVO;
 import com.sm.domain.TravelVO;
 
 @Component("fileUtils")
@@ -39,7 +40,12 @@ public class FileUtils {
         if(!target.exists()) target.mkdirs();
         
         for(int i=0; i<file.length; i++) {
-       
+        	String photoMain="";
+        	if(i==0) {
+        		photoMain="Y";
+        	}else {
+        		photoMain="N";
+        	}
             String orgFileName = file[i].getOriginalFilename();
             String orgFileExtension="";
             if(orgFileName.lastIndexOf(".")==-1) {
@@ -60,6 +66,7 @@ public class FileUtils {
             
             Map<String, Object> fileInfo = new HashMap<String, Object>();
             
+            fileInfo.put("photoMain", photoMain);
             fileInfo.put("photo_path", orgFileName);
             fileInfo.put("ts_id", ts_id);
             fileInfo.put("photo_original_name", orgFileName);
@@ -70,5 +77,76 @@ public class FileUtils {
         }
         return fileList;
     }
+    
+    
+	public List<Map<String, Object>> parseUserInfo(MemberVO memberVO, MultipartFile file,String isImgCheck) throws Exception {
+		System.out.println("-dfadsfhadsjbfkjasdb       " + isImgCheck);
+		
+		String root_path = request.getSession().getServletContext().getRealPath("/");
+		String attach_path = "resources/upload/userProfile";
+
+		int mbUuid = memberVO.getUuid(); // 일지아이디
+		System.out.println(mbUuid + " =========================");
+		List<Map<String, Object>> fileList = new ArrayList<Map<String, Object>>();
+
+		File target = new File(root_path + attach_path);
+		if (!target.exists())
+			target.mkdirs();
+
+		String orgFileName = file.getOriginalFilename();
+		String orgFileExtension;
+		
+		// 그냥 적용만 눌렀을 때 기본 사진 유지 시키기 위함
+		if(orgFileName.trim().equals("") && !isImgCheck.equals("1")) {
+			// 아무것도 없을 때
+			Map<String, Object> fileInfo = new HashMap<String, Object>();
+			fileInfo.put("photoPath", memberVO.getPhotoCustomName());
+			fileInfo.put("mbUuid", mbUuid);
+			fileInfo.put("photoOriginalName", "");
+			fileInfo.put("photoCustomName", memberVO.getPhotoCustomName());
+			fileInfo.put("photoFileSize", "");
+			fileList.add(fileInfo);
+			return fileList;
+		} else if(orgFileName.lastIndexOf(".") == -1 || isImgCheck.equals("1")) {
+			// 아무것도 없을 때
+			Map<String, Object> fileInfo = new HashMap<String, Object>();
+			fileInfo.put("photoPath", "profile.jpg");
+			fileInfo.put("mbUuid", mbUuid);
+			fileInfo.put("photoOriginalName", "");
+			fileInfo.put("photoCustomName", "profile.jpg");
+			fileInfo.put("photoFileSize", "");
+			fileList.add(fileInfo);
+			return fileList;
+		} else {
+			orgFileExtension = orgFileName.substring(orgFileName.lastIndexOf("."));
+		}
+		
+			
+		String saveFileName = UUID.randomUUID().toString().replaceAll("-", "") + orgFileExtension;
+		Long saveFileSize = file.getSize();
+
+		logger.debug("================== file start ==================");
+		logger.debug("파일 실제 이름: " + orgFileName);
+		logger.debug("파일 저장 이름: " + saveFileName);
+		logger.debug("파일 크기: " + saveFileSize);
+		logger.debug("content type: " + file.getContentType());
+		logger.debug("================== file   END ==================");
+
+		// 저장 경로
+		target = new File(root_path + attach_path, saveFileName);
+
+		// 파일 저장 
+		file.transferTo(target);
+
+		Map<String, Object> fileInfo = new HashMap<String, Object>();
+
+		fileInfo.put("photoPath", orgFileName);
+		fileInfo.put("mbUuid", mbUuid);
+		fileInfo.put("photoOriginalName", orgFileName);
+		fileInfo.put("photoCustomName", saveFileName);
+		fileInfo.put("photoFileSize", saveFileSize);
+		fileList.add(fileInfo);
+		return fileList;
+	}
 
 }

@@ -70,7 +70,7 @@
 		SELECT 
 			count(*) 
 		FROM 
-			messageList 
+			messageList
 		WHERE
 			from_id = #{fromid} 
 			AND
@@ -313,6 +313,14 @@
 		WHERE 
 			msg_id = #{msgid};
 	</delete>
+	
+	<select id="selectAdminBlackList" parameterType="int" resultType="com.sm.domain.MemberVO">
+		SELECT 
+			adminBlackList 
+		FROM 
+			member 
+		WHERE uuid = #{uuid};	
+	</select>
 </mapper>
 
 

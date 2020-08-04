@@ -1,5 +1,6 @@
 package com.sm.service;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sm.Utils.ProfileImg;
+import com.sm.Utils.FileUtils;
 import com.sm.dao.MemberDAO;
 import com.sm.domain.MemberVO;
 import com.sm.domain.Role;
@@ -56,19 +57,73 @@ public class MemberService implements UserDetailsService {
 	private JavaMailSender mailSender;
 	
 	@Autowired
-	ProfileImg profileImg;
+	FileUtils fileUtils;
+	////////////////////////////////////////////////////////////////////////////////
+	// 마이 페이지
+	////////////////////////////////////////////////////////////////////////////////
+	// 프로필 정보 변경
+	public void myinfoChange(MultipartFile mfiles, 
+			MemberVO memberVO, String membernick, String isImgCheck) throws Exception {
+		
+		String root_path = request.getSession().getServletContext().getRealPath("/");  
+        String attach_path = "resources\\upload\\userProfile\\";
+		
+        int uuid = memberVO.getUuid();
+        String customName = memberVO.getPhotoCustomName();
+        
+        File file = new File(root_path+attach_path+customName);
+        
+        System.out.println("파일 경로");
+        System.out.println(root_path+attach_path+customName);
+        
+        // 기본이미지 일때는 지우지 않는다.
+        if(file.exists() && !customName.equals("profile.jpg")){
+        	file.delete();
+        }
+        // 저장된 위치에 이미지 삭제기존 저장되 있던
+        
+        // 기존 이미지 DB삭제
+		memberDAO.deletUserImg(uuid);
+		
+		// 방금 적용시킨 사진 저장
+		// 프로필 사진 변경
+		List<Map<String, Object>> fileList = fileUtils.parseUserInfo(memberVO, mfiles, isImgCheck);
+		memberDAO.profileImg(fileList.get(0));
+
+		// 닉네임 변경
+		Map<String, Object> map = new HashMap<>();
+		map.put("uuid", uuid);
+		map.put("membernick", membernick);
+		
+		memberDAO.myinfoNickChange(map);
+	}
+
+	
+	// 프로필 정보 변경
+	public String imgPath(MemberVO memberVO) throws Exception {
+		String imgPath = memberDAO.imgPath(memberVO.getUuid());
+		return imgPath;
+	}
+	
+	
+	// 프로필 정보 변경
+	public String userNickName(int uuid) throws Exception {
+		String userNickName = memberDAO.userNickName(uuid);
+		return userNickName;
+	}
+	
+	// 프로필 사진 삭제
+	public void deleteImgPath(int uuid) throws Exception {
+
+	
+	}
+	
+
+	
 
 	////////////////////////////////////////////////////////////////////////////////
 	// 관리자 페이지
 	////////////////////////////////////////////////////////////////////////////////
-
-	
-	// 프로필 정보 변경
-	public void myinfoChange(MultipartFile mfiles, MemberVO memberVO) throws Exception {
-		List<Map<String, Object>> fileList = profileImg.parseFileInfo(memberVO, mfiles);
-		memberDAO.profileImg(fileList.get(0));
-	}
-	
 	// 일일접속자 Count
 	public int[] adminUserCount() {
 		System.out.println(Integer.parseInt((memberDAO.adminUserCount().get("KAKAO")+"")));
@@ -216,7 +271,7 @@ public class MemberService implements UserDetailsService {
 
 	// 회원가입 처리
 	public String signupAndValid(MemberVO memberVO, Errors errors, Model model, String idCheckNum) {
-		MemberService memberService = new MemberService(memberDAO, request, mailSender, profileImg);
+		MemberService memberService = new MemberService(memberDAO, request, mailSender, fileUtils);
 
 		// 에러메세지 저장 부분
 		if (Integer.parseInt(idCheckNum) != 0) { // 중복체크 에러메시지
