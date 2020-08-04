@@ -104,6 +104,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()
 			.csrf().ignoringAntMatchers("/admin/ajax/**")	
 		.and()
+			.csrf().ignoringAntMatchers("/mainlist")	
+		.and()
 			.oauth2Login()	// Oauth2 로그인
 		.and()
 			.rememberMe()
@@ -160,7 +162,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception{
         // static 디렉터리의 하위 파일 목록은 인증 무시 ( = 항상통과 )
 //        web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**","/chatting/**","/ws/**" , "/weather/**","/resources/**");
-        web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**","/ws/**" ,"/resources/**");
+        web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**","/ws/**" ,"/resources/**", "/mainlist");
     }
     
     

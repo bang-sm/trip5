@@ -249,13 +249,11 @@ public class TravelDAO {
 	}
 	
 	public List<TravelVO> selectmaintravelListOrderbyTslike() {
-//		return sqlSession.selectList("mappers.travelMapper.selectmaintravelListOrderbyTslike");
-		return sqlSession.selectList("mappers.weatherlocalMapper.selectmaintravelListOrderbyTslike");
+		return sqlSession.selectList("mappers.travelMapper.selectmaintravelListOrderbyTslike");
 	}
 	
 	public List<TravelVO> selectmaintravelListOrderbyTsView() {
-//		return sqlSession.selectList("mappers.travelMapper.selectmaintravelListOrderbyTsView");
-		return sqlSession.selectList("mappers.weatherlocalMapper.selectmaintravelListOrderbyTsView"); //  수정 후 삭제
+		return sqlSession.selectList("mappers.travelMapper.selectmaintravelListOrderbyTsView");
 	}
 	
 }

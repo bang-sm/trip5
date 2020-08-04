@@ -39,10 +39,11 @@ public class HomeController {
 	}
 	
 	@ResponseBody
-	@PostMapping(value = "mainlist")
+	@PostMapping(value = "/mainlist")
 	public List<TravelVO> selectmainTravleList(int buttonNum){
 		List<TravelVO> returnList = new ArrayList<TravelVO>();
 		
+		returnList = service.mainTravleList(buttonNum);
 		return returnList;
 	}
 }
