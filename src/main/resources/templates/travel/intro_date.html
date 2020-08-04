@@ -86,7 +86,7 @@ p.quote{
 	</div>
 	
 	</div>
-	<button id="btn_cancle">취소</button>
+	<button id="btn_cancle" style="margin-top:30px;width:150px;height:50px;background-color: #e5e5e5">취소</button>
 	<input type="hidden" th:value="${count}" id="tempCheck"/>
 </body>
 
@@ -171,7 +171,7 @@ p.quote{
 					}
 				}).then((result) => {
 					if(result){
-						location.href="/user/inform";
+						location.href="/mypage";
 					}
 				});
 				
