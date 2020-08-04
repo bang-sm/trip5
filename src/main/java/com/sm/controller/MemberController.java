@@ -121,9 +121,24 @@ public class MemberController {
 	@GetMapping("/user/changepass")
 	public String changePass(HttpSession httpSession, Model model) {
 		
-		
+		model.addAttribute("member", httpSession.getAttribute("userInfo"));
 		
 		return "/user/changepass";
+	}
+	
+	@ResponseBody
+	@PostMapping("/user/passparam")
+	public void postchangePass(HttpSession session, String newPass) {
+		
+		System.out.println("newpass : " + newPass);
+		
+		int uuid = 0;
+		MemberVO memberVO = new MemberVO();
+		memberVO = (MemberVO) session.getAttribute("userInfo");
+		
+		uuid = memberVO.getUuid();
+		System.out.println("pass uuid : " + uuid);
+		memberService.updateNewPass(uuid, newPass);
 	}
 	
 	/////////////////////////////////////////////////////////////////
@@ -157,5 +172,7 @@ public class MemberController {
 		
 		return authNum;
 	}
+	
+	
 
 } // end controller

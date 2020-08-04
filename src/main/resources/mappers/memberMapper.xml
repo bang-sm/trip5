@@ -189,6 +189,21 @@
 		WHERE
 			uuid = ${mbUuid};
 	</insert>
+	
+	<!-- ///////////////////////////////////////////////////////// -->
+	<!-- 비밀번호 변경 -->
+	<!-- ///////////////////////////////////////////////////////// -->
+	
+	<update id="updateNewPass" parameterType="map">
+	
+	UPDATE
+		member
+	set
+		memberpass = #{memberpass}
+	WHERE
+		uuid = #{uuid}
+	
+	</update>
 
 	<!-- 닉네임 변경 -->
 	<insert id="myinfoNickChange" parameterType="Map">

@@ -239,7 +239,6 @@ public class TravelService {
 		param.put("MyTotalLike",travelDAO.getMyTotalLike(uuid));
 		param.put("MyTravelCount",travelDAO.getMyTravelCount(uuid));
 		
-		
 		return param;
 	}
 

@@ -93,6 +93,11 @@ public class MemberDAO {
 		return sql.selectList(namespace + ".adminUserSignUp");
 	}
 	
+	// 비밀번호 변경
+	public void updateNewPass(Map<String, Object> paramMap) {
+		sql.update(namespace + ".updateNewPass", paramMap);
+	}
+	
 	//////////////////////////////////////////////////////////////////////
 	// MYINFORM
 	//////////////////////////////////////////////////////////////////////
