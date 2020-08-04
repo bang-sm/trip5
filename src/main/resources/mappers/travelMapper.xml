@@ -294,7 +294,7 @@
 			photo_path = values(photo_path),
 			photo_file_size = values(photo_file_size),
 			ts_id = values(ts_id),
-			photo_main=values(photoMain)
+			photo_main=values(photo_main)
 	</insert>
 	
 	<select id="getTravelImage" resultType="com.sm.domain.PhotoVO">
