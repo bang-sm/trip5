@@ -10,8 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sm.dao.MemberDAO;
 import com.sm.domain.MemberVO;
@@ -106,15 +109,18 @@ public class MemberController {
 	/////////////////////////////////////////////////////////////////
 	// 프로필 사진 변경
 	/////////////////////////////////////////////////////////////////
-	@PostMapping("/user/chageImg")
-	public String chageImg(HttpSession session, Model model) {
-		
-		return null;
+	@PostMapping("/myinfo/infoChange")
+	public String chageImg(@RequestPart MultipartFile mfiles, HttpSession session, Model model) throws Exception {
+		if (session.getAttribute("userInfo") != null) {
+			MemberVO memberVO = new MemberVO();
+			memberVO = (MemberVO) session.getAttribute("userInfo");
+			memberService.myinfoChange(mfiles, memberVO);
+			return "redirect:/user/inform";
+		} else {
+			return "redirect:/user/logout";	// 세션없으면 로그아웃
+		}
 	}
 
-	
-	
-	
 	
 	
 	//--------------------------------------------------------------------------

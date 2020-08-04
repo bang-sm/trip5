@@ -105,6 +105,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()
 			.csrf().ignoringAntMatchers("/admin/ajax/**")	
 		.and()
+			.csrf().ignoringAntMatchers("/myinfo/infoChange")	
+		.and()
 			.oauth2Login()	// Oauth2 로그인
 		.and()
 			.rememberMe()

@@ -44,5 +44,10 @@ public class MemberVO {
 	private int weatherlocaluid;
 	private String adminBlackList;
 	private int blackuuid;
+	private String photoPath;
+	private String photoOriginalName;
+	private String photoCustomName;
+	private String photoFileSize;
+	
 	
 }

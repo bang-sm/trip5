@@ -92,4 +92,12 @@ public class MemberDAO {
 	public  List<Map<String, Object>> adminUserSignUp() {
 		return sql.selectList(namespace + ".adminUserSignUp");
 	}
+	
+	//////////////////////////////////////////////////////////////////////
+	// MYINFORM
+	//////////////////////////////////////////////////////////////////////
+	// 사진 입력
+	public void profileImg(Map<String, Object> map) {
+		sql.update(namespace + ".profileImg", map);
+	}
 }
