@@ -206,6 +206,7 @@ $.ajax({
 		success : function(data){
 			console.log(data);
 			var following = data.following;
+			$('.following-count').text(data.following.length+" 명");
 			result="";
 			for(i=0;i<following.length;i++){
 				result+='<tr>';
@@ -230,6 +231,7 @@ function follower(){
 		success : function(data){
 			console.log(data);
 			result ="";
+			$('.follower-count').text(data.follower.length+" 명");
 			var follower  = data.follower;
 			for(i=0;i<follower.length;i++){
 				result+='<tr>';
@@ -254,6 +256,7 @@ function bookmark(){
 		async :false,
 		success : function(data){
 			console.log(data);
+			$('.bookmark-count').text(data.bookmark.length+" 개");
 			var bookmark = data.bookmark;
 			result="";
 			for(i=0;i<bookmark.length;i++){
@@ -277,7 +280,7 @@ function like(){
 		async :false,
 		success : function(data){
 			console.log(data);
-			$('.like-count').text(data.count);
+			$('.like-count').text(data.count+" 개");
 			var like = data.like;
 			result="";
 			for(i=0;i<like.length;i++){

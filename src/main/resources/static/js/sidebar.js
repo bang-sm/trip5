@@ -14,7 +14,9 @@ $(document).ready(function(){
 	case "/wish/placechart" :
 		$('.wish-title').addClass('active');
 		break;
-	case "/my/clipSend"	:
+	case "/my/clipReceive"	:
+	case "/my/clipSend" :
+	case "/my/clipTrash" :
 		$('.chat-title').addClass('active');
 		break;
 	case "/mypage":
