@@ -84,6 +84,10 @@ $(document).ready(function() {
 	
 	//일지 댓글 등록
 	$(".reply_submit").click(function(){
+		if($("#comment_val").val()==""){
+			toastr.error("내용이 없습니다");
+			return;
+		}
 		$.ajax({
 	        type : 'post',
 	        url : '/travel/travel_reply_save',
@@ -92,8 +96,8 @@ $(document).ready(function() {
 	        	toastr.success("실패하였습니다");
 	        },
 	        success : function(data){
-	        	if(null){
-	        		toastr.error("실패하였습니다.");
+	        	if(data==""){
+	        		toastr.error("로그인이 필요합니다.");
 	        	}else{
 	        		toastr.success("등록되었습니다");
 	        		$("#replyBox").empty();
@@ -128,7 +132,6 @@ $(document).ready(function() {
 						$("#replyBox").append(replyList);
 						$("#comment_val").val("");
 					}
-	        		$("#comment_count").html(data.length+" 개의 댓글");
 	        	}
 	        },
 	    });
