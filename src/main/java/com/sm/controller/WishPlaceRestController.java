@@ -303,13 +303,16 @@ public class WishPlaceRestController {
 		}catch(NullPointerException e) {
 			logger.info("session 없음");
 		}
+		int count =service.registercount(uuid);
 		HashMap<String,Object> remap =  new HashMap<String, Object>();
+		
 		Map<String, Object> map = service.boardList(currentPage,uuid);
 		remap.put("boardList", map.get("list"));
 		remap.put("currentPage", map.get("currentPage"));
 		remap.put("lastPage", map.get("lastPage"));
 		remap.put("startPageNum", map.get("startPageNum"));
 		remap.put("lastPageNum", map.get("lastPageNum"));
+		remap.put("totalpage", count);
 		return remap;
 	}
 	

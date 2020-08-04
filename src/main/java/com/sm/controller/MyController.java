@@ -24,6 +24,12 @@ public class MyController {
 	
 	@Autowired
 	private MyService myService;
+	@PostMapping("/load")
+	public List<MemberVO> loadAjax(String uuid) {
+		List<MemberVO> list = myService.selectBlackList(Integer.parseInt(uuid));
+		
+		return list;
+	}
 	
 	@PostMapping("/black")
 	public void blackAjax(MemberVO memberVO) {
@@ -32,12 +38,6 @@ public class MyController {
 		myService.insertBlackList(memberVO.getUuid(), uuid);
 	}
 
-	@PostMapping("/load")
-	public List<MemberVO> loadAjax(String uuid) {
-		List<MemberVO> list = myService.selectBlackList(Integer.parseInt(uuid));
-		
-		return list;
-	}
 	
 	@PostMapping("/disblack")
 	public void disblackAjax(MemberVO memberVO) {
@@ -89,6 +89,14 @@ public class MyController {
 		String[] msgid = request.getParameterValues("msgid");
 		
 		return myService.selectByDelete(msgid);
+	}
+	
+	@PostMapping("/gotoBlog")
+	public int gotoBlog(MemberVO memberVO) {
+		MemberVO mem = myService.selectUuid(memberVO);
+		
+		int uuid = mem.getUuid();
+		return uuid;
 	}
 }
 

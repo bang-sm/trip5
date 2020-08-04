@@ -386,6 +386,11 @@ function naversearch(){
 	$('.navercardslide_nav').css("display","block");
 	
 	var keyword = $('#naver').val();
+	
+	if(keyword == ""){
+		toastr.error("입력해주세요");
+		return;
+	}
 	var result_for="";
 	var result_nav="";
 	$.ajax({

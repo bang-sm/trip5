@@ -218,7 +218,7 @@
 	
 	<select id="mypagetravelstory" parameterType="int" resultType="com.sm.domain.travelmembernickVO">
 	SELECT
-			ts.tstitle ,ts.tsregdate ,m.membernick 
+			ts.tstitle ,ts.tsregdate ,m.membernick ,ts.tsid,ts.uuid
 	FROM
 			travel_story ts,member m
 	WHERE 
@@ -298,7 +298,7 @@
 	
 	<select id="reply" parameterType="int" resultType="com.sm.domain.MypageVO">
 	SELECT
-			tsr.ts_reply_comment ,tsr.reply_regdate ,ts.tstitle,ts.uuid
+			tsr.ts_reply_comment ,tsr.reply_regdate ,ts.tstitle,ts.uuid,ts.tsid
 	FROM
 			travel_story_reply tsr,travel_story ts
 	WHERE
@@ -319,6 +319,7 @@
             , tsregdate
             ,tsstartdate
             ,tsenddate
+            ,tempsave
         FROM 
         	travel_story 
     	WHERE
@@ -413,6 +414,15 @@
 		FROM 
 			member 
 		WHERE
+			uuid=#{uuid};
+	</select>
+	
+	<select id="registercount" parameterType="int" resultType="int">
+	SELECT 
+			count(*) 
+	FROM 
+			travel_story ts 
+	WHERE 
 			uuid=#{uuid};
 	</select>
 </mapper>

@@ -30,7 +30,6 @@ $(document).ready(function() {
 	bookmark();
 	like();
 	blacklist();
-	registchart();
 	reply();
 	recently()
 	register(1);
@@ -202,8 +201,8 @@ $.ajax({
 			for(i=0;i<following.length;i++){
 				result+='<tr>';
 				result+='<td class="td-1"><input class="following-uuid"type="hidden" name="uuid" value="'+following[i].uuid+'"/>';
-				result+='<img src="../image/'+following[i].pname+'"class="user-img" alt="User Image"></td>';
-				result+='<td class="td-2"><div class="info"><span class="d-block">'+following[i].membernick+'</span></div></td>';
+				result+='<a href="/travel/share_travel?uuid='+following[i].uuid+'"><img src="../image/'+following[i].pname+'"class="user-img" alt="User Image"></a></td>';
+				result+='<td class="td-2"><a href="/travel/share_travel?uuid='+following[i].uuid+'"><div class="info"><span class="d-block">'+following[i].membernick+'</span></div></a></td>';
 			    result+='<td class="td-3"><button type="button" class="btn btn-outline-dark following-btn">팔로잉</button></td>';
 			    result+='</tr>';
 			}
@@ -225,8 +224,8 @@ function follower(){
 			var follower  = data.follower;
 			for(i=0;i<follower.length;i++){
 				result+='<tr>';
-				result+='<td class="td-1"><input class="follower-uuid"type="hidden" name="uuid" value="'+follower[i].uuid+'"/><img src="../image/'+follower[i].pname+'"class="user-img" alt="User Image"></td>';
-				result+='<td class="td-2"><div class="info"><span class="d-block">'+follower[i].membernick+'</span></div></td>';
+				result+='<td class="td-1"><input class="follower-uuid"type="hidden" name="uuid" value="'+follower[i].uuid+'"/><a href="/travel/share_travel?uuid='+follower[i].uuid+'"><img src="../image/'+follower[i].pname+'"class="user-img" alt="User Image"></a></td>';
+				result+='<td class="td-2"><a href="/travel/share_travel?uuid='+follower[i].uuid+'"><div class="info"><span class="d-block">'+follower[i].membernick+'</span></div></a></td>';
 			   if(follower[i].status=='N' || follower[i].status==null){
 				   result+='<td class="td-3"><button type="button" class="btn btn-primary follower-btn">팔로우</button></td>';
 			   }
@@ -250,9 +249,9 @@ function bookmark(){
 			result="";
 			for(i=0;i<bookmark.length;i++){
 				result+='<tr>';
-				result+='<td class="col-one">'+bookmark[i].tstitle+'</td>';
-				result+='<td class="col-two">'+bookmark[i].membernick+'</td>';
-			    result+='<td class="col-thr">'+bookmark[i].tsregdate+'</td>';
+				result+='<td class="col-one-bookmark"><a href="/travel/travel_blog?uuid='+bookmark[i].uuid+'&tsid='+bookmark[i].tsid+'">'+bookmark[i].tstitle+'</a></td>';
+				result+='<td class="col-two-bookmark">'+bookmark[i].membernick+'</td>';
+			    result+='<td class="col-thr-bookmark">'+bookmark[i].tsregdate+'</td>';
 			    result+='</tr>';
 			}
 			var list=$('.bookmark-tbody');
@@ -279,7 +278,7 @@ function like(){
 				}else{
 					result+='<th scope="row" class="col-like-one">'+(i+1)+'</th>';
 				}
-				result+='<td class="col-like-two">'+like[i].tstitle+'</td>';
+				result+='<td class="col-like-two"><a href="/travel/travel_blog?uuid='+like[i].uuid+'&tsid='+like[i].tsid+'">'+like[i].tstitle+'</a></td>';
 				result+='<td class="col-like-thr">'+like[i].tslike+'</td>';
 			    result+='<td class="col-like-for">'+like[i].tsregdate+'</td>';
 			    result+='</tr>';
@@ -321,75 +320,6 @@ function blacklist(){
 
 
 
-function registchart(){
-	var line_ctx = $('#mypagelineChart');
-	$.ajax({
-		url: "/wish/rest/registchart", 
-		type : "POST",
-		data : {},
-		success : function(data){
-		
-			var arr = new Array();
-			
-			for(i=0;i<data.length;i++){
-				arr[i] =data[i];
-			}
-			var linemax = arr[0];
-			for(i=0;i<arr.length-1;i++){
-				if(linemax < arr[i+1]){
-					linemax = arr[i+1];
-				}
-			}
-			var lineChartData = {
-					 labels: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-				        datasets: [{
-				            label: ['월별 현황 그래프'],
-				            data: arr,
-				            backgroundColor: [
-								'rgba(0, 0, 0, 0)'
-						],
-						borderColor: [
-								'rgba(255, 99, 132, 1)',
-								'rgba(54, 162, 235, 1)',
-								'rgba(255, 206, 86, 1)',
-								'rgba(75, 192, 192, 1)',
-								'rgba(153, 102, 255, 1)',
-								'rgba(255, 159, 64, 1)'
-						],
-						borderWidth: 2
-				        }]
-			};
-			var myDoughnutChart2 = new Chart(line_ctx, {
-				type: 'line',
-				data: lineChartData,
-				options: {
-					maintainAspectRatio: false,
-					responsive: false,
-					scales: {
-						xAxes: [{
-							ticks:{
-								fontColor : 'rgba(12, 13, 13, 1)',
-								fontSize : 14
-							},
-							gridLines:{
-								color: "rgba(87, 152, 23, 1)",
-								lineWidth: 0
-							}
-						}],
-						yAxes: [{
-							ticks: {
-								min: 0,
-								max: linemax,
-								stepSize : 1,
-								fontSize : 14,
-							}
-						}]
-					}
-				}
-			});
-		}});
-	
-}
 
 
 function reply(){
@@ -405,8 +335,8 @@ function reply(){
 				result="";
 				for(i=0;i<reply.length;i++){
 					result+='<tr>';
-					result+='<td class="col-one">'+reply[i].tstitle+'</td>';
-					result+='<td class="col-two">'+reply[i].tsReplyComment+'</td>';
+					result+='<td class="col-one"><a href="/travel/travel_blog?tsid='+reply[i].tsid+'&uuid='+reply[i].uuid+'">'+reply[i].tstitle+'</a></td>';
+					result+='<td class="col-two reply-comment">'+reply[i].tsReplyComment+'</td>';
 				    result+='<td class="col-thr">'+reply[i].replyRegdate+'</td>';
 				    result+='</tr>';
 				}
@@ -486,13 +416,17 @@ function register(page){
 			
 			for(i=0;i<boardList.length;i++){
 				result+='<tr>';
-				result+='<td  class="register-table">'+boardList[i].tsid+'</td>';
 				result+='<td  class="register-table">';
 				result+='<a href="/travel/travel_blog?tsid='+boardList[i].tsid+'&uuid='+boardList[i].uuid+'" >'+boardList[i].tstitle+'</a>';
 				result+='</td>';
 				result+='<td  class="register-table">'+boardList[i].tsregdate+'</td>';
 				result+='<td  class="register-table">'+boardList[i].tsstartdate+'</td>';
 				result+='<td  class="register-table">'+boardList[i].tsenddate+'</td>';
+				if(boardList[i].tempsave=='Y'){
+					result+='<td class="register-table"><a href="/travel/regist?tsid='+boardList[i].tsid+'"><i class="fas fa-times"></i></td>'
+				}else{
+					result+='<td class="register-table"><i class="fas fa-check"></i></td>'
+				}
 				result+='</tr>';
 			}
 			var list =$('.register-tbody');
@@ -505,6 +439,7 @@ function register(page){
 			}else{
 				$('.pagingnow').text("("+data.currentPage+"/"+data.lastPage+")");
 			}
+			$('.register-count').text(data.totalpage+"개");
 		}
 		
 		

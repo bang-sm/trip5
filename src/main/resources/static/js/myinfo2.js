@@ -7,3 +7,7 @@ $('.card').click(function(){
 	var url = $(this).attr('data-url');
 	location.href = url;
 });
+
+$('.cardss').click(function(){
+	location.href = "/my/clipSend?sendid="+$("#userUuid").val();
+});
