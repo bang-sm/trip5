@@ -104,11 +104,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()
 			.csrf().ignoringAntMatchers("/admin/ajax/**")	
 		.and()
-<<<<<<< HEAD
 			.csrf().ignoringAntMatchers("/mainlist")	
-=======
+		.and()
 			.csrf().ignoringAntMatchers("/myinfo/infoChange")	
->>>>>>> branch 'coding' of https://github.com/bang-sm/trip5.git
 		.and()
 			.oauth2Login()	// Oauth2 로그인
 		.and()

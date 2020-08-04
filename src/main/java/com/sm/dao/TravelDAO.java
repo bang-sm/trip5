@@ -252,7 +252,6 @@ public class TravelDAO {
 	public List<TravelVO> mainTravleList() {
 		return sqlSession.selectList("mappers.travelMapper.mainTravleList");
 	}
-<<<<<<< HEAD
 	
 	public List<TravelVO> selectmaintravelListOrderbyTslike() {
 		return sqlSession.selectList("mappers.travelMapper.selectmaintravelListOrderbyTslike");
@@ -261,12 +260,9 @@ public class TravelDAO {
 	public List<TravelVO> selectmaintravelListOrderbyTsView() {
 		return sqlSession.selectList("mappers.travelMapper.selectmaintravelListOrderbyTsView");
 	}
-	
-=======
 
 	//유저정보
 	public MemberVO getUserInfo(int uuid) {
 		return sqlSession.selectOne("mappers.travelMapper.getUserInfo",uuid);
 	}
->>>>>>> branch 'coding' of https://github.com/bang-sm/trip5.git
 }
