@@ -573,6 +573,10 @@ var modules = {
             modules.$window.scrollTop(self.scrollTopPosition);
         }
     }
+    
+    $("#messange_send").click(function(){
+    	
+    })
 }
 
 modules.init();
