@@ -8,6 +8,32 @@ $(document).ready(function() {
 		})
 	})
 	
+	// 쪽지 보내기
+	$("#messange_send").click(function(){
+    	if($("#msg_subject").val().trim().length == 0){
+    		toastr.error("제목은 반드시 입력하셔야 합니다!");
+    	} else {
+    		$.ajax({
+    			url : "/my/sendMsg",
+    			type : "POST",
+    			cache : false,
+    			data : {
+    				"msgcontent" : $("#msg_content").val(),
+    				"fromid" : $("#ts_uuid").val(),
+    				"sendid" : $("#userSessionuuid").val(),
+    				"msgsubject" : $("#msg_subject").val()
+    			},
+    			success : function(data,status){
+    				if(status == "success"){
+    					alert("쪽지를 보냈습니다!");
+    					$("#msg_content").val(''),
+    					$("#msg_subject").val('')
+    				}
+    			}
+    		})
+    	}
+    });
+	
 	//파일첨부 input 생성
 	$(".add_img").click(function(){
 		var file_input="";
@@ -509,6 +535,7 @@ $(document).ready(function() {
             easing: 'easeInOutExpo'
         });
     });
+    
 });
 jQuery(document).ready(function() {
     jQuery("#edit-submitted-acquisition-amount-1,#edit-submitted-acquisition-amount-2,#edit-submitted-cultivation-amount-1,#edit-submitted-cultivation-amount-2,#edit-submitted-cultivation-amount-3,#edit-submitted-cultivation-amount-4,#edit-submitted-retention-amount-1,#edit-submitted-retention-amount-2,#edit-submitted-constituent-base-total-constituents").keyup(function() {
@@ -573,10 +600,6 @@ var modules = {
             modules.$window.scrollTop(self.scrollTopPosition);
         }
     }
-    
-    $("#messange_send").click(function(){
-    	
-    })
 }
 
 modules.init();

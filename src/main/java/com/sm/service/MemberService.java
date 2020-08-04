@@ -31,7 +31,9 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.sm.Utils.ProfileImg;
 import com.sm.dao.MemberDAO;
 import com.sm.domain.MemberVO;
 import com.sm.domain.Role;
@@ -51,22 +53,33 @@ public class MemberService implements UserDetailsService {
 
 	@Autowired
 	private JavaMailSender mailSender;
+	
+	@Autowired
+	ProfileImg profileImg;
 
 	////////////////////////////////////////////////////////////////////////////////
 	// 관리자 페이지
 	////////////////////////////////////////////////////////////////////////////////
+
+	
+	// 프로필 정보 변경
+	public void myinfoChange(MultipartFile mfiles, MemberVO memberVO) throws Exception {
+		List<Map<String, Object>> fileList = profileImg.parseFileInfo(memberVO, mfiles);
+		memberDAO.profileImg(fileList.get(0));
+	}
+	
 	// 일일접속자 Count
 	public int[] adminUserCount() {
-		 System.out.println(Integer.parseInt((memberDAO.adminUserCount().get("KAKAO")+"")));
-		 int[] adminUserCount = new int[] {
-				 Integer.parseInt((memberDAO.adminUserCount().get("KAKAO")+"")),
-				 Integer.parseInt((memberDAO.adminUserCount().get("TRIP5")+""))
-		 };
+		System.out.println(Integer.parseInt((memberDAO.adminUserCount().get("KAKAO")+"")));
+		int[] adminUserCount = new int[] {
+				Integer.parseInt((memberDAO.adminUserCount().get("KAKAO")+"")),
+				Integer.parseInt((memberDAO.adminUserCount().get("TRIP5")+""))
+		};
 		return adminUserCount;
 	}
 
+	// 가입자 수
 	public int[] adminUserSignUp() {
-		System.out.println(memberDAO.adminUserSignUp()  + "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
 		List<Map<String, Object>> data = memberDAO.adminUserSignUp();
 		int[] adminUserSignup = new int[data.size()];
 		for (int i = 0; i < data.size(); i++) {
@@ -202,7 +215,7 @@ public class MemberService implements UserDetailsService {
 
 	// 회원가입 처리
 	public String signupAndValid(MemberVO memberVO, Errors errors, Model model, String idCheckNum) {
-		MemberService memberService = new MemberService(memberDAO, request, mailSender);
+		MemberService memberService = new MemberService(memberDAO, request, mailSender, profileImg);
 
 		// 에러메세지 저장 부분
 		if (Integer.parseInt(idCheckNum) != 0) { // 중복체크 에러메시지

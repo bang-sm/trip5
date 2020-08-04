@@ -51,7 +51,7 @@ $("#exampleModal").on('shown.bs.modal', function(){
 		var keyword = document.getElementById('keyword1').value;
 
 		if (!keyword.replace(/^\s+|\s+$/g, '')) {
-			alert('키워드를 입력해주세요!');
+			toastr.error("키워드를 입력해주세요!");
 			return false;
 		}
 
@@ -63,7 +63,7 @@ $("#exampleModal").on('shown.bs.modal', function(){
 		var keyword = document.getElementById('keyword2').value;
 
 		if (!keyword.replace(/^\s+|\s+$/g, '')) {
-			alert('키워드를 입력해주세요!');
+			toastr.error("키워드를 입력해주세요!");
 			return false;
 		}
 
@@ -83,13 +83,11 @@ $("#exampleModal").on('shown.bs.modal', function(){
 			displayPagination(pagination);
 
 		} else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-
-			alert('검색 결과가 존재하지 않습니다.');
+			toastr.error("검색 결과가 존재하지 않습니다.");
 			return;
 
 		} else if (status === kakao.maps.services.Status.ERROR) {
-
-			alert('검색 결과 중 오류가 발생했습니다.');
+			toastr.error("검색 결과 중 오류가 발생했습니다.");
 			return;
 
 		}
@@ -317,21 +315,33 @@ function statuscheck(){
 	console.log("place : "+place);
 	result="";
 	if(place== ""){
+		toastr.error("장소를 등록해주세요");
+		return;
 		result+='<img src="../image/icon/cancel30.png" data-toggle="tooltip" data-placement="top" title="저장된 장소가 없습니다."/>';
 		$('.btn_check_place_status').html(result);
+		
 	}else{
 		result+='<img src="../image/icon/check30.png" data-toggle="tooltip" data-placement="top" title="'+place+'"/>';
 		$('.btn_check_place_status').html(result);
 	}
 	result="";
 	if(blog ==""){
+		toastr.error("블로그를 등록해주세요");
+		return;
 		result+='<img src="../image/icon/cancel30.png" data-toggle="tooltip" data-placement="top" title="저장된 블로그가 없습니다."/>';
 		$('.btn_check_blog_status').html(result);
+		
 	}else{
 		result+='<img src="../image/icon/check30.png" data-toggle="tooltip" data-placement="top" title="'+blog+'"/>';
 		$('.btn_check_blog_status').html(result);
 	}
+	$("#CheckModal").modal("show");
 }
+
+$(document).on('click','.btn-close-modal',function(){
+	$("#CheckModal").modal("hide");
+	$("#exampleModal").modal("hide");
+})
 
 // 지도에서 검색창 숨기고 펼치기
 var hide_count =0;
@@ -511,22 +521,48 @@ function icon() {
 
 		$('.food_icon').html(result);
 	} else {
-		alert("테마를 선택해주세요~");
+		toastr.error("테마를 선택해주세요~");
 	}
 
 }
 
 $(document).on("click",'.icon_main',function(){
 	var iconname=$(this).text();
-	var icon_check =confirm(iconname +" 아이콘으로 저장하시겠습니까?");
-	if(icon_check){
-		alert(iconname+" 아이콘이 저장되었습니다.");
+	swal({
+		title : iconname,
+		text : "아이콘으로 저장하시겠습니까?",
+		icon : "info",
+		closeOnClickOutside : false,
+		buttons :{
+			cancle : {
+				text : "취소",
+				value : false
+			},
+			confirm : {
+				text : "저장",
+				value : true
+			}
+		}
+	})
+	.then((value) => {
+		if(value){
+			toastr.success("아이콘이 저장되었습니다.");
+			$('input[name=iconname]').val("/"+iconname);
+			$('.btn-icon').removeClass('btn-outline-success');
+			$('.btn-icon').addClass('btn-success');
+			$('.food_icon').css("display","none");
+			$('.my_check').css("display","block");
+		}else{
+		}
+	})
+	/*if(icon_check){
+		toastr.success("아이콘이 저장되었습니다.");
 		$('input[name=iconname]').val("/"+iconname);
 		$('.btn-icon').removeClass('btn-outline-success');
 		$('.btn-icon').addClass('btn-success');
 		$('.food_icon').css("display","none");
 		$('.my_check').css("display","block");
-	}
+	}*/
 	
 	
 })
@@ -956,13 +992,13 @@ function wish_regist(){
 //2. 블로그
 //3. 아이콘 
 	if(map ==""){
-		alert("장소를 선택해주세요");
+		toastr.error("장소를 선택해주세요");
 		return false;
 	}else if(link ==""){
-		alert("블로그를 선택해주세요");
+		toastr.error("블로그를 선택해주세요");
 		return false;
 	}else if(icon ==""){
-		alert("아이콘을 선택해주세요");
+		toastr.error("아이콘을 선택해주세요");
 		return false;
 	}
 	swal({
@@ -1017,18 +1053,39 @@ $(document).on('click','.media_delete',function(){
 	var theme = $(this).parents('.tabletr').children('.td_two');
 	var del = theme.children('.placeid').val();
 	var check =confirm("삭제 하시겠습니까?");
-   
-   if(check){
-	   $.ajax({
-			url: "/wish/rest/delete", 
-			type: "POST",
-			data : {
-				"placeid": del
+	swal({
+		title : "",
+		text : "삭제 하시겠습니까?",
+		icon : "error",
+		closeOnClickOutside : false,
+		buttons :{
+			cancle : {
+				text : "취소",
+				value : false
 			},
-			success : function(){
-				location.reload();
+			confirm : {
+				text : "삭제",
+				value : true
 			}
-		});
+		}
+	})
+	.then((value) => {
+		if(value){
+			 $.ajax({
+					url: "/wish/rest/delete", 
+					type: "POST",
+					data : {
+						"placeid": del
+					},
+					success : function(){
+						location.reload();
+					}
+				});
+		}else{
+		}
+	})
+   if(check){
+	  
    }
 })
 //취소 버튼

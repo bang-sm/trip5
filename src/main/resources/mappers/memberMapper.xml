@@ -14,7 +14,6 @@
 			#{memberemail},
 			#{membernick},
 			now());
-	
 	</insert>
 	
 	<!-- 회원가입 카카오 -->
@@ -172,7 +171,21 @@
 		    GROUP BY 
 		    	MONTH(memberregdate)
 		) adminUserSignUp;
-	
 	</select>
+	
+	<!-- ///////////////////////////////////////////////////////// -->
+	<!-- 프로필 사진 추가 -->
+	<!-- ///////////////////////////////////////////////////////// -->
+	<insert id="profileImg" parameterType="Map">
+		UPDATE 
+			member
+		set 
+			photoPath ='${photoPath}',
+			photoOriginalName='${photoOriginalName}',
+			photoCustomName='${photoCustomName}',
+		 	photoFileSize='${photoFileSize}'
+		WHERE
+			uuid = ${mbUuid};
+	</insert>
 
 </mapper>

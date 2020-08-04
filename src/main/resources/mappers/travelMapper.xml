@@ -416,6 +416,7 @@
 		ORDER BY tsregdate DESC
 	</select>
 	
+<<<<<<< HEAD
 <select id = "selectmaintravelListOrderbyTslike" resultType="com.sm.domain.TravelVO">
 
 	SELECT
@@ -454,5 +455,20 @@
 	;
 	
 </select>
+=======
+	<select id="getUserInfo" resultType="com.sm.domain.MemberVO">
+		SELECT 
+			uuid,
+			membernick, 
+			photoCustomName,
+			photoPath,
+			photoOriginalName
+		FROM
+			member
+		WHERE
+			uuid=#{uuid}	
+		 ;
+	</select>
+>>>>>>> branch 'coding' of https://github.com/bang-sm/trip5.git
 
 </mapper>

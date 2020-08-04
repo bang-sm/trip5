@@ -232,6 +232,7 @@ public class TravelService {
 	public HashMap<String, Object> share_travel(int uuid) {
 		HashMap<String, Object> param=new HashMap<>();
 		
+		param.put("userInfo", travelDAO.getUserInfo(uuid));
 		param.put("mainList", travelDAO.getMyTravelList(uuid));
 		param.put("top3",travelDAO.getMyTravelTop3(uuid));
 		param.put("MyFollow",travelDAO.getMyFollow(uuid));

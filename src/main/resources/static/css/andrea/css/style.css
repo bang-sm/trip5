@@ -415,6 +415,10 @@ mark,
   font-size: 90%;
   color: #6c757d; }
 
+#msg_subject{
+	margin-bottom: 5px;
+}
+
 code {
   font-size: 87.5%;
   color: #e83e8c;

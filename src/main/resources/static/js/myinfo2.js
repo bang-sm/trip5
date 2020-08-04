@@ -9,5 +9,5 @@ $('.card').click(function(){
 });
 
 $('.cardss').click(function(){
-	location.href = "/my/clipSend?sendid="+$("#userUuid").val();
+	location.href = "/my/clipReceive?fromid="+$("#userUuid").val();
 });

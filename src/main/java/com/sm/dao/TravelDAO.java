@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sm.domain.MemberVO;
 import com.sm.domain.PhotoVO;
 import com.sm.domain.TravelInfoRootVO;
 import com.sm.domain.TravelInfoVO;
@@ -121,6 +122,9 @@ public class TravelDAO {
 		photoList = sqlSession.selectList("mappers.travelMapper.getTravelImage", param);
 		List<TravelInfoRootVO> rootList = new ArrayList<TravelInfoRootVO>();
 		rootList = sqlSession.selectList("mappers.travelMapper.getTravelRootList", param);
+		
+		
+		MemberVO memberVO = sqlSession.selectOne("mappers.travelMapper.getUserInfo", param);
 
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("infoList", infoList);
@@ -128,6 +132,7 @@ public class TravelDAO {
 		map.put("replyList", replyList);
 		map.put("photoList", photoList);
 		map.put("rootList", rootList);
+		map.put("userInfo", memberVO);
 
 		return map;
 	}
@@ -247,6 +252,7 @@ public class TravelDAO {
 	public List<TravelVO> mainTravleList() {
 		return sqlSession.selectList("mappers.travelMapper.mainTravleList");
 	}
+<<<<<<< HEAD
 	
 	public List<TravelVO> selectmaintravelListOrderbyTslike() {
 		return sqlSession.selectList("mappers.travelMapper.selectmaintravelListOrderbyTslike");
@@ -256,4 +262,11 @@ public class TravelDAO {
 		return sqlSession.selectList("mappers.travelMapper.selectmaintravelListOrderbyTsView");
 	}
 	
+=======
+
+	//유저정보
+	public MemberVO getUserInfo(int uuid) {
+		return sqlSession.selectOne("mappers.travelMapper.getUserInfo",uuid);
+	}
+>>>>>>> branch 'coding' of https://github.com/bang-sm/trip5.git
 }

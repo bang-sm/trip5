@@ -143,3 +143,11 @@ td{
 	width:750px;
 	height:400px;
 }
+.reply-comment{
+	text-overflow: ellipsis;
+	overflow:hidden;
+	white-space : nowrap;
+}
+.reply-table{
+	table-layout:fixed
+}
