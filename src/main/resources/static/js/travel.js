@@ -126,6 +126,7 @@ $(document).ready(function() {
 						replyList+='</div>';
 						replyList+='</div>';
 						$("#replyBox").append(replyList);
+						$("#comment_val").val("");
 					}
 	        		$("#comment_count").html(data.length+" 개의 댓글");
 	        	}
@@ -173,7 +174,7 @@ $(document).ready(function() {
 	        	}else if(data==999){
 	        		toastr.error("로그인이 필요합니다.");
 	        	}else{
-	        		toastr.error("잘못된요청입니다");
+	        		toastr.error("로그인이 필요합니다!");
 	        	}
 	        }
 		});
@@ -200,7 +201,7 @@ $(document).ready(function() {
 	        	}else if(data==999){
 	        		toastr.error("로그인이 필요합니다.");
 	        	}else{
-	        		toastr.error("잘못된요청입니다");
+	        		toastr.error("로그인이 필요합니다!");
 	        	}
 	        }
 		});
