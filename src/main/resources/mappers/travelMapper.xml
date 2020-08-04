@@ -373,7 +373,7 @@
 	</select>
 	<select id="getMyTotalLike" resultType="int">
 		SELECT 
-			sum(tslike) AS totalLike 
+			IFNULL(sum(tslike),0) AS totalLike 
 		FROM 
 			travel_story
 		WHERE 
