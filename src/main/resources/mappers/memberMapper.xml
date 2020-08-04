@@ -174,8 +174,10 @@
 	</select>
 	
 	<!-- ///////////////////////////////////////////////////////// -->
-	<!-- 프로필 사진 추가 -->
+	<!-- 프로필  -->
 	<!-- ///////////////////////////////////////////////////////// -->
+	
+	<!-- 사진 변경 -->
 	<insert id="profileImg" parameterType="Map">
 		UPDATE 
 			member
@@ -187,5 +189,15 @@
 		WHERE
 			uuid = ${mbUuid};
 	</insert>
+
+	<!-- 사진 path 정보  -->
+	<select id="imgPath" parameterType="int" resultType="String">
+		SELECT 
+			photoCustomName
+		from
+			`member` m
+		where
+			uuid = ${uuid};
+	</select>
 
 </mapper>

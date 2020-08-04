@@ -2,7 +2,11 @@ var sel_file;
 
 $(document).ready(function() {
 	console.log("이미지 바꾸기")
+	
+	// 프로필 사진 미리보기
 	$('#photo').on("change", handleImgFileSelect);
+	
+	// 사진 삭제
 	$(".deletePhoto").click(function() {
 		$('#img').attr('src', '/resources/upload/userProfile/profile.jpg');
 	});
