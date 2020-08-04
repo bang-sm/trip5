@@ -66,23 +66,18 @@
 										<p>차트</p>
 									</a></li>
 							</ul></li>
-						<li class="nav-item has-treeview"><a href="#" class="nav-link chat-title">
+						<li class="nav-item has-treeview"><a th:href=@{/my/clipSend(sendid=${session.userInfo.uuid})} class="nav-link chat-title">
 								<i class="nav-icon fa fa-address-card"></i>
 								<p>
-									채팅 <i class="right fas fa-angle-left"></i>
+									쪽지함 <i class="right fas fa-angle-left"></i>
 								</p>
 							</a>
-							<ul class="nav nav-treeview">
-								<li class="nav-item send"><a th:href=@{/my/clipSend(sendid=${session.userInfo.uuid})} class="nav-link">
-										<i class="far fa-circle nav-icon"></i>
-										<p>쪽지함</p>
-									</a></li>
-							</ul></li>
+							</li>
 						<li class="nav-item has-treeview"><a th:href="@{/mypage}" class="nav-link my-title
 						brea" >
 								<i class="nav-icon fa fa-address-card"></i>
 								<p>
-									나의 일지 <i class="right fas fa-angle-left"></i>
+									나의 History <i class="right fas fa-angle-left"></i>
 								</p>
 							</a>
 				</nav>
