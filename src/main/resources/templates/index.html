@@ -43,17 +43,17 @@
 		<div class="container_nav">
 			<div class="isotope_fillter">
 				<ul class="gallery_filter list">
-					<li class="active" data-filter="*"><a href="#">전체</a></li>
-					<li data-filter=".ap"><a href="#">좋아요순</a></li>
-					<li data-filter=".unp"><a href="#">북마크순</a></li>
+					<li class="active listbutton" data-filter="*" value="0" ><a >전체</a></li>
+					<li data-filter=".ap" value="1" class="listbutton"><a >좋아요순</a></li>
+					<li data-filter=".unp" value="2" class="listbutton"><a >북마크순</a></li>
 				</ul>
 			</div>
 		</div>
 
 		<!-- Page Features -->
 		<div class="container box_1620">
-			<div class="gallery_f_inner row imageGallery1" style="position: relative; height: auto;">
-				<div class="col-lg-3 col-md-4 col-sm-6 ap" th:each="list : ${list}">
+			<div class="gallery_f_inner row imageGallery1" style="position: relative; height: auto;" id="listlocation">
+				<!-- <div class="col-lg-3 col-md-4 col-sm-6 ap" th:each="list : ${list}">
 					<div class="h_gallery_item">
 						<img th:if="${list.photoMain} != null" th:src="|/resources/upload/${list.photoMain} |" width="210" height="300">
 						<img th:unless="${list.photoMain} != null" src="/resources/upload/trip.jpg" width="210" height="300">
@@ -67,11 +67,11 @@
 							</a>
 						</div>
 					</div>
-				</div>
+				</div> -->
 			</div>
 			
 			<div class="button_more">
-				<a class="btn theme_btn" href="#">Load More Images</a>
+				<a class="btn theme_btn">Load More Images</a>
 			</div>
 		</div>
 	</div>

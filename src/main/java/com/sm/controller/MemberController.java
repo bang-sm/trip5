@@ -3,6 +3,7 @@ package com.sm.controller;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.bouncycastle.math.raw.Mod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,6 +107,15 @@ public class MemberController {
 		return "/user/inform";
 	}
 	
+	// 비밀번호 바꾸기
+	@GetMapping("/user/changepass")
+	public String changePass(HttpSession httpSession, Model model) {
+		
+		
+		
+		return "/user/changepass";
+	}
+	
 	/////////////////////////////////////////////////////////////////
 	// 프로필 사진 변경
 	/////////////////////////////////////////////////////////////////
@@ -120,9 +130,6 @@ public class MemberController {
 			return "redirect:/user/logout";	// 세션없으면 로그아웃
 		}
 	}
-
-	
-	
 	//--------------------------------------------------------------------------
 	// 인증번호 -------------------------------------------------------------------
 	//--------------------------------------------------------------------------
