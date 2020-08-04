@@ -7,8 +7,19 @@ function gotoTrash(){
 			data: "msgid="+$("#messageId").val(),
 			success: function(data, status){
 				if(status == "success"){
-					alert('삭제되었습니다.')
-					location.href = "/my/clipSend?sendid="+$("#userUuid").val();
+					swal("삭제를 성공했습니다!", {
+						  buttons: {
+						    확인: true,
+						  },
+						})
+						.then((value) => {
+						  switch (value) {
+						 
+						    case "확인":
+						    location.href = "/my/clipSend?sendid="+$("#userUuid").val();
+						    break;
+						  }
+						});
 				}
 			}
 		});
@@ -98,8 +109,19 @@ function deleteForever(){
 		data: params,
 		success: function(data, status){
 			if(status == "success"){
-				alert('삭제했습니다!');
-				location.href = "/my/clipSend?sendid="+$("#userUuid").val();
+				swal("삭제를 성공했습니다!", {
+					  buttons: {
+					    확인: true,
+					  },
+					})
+					.then((value) => {
+					  switch (value) {
+					 
+					    case "확인":
+					    	location.href = "/my/clipSend?sendid="+$("#userUuid").val();
+					    break;
+					  }
+					});
 			}
 		}
 	 });

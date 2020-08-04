@@ -39,13 +39,28 @@ document.addEventListener("keypress", function(e) {
 });
 
 function connect(event) {
-	console.log('connect//////');
-
-    var socket = new SockJS('/ws');
-    stompClient = Stomp.over(socket);
-    console.log(socket);
-    
-    stompClient.connect({}, onConnected, onError);
+	console.log($("#adminBlackList").val() + 'zzzzzzzzzz')
+	if($("#adminBlackList").val() == "N"){
+		var socket = new SockJS('/ws');
+		stompClient = Stomp.over(socket);
+		console.log(socket);
+		
+		stompClient.connect({}, onConnected, onError);
+	} else {
+		swal("차단된 유저는 채팅방에 입장할 수 없습니다.", {
+			  buttons: {
+			    확인: true,
+			  },
+			})
+			.then((value) => {
+			  switch (value) {
+			 
+			    case "확인":
+			    location.href="/";
+			    break;
+			  }
+			});
+	}
 //    event.preventDefault();
 }
 

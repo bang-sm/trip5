@@ -313,6 +313,14 @@
 		WHERE 
 			msg_id = #{msgid};
 	</delete>
+	
+	<select id="selectAdminBlackList" parameterType="int" resultType="com.sm.domain.MemberVO">
+		SELECT 
+			adminBlackList 
+		FROM 
+			member 
+		WHERE uuid = #{uuid};	
+	</select>
 </mapper>
 
 

@@ -80,7 +80,7 @@
               <div class="table-responsive mailbox-messages">
                 <table class="searchTable table table-hover table-striped">
                   <tbody class="tb-cl">
-                  <tr th:if="${list != null && ((memList != null && memList[0].blackuuid != list.sendid) || memList == null)}" th:each="list : ${list}">
+                  <tr th:if="${list != null}" th:each="list : ${list}">
                     <td>
                       <div class="icheck-primary">
                         <input type="checkbox" th:value="${list.msgid}" class="check1">

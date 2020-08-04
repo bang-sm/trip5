@@ -37,8 +37,12 @@ public class ChatController {
 	// 채팅 페이지
 	@GetMapping(value = "/chatting/chat")
 	public String chatTest(HttpSession session, Model model) {
-
+		MemberVO mem = (MemberVO) session.getAttribute("userInfo");
+		String adminBlack = myService.selectAdminBlackList(mem.getUuid());
+		
+		System.out.println(adminBlack + " 컨트롤러 단에서 블랙리스트 관련");
 		model.addAttribute("uuid", session.getAttribute("userInfo"));
+		model.addAttribute("adminBlack", adminBlack);
 		return "chatting/chat";
 	}
 	
@@ -113,7 +117,6 @@ public class ChatController {
 	@GetMapping("/my/clipReceive")
 	public String clipReceive(MessageVO messageVO, Model model) throws ParseException	{
 		List<MessageVO> list = myService.receiveMessage(messageVO);
-		List<MemberVO> memList = myService.selectBlackList(messageVO.getFromid());
 		
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		SimpleDateFormat format2 = new SimpleDateFormat("MM월dd일 HH:mm");
@@ -128,7 +131,6 @@ public class ChatController {
 		
 		int count = myService.countMessage(messageVO);
 		
-		model.addAttribute("memList", memList);
 		model.addAttribute("list", list);
 		model.addAttribute("cntMsg", count);
 		
