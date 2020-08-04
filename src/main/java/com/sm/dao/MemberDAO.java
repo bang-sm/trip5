@@ -100,4 +100,10 @@ public class MemberDAO {
 	public void profileImg(Map<String, Object> map) {
 		sql.update(namespace + ".profileImg", map);
 	}
+
+	// 사용자 프로필 이미지
+	public  String imgPath(int uuid) {
+		System.out.println(sql.selectOne(namespace + ".imgPath",uuid)+" 서비스 단입니다.");
+		return sql.selectOne(namespace + ".imgPath",uuid);
+	}
 }

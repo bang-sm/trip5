@@ -33,7 +33,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sm.Utils.ProfileImg;
+import com.sm.Utils.FileUtils;
 import com.sm.dao.MemberDAO;
 import com.sm.domain.MemberVO;
 import com.sm.domain.Role;
@@ -55,18 +55,30 @@ public class MemberService implements UserDetailsService {
 	private JavaMailSender mailSender;
 	
 	@Autowired
-	ProfileImg profileImg;
+	FileUtils fileUtils;
+	////////////////////////////////////////////////////////////////////////////////
+	// 마이 페이지
+	////////////////////////////////////////////////////////////////////////////////
+	
+	// 프로필 정보 변경
+	public void myinfoChange(MultipartFile mfiles, MemberVO memberVO) throws Exception {
+		List<Map<String, Object>> fileList = fileUtils.parseUserInfo(memberVO, mfiles);
+		memberDAO.profileImg(fileList.get(0));
+	}
+	
+	// 프로필 정보 변경
+	public String imgPath(MemberVO memberVO) throws Exception {
+		String imgPath = memberDAO.imgPath(memberVO.getUuid());
+		
+		return imgPath;
+	}
+
+	
 
 	////////////////////////////////////////////////////////////////////////////////
 	// 관리자 페이지
 	////////////////////////////////////////////////////////////////////////////////
 
-	
-	// 프로필 정보 변경
-	public void myinfoChange(MultipartFile mfiles, MemberVO memberVO) throws Exception {
-		List<Map<String, Object>> fileList = profileImg.parseFileInfo(memberVO, mfiles);
-		memberDAO.profileImg(fileList.get(0));
-	}
 	
 	// 일일접속자 Count
 	public int[] adminUserCount() {
@@ -215,7 +227,7 @@ public class MemberService implements UserDetailsService {
 
 	// 회원가입 처리
 	public String signupAndValid(MemberVO memberVO, Errors errors, Model model, String idCheckNum) {
-		MemberService memberService = new MemberService(memberDAO, request, mailSender, profileImg);
+		MemberService memberService = new MemberService(memberDAO, request, mailSender, fileUtils);
 
 		// 에러메세지 저장 부분
 		if (Integer.parseInt(idCheckNum) != 0) { // 중복체크 에러메시지
