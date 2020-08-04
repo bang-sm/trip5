@@ -37,9 +37,11 @@
 	<div class="container" id="con1">
 		<header class="jumbotron my-4" th:style="'background-image:url(/resources/upload/' + ${list[0].photoMain} + ');'" height = "300px">
 			<h1 class="display-3">BEST 일지</h1>
-			<h3 th:text="${list[0].tstitle}"></h3>
-			<i class="fa fa-heart" th:text="| ${list[0].tslike} |" style="font-size: 17px"></i>
-			<i class="fa fa-bookmark" th:text="| ${list[0].bookmark} |" style="font-size: 17px"></i>
+			<h2 th:text="${list[0].tstitle}"></h2>
+			<h4>
+				<i class="fa fa-heart" th:text="| ${list[0].tslike} |" style="font-size: 17px"></i>
+				<i class="fa fa-bookmark" th:text="| ${list[0].bookmark} |" style="font-size: 17px"></i>
+			</h4>
 			<a th:href="|/travel/travel_blog?uuid=${list[0].uuid}&tsid=${list[0].tsid}|" class="btn btn-primary btn-lg">보러가기</a>
 		</header>
 		<div class="container_nav">
