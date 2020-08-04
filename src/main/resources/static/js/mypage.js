@@ -206,11 +206,12 @@ $.ajax({
 		success : function(data){
 			console.log(data);
 			var following = data.following;
+			$('.following-count').text(data.following.length+" 명");
 			result="";
 			for(i=0;i<following.length;i++){
 				result+='<tr>';
 				result+='<td class="td-1"><input class="following-uuid"type="hidden" name="uuid" value="'+following[i].uuid+'"/>';
-				result+='<a href="/travel/share_travel?uuid='+following[i].uuid+'"><img src="/resources/upload/'+following[i].photoPath+'"class="user-img" alt="User Image"></a></td>';
+				result+='<a href="/travel/share_travel?uuid='+following[i].uuid+'"><img src="/resources/upload/userProfile/'+following[i].photoPath+'"class="user-img" alt="User Image"></a></td>';
 				result+='<td class="td-2"><a href="/travel/share_travel?uuid='+following[i].uuid+'"><div class="info"><span class="d-block">'+following[i].membernick+'</span></div></a></td>';
 			    result+='<td class="td-3"><button type="button" class="btn btn-outline-dark following-btn">팔로잉</button></td>';
 			    result+='</tr>';
@@ -230,10 +231,11 @@ function follower(){
 		success : function(data){
 			console.log(data);
 			result ="";
+			$('.follower-count').text(data.follower.length+" 명");
 			var follower  = data.follower;
 			for(i=0;i<follower.length;i++){
 				result+='<tr>';
-				result+='<td class="td-1"><input class="follower-uuid"type="hidden" name="uuid" value="'+follower[i].uuid+'"/><a href="/travel/share_travel?uuid='+follower[i].uuid+'"><img src="/resources/upload/'+follower[i].photoPath+'"class="user-img" alt="User Image"></a></td>';
+				result+='<td class="td-1"><input class="follower-uuid"type="hidden" name="uuid" value="'+follower[i].uuid+'"/><a href="/travel/share_travel?uuid='+follower[i].uuid+'"><img src="/resources/upload/userProfile/'+follower[i].photoPath+'"class="user-img" alt="User Image"></a></td>';
 				result+='<td class="td-2"><a href="/travel/share_travel?uuid='+follower[i].uuid+'"><div class="info"><span class="d-block">'+follower[i].membernick+'</span></div></a></td>';
 			   if(follower[i].status=='N' || follower[i].status==null){
 				   result+='<td class="td-3"><button type="button" class="btn btn-primary follower-btn">팔로우</button></td>';
@@ -254,6 +256,7 @@ function bookmark(){
 		async :false,
 		success : function(data){
 			console.log(data);
+			$('.bookmark-count').text(data.bookmark.length+" 개");
 			var bookmark = data.bookmark;
 			result="";
 			for(i=0;i<bookmark.length;i++){
@@ -277,7 +280,7 @@ function like(){
 		async :false,
 		success : function(data){
 			console.log(data);
-			$('.like-count').text(data.count);
+			$('.like-count').text(data.count+" 개");
 			var like = data.like;
 			result="";
 			for(i=0;i<like.length;i++){
@@ -316,7 +319,7 @@ function blacklist(){
 				for(i=0;i<blacklist.length;i++){
 					result+='<tr>';
 					result+='<td class="td-1"><input class="following-uuid"type="hidden" name="uuid" value="'+blacklist[i].uuid+'"/>';
-					result+='<img src="/resources/upload/'+blacklist[i].photoPath+'"class="user-img" alt="User Image"></td>';
+					result+='<img src="/resources/upload/userProfile/'+blacklist[i].photoPath+'"class="user-img" alt="User Image"></td>';
 					result+='<td class="td-2"><div class="info"><span class="d-block">'+blacklist[i].membernick+'</span></div></td>';
 				    result+='<td class="td-3"><button type="button" class="btn btn-outline-dark blacklist-btn">봐준다</button></td>';
 				    result+='</tr>';

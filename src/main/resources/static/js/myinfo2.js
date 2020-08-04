@@ -11,3 +11,8 @@ $('.card').click(function(){
 $('.cardss').click(function(){
 	location.href = "/my/clipReceive?fromid="+$("#userUuid").val();
 });
+
+$('.cardsss').click(function(){
+	location.href = "/wish/place";
+});
+

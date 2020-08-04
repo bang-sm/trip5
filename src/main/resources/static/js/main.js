@@ -59,7 +59,7 @@ function getTravelList(buttonNum, listMaxLength){
 			htmlString += "</a>";
 			htmlString += "<a class='light' href='/travel/travel_blog?uuid="+ data[i].uuid +"&amp;tsid="+ data[i].tsid +"'>";
 			htmlString += "<i class='fa fa-heart' style='font-size: 17px'> "+ data[i].tslike+" </i>";
-			htmlString += "<i class='fa fa-bookmark' style='font-size: 17px'> "+ data[i].bookmark+" </i>";
+			htmlString += "<i class='fa fa-bookmark' style='font-size: 17px;padding-left: 20px'> "+ data[i].bookmark+" </i>";
 			htmlString += "</a></div></div></div>";
 		}
 
