@@ -274,7 +274,23 @@ $(document).on('click',".othersMsg" ,function(){
 	nick = $(this).attr('data-email');
 	otherUUid = $(this).attr('data-uuid');
 	
-	console.log(nick + "///nick 클릭시")
+	if(otherUUid == undefined){
+		console.log('123123들')
+		$.ajax({
+			url:"/my/gotoBlog",
+			type:"POST",
+			cache : false,
+			data : "membernick="+nick,
+			success:function(data,status){
+				if(status == "success"){
+					console.log('121212')
+					otherUUid = data;
+				}
+			}
+		})
+	}
+	console.log(nick + "///nick 클릭시" + otherUUid + " // other")
+	
 });
 
 function loadPage(){
