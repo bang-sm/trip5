@@ -190,6 +190,16 @@
 			uuid = ${mbUuid};
 	</insert>
 
+	<!-- 닉네임 변경 -->
+	<insert id="myinfoNickChange" parameterType="Map">
+		UPDATE 
+			member
+		set 
+			membernick = '${membernick}'
+		WHERE
+			uuid = ${uuid};
+	</insert>
+
 	<!-- 사진 path 정보  -->
 	<select id="imgPath" parameterType="int" resultType="String">
 		SELECT 
@@ -198,6 +208,29 @@
 			`member` m
 		where
 			uuid = ${uuid};
+	</select>
+	
+	<!-- 멤버 닉 -->
+	<select id="userNickName" parameterType="int" resultType="String">
+		select
+			membernick
+		from
+			member
+		where
+			uuid = ${uuid};
+	</select>
+
+	<!-- 멤버 이미지 삭제 -->
+	<select id="deletUserImg" parameterType="int">
+		UPDATE 
+			member
+		set 
+			photoPath ='profile.jpg',
+			photoOriginalName='',
+			photoCustomName='profile.jpg',
+		 	photoFileSize=''
+		WHERE
+			uuid = ${mbUuid};
 	</select>
 
 </mapper>
