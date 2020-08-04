@@ -73,6 +73,15 @@ $(document).ready(function(){
 	});
 });
 
+$(document).ready(function(){
+	$("#myInputreply").on("keyup", function() {
+		var value = $(this).val().toLowerCase();
+		$(".reply-tbody tr").filter(function() {
+			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+		});
+	});
+});
+
 $(document).on('click','.follower-btn',function(){
 	var tr = $(this).parent().parent();
 	var followuuid = tr.children('.td-1').children('.follower-uuid').val();

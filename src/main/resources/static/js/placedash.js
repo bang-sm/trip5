@@ -4,7 +4,6 @@
 
 $(window).resize(function(){
 	var width = parseInt($(this).width());
-	console.log(width);
 	if(width < 1000){
 		$('body').addClass('sidebar-collapse');
 	}
@@ -12,11 +11,9 @@ $(window).resize(function(){
 	if(width > 992){
 		$('.pushmenu').css("display","none");
 		$('.side-pushmenu').css("display","none");
-		console.log(">>>992");
 	}else{
 		$('.pushmenu').css("display","block");
 		$('.side-pushmenu').css("display","block");
-		console.log(" <<992");
 	}
 }).resize();
 
