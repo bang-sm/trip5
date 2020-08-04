@@ -82,7 +82,6 @@ public class NoticeService {
 		
 		PopUpNoticeVO popUpNoticeVO = new PopUpNoticeVO(pnId, pnHeader, pnContent,
 				pnTop, pnLeft, pnWidth, pnHeight, pnDate);
-		System.out.println(popUpNoticeVO + "dkdfnmaksdfnlkdasnflkdsnalk");
 		noticeDao.pNoticeUpdate(popUpNoticeVO);
 		
 	} // end pNoticeUpdate
