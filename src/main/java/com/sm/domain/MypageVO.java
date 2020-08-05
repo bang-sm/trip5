@@ -22,7 +22,7 @@ public class MypageVO {
 	private String tsenddate;
 	private String tsregdate;
 	private String tempsave;
-	private String photoPath;
+	private String photoCustomName;
 	
 	
 }
