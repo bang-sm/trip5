@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 import com.sm.dao.MemberDAO;
 import com.sm.domain.MemberVO;
 import com.sm.domain.VisitmembersVO;
-import com.sm.service.MemberService;
 
 @Service
 public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientService {
@@ -88,7 +87,7 @@ public class MyOAuth2AuthorizedClientService implements OAuth2AuthorizedClientSe
 			System.out.println(uuid);
 			
 			// 되어있다면
-			memberVo = memberDAO.getUserById(memberemail);
+			memberVo = memberDAO.getUserById(principalName);
 		
 			// 로그인 세션 저장
 			session.setAttribute("userInfo", memberVo);

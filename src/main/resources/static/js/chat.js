@@ -138,7 +138,7 @@ function onMessageReceived(payload) {
     		if(blackListv.length == 0){
     			if(!$("li[data-name='"+message.participant[i]+"']").length){
 					$(".contacts").append("<li data-toggle='tab' data-target='#inbox-message-2' data-name='"+message.participant[i]+"'>"+
-							"<img alt='' class='img-circle medium-image' src='../image/user.jpg' style='vertical-align: baseline'>"+
+							"<img alt='' class='img-circle medium-image' src='"+ $("#img").val() +"' style='vertical-align: baseline'>"+
 							"<div class='vcentered info-combo'>"+
 							"<h3 class='no-margin-bottom name'>"+message.participant[i]+"</h3>"+
 							"<h5>...</h5>"+
