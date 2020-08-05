@@ -17,6 +17,7 @@
 	<input th:if="${session.userInfo != null}" type="hidden" id="userSessionId" th:value="${session.userInfo.membernick}">
 	<input th:if="${session.userInfo != null}" type="hidden" id="userSessionuuid" th:value="${session.userInfo.uuid}">
 	<input th:if="${session.userInfo != null}" type="hidden" id="adminBlackList" th:value="${adminBlack}">
+	<input th:if="${session.userInfo != null}" type="hidden" id="img" th:value="|/resources/upload/userProfile/${session.userInfo.photoCustomName}|">
 	
 	<div class="chat_container">
 		<div class="panel messages-panel">

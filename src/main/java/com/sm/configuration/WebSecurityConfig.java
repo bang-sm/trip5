@@ -122,10 +122,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         	//유효하지 않은 세션으로 접근했을때 어디로 보낼것인지 URL을 설정하는 기능.
         	//로그아웃 했을경우 세션을 만료시킨다.
         	.maximumSessions(1) // 최대 세션 1로 유지
-        	.maxSessionsPreventsLogin(true) // 중복로그인시 이전 로그인했던 세션 만료.
         	.expiredUrl("/user/sessionExpire")	// 중복 로그인시 타는 url
          	;
-        		//							  
 	}
 	
     // tokenRepository의 구현체

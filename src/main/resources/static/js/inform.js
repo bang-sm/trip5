@@ -12,6 +12,7 @@ $(document).ready(function() {
 		
 		$('.isImgCheck').val("1");
 	});
+	
 
 
 });
