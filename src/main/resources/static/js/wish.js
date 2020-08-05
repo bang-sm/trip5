@@ -165,7 +165,6 @@ $("#exampleModal").on('shown.bs.modal', function(){
 		if(name[i].innerHTML == areaname){
 			console.log("정답 : "+ name[i].innerHTML + " , " + "areaname : " + areaname);
 			var juso = count.children('.info').children('.jibun ');
-			console.log(juso[i].innerHTML);
 			
 			$('input[name=placejuso]').val(juso[i].innerHTML);
 			$('input[name=placename]').val(name[i].innerHTML);
