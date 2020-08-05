@@ -108,7 +108,7 @@ public class WeatherController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/getlocalinfo")
+	@PostMapping("/getlocalinfo")
 	public WeatherLocalVO selectlocalInfoBylocaluid(int localuid) {
 		
 		WeatherLocalVO weatherLocalVO = new WeatherLocalVO();
