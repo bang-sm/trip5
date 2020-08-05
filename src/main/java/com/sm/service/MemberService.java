@@ -310,10 +310,10 @@ public class MemberService implements UserDetailsService {
 	 *
 	 */
 	@Override
-	public UserDetails loadUserByUsername(String memberemail) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String memberid) throws UsernameNotFoundException {
 		// System.out.println("넘어온 아이디 "+ memberemail);
 
-		MemberVO user = memberDAO.getUserById(memberemail);
+		MemberVO user = memberDAO.getUserById(memberid);
 		List<GrantedAuthority> auth = new ArrayList<>();
 		if (user == null) {
 			throw new UsernameNotFoundException("User Not Found");
