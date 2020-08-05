@@ -16,7 +16,6 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -317,7 +316,6 @@ public class MemberService implements UserDetailsService {
 		MemberVO user = memberDAO.getUserById(memberemail);
 		List<GrantedAuthority> auth = new ArrayList<>();
 		if (user == null) {
-			System.out.println("들어왔니??");
 			throw new UsernameNotFoundException("User Not Found");
 		} else {
 			HttpSession session = request.getSession(true);
