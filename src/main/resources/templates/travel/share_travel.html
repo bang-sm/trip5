@@ -38,7 +38,7 @@
 				</ul>
 			</nav>
 			<aside style="text-align: center;margin-top:70px">
-				<img class="author_img rounded-circle" th:src="|/resources/upload/userProfile/${data.userInfo.photoPath}|" width="250" height="250" alt="프로필">
+				<img class="author_img rounded-circle" th:src="|/resources/upload/userProfile/${data.userInfo.photoCustomName}|" width="200" height="200" alt="프로필">
 				<h4 style="margin-top: 35px" th:text="${data.userInfo.membernick}"></h4>
 				<p>한마디 소개글</p>
 				<div class="social_icon">
