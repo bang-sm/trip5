@@ -8,6 +8,7 @@ $(document).ready(function(){
 	
 	switch(newURL){
 	case "/user/inform" :
+	case "/user/changepass" :
 		$(".myinfo-title").addClass('active');
 			break;
 	case "/wish/place" :
