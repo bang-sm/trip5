@@ -27,7 +27,9 @@ text{
     right: 100px;
     top: 15px
 }
-
+.content-wrapper{
+	margin-top:55px !important;
+}
 
 
 @media(max-width:1200px) {
