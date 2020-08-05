@@ -582,6 +582,7 @@ $(document).on('click','.star_img',function(){
 				"placeid": id
 			},
 			success : function(){
+				toastr.success("북마크 등록 하셨습니다.");
 			}
 		});
 	}else{
@@ -594,6 +595,7 @@ $(document).on('click','.star_img',function(){
 				"placeid": id
 			},
 			success : function(){
+				toastr.error("북마크 해제하셨습니다.");
 			}
 		});
 	}
@@ -936,6 +938,7 @@ $(document).on('click','.checkbox1',function(){
 				"placeid": checkboxid
 			},
 			success : function(){
+				toastr.success("추억 등록 하셨습니다.");
 			}
 		});
 	}else{
@@ -947,6 +950,7 @@ $(document).on('click','.checkbox1',function(){
 				"placeid": checkboxid
 			},
 			success : function(){
+				toastr.error("추억 해제 하셨습니다.");
 			}
 		});
 	}
@@ -1052,7 +1056,6 @@ $(document).on('click','.media-body',function(){
 $(document).on('click','.media_delete',function(){
 	var theme = $(this).parents('.tabletr').children('.td_two');
 	var del = theme.children('.placeid').val();
-	var check =confirm("삭제 하시겠습니까?");
 	swal({
 		title : "",
 		text : "삭제 하시겠습니까?",
