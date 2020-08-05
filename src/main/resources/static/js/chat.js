@@ -72,7 +72,7 @@ function onConnected() {
     // Tell your username to the server
     stompClient.send("/app/chat.addUser",
         {},
-        JSON.stringify({uuid: $("#userSessionuuid").val(), sender: $("#userSessionId").val() , type: 'JOIN'})
+        JSON.stringify({uuid: $("#userSessionuuid").val(), photoCustomName: $("#img").val(), sender: $("#userSessionId").val() , type: 'JOIN'})
     )
 }
 
@@ -89,11 +89,12 @@ function send(event) {
             sender: $("#userSessionId").val(),
             content: messageContent,
             uuid: $("#userSessionuuid").val(),
-            type: 'CHAT'
+            type: 'CHAT',
+            photoCustomName: $("#img").val()
         };
        
         stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
-        $("#message").val('');
+//        $("#message").val('');
     }
 //  event.preventDefault();
 }
@@ -138,9 +139,8 @@ function onMessageReceived(payload) {
     		if(blackListv.length == 0){
     			if(!$("li[data-name='"+message.participant[i]+"']").length){
 					$(".contacts").append("<li data-toggle='tab' data-target='#inbox-message-2' data-name='"+message.participant[i]+"'>"+
-							"<img alt='' class='img-circle medium-image' src='"+ $("#img").val() +"' style='vertical-align: baseline'>"+
 							"<div class='vcentered info-combo'>"+
-							"<h3 class='no-margin-bottom name'>"+message.participant[i]+"</h3>"+
+							"<h3 class='no-margin-bottom name'>닉네임 - "+message.participant[i]+"</h3>"+
 							"<h5>...</h5>"+
 							"</div>"+
 							"<div class='contacts-add'>"+
@@ -162,9 +162,8 @@ function onMessageReceived(payload) {
         			if(message.participant[i] == blackListv[j].membernick){
         				if(!$("li[data-name='"+message.participant[i]+"']").length){
         					$(".contacts").append("<li data-toggle='tab' data-target='#inbox-message-2' data-name='"+message.participant[i]+"'>"+
-        							"<img alt='' class='img-circle medium-image' src='../image/user.jpg' style='vertical-align: baseline'>"+
         							"<div class='vcentered info-combo'>"+
-        							"<h3 class='no-margin-bottom name'>"+message.participant[i]+"</h3>"+
+        							"<h3 class='no-margin-bottom name'>닉네임 -"+message.participant[i]+"</h3>"+
         							"<h5>...</h5>"+
         							"</div>"+
         							"<div class='contacts-add'>"+
@@ -184,9 +183,8 @@ function onMessageReceived(payload) {
         			} else{
         				if(!$("li[data-name='"+message.participant[i]+"']").length){
         					$(".contacts").append("<li data-toggle='tab' data-target='#inbox-message-2' data-name='"+message.participant[i]+"'>"+
-        							"<img alt='' class='img-circle medium-image' src='../image/user.jpg' style='vertical-align: baseline'>"+
         							"<div class='vcentered info-combo'>"+
-        							"<h3 class='no-margin-bottom name'>"+message.participant[i]+"</h3>"+
+        							"<h3 class='no-margin-bottom name'>닉네임 -"+message.participant[i]+"</h3>"+
         							"<h5>...</h5>"+
         							"</div>"+
         							"<div class='contacts-add'>"+
@@ -225,7 +223,7 @@ function onMessageReceived(payload) {
     	getdate();
     	if(message.sender == $("#userSessionId").val()){
     	$(".chat-body").append(" <div class='message my-message'>" +
-                "<img alt='' class='img-circle medium-image' src='../image/user.jpg' style='margin-right:15px'>"+
+                "<img alt='' class='img-circle medium-image' src='"+message.photoCustomName+"' style='margin-right:15px'>"+
                 "<div class='message-body'>" +
                     "<div class='message-body-inner'>"+
                         "<div class='message-info'>"+
@@ -240,6 +238,7 @@ function onMessageReceived(payload) {
             "</div>");
     	$("li[data-name='"+message.sender+"'] h5").text(message.content);
     	$(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
+    	$(".send-message-text").val('');
     	} else {
     		getdate();
     		
@@ -253,7 +252,7 @@ function onMessageReceived(payload) {
     		if(blackUser){
     			$(".chat-body").append(
     					"<div class='message info'>"+
-    					"<img alt='' class='img-circle medium-image' src='../image/user.jpg'>"+
+    					"<img alt='' class='img-circle medium-image' src='"+message.photoCustomName+"'>"+
     					"<div class='message-body'>"+
     					"<div class='message-info'>"+
     					"<h4>" + "<div class='dropdown others'>" +
@@ -278,7 +277,6 @@ function onMessageReceived(payload) {
     			$(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
     		}
     	}
-    	$(".send-message-text").val('');
     }
 }
 
@@ -319,8 +317,8 @@ function loadPage(){
 		data : data,
 		success : function(data1, status){
 			if(status == "success"){
-				console.log("data1 = " + data1);
 				blackListv = data1;
+				console.log("blackListv = " + blackListv[0].blackuuid);
 			}
 		}
 	});

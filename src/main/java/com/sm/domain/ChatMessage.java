@@ -12,7 +12,7 @@ public class ChatMessage {
 	private MessageType type;
 	private String content;
 	private String sender;
-	
+	private String photoCustomName;
 	private int uuid;
 	
 	List<String> participant = new ArrayList<String>();
