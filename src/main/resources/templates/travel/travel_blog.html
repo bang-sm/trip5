@@ -41,7 +41,7 @@
 									<span th:text="${travel.travelStory.tsenddate}"></span>
 								</div>
 								<div style="float: left;">
-									<img th:src="|/resources/upload/userProfile/${travel.userInfo.photoPath}|" width="150" height="150" style="display: inherit;">
+									<img th:src="|/resources/upload/userProfile/${travel.userInfo.photoCustomName}|" width="150" height="150" style="display: inherit;">
 									<a th:href="|/travel/share_travel?uuid=${travel.travelStory.uuid}|">
 										<button class="btn btn-danger" style="margin-top:20px" th:text="|${travel.userInfo.membernick} 님의 블로그|"></button>
 									</a>
