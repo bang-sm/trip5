@@ -123,7 +123,6 @@ public class WeatherAPIservice {
 	
 	} // end baseDate() 
 	
-	@Async
 	public List<WeatherInfoVO> weatherData(int localnx, int localny) throws Exception{
 		
 		ResponseEntity<String> response = null;
