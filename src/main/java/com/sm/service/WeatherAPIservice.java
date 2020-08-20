@@ -48,6 +48,7 @@ public class WeatherAPIservice {
 		
 	} // end now()
 	
+	
 	public String baseTime3hr(String[] date) {
 		
 		String time = date[1].substring(0,2);

@@ -130,7 +130,7 @@ public class WeatherController {
 	
 	@ResponseBody
 	@PostMapping("/weatherModal")
-	public Map<String, Object> postWeatherModal(HttpSession httpSession){
+	public Map<String, Object> postWeatherModal(HttpSession httpSession, String currentTime, String currentDate){
 		
 		Map<String, Object> postMap = new HashMap<String, Object>();
 		List<WeatherInfoVO> postList = new ArrayList<WeatherInfoVO>();
@@ -160,8 +160,10 @@ public class WeatherController {
 		int weatherlocalny = weatherLocalVO.getLocalny();
 		String weatherlocalname = weatherLocalVO.getLocalname();
 		int weatherparent = weatherLocalVO.getLocalparent(); 
+		String[] timeArr = {currentDate ,currentTime}; 
 		
 		try {
+			weatherAPIservice.now(timeArr);
 			postList = weatherAPIservice.weatherData(weatherlocalnx, weatherlocalny);
 		
 			postMap = weatherAPIservice.sortNowData(postList);
