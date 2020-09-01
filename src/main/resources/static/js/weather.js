@@ -1,6 +1,60 @@
 var MAX_DEPTH = 1;   // depth 0 ~ 1
 var nowWeather = new Map();
 
+function getCurrentTime(){
+	var currentDate = new Date();
+	var msg = "";
+	var hour = currentDate.getHours() + "";
+	var minute = currentDate.getMinutes() + "";
+
+	if(hour.length == 1){
+		msg += "0";
+		msg += hour;
+	} else {
+		msg += hour;
+	}
+
+	if(minute.length == 1){
+		msg += "0";
+		msg += minute;
+	} else {
+		msg += minute;
+	}
+
+	return msg;
+}
+
+function getCurrentDate(){
+
+	var currentDate = new Date();
+	var month = currentDate.getMonth()+1 + "";
+	var day = currentDate.getDate() + "";
+
+	var msg  = currentDate.getFullYear() + "";
+	
+	if(month.length == 1){
+		msg += "0";
+		msg += month;
+	} else {
+		
+		msg += month;
+	}
+
+	if(day.length == 1){
+		msg += "0";
+		msg += day;
+	} else {
+		
+		msg += day;
+	}
+
+
+	console.log(msg);
+	
+
+	return msg;
+}
+
 var timeArr = new Array();
 var dateArr = new Array();
 var finalLocation = ""; // 나중에 DB로 보낼 locationuid
@@ -12,19 +66,17 @@ $(document).ready(function(){
 
 	// Session 에서 uuid 가져오기
 	getDefaultLocal();
-
 	// 로딩시 default 값으로 페이지 로딩
-
+	
 	if(defaultlocaluid == 0){
-
+		
 		setDefaultWeather1(1);
-
+		
 	} else {
 		
 		getDefaultLocalInfo(defaultlocaluid);
 	}
-
-
+	
 	var now = new Date();
 
 	var nowMonth = parseInt(now.getMonth()) + 1 ;
@@ -137,16 +189,28 @@ function buildSelect(data){
 
 function getWeatherAPI(weatherlocalnx, weatherlocalny){
 
+	var currentDate = "";
+	var currentTime = ""; 
+
+	currentDate = getCurrentDate();
+	currentTime = getCurrentTime();
+
+	console.log("currentDate: " +  currentDate);
+	console.log("currentTime: " +  currentTime);
+
 	$.ajax({
 		type : "POST",
 			url: "/weather/api",
 			dataType: 'JSON',
 			data: {
 				"weatherlocalnx" : weatherlocalnx,
-				"weatherlocalny" : weatherlocalny
-				},
+				"weatherlocalny" : weatherlocalny,
+				"currentDate" : currentDate,
+				"currentTime" : currentTime
+ 				},
 			success: function(data){
-				
+
+				console.log("ajax 성공");
 				sortNowWeatherData(data); // nowWeather map setting 완료!!
 				// console.log("sortNowWeatherData 완료! - Map 사용!");
 				
@@ -513,6 +577,7 @@ function getDefaultLocal(){
 				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			}
 		}); // end ajax
+
 } // end getDefaultLocal
 
 function setDefaultWeather1(defaultlocaluid){

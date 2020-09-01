@@ -3,6 +3,8 @@ $(function(){
 	
 });
 
+
+
 $(".weather-wrapper").draggable();
 
 	$("#weather-button").click( function(){
@@ -13,8 +15,67 @@ $(".weather-wrapper").draggable();
 		modalMaximize();
 	});
 
+	function getCurrentTime(){
+		var currentDate = new Date();
+		var msg = "";
+		var hour = currentDate.getHours() + "";
+		var minute = currentDate.getMinutes() + "";
+	
+		if(hour.length == 1){
+			msg += "0";
+			msg += hour;
+		} else {
+			msg += hour;
+		}
+	
+		if(minute.length == 1){
+			msg += "0";
+			msg += minute;
+		} else {
+			msg += minute;
+		}
+	
+		return msg;
+	}
+	
+	function getCurrentDate(){
+	
+		var currentDate = new Date();
+		var month = currentDate.getMonth()+1 + "";
+		var day = currentDate.getDate() + "";
+	
+		var msg  = currentDate.getFullYear() + "";
+		
+		if(month.length == 1){
+			msg += "0";
+			msg += month;
+		} else {
+			
+			msg += month;
+		}
+	
+		if(day.length == 1){
+			msg += "0";
+			msg += day;
+		} else {
+			
+			msg += day;
+		}
+	
+	
+		console.log(msg);
+		
+	
+		return msg;
+	}
 
 function getWeatherajax(){
+
+	var currentDate = "";
+	var currentTime = ""; 
+
+	currentDate = getCurrentDate();
+	currentTime = getCurrentTime();
 
   $.ajax({
     type : "POST",
@@ -22,6 +83,8 @@ function getWeatherajax(){
     dataType: 'JSON',
     // async: false,
     data: {
+		"currentDate" : currentDate,
+		"currentTime" : currentTime
     },
     success: function(data){
 
