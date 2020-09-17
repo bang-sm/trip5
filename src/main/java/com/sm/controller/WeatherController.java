@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sm.domain.MemberVO;
@@ -52,14 +53,19 @@ public class WeatherController {
 	
 	@ResponseBody
 	@PostMapping("/api")
-	public List<WeatherInfoVO> getWeatherAPI(int weatherlocalnx, int weatherlocalny, Model model){
+	public List<WeatherInfoVO> getWeatherAPI(int weatherlocalnx, int weatherlocalny, String currentDate, String currentTime  ,Model model){
 		
 		List<WeatherInfoVO> list = new ArrayList<WeatherInfoVO>();
 		Map<String, Object> nowData = new HashMap<String, Object>();
 		System.out.println("api 가져오나? (POST)");
 		System.out.println("x값:" + weatherlocalnx + " y값:" + weatherlocalny );
+		System.out.println("currentDate :  " + currentDate);
+		System.out.println("currentTime : " + currentTime);
+		
+		String[] timeArr = {currentDate, currentTime};
 		
 		try {
+			weatherAPIservice.now(timeArr);
 			list = weatherAPIservice.weatherData(weatherlocalnx, weatherlocalny);
 			nowData = weatherAPIservice.sortNowData(list);
 			
@@ -124,7 +130,7 @@ public class WeatherController {
 	
 	@ResponseBody
 	@PostMapping("/weatherModal")
-	public Map<String, Object> postWeatherModal(HttpSession httpSession){
+	public Map<String, Object> postWeatherModal(HttpSession httpSession, String currentTime, String currentDate){
 		
 		Map<String, Object> postMap = new HashMap<String, Object>();
 		List<WeatherInfoVO> postList = new ArrayList<WeatherInfoVO>();
@@ -154,8 +160,10 @@ public class WeatherController {
 		int weatherlocalny = weatherLocalVO.getLocalny();
 		String weatherlocalname = weatherLocalVO.getLocalname();
 		int weatherparent = weatherLocalVO.getLocalparent(); 
+		String[] timeArr = {currentDate ,currentTime}; 
 		
 		try {
+			weatherAPIservice.now(timeArr);
 			postList = weatherAPIservice.weatherData(weatherlocalnx, weatherlocalny);
 		
 			postMap = weatherAPIservice.sortNowData(postList);

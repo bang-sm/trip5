@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -30,19 +31,23 @@ public class WeatherAPIservice {
 	@Autowired
 	private ObjectMapper objectMapper;
 	
-	private String nowTime = baseTime3hr(now());
-	private String nowDate = baseDate(now());
+	private String nowTime = ""; 
+	private String nowDate = "";
 	private int yesterday = 0;
 	
 	// API 변수 설정
-	public String[] now() {
-			
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd:HHmm");
-			String realTime = formatter.format(new Date());
-			String [] timeArr = realTime.split(":");
-			return timeArr;
+	public void now(String[] timeArr) {
+//			Calendar cal = Calendar.getInstance();
+//			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd:HHmm");
+//			String realTime = formatter.format(cal.getTime());
+//			String [] timeArr = realTime.split(":");
+			// 0번째 칸 : 날짜, 1번째 칸 : 시간
+		
+		nowTime = baseTime3hr(timeArr);
+		nowDate = baseDate(timeArr);
 		
 	} // end now()
+	
 	
 	public String baseTime3hr(String[] date) {
 		
@@ -123,7 +128,6 @@ public class WeatherAPIservice {
 	
 	} // end baseDate() 
 	
-	@Async
 	public List<WeatherInfoVO> weatherData(int localnx, int localny) throws Exception{
 		
 		ResponseEntity<String> response = null;

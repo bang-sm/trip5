@@ -176,8 +176,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(memberService).passwordEncoder(passwordEncoder());
     }
-    
-    
+       
     
     /*
      * 자기 자신이 로그인하고 재로그인시 로그인 안되는 문제 해결

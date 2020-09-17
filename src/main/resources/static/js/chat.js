@@ -306,6 +306,7 @@ $(document).on('click',".othersMsg" ,function(){
 	
 });
 
+
 function loadPage(){
 	userNick = $("#userSessionId").val()
 	data = "uuid="+$("#userSessionuuid").val();
@@ -318,7 +319,6 @@ function loadPage(){
 		success : function(data1, status){
 			if(status == "success"){
 				blackListv = data1;
-				console.log("blackListv = " + blackListv[0].blackuuid);
 			}
 		}
 	});
