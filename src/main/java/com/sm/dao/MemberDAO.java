@@ -84,7 +84,6 @@ public class MemberDAO {
 
 	// uid 일일접속자 정보
 	public Map<String, Object> adminUserCount() {
-		System.out.println(sql.selectOne(namespace + ".adminUserCount") + " ddididi");
 		return sql.selectOne(namespace + ".adminUserCount");
 	}
 

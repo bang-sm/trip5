@@ -151,7 +151,8 @@
 		SELECT 
 			COUNT(CASE WHEN kakaoOk ='Y' THEN 1 END) AS KAKAO, 
 			COUNT(CASE WHEN kakaoOk ='N' THEN 1 END) AS TRIP5
-		FROM visitmembers;
+		FROM visitmembers
+		where visitdate = curdate();
 	</select>
 
 	<!-- 월별 가입자 Count-->
